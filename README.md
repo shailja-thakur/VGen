@@ -5,6 +5,7 @@ The repository comprises of the following:
 1. Scripts for filtering the code and preparing the dataset for fine-tuning purpose
 2. Sctipts used in the evaluation pipeline (Preparing hardware design tasks, Program synthesis, create test-benches, compile, generate results)
 4. Set of hardware design problems for evaluation
+5. Script for fine-tuning and evaluation of LLMs 
 
 The checkpoints of the fine-tuned versions of LLMs for Verilog are available on [ Huggingface ](https://huggingface.co/shailja)
 
