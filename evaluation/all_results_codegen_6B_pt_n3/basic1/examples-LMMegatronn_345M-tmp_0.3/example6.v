@@ -1,4 +1,0 @@
-// Design a module that assigns the output to the input
-module wire_assign( input in, output out );
-// assign out to in
-________________________________C_C_CMP_C_C_C_C_CMP_C_CMP_C_CMP_C_CMP_C_C_CMP_C_C_CMP_C_C_CMP_C_C_C_C_CMP_C_C_C_C_C_C_CMP_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_C_endmodule
