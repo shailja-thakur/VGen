@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nwire [2:0] g, p;\n\nxor x1(p[0], a[0], b[0], g[0]);\nxor x2(p[1], a[1], b[1], g[1]);\nxor x3(p[2], a[2], b[2], g[2]);\nxor x4(p[3], a[3], b[3], g[3]);\nand a1(g[0], a[0], b[0], p[0], cin);\nand a2(g[1], a[1], b[1], p[1], cin);\nand a3(g[2], a[2], b[2], p[2], cin);\nand a4(g[3], a[3], b[3], p[3], cin);\nand a"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nwire [2:0] c;\n\nxor x3(a, b, c[0], sum[0]);\nxor x2(c[0], b, c[1], sum[1]);\nxor x1(sum[0], a, b, c[2], sum[2]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nwire [1:0] g, p;\n\nassign {cout,sum} = a + b + cin;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nwire [3:0] f;\nwire [2:0] g;\nwire [1:0] p;\n\nassign {cout,sum} = a + b + cin;\nassign cout = g[3] | (p[3] & b) | (p[3] & p[2] & p[1] & p[0]);\nassign sum = p[3] & p[2] & p[1] & p[0];\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign {cout, sum} = a + b + cin;\n"
+    }
+  ],
+  "created": 1663299313,
+  "id": "cmpl-fRDPom80lAkM8VR8sK9d8Bg1g2T2G",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 441,
+    "prompt_tokens": 43,
+    "total_tokens": 484
+  }
+}

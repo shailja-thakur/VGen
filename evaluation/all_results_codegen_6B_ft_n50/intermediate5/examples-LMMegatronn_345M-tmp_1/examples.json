@@ -1,0 +1,52 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [7:0] shift_reg;\nalways@(posedge clk)\nbegin\n    if (reset)\n        shift_reg <= 0;\n    else\n    begin\n        shift_reg[0] <= data[7];\n        // 00 -- if 00 -- else load 11 -- else load 00\n        if (load)\n            shift_reg[7:1] <= data[6:0];\n        else\n            shift_reg <= {shift_reg[6:0],1'b0};\n    end\nend\nassign out = shift_reg[7:1];\n// After reset, initialize flag in 1"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg [7:0] shifted_data;\nreg [7:0] shifted_data_shift;\nreg [7:0] out_shr;\n  // the output to \"shift\" is 0\n  // the remaining bits are \"0\" which is \"1\"\n  // are \"2\" that is \"3\" which is \"4\" which is \"5\" in \"6\" which is\n  // \"7\" in \"8\" and is \"9\" for \"10\" in \"11\" in \"12\" which is\n  // \"9\" in \"12\" in \"13\" in \"14\" in \"15\" in \"16\" in \"17\" in \"18\"\n  // \"A\" internal signals are '1' in the three are considered outputs in the lower\n  // bits.\n  wire [7:0] shifted_data;\n  wire shifted_direction;\n  // the"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg [7:0] shift_reg;\nalways@(posedge clk) begin\nif(reset) \n\t//if(shift_reg==7'd0)\n\t\tbegin\n\t\t\tshift_reg<=data;\n\t\tend\nelse\nif(load)\n\tshift_reg<=data;\nend\n\n// take control stuff a signals associated with unit 3(rotate)\nalways@(shift_reg or data or shift_reg)\nbegin\n\tcase(shift_reg)\n\t\t3'd0:\n\t\t\tbegin \n\t\t\t\tout=data[7]^shift_reg[7];\n\t\t\t\tout_valid=~load & (data[7]&shift_reg[7]);\n\t\t\tend\n\t\t3'd1:\n\t\t\tbegin \n\t\t\t\tout=data[7]^"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "reg [7:0] shift=0;\n// also takes a 31 for all bits shifting\nwire [7:0] shifted1;\n// reg [7:0] shifted2 = 0;\nreg [7:0] shifted=0;\nreg [7:0] shifted2;\nreg [3:0] four=0;\n// which to shift we are shifted left\n// (first shifting)\nalways@(posedge clk) begin\n//  if (reset) begin\n//    shift1={data[2:0],1'b0}^2'b00\n//    previousResult=0;\n//    // else\n//    if (load && !zero)\n//    begin\n//        shift<=~data;\n//        increment<=0;\n//   "
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "reg [7:0] shuf [7:0];\nwire [7:0] shifted_middle = data >> amount;\nreg [7:0] shifted_left;\n\ninitial\nbegin\n    // shift right arithmetic\n    shuf[0] = 0;\n   shuf[1] = 1;\n   shuf[2] = 2;\n   shuf[3] = 3;\n   shuf[4] = 4;\n   shuf[5] = 5;\n   shuf[6] = 6;\n   shuf[7] = 7;\n   shuf[8] = 8;\nend\n\nalways @(posedge clk)\nbegin\n    if (!reset)\n    begin\n        out  <= 0;"
+    }
+  ],
+  "created": 1663299298,
+  "id": "cmpl-nwK62at0sNgBH6KYtwscv3ITF8A70",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 93,
+    "total_tokens": 1093
+  }
+}

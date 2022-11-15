@@ -1,0 +1,147 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @(posedge clk)\nbegin\nif (reset)\nr_reg <= 5'b00000;\nelse\nr_reg <= r_next;\nend\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[3], r_reg[4] ^ r_reg[0], r_reg[4] ^ r_reg[1]};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign r_next = (reset == 1'b1) ? 5'b1 : r_reg;\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign q = r_reg;\nalways @(posedge clk)\nbegin\n\tr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @ (posedge clk or posedge reset)\nbegin\nif (reset)\nr_reg <= 5'b1;\nelse\nr_reg <= r_next;\nend\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4], r_reg[3], r_reg[3], r_reg[3], r_reg[2]};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? 5'b11111 : (feedback_value ^ r_reg);\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign q = r_reg;\n// define the initial values\ninitial begin\nr_reg <= 5'b11111;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? 5'b1 : r_reg;\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign q = r_reg;\nalways @ (posedge clk) begin\n\tr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? {1'b1,1'b1,1'b1,1'b1,1'b1} :\n( feedback_value ^ r_reg[4] ^ r_reg[2]);\nassign q = r_reg;\nalways @(posedge clk)\nbegin\n\tr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "assign r_next = (reset)? 4'h1 : ( feedback_value ^ r_reg[4] ^ r_reg[2]);\nassign q = r_reg;\nalways @(posedge clk)\nbegin\n\tr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "assign feedback_value = ^{r_reg[2], r_reg[4]};\nalways @ (posedge clk)\nbegin\n\tif (reset == 1'b1)\n\tbegin\n\tr_reg <= 5'b10000;\n\tend\n\telse\n\tbegin\n\tr_reg <= r_next;\n\tend\nend\nassign q = r_reg; \n// assign r_next to the XOR of r_reg with the feedback_value\n// assign the output to r_reg\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\t// set r_reg to 1\n\tr_reg <= 5'b00000;\n\t// assign feedback_value to a constant 1\n\tfeedback_value <= 1'b1;\n\tend\n\telse\n\tbegin\n\t// shift the value of r_reg\n\tr_reg <= r_next;\n\t// assign feedback_value to the xor of bit positions 2 and 4 of r_reg\n\tfeedback_value <= (r_reg[2] ^ r_reg[4]);\n\tend\nend\n// define r_next as the concatenation of r_reg, feedback_value, and r_reg\nassign r_next = {r_reg, feedback_value, r_reg};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "assign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4], r_reg[4] ^ r_reg[2] ^ r_reg[3], r_reg[3], r_reg[2]};\nassign q = r_reg;\nalways @(posedge clk)\nbegin\nif(reset)\nbegin\nr_reg <= 5'b00000;\nend\nelse\nbegin\nr_reg <= r_next;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @ (posedge clk, posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\t// reset the LFSR to all 1's\n\tr_reg <= 5'b11111;\n\tend\n\telse\n\tbegin\n\tr_reg <= r_next;\n\tend\nend\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4], r_reg[3] ^ feedback_value};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @(posedge clk)\nbegin\nif(reset)\nbegin\nr_reg <= 5'b1;\nend\nelse\nbegin\nr_reg <= r_next;\nend\nend\n// logic to generate next value from current value\nassign r_next = {r_reg[4], r_reg[4] ^ r_reg[3]};\nassign feedback_value = r_reg[2] ^ r_reg[4];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "assign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[3], r_reg[4] ^ r_reg[4] >> 1};\nassign q = r_reg;\nalways @ (posedge clk)\nbegin\nif(reset)\nbegin\nr_reg <= 0;\nend\nelse\nbegin\nr_reg <= r_next;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? (5'b1 << 0) : (r_reg ^ (5'b1 << 2) ^ (5'b1 << 4));\nassign feedback_value = (r_reg[2]) ^ (r_reg[4]);\nassign q = r_reg;\n// register block\nalways @(posedge clk)\nbegin\n\tr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? 5'b10000 : \n(r_reg[0]) ? 5'b00001 :\n(r_reg[1]) ? 5'b11111 :\n(r_reg[2]) ? 5'b11101 :\n(r_reg[3]) ? 5'b11011 :\n(r_reg[4]) ? 5'b10111 :\nr_next;\nassign q = r_reg;\nassign feedback_value = r_reg[2] ^ r_reg[4];\nalways @ (posedge clk)\nbegin\nr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset)\nbegin\nif (reset)\nr_reg <= 5'b1;\nelse \nr_reg <= r_next;\nend\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4], r_reg[3:1] ^ r_reg[0] ^ feedback_value};\nassign q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @(posedge clk or posedge reset) begin\nif (reset) begin\nr_reg <= 5'b1;\nend\nelse begin\nr_reg <= r_next;\nend\nend\nassign feedback_value = r_reg[2] ^ r_reg[4];\n//assign r_next = r_reg ^ {r_reg[4], r_reg[3]}; //this is the same as the feedback_value\n//assign r_next = r_reg ^ (r_reg << 1); //this is the same as the feedback_value\nassign r_next = r_reg ^ {r_reg[4], r_reg[3], r_reg[2], r_reg[1]}; //this is the same as the feedback_value\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? 5'b1 : r_reg;\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign q = r_reg;\nalways @(posedge clk)\nbegin\n\tr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @ (posedge clk or posedge reset)\n\tif (reset)\n\tbegin\n\tr_reg <= 5'b10000;\n\tend\n\telse\n\tbegin\n\tr_reg <= r_next;\n\tend\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4],r_reg[4] ^ r_reg[3] ^ r_reg[1] ^ feedback_value};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "assign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[3], r_reg[4]};\nassign q = r_reg;\nalways @(posedge clk)\nbegin\nif (reset)\nbegin\nr_reg <= 5'b1;\nend\nelse\nbegin\nr_reg <= r_next;\nend\nend\n"
+    }
+  ],
+  "created": 1663334873,
+  "id": "cmpl-PTWhMaU9mQBJWfvrWBI8pD5lJn91C",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2254,
+    "prompt_tokens": 155,
+    "total_tokens": 2409
+  }
+}

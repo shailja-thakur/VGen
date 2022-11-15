@@ -1,0 +1,123 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n    if(reset)\n        cur_state <= IDLE;\n    else if(a)\n        cur_state <= SA;\n    else if(b)\n        cur_state <= SB;\n    else\n        cur_state <= SAB;\n    next_state <= cur_state;\n    z <= ~(a || b) && cur_state == SAB;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways begin\n\tif (reset == 0 && clk == 1) begin\n\t\tcur_state <= IDLE;\n\t\tnext_state <= IDLE;\n\t\tz <= 0;\n\tend\n\telse begin\n\t\tcur_state <= IDLE;\n\t\tz <= 0;\n\tend\nend\nalways begin\n\tif (reset == 0 && clk == 1) begin\n\t\tnext_state <= IDLE;\n\tend\n\telse begin\n\t\tnext_state <= IDLE;\n\tend\nend\nalways begin\n\tif (reset == 0 && clk == 1) begin\n\t\tif (cur_state == IDLE) begin\n\t\t\tif (a && b) begin\n\t\t\t\tnext_state <= SAB;\n\t\t\tend\n\t\t\telse if (a) begin\n\t\t\t\tnext_state <= SA;\n\t\t\tend\n\t\t\telse if (b) begin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n  if(reset)\n    cur_state <= IDLE;\n  else\n    if(a)\n      cur_state <= SA;\n    else\n      if(b)\n        cur_state <= SB;\n      else\n        cur_state <= IDLE;\nend\n// This is the logic that gets executed when the cur_state changes\nreg [1:0] next_state;\nalways @(posedge clk) begin\n  if(cur_state == IDLE && a && b)\n    next_state <= SAB;\n  else\n    if(cur_state == IDLE)\n      if(a)\n        next_state <= SA;\n      else\n        next_state <= SB;\n    else\n      if(cur_state == SA)\n        if(b)\n          next_state <= SAB;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "reg [3:0] z;\nalways @(posedge clk) begin\n  if(reset)\n    next_state <= IDLE;\n  else begin\n    case(cur_state)\n      IDLE: begin\n        if (a && b) begin\n          next_state <= SAB;\n        end\n        else begin\n          next_state <= IDLE;\n        end\n      end\n      SA: begin\n        if (a && !b) begin\n          next_state <= SAB;\n        end\n        else begin\n          next_state <= IDLE;\n        end\n      end\n      SB: begin\n        if (!a && b) begin\n          next_state <= SAB;\n        end\n        else begin\n          next_state <= IDLE;\n        end\n      end\n      SAB: begin\n        next_state <= IDLE;\n      end"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk) begin\nif (reset) begin\ncur_state <= IDLE;\nnext_state <= IDLE;\nz <= 0;\nend\nelse begin\nif ((cur_state == IDLE) && (a && b)) begin\nnext_state <= SAB;\nend\nif ((cur_state == IDLE) && (a)) begin\nnext_state <= SA;\nend\nif ((cur_state == IDLE) && (b)) begin\nnext_state <= SB;\nend\nif ((cur_state == SA) && (b)) begin\nnext_state <= SAB;\nend\nif ((cur_state == SB) && (a)) begin\nnext_state <= SAB;\nend\nif ((cur_state == SAB) && (a && b)) begin\nnext_state <= IDLE;\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "reg [2:0] z;\nalways @(posedge clk) begin\ncur_state <= next_state;\n// This section is for the transition of states\nif ((cur_state == SA) && (a == 1))\n    next_state <= SAB;\nif ((cur_state == SA) && (b == 1))\n    next_state <= SB;\nif ((cur_state == SB) && (a == 1))\n    next_state <= SAB;\nif ((cur_state == SB) && (b == 1))\n    next_state <= SA;\nif ((cur_state == SAB) && (a == 1))\n    next_state <= SB;\nif ((cur_state == SAB) && (b == 1))\n    next_state <= SA;\n// This section is for the final state assignment\nif ((cur_state == IDLE) &&"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "reg [2:0] z;\nreg [1:0] a,b;\nalways @(posedge clk) begin\n  if(reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n    a <= 0;\n    b <= 0;\n    z <= 0;\n  end\n  else begin\n    case(cur_state)\n      IDLE: begin\n        if(a and b) begin\n          next_state <= SAB;\n          z <= 1;\n        end\n        else begin\n          next_state <= IDLE;\n          z <= 0;\n        end\n      end\n      SA: begin\n        if(b) begin\n          next_state <= SAB;\n          z <= 1;\n        end\n        else begin\n          next_state <= SA;\n          z <= 0;\n        end\n      end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk) begin\n  if (reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n    z <= 0;\n  end\n  else begin\n    if (cur_state == IDLE) begin\n      if (a && b) begin\n        cur_state <= SAB;\n        next_state <= SAB;\n      end\n      else if (a) begin\n        cur_state <= SA;\n        next_state <= SA;\n      end\n      else if (b) begin\n        cur_state <= SB;\n        next_state <= SB;\n      end\n    else begin\n      if (a && b) begin\n        cur_state <= SAB;\n        next_state <= SAB;\n      end\n      else if (a) begin\n        cur_state <="
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk) begin\n    if(reset) begin\n        next_state <= IDLE;\n        z <= 0;\n    end\n    else begin\n        next_state <= cur_state;\n        z <= 0;\n    end\nend\n// The state machine\nalways @(posedge clk) begin\n    case(cur_state)\n    IDLE: begin\n        if(a) begin\n            cur_state <= SA;\n        end else begin\n            cur_state <= SB;\n        end\n    end\n    SA: begin\n        if(a) begin\n            cur_state <= SAB;\n        end else begin\n            cur_state <= IDLE;\n        end\n    end\n    SB: begin\n        if(b) begin\n            cur_state <= SAB;\n        end else begin\n            "
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n  // The FSM is in IDLE state until the reset signal is asserted\n  if (reset == 1) begin\n    cur_state <= IDLE;\n  end\n  // The FSM is in IDLE state until both a and b are asserted\n  if ((a == 1) && (b == 1)) begin\n    cur_state <= IDLE;\n  end\n  // The FSM is in IDLE state until a is asserted and b is high\n  if ((a == 1) && (b == 0)) begin\n    cur_state <= IDLE;\n  end\n  // The FSM is in IDLE state until b is asserted and a is high\n  if ((a == 0) && (b == 1)) begin\n    cur_state <= IDLE;\n  end\n  // The FSM is in IDLE state until a and b are"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk) begin\n  if(a && b) begin\n    cur_state <= SAB;\n  end\n  else if(a) begin\n    cur_state <= SA;\n  end\n  else if(b) begin\n    cur_state <= SB;\n  end\n  else begin\n    cur_state <= IDLE;\n  end\n  if(cur_state != next_state) begin\n    next_state <= cur_state;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "reg [1:0] sa,sb,ab;\nalways @(posedge clk or posedge reset) begin\n\tcase(cur_state)\n\tcase(IDLE)\n\t\tif(a && b) begin\n\t\t\tcur_state <= SAB;\n\t\t\tsa <= 1;\n\t\t\tsb <= 1;\n\t\t\tab <= 1;\n\t\tend\n\t\telse if(a) begin\n\t\t\tcur_state <= SA;\n\t\t\tsa <= 1;\n\t\t\tsb <= 0;\n\t\t\tab <= 0;\n\t\tend\n\t\telse if(b) begin\n\t\t\tcur_state <= SB;\n\t\t\tsa <= 0;\n\t\t\tsb <= 1;\n\t\t\tab <= 1;\n\t\tend\n\t\telse begin\n\t\t\tcur_state <= IDLE;\n\t\t\tsa <= 0;\n\t\t\tsb <= 0;\n\t\t\tab <= 0;\n\t\tend\n\tcase(SA)\n\t\tif(b)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk) begin\n    if (reset) begin\n        cur_state <= IDLE;\n        next_state <= IDLE;\n    end\n    else begin\n        next_state <= cur_state;\n        if (cur_state == IDLE) begin\n            if (a) begin\n                next_state <= SA;\n            end\n            else begin\n                if (b) begin\n                    next_state <= SB;\n                end\n                else begin\n                    next_state <= IDLE;\n                end\n            end\n        end\n        else if (cur_state == SA) begin\n            if (b) begin\n                next_state <= SAB;\n            end\n            else begin\n                next_state <= IDLE;\n            end\n        end\n        else if (cur_state == SB) begin\n            if ("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n    if (reset)\n        cur_state <= IDLE;\n    else if (a)\n        cur_state <= SA;\n    else if (b)\n        cur_state <= SB;\n    else if (cur_state == IDLE)\n        cur_state <= SAB;\n    else if (cur_state == SA)\n        cur_state <= SAB;\n    else if (cur_state == SB)\n        cur_state <= SAB;\n    else if (cur_state == SAB)\n        cur_state <= IDLE;\n    next_state <= cur_state;\n    z <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk) begin\n  if (reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n    z <= 0;\n  end\n  else begin\n    if (a && b) begin\n      cur_state <= SAB;\n      next_state <= SAB;\n      z <= 1;\n    end\n    else begin\n      if (a) begin\n        cur_state <= SA;\n        next_state <= SAB;\n        z <= 1;\n      end\n      else begin\n        if (b) begin\n          cur_state <= SB;\n          next_state <= SAB;\n          z <= 1;\n        end\n        else begin\n          cur_state <= IDLE;\n          next_state <= IDLE;\n          z <= 0;\n        end\n      end"
+    }
+  ],
+  "created": 1663535099,
+  "id": "cmpl-JtePHEdMDgZvebDRwzJ4TpBoW7IpE",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2796,
+    "prompt_tokens": 218,
+    "total_tokens": 3014
+  }
+}

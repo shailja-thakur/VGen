@@ -1,0 +1,144 @@
+example-0: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk or negedge reset)
+if (reset == 1'b1) r_reg <= 5'b0111;
+else r_reg <= r_next;
+assign feedback_value = (r_reg[2:0] + r_reg[4:3]) ^ (r_reg[0] + r_reg[4:1]);
+assign r_next = {r_reg[3:0], feedback_value};
+assign q = r_reg;
+
+================================================================
+example-1: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+always @( posedge clk or posedge reset )
+begin
+	if( reset ) 
+	begin
+	r_reg <= 5'b10000;
+	end
+	else 
+	begin
+	r_reg <= r_next;
+	end
+end
+assign q = r_reg;
+assign r_next = ~( q[2] ^ q[4] ) ^ feedback_value;
+
+================================================================
+example-2: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+//
+always @(posedge clk or negedge reset)
+ if(~reset)
+ r_reg <= 5'b000000;
+else
+ r_reg <= r_next;
+assign q = {r_reg[3:0],feedback_value}; 
+assign r_next = {(feedback_value^r_reg[4]),(r_reg[4:1]^r_reg[3:2])};
+
+================================================================
+example-3: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+always @( posedge clk, 	posedge clk, posedge reset ) begin 
+	if (reset) 
+	begin 
+	out = 0; 
+	end 
+	else 
+	begin 
+	r_next = { r[3:0],feedback_value }; 
+	out = q[4:0]; 
+	//concatenate q and the decimal 5 and store it in out 
+	end 
+end 
+//assign q to r_reg
+assign q = r_reg; 
+// define the functionality of the register
+// read operation
+always @(posedge clk) begin 
+	if ( r_next == 28'b0000000000) 
+	begin 
+	r_reg = { r[3:0],feedback_value }; 
+	end 
+	else 
+	begin 
+	
+================================================================
+example-4: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+assign q = r_reg;
+assign r_next = {r_reg[3:0], feedback_value};
+// use functionality of qff to create the functionality of a flipflop
+// wire stays put if Q[0] goes from 0 to 1
+// Flip-flop inputs which resonates: 
+// R0 = (Q[3] & ~Q[0]) | (~Q[3] & Q[0]) 
+// R1 = (Q[3] & Q[0]) | (~Q[3] & Q[2]) 
+// R2 = (Q[3] & ~Q[2]) | (~Q[3] & Q[2]) 
+// R3 = (Q[3] & Q[2]) | (~Q[3] & ~Q[2] & Q[1]) 
+// [Not R3: Q[0] is conc
+================================================================

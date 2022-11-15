@@ -1,0 +1,45 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n// assign q = 4-bit calls and q = 5-bit feedback\nif (reset) {\n    r_reg <= 0;\n    r_next <= 0;\n    out_q <= to_int(if (bit1){1}{0} & if (bit3){1}{0} & if (bit5){1}{0});\n} else assign r_next = (if (bit1){1}{0} & if (bit3){1}{0} ^ if (bit5){1}{0});\nassign feedback_value = r_next[6:4];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "r <= r_next & (((r_reg[4] | r_reg[5]) ^ (feedback_value << 3)) << 1);\nassign feedback_value = (input clk & ! reset) | (((r_reg[4] & r_reg[5]) ^ (r_reg[0] << 2)) << 3) & 0x400;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign r_next = r_reg;\nassign feedback_value = (r_reg[4] ^ r_reg[3]);\nassign q = (dec[r_next] && reset);\nend\n\n\n\nmodule t1( \n    input clk, \n    input reset, \n    input [3:0] p, \n    output [8:0] p_next\n);\noutput [6:0] p_bit;\nwire [6:0] p_next;\nassign p_next = p;\nassign p_bit = (p_next[6] & dec(r_next[5]);\nend\n\nmodule t2( \n    input clk, \n    input reset, \n    input [6:0] p_bit, \n    output latch_reg\n);\nassign latch_reg = p_bit"
+    }
+  ],
+  "created": 1663519386,
+  "id": "cmpl-w5LfGCEuZvhwhRq4q54pQ69HUZMpn",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 432,
+    "prompt_tokens": 155,
+    "total_tokens": 587
+  }
+}

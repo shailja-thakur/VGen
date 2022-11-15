@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// The normal half adder adds two bits and produces a sum.\nmodule normal_adder(\ninput a, b,\noutput cout, sum );\n\n// This is a subtracter. A subtracter subtracts two bits and produces a sum and carry-out.\nmodule subtracter( \ninput a, b,\noutput cout, sum );\n\n// The normal subtracter subtracts two bits and produces a sum.\nmodule normal_subtractor(\ninput a, b,\noutput cout, sum );\n\n// The normal multiplyer adds two bits and produces a sum and carry-out.\nmodule normal_multiplier( \ninput a, b,\noutput cout, sum );\n\n// This is a multiplyer. A multiplyer multiplies two bits and produces a sum.\nmodule multiplier( \ninput a, b,\noutput cout, sum );\n\n// This is a divider."
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\ninput run;\n\n#include <adder_half.v>\n\n#include <adder_sum_carry.v>\n\n#include <adder_sum_carry_1st.v>\n\n#include <adder_sum_carry_2nd.v>\n\n#include <adder_sum_carry_3rd.v>\n\n#include <adder_sum_carry_4th.v>\n\n#include <adder_sum_carry_5th.v>\n\n#include <adder_sum_carry_6th.v>\n\n#include <adder_sum_carry_7th.v>\n\n#include <adder_sum_carry_8th.v>\n\n#include <adder_sum_carry_9th.v>\n\n#include <adder_sum_carry_10th.v>\n\n#include <adder_sum_carry_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n`\n\n//-----------------------------------------------------------------------------\n\n#define NUM_INPUTS 3\n\nvoid\nassign_inputs( \nhalf_adder *self,\nunsigned inputs[] ) {\n\n  // The inputs are the inputs to the half-adder.\n  self->a = inputs[0];\n  self->b = inputs[1];\n  self->cout = inputs[2];\n}\n\n//-----------------------------------------------------------------------------\n\nvoid\ncheck_outputs( \nhalf_adder *self ) {\n\n  // The outputs are the outputs to the half-adder.\n  check_output( self->c, self->cout, 2, \"cout\" );\n}\n\n//-----------------------------------------------------------------------------\n\nvoid\ncheck_output( \nunsigned output,\nunsigned output_expected,\nunsigned n,\nconst char *name ) {\n\n  if ( output != output_expected ) {\n    printf("
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\ninput adder_in[2];\n\ninput a, b;\noutput cout, sum;\n\ninput adder_in[2] = { a, b };\n\ninput add_in[2] = { a, b };\n\ninput add_out[2] = { cout, sum };\n\ninput add_is[2] = { add_in[0], add_in[1] };\n\ninput carry_out[1] = { sum };\n\ninput carry_is[1] = { carry_out[0] };\n\nmodule m_adder(\ninput adder_in[2],\noutput add_out[2],\noutput carry_out[1] );\n\nmodule m_adder_add(\ninput adder_in[2],\ninput add_is[2],\noutput add_out[2] );\n\nmodule m_adder_carry"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nvoid half_adder_user_fun( \ninput a, b, output cout,\noutput sum )\n{\n  do\n  {\n    sum += (a & 0x1) + (b & 0x1);\n    sum += (a & 0x2) + (b & 0x2);\n    sum += (a & 0x4) + (b & 0x4);\n    sum += (a & 0x8) + (b & 0x8);\n    sum += (a & 0x10) + (b & 0x10);\n    sum += (a & 0x20) + (b & 0x20);\n    sum += (a & 0x40) + (b & 0x40);\n    sum += (a & 0x80) + (b & 0x80);\n    a >>= 1;\n    b >>= 1;\n"
+    }
+  ],
+  "created": 1663540044,
+  "id": "cmpl-oUBQmwgNJVqkBlScrz95hNpzOzzMq",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 43,
+    "total_tokens": 1043
+  }
+}

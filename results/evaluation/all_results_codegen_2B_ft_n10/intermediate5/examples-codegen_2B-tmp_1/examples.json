@@ -1,0 +1,82 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [7:0] rotated,shifted;\nalways @(posedge clk) begin\nif (amount == 0)\nout <= 8'b0;\nelse if(amount == 1)\nout <= out << 1'b1;\nelse if(amount == 2)\nout <= out << 1'b1 << 1'b1;\nelse if(amount == 3)\nout <= data << 1'b1;\n'else if({amount} > 4)\nout <= rotated;\nend\nalways @(posedge reset) begin\nif(reset == 1'b1)\nbegin\nshifted <= 8'b0;\nrotated <= 8'b0;\nend\nelse if (load == 1'b0)\nshifted <= data;\nelse if({amount} == 4'b1010)\nrotated <= shifted;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg [7:0] data_new;\nreg [7:0] data_aux;\nreg [6:0] i;\nreg busy,load_reg;\nalways @(posedge clk or posedge reset)\nif(reset)\nbegin\ndata_new <= 8'b0;\ni <= 7'b0;\nend\nelse\nbegin\nif (load)\ndata_new <= data;\nelse\nbegin\nfor(i=7;i>=0;i=i-1)\nbegin\nout<=data_aux;\ndata_aux<= data_new;\ndata_new<= {data_new[0],data_new[7:1]};\nbusy<=1'b1;\nend\nend\nend\nalways @(*)\nbegin\nreset_reg=reset;\nload_reg=load;\n// needn't"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset)\nbegin\nif (reset == 1'b1)\nout <= 0;\nend\nalways @(posedge out)\nbegin\nout <= 8'b00000000;\nend\nalways@(posedge clk or posedge load)\nbegin\nif (load == 1'b1)\nout <= data;\nend\nalways@(posedge out,posedge reset)\nbegin\nif (reset == 1'b1)\nout <= 8'b00000000;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(load)\n\tout = data;\n\telse \n\tbegin\n\tout = data << amount;\n\tout = out << 7'h01;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nbegin: applicationscope\nif(reset == 1'b0)\nout <= 8'b01111111; // when reset is low initial the output data to \"10111111\"\nelse if(load) // when load is high\nout <= data;\nelse begin\nout[0] <= out[7];\nfor(int i = 1; i < 8; i = i+1)\nout[i] <= data[7-i];\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk,posedge reset)\nif(reset) begin\n out <= 0;\nend always @(posedge load)\n else begin\nif (amount==0)\n out <= data;\nend\nalways @(posedge clk)\n if (reset) begin\nout <= 0;\nfor (i=0;i<8;i=i+1) begin\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\ncase (amount)\n0: out <= data;\n1: out <= {data[0],data[7:1]};\n2: out <= {data[1],data[7:2]};\n3: out <= {data[2],data[7:3]};\n4: out <= {data[3],data[7:4]};\n5: out <= {data[4],data[7:5]};\n6: out <= {data[5],data[7:6]};\n7: out <= {data[6],data[7]};\nendcase\nalways @ (posedge load or negedge reset)\nif (!reset) out = 8'b0;\nelse \nbegin \ncase(amount)\n0: \nout = {out[6:0],out[7]};"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tout <= 8'b0000_0000;\n\tend\n\telse if (load)\n\tout <= data;\n\telse begin\n\tcase (amount)\n\t0: out <= {8'd0, data[7:0]};\n\t1: out <= {1'd0, data[7]};\n\t2: out <= {2'd0, data[7:1]};\n\t3: out <= {3'd0, data[6:2]};\n\t4: out <= {4'd0, data[5:3]};\n\t5: out <= {5'd0, data[4:4]};\n\t6: out <= {6'd0, data[3:5]};\n\t7: out <= {7'd0, data[2:6"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "// shift left until out register is filled with the data\nalways @(posedge clk,posedge reset)\n\tbegin\n\tif (reset)\n\tbegin\n\tout <= 8'b0;\n\t$display(\"out = %b\",out);\n\tend\n\telse\n\tbegin\n\tif(load == 1)\n\tbegin\n\tout <= data;\n\t$display(\"out = %b\",out);\n\tend\n\telse\n\tbegin\n\tout = out >> amount;\n\t$display(\"out = %b\",out);\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk,posedge reset)\n if (reset)\n out <= 8'b0000000000000000;\n else \n if (load)\n out <= data;\n else\n if (load)\n out <= {1'b0, data[7:1]};\n // load signals first cared as 1 instead of falling into those select blocks above\n"
+    }
+  ],
+  "created": 1663606919,
+  "id": "cmpl-X4asceryqzwN7D1hbzA10SAP9GwlF",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1398,
+    "prompt_tokens": 94,
+    "total_tokens": 1492
+  }
+}

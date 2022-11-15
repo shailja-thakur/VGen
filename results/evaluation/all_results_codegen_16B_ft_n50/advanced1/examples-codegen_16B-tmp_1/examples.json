@@ -1,0 +1,326 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign overflow = a[7] + b[7] + (s[7] & (a[7] ^ b[7]));\nassign s = a + b; \n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": " wire carry_out_overflow;\n wire overflow_reflect;\n\n register_with_clock_divider C9 (b[7], a[7], carry_out, overflow, b[7], a[7], 1, 7);\n\n // negate or reflect the overflow output to give the total signed adder output or purpose to give the output of an unsigned operator.\n assign overflow_reflect = (overflow == 1) ? ~overflow : 1'bz;\n assign s[7] = (overflow_reflect == 1) ? overflow_reflect : overflow;\n assign s[6] = (overflow == 1) ? overflow : carry_out;\n assign s[5] = (overflow_reflect == 1) ? overflow_reflect : carry_out;\n assign s[4] = (overflow == 1) ? overflow : carry_out_reflect_lower[7];\n assign s[3] ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nreg [6:0] carry_out = 0;\t\nwire [7:0] sum = a + b;\t// sum bf the result\n\nassign s[7:0] = sum[7:0];\t// assign the most significant bits of sum to output s;\n\nassign overflow = 2031 & (~carry_out[6] + carry_out[5] + carry_out[4] + carry_out[3]); // (&b) so that the bit operation is only performed if the carry_out is 0.\n// (*4) so all assigned bit operations occur over four cycles starting from the next positive clock edge.\n\n\n\nalways @(*)\n\tbegin\n\tif \t(carry_out == 0 & gain_out < gain_min)\n\tbegin\n\t// gain is too small --> disallow input\n\toverflow <= 1; \n\ts[7"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign overflow = ((a[7]==0 && b[7]==0 && s[7] == 1) || \n\t(a[7] == 1 && b[7] == 1 && s[7] == 0) ||\n\t(a[7] == 1 && b[7] == 0 && s[7] == 1) || \n\t(a[7] == 0 && b[7] == 1 && s[7] == 0)) ? 1'b1: 1'b0;\n// A signed overflow occurs if the most significant bit of the sum is a one, \n// and the highest non-zero occurence of a or b is a one.\n/// Ex. \n//a = 10011\n//b = 10011\n//s = 10101\n\n// Otherwise, the adder does not overflow\n//IF the MSB of the result is a one,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign s [7:0], a + b; \nassign overflow, s [7] ^ a [7] ^ b [7]; // The output overflow is given by the logical XNOR between the most significant bit of a, b and s \n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\n//Define the function of a signed adder\nfunction ssigned_adder_37;\ninput [7:0] a\ninput [7:0] b;\noutput [7:0] s;\nreg [8:0] result;\noutput overflow;\nreg ov;\nassign overflow = ov;\n\nalways @ (*)\nbegin\n\nresult = a + b; // perform the addition to get the significand and exponent values\nlegit_to_s_s(result); // convert to s-representation and the correct output format\n\nif (a[7] == 1'b0 && b[7] == 1'b0)\nbegin\n\tassign s = result[7:0]; // assign the output to s if both inputs are 0\n\tov = 0; // set overflow to zero\nend\n\nif (a[7] == 1'b1 && b"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nassign s [i]=a[i]+b[i]; // s is 8-bit 1=add_min, 1=add_min\nassign overflow[i]=(a[i]==1'b0 & b[i]==1'b0 & s[i]==1'b1)| // if one of the two inputs is Zero, \n it overflows if it adds to '1'\nit overflows if a input '1' and b input is '0' and s is '1'\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\nassign s = a + b;\nassign overflow = ({a[7],a[7]} == 1 && {b[7],b[7]} == 1 && s[8] == 0) || ({b[7],b[7]} == 1 && s[8] == 0) ||\n({a[7],a[7]} == 1 && {b[7],b[7]} == 1 && s[8] == 1) ? 1'b1 : 1'b0; // // The unsigned addition is less than {N-1, N-1} in magnitude. If the binary sum GTE the most significant bit of {N-1, N-1} then s must be >N-1.\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\tassign s= a + b;\n\t\n\n\t // if a is a positive number then subtract a\n\t // with a negative b.\n\tassign overflow = ((a[6] == 1'b0) && (b[7] == 1'b1)) || \t // check for signed overflow: Either A is a positive number or B is a negative number\n\t\n\t((a[6] == 1'b1) && (b[7] == 1'b0)) ||\n\t\n\t (overflow == 1'b0) ? overflow : 1'b1;\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nassign s[7]=a[7]^b[7]^s[7];\n\nalways@(a,b,s)\nbegin\ncase({a,b})\n4'b0010:s<=s-1;\n4'b0011:s<=s+1;\ndefault:s=a+b;\nendcase\nend\nassign overflow=(((a[7]+b[7]-'b1)^(a[7]-'b1)'))'b1;\n// create an overflow signal if the most significant bit of sum s is 0 or 1 then the variable overflows is are true, overwritting the least significant bit of overflow with 1. \n //when the most significant bit of a and b are high,if the most significant bit of s is tright,then the variable overflows becomes true andthe least significant bit of overflow overwrite with 1.\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\t XOR_MUX_0 aor0( w3,a, b);\n\t shift b_2signif( w2, a);\n\t XOR_MUX_1 aor1( s, w2, w3);\n\t \n\t XOR_MUX_2 af( w1, a, b);\n\t XOR_MUX_3 aor2( overflow, w1,w2 ); \n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nwire [7:0] sig_add;\nwire [4:0] out_sig_add;\n\nassign out_sig_add = { a[0] | b[0], out_sig_add_2[4] };\n\nwire out_carry = a[0] & b[0] | a[0] & out_sig_add_2[0] | b[0] & out_sig_add_2[0];\n\n// assigns overflow based on MostSigBits of current adder\n// assigns overflow based on flipping the most significant bit\nassign overflow = (~a[7] & out_carry)|(~a[7] & ~b[7] & out_sig_add[7]);\n\n\nassign sig_add = a + b;\n\nassign s = sig_add[7:0];"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\tassign overflow = ((a[7] == 0) & (b[7] == 0) & (s[7] != 0)) | // aNorb if the sign bit in S goes high first, then it signed overflows out.\n\t((a[7] == 1) & (b[7] == 1) & (s[7] == 0)) | // aB8orB8 if the sign bit in S goes low, then it is overflowed out.\n\t((a[7] == 1) & (b[7] == 0) & (s[7] == 1)); // aB8orAnOrB8 if the sign bit in S is flipped from what is being added, then the overflow is occuring.\n\n// If the most significant bits of a and b are zero, then the sign bit of s must be one for a signed overflow to occur. \n// yet, if"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nassign s = (a[7] == b[7] && a[7] == ~s[7]) ? {a[7:0],1'b0}:\n(a[6] == b[6] && (a[7:0] > b[7:0])) ? s[~7:0] + 8'h01:\n(a[6] == b[6] && (a[7:0] < b[7:0])) ? s[~7:0] + 8'h81:\n(a[5] == b[5] && (a[6:0] > b[6:0])) ? s[~6:0] + 8'h02:\n(a[5] == b[5] && (a[6:0] < b[6:0])) ? s[~6:0] + 8'"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7] && a[7] != s[7])?1'b1:1'b0;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\talways @ (a, b) begin\n\t\n// Stage 1\n\n\t// Subtract b from a. A is the original adder input value and B is the subtraction of that from what is already on s.\n\n\tassign A1 = a[0] ^ b[0]; //learned\n\tassign B1 = a[0] & b[0];\n\tassign C1 = a[1] & b[1];\n\tassign D1 = a[1] ^ b[1];\n\n// Stage 2\n\n\tassign E1 = C1 ^ D1;\n\tassign F1 = C1 & D1;\n\tassign G1 = A1 & E1;\n\tassign H1 = A1 ^ E1;\n\n// Stage 3\n\n\t// Left-shift A: |A|88307 -> left 7 places. (10000000 -> assign"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = ((a[7]==1) && (b[7]==0) && (s[7]==0)) || ((a[7]==0) && (b[7]==1) && (s[7]==1)); \n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\tassign s [7:0] = a [7:0] + b [7:0];\n\tassign overflow [7:0] = (a [7] == 1 && b [7] == 1 && s[7] == 0) || (a [7] == 0 && b [7] == 0 && s[7] == 1);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n\n// Look at Drop A description and code. Make changes as described in the statement.\n\nassign s = (b & 8'h0F) + (a & 8'h07); \n\nassign overflow = (a[7] == b[7]) && ~a[7] & (s[7] == 1'b1);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n\n //uses the does zig cfg style\n\nassign overflow = (~a[7] & ~b[7] & s[7]) | (~a[7] & b[7] & ~s[7]) | (~b[7] & a[7] & ~s[7]) | (a[7] & b[7] & ~s[7]); \n\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 20,
+      "logprobs": null,
+      "text": " always@(a or b or s) begin\n\nassign overflow=(a[7]==0 & b[7]==0 & s[7]==1) | (a[7]==1 & b[7]==1 & s[7]==0);\nassign s[7]=a[7] ^ b[7];\nassign s[6:0]=a[6:0] +b[6:0];\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 21,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = ~(a[7]&b[7] | a[7]&s[7] | ~a[7]&~b[7]&s[7]) & (a[7]^b[7] | a[7]&s[7] | ~a[7]&~b[7]&~s[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 22,
+      "logprobs": null,
+      "text": "\nassign overflow = ((a[7] == b[7]) && (a[7] != s[7])) ||\n((a[7] != b[7]) && (a[7] != s[7]) && (b[7] != s[7]));\n// Add two 8-bit two's complement numbers and then convert the final result to two's complement \n\n\nassign s = a + b; // Add the two numbers\nassign s[7] = ^s[7]; // If the most significant bit (MSB) of the output number is a 1, flip it (a.k.a, change to 2's complement)\n/* If any of the above described events occur, then overflow needs to be a non-zero number */\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 23,
+      "logprobs": null,
+      "text": " /*\n * check that if most significant a and b are low, and most significant bit s is high, there should be an overflow.\n * check if most significant a and b are high, and most significant bit s is low, there should not be an overflow.\n*/\n wire temp0, temp1;\n xor(temp0, a[5], b[5]);\n\n assign temp1 = a[5] & b[5];\n\n xor(s[0], temp0, temp1);\n\n// if a[5] and b[5] are low, then the sum is either the new value of a[0] or b[0], or else it is a high output\n assign s[1] = a[1] & b[1];\t \n assign s[2] = a[2] & b[2];\n\n wire s_0, s_1;\n adder(a[0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 24,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (({a[7], a[7]} == 1) && ({b[7], b[7]} == 1) && ({s[7], s[7]} == 0)) ||\n\t(({a[7], a[7]} == 0) && ({b[7], b[7]} == 0) && ({s[7], s[7]} == 1));\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 25,
+      "logprobs": null,
+      "text": "\nassign s = a + b; // perform an unsigned add and then Test the most significant bit of s to determine if a signed overflow has occured. \n\nassign overflow = ((a[7] == b[7]) && (a[7] != s[7]))?1'b1:1'b0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 26,
+      "logprobs": null,
+      "text": "\nassign {s,of} = a+b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 27,
+      "logprobs": null,
+      "text": "\nalways @(a,b,s)\nbegin\n\nassign overflow = (s[8] == 1'b1 && (~a[7] || ~b[7]) && (a[7] != s[7]) && (b[7] != s[7])) ||(~(a[7] ^ b[7]) && s[7])!=1'b1; \n\nassign s = (a + b);\n\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 28,
+      "logprobs": null,
+      "text": "\nassign overflow = (~a[7])&(~b[7]) & (~s[7]) | (~a[7])&(b[7]) & (~s[7] | (~a[7]) & (~b[7]) & (~s[7]) );\n\n// Add the second 8-bit numbers a and b respectively to the unsigned 8-bit number s\nxor (s[0],b[0],a[0]);\nxor (s[1],b[1],a[1]);\nxor (s[2],b[2],a[2]);\nxor (s[3],b[3],a[3]);\nxor (s[4],b[5],a[5]);\nassign xor1 = b[5]^a[6];\nassign xor2 = b[6]^a[7];\nxor (s["
+    },
+    {
+      "finish_reason": "length",
+      "index": 29,
+      "logprobs": null,
+      "text": "\twire low_a, low_b, low_s;\n\twire [7:0] bpos_a, bpos_b;\n\tassign bpos_a = (a[7]) ? ~a + 1 : a;\n\tassign bpos_b = (b[7]) ? ~b + 1 : b;\n\tassign low_a = !(a[7] || b[7]);\n\tassign low_b = !(b[7] || a[7]);\n\tassign low_s = !(s[7] || low_a || low_b);\n\tassign overflow = s[7] ^ low_s;\n\t// must test for overflow signficantly (greater than >> overflow bits) based on\n\t// the widths of the operands\n\tassign s = (low_a && low_b) ? (("
+    },
+    {
+      "finish_reason": "length",
+      "index": 30,
+      "logprobs": null,
+      "text": " wire signed [8:0] sum; // temporary sum wire\n\n assign sum[7:0] = a[7:0] + b[7:0];\n assign sum[8] = a[8] & b[8]; \n assign s[7:0] = sum[7:0];\n assign s[8] = (a[8] & ~b[8] & sum[8]) | (a[8] & b[8] & ~sum[8]) | (!a[8] & b[8] & sum[8]);\n\n //assign overflow = sum[8];\n //assign overflow = (a[8] & ~b[7]) | (a[8] & b[7] & !sum[7]) | (!a[8] & b[8] & sum[7]);\n //assign overflow = temp_1 + temp_2;\n assign overflow"
+    },
+    {
+      "finish_reason": "length",
+      "index": 31,
+      "logprobs": null,
+      "text": "\nwire not_a_and_b;\nwire nor_overflow;\nwire ab0_out_and;\nwire ab0_out_or;\nwire ab0_out_or_in;\nassign or_overflow = (nor_overflow | ab0_out_and) | ab0_out_or_in;\n\n\nassign s = b << 1; // therefore s for the first bit will be the output\nassign not_a_and_b = ~a & b; // logic statement for inverting a and b, -Logic the two numbers all together\nassign s0_out = s[0]; //assing the sentence b << 1 to variable s0_out. b << 1 = 2x1 vector which then it treated as the input for s[0]\n\n//Using a variable to store the a & b with respect to bit[0] operation\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 32,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = s[8];\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 33,
+      "logprobs": null,
+      "text": "\nassign {overflow,s} = a + b;\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 34,
+      "logprobs": null,
+      "text": "\twire flag_in_most_sig_mul;\t\n\twire [3:0] unsigned_sum4,unsigned_sum3,unsigned_sum2,unsigned_sum1,unsigned_sum;\n\twire signed_overflow_most_sig_mul;\n\twire signed_overflow1,signed_overflow2,signed_overflow3,signed_overflow4;\n//add all bits of a with flipped most sig bit of b to sum\n\tassign unsigned_sum4 = (b[7]?~a[7:0] + 1'b1:a[6:0]) + (b[6]?~a[7:0] + 1'b1:a[5:0])+ (b[5]?~a[7:0] + 1'b1:a[4:0])+ (b[4]?~"
+    },
+    {
+      "finish_reason": "length",
+      "index": 35,
+      "logprobs": null,
+      "text": "\twire [7:0] carry;\n\tassign carry[0] = a[0] ^ b[0];\n\t\n\tassign s[0] = a[0] ^ b[0];\n\tassign s[1] = a[1] ^ b[1] ^ carry[0];\n\tassign s[2] = a[2] ^ b[2] ^ carry[1];\n\tassign s[3] = a[3] ^ b[3] ^ carry[2];\n\tassign s[4] = a[4] ^ b[4] ^ carry[3];\n\tassign s[5] = a[5] ^ b[5] ^ carry[4];\n\tassign s[6] = a[6] ^ b[6] ^ carry[5];\n\tassign s[7] = a[7] ^ b"
+    },
+    {
+      "finish_reason": "length",
+      "index": 36,
+      "logprobs": null,
+      "text": "\tassign overflow = (~a[7] & b[7] & ~s[7]) | (~a[7] & b[7] & s[7]) | (a[7] & ~b[7] & s[7]);\n\n\n// Design an 8-x1 mux with signed select.\n// When you select a negative number, a positive number is output.\n// When you select a positive number, a negative number is output.\n\nmodule mux\n(\n\tinput select,\n\tinput [7:0] input_to_mux,\n\toutput reg [7:0] output_of_mux\n);\nalways @* \n\tbegin \n\tcase(select)\n\t0: // Positive number selected\n\tbegin\n\toutput_of_mux <= input_to_mux;\n\tend\n\t1: // Negative number is selected\n\tbegin"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 37,
+      "logprobs": null,
+      "text": "\nalways @ (a or b or s)\nbegin // begin always block1\n\t\nend // end always block1\n\n\nassign s = a + b;\n\nassign overflow = (a[7] == 1 && b[7] == 1 && s[7] == 0) || (a[7] == 0 && b[7] == 0 && s[7] == 1);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 38,
+      "logprobs": null,
+      "text": " wire overflow_wire, complement_of_a, sign_of_b;\n wire [7:0] lost_bits, unmasked_b, bp_extended, b_complement;\nwire [7:0] a_sub_b, b_sub_a, a_or_b, a_and_b;\nassign sign_of_b = b[7];\nassign override_complement_of_a = (a[7] == 0);\nassign complement_of_a = (override_complement_of_a == 1) ? ~a[7] : a[7];\nassign sign_of_a = (override_complement_of_a == 1) ? ~a[7] : a[7];\nassign sign_of_b_complement = ~b[7];\n\nassign lost_bits ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 39,
+      "logprobs": null,
+      "text": "\nalways @(*) begin\n if ({a[7], b[7]} == 1'b1) begin\n // case for performance optimizations\n // a and b are 0 when only one of them is signed and the output should be 0\n if ({s[7], s[6], s[5]} == 3'b0_0) s = 8'b0;\n // a and b are both signed\n else begin // {a[7], b[7]} == 1'b0\n // a and b are both positive\n if ({s[7], s[6], s[5]} == 3'b0_0) s = s + a;\n // a is negative and b is pos\n else if ({s[7], s[6], s[5]} == 3'b0_1) s = a - b;\n // a is positive and b is neg\n else if ({s[7], s"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 40,
+      "logprobs": null,
+      "text": "\txor(overflow, a[7], b[7]);\n\txor(s[0], a[0], b[0]);\n\txor(s[1], a[1], b[1]);\n\txor(s[2], a[2], b[2]);\n\txor(s[3], a[3], b[3]);\n\txor(s[4], a[4], b[4]);\n\txor(s[5], a[5], b[5]);\n\txor(s[6], a[6], b[6]);\n\txor(s[7], a[7], b[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 41,
+      "logprobs": null,
+      "text": "\nassign x = a[7:0];\nassign y = b[7:0];\n\n \nalways @ (x or y or s)\nbegin\nxor(s_temp, x, y);\n\nand(s_temp0, x, y);\n\n\nand(s_temp1, x, s);\nxor(s_temp0Or1, s_temp, s);\n\nor(overflow, s_temp1, s_temp0);\n\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": "\nassign s = a + b; \nassign overflow = (~a[s] & b[s]) | (b[s] & ~a[s]);\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 43,
+      "logprobs": null,
+      "text": "\nassign overflow = a[7] ^ b[7] ^ s[7];\n\nassign s[7:0] = (((a[7] & b[7]) & (a[7] ^ b[7]) & s[7]) | ((~(a[7] & b[7]) & ~(a[0] & b[0])) & s[7]));\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 44,
+      "logprobs": null,
+      "text": "\nwire sum_a_gt_b;\nwire sum_a_lt_b;\n\nwire sum_gt_max;\nwire sum_lt_min;\n\nassign sum_a_gt_b = ({a[7],b[7]}) > ({b[6:0], a[6:0]}); // found any number that exceeds the range of a and b\n\nassign sum_a_lt_b = ({a[7],b[7]}) < ({b[6:0], a[6:0]}); // found any number less than the range of a and b\n\nassign sum_gt_max = ({a[7],b[7]}>{a[6],b[6]}) && !sum_a_lt_b;\n\nassign sum_lt_min = ({a[7],b[7]} < {a[6],"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": "\n// Program starts from here - David A. Casey\n\nassign overflow = (a[7] == b[7]) ? ~( | a[7:0])&(|b[7:0]) + ~(|s[7:0]):a[7]&b[7]&(|s[6:0]) + (a[7]&~b[7])&s[7];\nalways @ (**)\nbegin\n\tfor (i = 8'h0; i <= 8'h0; i = i+1'b1)\n\tbegin\n\t\n\tend\nend\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 46,
+      "logprobs": null,
+      "text": "\n//assign s[7] = a[7] ^ b[7] ^ s[7]; //this will check if any of the most significant 4 bits are 1 and if any of the 1 val we kept track of in previous frames we set flag high only in that case\n\nalways @(s, a, b)\nbegin\n\tcase(s[7])\n\t1'b0: if(a[7])overflow = 1'b1;\n\t1'b1: if(b[7])overflow = 1'b1; //to check for signed overflow.\n\tendcase\t\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 47,
+      "logprobs": null,
+      "text": "\n\n// assign the overflow field to zero if there is no overflow or to the output of the adder otherwise\nassign overflow = (a[7] == b[7])?(a[7] ^ s[7]):(~(a[7]) ^ b[7]); \n\n\n// adder with result\nadder a1(a[0], b[0], s[0], ci);\nadder a2(a[1], b[1], s[1], c[0]);\nadder a3(a[2], b[2], s[2], c[1]);\nadder a4(a[3], b[3], s[3], c[2]);\nadder a5(a[4], b[4], s[4], c[3]);\nadder a6(a[5], b[5], s[5], c[4]);\nadder a7("
+    },
+    {
+      "finish_reason": "length",
+      "index": 48,
+      "logprobs": null,
+      "text": "\nassign s = (overflow) ? a + b : (a + b);\nassign overflow = ((a[7] == 0) && (b[7] == 1)) \n\n//assigning s output values to this array may hinder the correct operation of the adder having a bus width of 8 bits and \n//however it reduces the space complexity of this code by ~8 - from ~9\n//assign s[7] = (overflow) ? 1 : 0;\n//assign overflow = (overflow) ? 1 : 0;\n//If you want to see the math used to develop this code graphically uncomment this line\n\n// The full program statement is a basic simulation program, which is described in the lab report. \n\n// Edits may be needed.\n\n// Please Note: The assignment statements within the claer blockTAGE may not (as of yet) compile or perform"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 49,
+      "logprobs": null,
+      "text": "\tassign overflow = ((a[7] == 1'b0 && b[7] == 1'b0 && s[7] == 1'b1) || // addition of two negative numbers\n\t(a[7] == 1'b1 && b[7] == 1'b1 && s[7] == 1'b0)) // subtraction of two negative numbers\n\t? 1'b1 : 1'b0;\n\n"
+    }
+  ],
+  "created": 1663548697,
+  "id": "cmpl-c0Al3vcvXgELp6BpathwWzcusS7vz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 6981,
+    "prompt_tokens": 164,
+    "total_tokens": 7145
+  }
+}

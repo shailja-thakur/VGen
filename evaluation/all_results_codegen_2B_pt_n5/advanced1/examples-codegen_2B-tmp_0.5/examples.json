@@ -1,0 +1,56 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\ns <= a + b;\n\nif (s[7] != 0)\n    overflow <= 1;\nelse\n    overflow <= 0;\n\n// if (s[7] != 0)\n//     overflow <= 1;\n// else\n//     overflow <= 0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nsigned_adder s;\n\n\nvoid main()\n{\n  s.a = a;\n  s.b = b;\n  s.s = s + b;\n  overflow = s.s > 127;\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nsad.o(a, b, s, overflow);\n\n\n// $ cat signed_adder.v\n// signed_adder.v:3:6: warning: signed overflow\n// signed_adder.v:3:6: note: a[7:0] = 0x80\n// signed_adder.v:3:6: note: b[7:0] = 0x80\n// signed_adder.v:3:6: note: s[7:0] = 0x80\n// $ cat signed_adder.cpp\n// signed_adder.cpp:3:6: warning: signed overflow\n// signed_adder.cpp:3:6: note: a[7:0] = 0x80\n// signed_adder.cpp:3:6: note: b[7:0] = 0x80\n// signed_adder.cpp:3:6: note: s"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nsignal [7:0] d;\nsignal [7:0] e;\nsignal [7:0] f;\nsignal [7:0] g;\nsignal [7:0] h;\nsignal [7:0] i;\n\nsignal [7:0] j;\nsignal [7:0] k;\nsignal [7:0] l;\nsignal [7:0] m;\nsignal [7:0] n;\nsignal [7:0] o;\nsignal [7:0] p;\nsignal [7:0] q;\nsignal [7:0] r;\nsignal [7:0] s;\nsignal [7:0] t;\nsignal [7:0] u;\nsignal [7:0] v;\nsignal [7:0] w"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// This design is based on the following paper:\n// \"A Signed Adder with 8-bit Overflow\", by S. S. Hill\n// The design is implemented in the following steps:\n// 1. The input numbers a and b are converted to a 16-bit number.\n// 2. The 16-bit number is split into two 8-bit numbers.\n// 3. The two 8-bit numbers are added and the overflow flag is set.\n// 4. The output number s is converted back to a 16-bit number.\n// 5. The overflow flag is checked.\n// 6. The overflow flag is cleared.\n// 7. The output number s is returned.\n\n#include <iostream>\n\nusing namespace std;\n\nint main() {\n  \n  int a = 0b100011010;\n  int b = 0b100011010;\n  int s ="
+    }
+  ],
+  "created": 1663539936,
+  "id": "cmpl-XH3Al5isKCFtvKn6keXMkPQjfB4xW",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 721,
+    "prompt_tokens": 164,
+    "total_tokens": 885
+  }
+}

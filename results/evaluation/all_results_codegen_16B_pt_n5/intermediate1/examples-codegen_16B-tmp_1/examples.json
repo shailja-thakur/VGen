@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nvoid half_adder( input a, b, output cout, sum ) {\n\t\n\t@*$.1 = b[0]; // Instead of using bit_input( b );\n\t\n\t@*$.2 = {~0, ~0, a[0], add_inv, a [1], bit_add, {(!a[2]), b[1], b[2]}}; // {a[2] + b[1] + b[2], b[0], b[1], b[2]};\n\t@*$.3 = inserter!3( $*$.2 );\n\n\tbit_add( {!a[3], b[2]}, $*$.3 );\n\t\n\t@*$.1 = a[2];\n\tbit_output( $*$.3 );\n}\n\n// Similar to half adder, we need a multiplication circuit that"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\ninput range = [{0,0},{1,1},{-1,-1},{0,1}];\n\nreg [3:0] sum;\n\nassign { sum, cout } = ( {sum} + ({a[0]}{b[0]}), ({a[2]})cout({b[1]},sum) );\n\ninitial { sum=0; cout };\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\ninput a, b,\noutput {sum, carry}\"\"\"\n\ndef bitwise(inp, params): #pylint:disable = no-self-use\n    \"\"\"\n    This block provides a basic bitwise logic implementation.\n\n    Args:\n        inp: Input array of values to be processed.\n        params: un-used\n    Returns:\n        out: The"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n    // serliza in cout the output of the half adder\n    // for the high bit\n    output high( cout[ 0 ], cout[ 1 ] );\n\n    // for the middle bit\n    bool carry;\n    if( a <= b )\n        carry = false;\n    else\n        carry = true;\n    \n    // for the low bit\n    high( cout[ 0 ], high( cout[ 1 ], cout[ 2 ] ) | carry );\n        \n    // assign the correct sum\n    sum = a + b + carry;\n    \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nwire carry_out ;\n\nBit carry[2];\n\nreg sum;\n\ndigital logic overflow( overflow_state);\n \nassign { overflow, sum < [2:0] } = carry_out;\n\n// Add A and B.\nassign sum = ( ( a << 1) + b + carry[1]),\ncarry[0] =  (a >> 7);    // Don't forget that a<<1 must be a 15-bit number so we must shift one right before shifting left one.\ncarry_out = (a >> 6);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\ninput a, b;        \noutput cout;\noutput sum;\n\nalways #( 1 )        \nbegin\n  sum <= ~( ( (a && b) | ({clock} = 0, !b)) | (({clock} = 1, b) && !a) );\n  cout <= sum;\nend;\n"
+    }
+  ],
+  "created": 1663534423,
+  "id": "cmpl-BE432YRiSJe03Fo9yL9UxzpJ8Dfls",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 730,
+    "prompt_tokens": 43,
+    "total_tokens": 773
+  }
+}

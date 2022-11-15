@@ -1,0 +1,87 @@
+example-0: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When sel=2, assign 0 to out.
+// When sel=3, assign 1 to out.
+
+always @( posedge sel )
+// Make sure the result is written to the output port once.
+assign out[0:4] = {a[0:4], b[0:4], 0, 1};
+
+================================================================
+example-1: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+always @( posedge clk )
+{
+	// Use the output to assign a to b.
+	if( sel == 0 )
+		b = a;
+	else
+		a = b;
+}
+
+// The input signals are always connected.
+// When posedge clk, assign the input signal to the bottom of the first register.
+
+// Use the output signals to assign a to b.
+module mux_2( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+
+always @( posedge clk )
+{
+	// Use the output to assign a to b.
+	if( sel == 0 )
+		b = a;
+	else
+		a = b;
+}
+
+// Design a 2-to-2 multiplexer.
+module mux_2_2( 
+================================================================
+example-2: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+// Design a 2-to-N multiplexer.
+module mux( 
+input [2:0] a, b,
+input sel,
+output [2:0] out, 
+sel+1); 
+// When sel=0, assign a to out[0]. 
+// When sel=1, assign b to out[1].
+
+// Design a 2-to-N multiplexer.
+module mux( 
+input [2:0] a, b,
+input sel,
+output [2:0] out, 
+sel+1); 
+// When sel=0, assign a to out[0]. 
+// When sel=1, assign b to out[1].
+
+// Design a 2-to-N multiplexer.
+module mux( 
+input [2:0] a, b,
+input se
+================================================================

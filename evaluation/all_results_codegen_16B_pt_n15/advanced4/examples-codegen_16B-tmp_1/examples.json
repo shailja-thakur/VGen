@@ -1,0 +1,119 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// 32-bit operations are not done in ringing out.\n//   The most significant bit is assumed to be for wrapping around.\n//   e.g. a[31:0] are way too high, and in the higher number.\n\nalways{q == 32768'h0;}\nalways {if(!ena) q = 32'h0;}\nalways {if(!ena) q = 32'h0}\n\n#2 regslw(clk, ena, wr, rd, dat, q)\nregslw #5 rd, dat, ena, 'b0 rd, clk, ena, dat, q\n#3 regslr(clk, ena, wr, rd, dat, q)\nregslr #5 rd, dat, ena, 'b0 rd, clk, ena, dat, q\n\n#"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\t\tif(load == 1 && ena == 1) q <= data;\n\t\tif(amount == 2'b10) q = sign_extend(q, 63);\n\t\tif(amount == 2'b00) q = q << 1;\n\t\tif(amount == 2'b11) q = q >> 1;\n\t\tif(amount == 2'b01) q = q >> 7;\n\t\tif(ena == 1) q = q + 1;\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n reg [31:0] shiftmode = 2'b10; // shiftright\n // shiftleft, shiftright, shiftright, shiftleft by 1bit, \n // shiftright by 1bit, shiftright by 8bit, shiftleft by 8bit\n\n\nreg q = 16'b0; // get value at leading edge of clk\nflow logic [7:0] next = shiftmode & 3; // get right value for shiftmode & 3\n\nalways @(posedge clk) begin\n  if (ena) begin\n    if (ena) begin\n      if ((load) && (next <= 2 )) q <= data [63:0]; // select value for just loaded register\n      end\n    else begin\n      if ((zero) && (next == 3)) q <= data [63:0]; // return all-zeros\n      if ((one) && (next == 2)) q"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign  s   = {(1?{en:2,reg: data[63:62], input_values:[0:0]},\n{reg: data[61:56],output_enable: ena,output_val: data[55:]+data[57:]})};\nassign  r   = {(1?{en: 2, reg:data[61:52], input_values:[64:64]},\n{ reg:data[51:48],output_val: clk.or_unique(ena,data[47:48]{por(data[47:{dn}],load)}})};\nassign  la  = {en,r: iff(ena, data[63:0] ,{output_val:0}),s: iff(ena,data[63:0]:{output_val:0})};\n\n\nscript\n        "
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n\nassign loadmsb = {!load};\nassign load15bit = load {!loadmsb, 1'b0};\n\nassign q = {data, !load};\n\nreg [63:0] r = 0;\nreg [1:0] op = 3'h0;\nreg [15:0] temp = 0;\nreg [1:0] amtr =0'b0;\n\nalways @[clock] begin\n    if(ena && !load[0]) begin \n        #(Q ? 1'b0 : 1'b1) = amtr;\n        #(Q ? 1'b1 : 1'b0) = lsab; \n        #(r) = (Q ? 2'b01 : 2'b10) + (r); \n    end else begin\n        lt = op[2:0];\n        sa"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// C interface to the library\n#include \"Sim_lib.h\"\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\t//writes 0 to 2'b00, writes 1 to 2'b01, writes 2 to 2'b20, writes 3 to 2'b21\n\t//writes 4 to 2'b00, writes 5 to 2'b01, writes 6 to 2'b20, writes 7 to 2'b21\n\t//writes 8 to 2'b00, writes 9 to 2'b01, writes A to 2'b20, writes B to 2'b21\n\t//writes C to 2'b00, writes D to 2'b01, writes E to 2'b20, writes F to 2'b21\n\t//writes G to 2'b00, writes H to 2'b01, writes I to 2'b20, writes J to 2'b21\n\t//writes K to 2'b00, writes L to 2'b01, writes M to 2'b"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "  loop\n    begin\n      case (amount)\n        0'b00:  // 2'b00, shift perform left shift by 1 bit.\n          q = 0;\n        2'b01:  // 2'b01, shift perform left shift by 8 bits.\n          q = data[(62 - amount) - 1:62];\n        2'b10:  // 2'b10, shift perform right shift by 1 bit.\n          q = data[(62 - (amount+1)) + 1:62];\n        2'b11:  // 2'b11, shift perform right shift by 8 bit.\n          q = data[0:62] >> amount;          \n      endcase\n      if(ena = '1')\n        begin\n          if(load = '1')\n            q <= data[63:62];        \n        end\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "    int i; // internal counter\n    always\n    if(ena==1)\n        if(load==1 && ena==1) \n            data[63:0] = data[63:0] << amount[0]; // shift by 1 bit\n            // same for 8-bit shift;\n        // else\n            i=i+1;\n            //q=data[63:0]\n\n    always\n    if(ena==1)\n        if(load==1 && ena==1) \n            data[63:0] = data[63:0] >> amount[1]; // shift by 8 bits\n            // same for 1-bit shift;\n        else \n            q = data[63:0]; // same as above for q == data[63:0]\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "    if (ena && load)\n\t    q = data;\n    else\n    {\n\t    reg offset = (amount > 1)?8:1;\n\t    int i = 0;\n\t    int j = 0;\n\t    if (amount > 1) i = 64-amount*offset;\n\t    if (amount < 1) i = data+amount-1;\n\t    for (j = 0; j < offset; j++)\n\t\t  {\n\t\t      if (j < 1 || 8 < j)\n\t\t\t  // converting [7:0] to [63:61] and [00] to [62].\n\t\t\t  if (%amount==1) q[i-1+j] = q[i-1];\n\t\t\t  else q[i-1+j] = %result;\n\t\t  }\n    }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "  always @(posedge clk) \n  if(ena){\n    q = ((amount == 2'b00) ? (q << 1) : --q) | start;\t//shift left by 1 bit\n    q = ((amount == 2'b01) ? (q << 8) : --q);\t//// shift left by 8 bits\n    q = ((amount == 2'b10) ? (q >> 1) : ++q); // shift right by 1 bit\n    q = ((amount == 2'b11) ? (q >> 8) : ++q); // shift right by 8 bits\n    if (load){ // sync \n      q = data;\n    }\n  }  \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nassign b = ~ena & ena & ~load;\nassign a = clk ^ ~ena & ~load;\n\nalways @(posedge clk)\n\tif $delay$(ena)\n\tif b\n\t#(i_setup)\n\tif $delay$(a)\n\tq <= 8'b0;\n\telse\n\tq <= 8'b0 & data[63:62];  // load first\n\tend\nend\n\nalways @(posedge clk)\n\t#(i_ambient)\n\n\tif ena\n\n\t#(shift_reg)\n\tq <= 8'b00 & data[63:62]; // select which direction and how much to shift\n\tend\n\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nreg flags;\nreg rr, aa, ff;\t\t\t// refresh registers\nreg ww, zz, p0;\n\nalways @(posedge clk) begin\n        if(!load && ena && !rr) rr = data;\n        if(!ena) begin\n                // Inverter aliasing 2'b0(refazer arrivando a 0)\t\n                if(amount == 2'b01) aa = ~aa;\n                if(amount == 2'b10) ff = ~ff;\n                if(amount == 2'b00) p0 = ~p0;\n                if(amount == 2'b11) ww = ~ww;\t\n        end else begin\n                // LET'S ALWAYS ENABLE FF AND PW\n                flags = ena | ff | ~ww | ~p0 | ~rr;\n        end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nreg Q;\nreg FSHIFT; // shift register (int64)\nreg LSHIFT; // shift register (int64)\n\n\ninitial begin\n// Instantiate clocks, regs, and interfaces.\n// Set asynch signals and generate conversion times.\nreg clk_period = 11;\nreg [1:0] clk_step = 0;\n//2012_6_29 17:00\ninputs clk_i;\ninputs load_i;\ninputs ena_i;\ninput  clk_p_i;\ninputs clk_s_i;\nreg [0:0] q_out_i;\n\n\n__reg q_out = 0;\n__reg q_load = 0;\n__reg q_ena = 0;\n\nalways @posedge clk_i or clk_p_i\nbegin\n\nq_out_"
+    }
+  ],
+  "created": 1663535348,
+  "id": "cmpl-v0yaG8fMLIPKZNTCiOx2tyzEtKxyc",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2455,
+    "prompt_tokens": 184,
+    "total_tokens": 2639
+  }
+}

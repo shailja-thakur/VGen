@@ -1,0 +1,123 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (cur_state == IDLE)\n    begin\n        if (a == 1)\n        begin\n            next_state = SA;\n        end\n        else if (b == 1)\n        begin\n            next_state = SB;\n        end\n        else if (a == 1 && b == 1)\n        begin\n            next_state = SAB;\n        end\n    end\n    else if (cur_state == SA)\n    begin\n        if (b == 1)\n        begin\n            next_state = SAB;\n        end\n    end\n    else if (cur_state == SB)\n    begin\n        if (a == 1)\n        begin\n            next_state = SAB;\n        end\n    end\n    else if (cur_state == SAB)\n    begin\n        next_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (next_state == IDLE)\n    begin\n        // If both a and b are high, output z is high\n        if (a == 1 && b == 1)\n        begin\n            next_state = SAB;\n            z = 1;\n        end\n        // If a is high, output z is high\n        else if (a == 1)\n        begin\n            next_state = SA;\n            z = 1;\n        end\n        // If b is high, output z is high\n        else if (b == 1)\n        begin\n            next_state = SB;\n            z = 1;\n        end\n        // If both a and b are low, output z is low\n        else\n        begin\n            next_state = IDLE;\n            z = 0;\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n  end\n  else if (a && b) begin\n    cur_state <= SAB;\n    next_state <= SAB;\n  end\n  else if (a) begin\n    cur_state <= SA;\n    next_state <= SA;\n  end\n  else if (b) begin\n    cur_state <= SB;\n    next_state <= SB;\n  end\n  else begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n  end\nend\n\n// This is an FSM\nmodule abro_fsm(\ninput clk,\ninput reset,\ninput a,\ninput b,\noutput z );\nparameter IDLE = 0,\nSA = 1,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  cur_state <= next_state;\n  next_state <= SA;\n  if (cur_state == IDLE && a && b) next_state <= SAB;\n  if (cur_state == IDLE && a) next_state <= SA;\n  if (cur_state == IDLE && b) next_state <= SB;\n  if (cur_state == SA && b) next_state <= SAB;\n  if (cur_state == SB && a) next_state <= SAB;\n  if (cur_state == SAB) next_state <= IDLE;\n  if (cur_state == IDLE) next_state <= IDLE;\n  z <= next_state;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (cur_state == IDLE && a == 1 && b == 1)\n    begin\n        next_state = SAB;\n    end\n    else if (cur_state == IDLE && a == 1)\n    begin\n        next_state = SA;\n    end\n    else if (cur_state == IDLE && b == 1)\n    begin\n        next_state = SB;\n    end\n    else if (cur_state == SA && b == 1)\n    begin\n        next_state = SAB;\n    end\n    else if (cur_state == SB && a == 1)\n    begin\n        next_state = SAB;\n    end\n    else if (cur_state == SAB)\n    begin\n        next_state = IDLE;\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n        begin\n        cur_state <= next_state;\n        next_state <= cur_state;\n        if (cur_state == IDLE)\n                if (a && b)\n                        next_state <= SAB;\n                else if (a)\n                        next_state <= SA;\n                else if (b)\n                        next_state <= SB;\n        end\nend\n\n// This is an FSM\nmodule abro_fsm(\ninput clk,\ninput reset,\ninput a,\ninput b,\noutput z );\nparameter IDLE = 0,\nSA = 1,\nSB = 2,\nSAB = 3;\nreg [1:0] cur_state,next_state;\n// The output z is high when 1 is received for signals a and b in any order.\n// If cur_state is IDLE and"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (cur_state == IDLE && a == 1 && b == 1) next_state = SAB;\n    else if (cur_state == IDLE && a == 1) next_state = SA;\n    else if (cur_state == IDLE && b == 1) next_state = SB;\n    else if (cur_state == SA && b == 1) next_state = SAB;\n    else if (cur_state == SB && a == 1) next_state = SAB;\n    else if (cur_state == SAB) next_state = IDLE;\n    else next_state = cur_state;\n    cur_state = next_state;\n    z = cur_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  cur_state <= next_state;\n  next_state <= IDLE;\n  if (a == 1) {\n    if (b == 1) next_state <= SAB;\n    else next_state <= SA;\n  }\n  else if (b == 1) next_state <= SB;\n  else next_state <= IDLE;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (cur_state == IDLE)\n    if (a == 1)\n      cur_state = SA;\n    else if (b == 1)\n      cur_state = SB;\n    else cur_state = IDLE;\n  else if (cur_state == SA)\n    if (b == 1)\n      next_state = SAB;\n    else cur_state = IDLE;\n  else if (cur_state == SB)\n    if (a == 1)\n      next_state = SAB;\n    else cur_state = IDLE;\n  else if (cur_state == SAB)\n    next_state = IDLE;\n  else cur_state = IDLE;\n  if (next_state == IDLE)\n    z = 0;\n  else z = 1;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    cur_state <= next_state;\n    next_state <= cur_state;\n    next_state <= (a == 1 && b == 1) ? SAB : (a == 1 ? SA : SB);\n    if (cur_state == IDLE && a == 1 && b == 1) z <= 1;\nend\n\n// This is an FSM module\nmodule abro_fsm(\ninput clk,\ninput reset,\ninput a,\ninput b,\noutput z );\nparameter IDLE = 0,\nSA = 1,\nSB = 2,\nSAB = 3;\nreg [1:0] cur_state,next_state;\n// The output z is high when 1 is received for signals a and b in any order.\n// If cur_state is IDLE and a and b are both high, state changes to"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  cur_state <= IDLE;\n  next_state <= IDLE;\n  if (a == 1)\n  {\n    cur_state <= SA;\n  }\n  else if (b == 1)\n  {\n    cur_state <= SB;\n  }\n  else if (a == 1 && b == 1)\n  {\n    cur_state <= SAB;\n  }\n  else if (a == 1)\n  {\n    next_state <= SA;\n  }\n  else if (b == 1)\n  {\n    next_state <= SB;\n  }\n  else if (a == 1 && b == 0)\n  {\n    next_state <= SAB;\n  }\n  else if (a == 0 && b == 1)\n  {\n    next_state <= SAB;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (cur_state == IDLE) begin\n        next_state = IDLE;\n    end\n    else begin\n        if (a) begin\n            next_state = SA;\n        end\n        else if (b) begin\n            next_state = SB;\n        end\n        else begin\n            next_state = SAB;\n        end\n    end\n    if (next_state != cur_state) begin\n        cur_state = next_state;\n        z = 1;\n    end\nend\n\n// The output z is high when 1 is received for signals a and b in any order.\n// If cur_state is IDLE and a and b are both high, state changes to SAB\n// If cur_state is IDLE, and a is high, state changes to SA\n// If cur_state is IDLE, and"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n  end\n  else begin\n    if (a) begin\n      cur_state <= SA;\n    end\n    else if (b) begin\n      cur_state <= SB;\n    end\n    else begin\n      cur_state <= SAB;\n    end\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset) begin\n        cur_state <= IDLE;\n    end\n    else if (a) begin\n        cur_state <= SA;\n    end\n    else if (b) begin\n        cur_state <= SB;\n    end\n    else begin\n        cur_state <= SAB;\n    end\n    next_state <= cur_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n  end\n  else begin\n    if (a) begin\n      cur_state <= SA;\n    end\n    else if (b) begin\n      cur_state <= SB;\n    end\n    else begin\n      cur_state <= SAB;\n    end\n  end\nend\n\n"
+    }
+  ],
+  "created": 1663520186,
+  "id": "cmpl-6Db0auoeYcvgXQYpnkd7ljdNpU3oZ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2548,
+    "prompt_tokens": 218,
+    "total_tokens": 2766
+  }
+}

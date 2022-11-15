@@ -1,0 +1,84 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "//  When reset is high, q is always 0.\n//\n\ninitial begin\n    clk <= 1;\n    slowena <= 1;\n    q = 0;\n    reg[3] <= q;\nend;\n\ninitial begin\n    while (slowena)\n    {\n        q[1] <= q[0] + 1;\n        q[2] <= q[0] + 1;\n        q <= q[0] + 1;\n    }\nend;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// Finally, return q.\n\n// On the negative edge of the clock:\n// if slowena is high, increment the output q by one.\n// Otherwise, return q.\n\n// Whenever q is 9, increment the output q by 10.\n\nwire [3:0] q;\n\n// ----------------------------------------------------------------------------\n// Function declarations\n// ----------------------------------------------------------------------------\n\n// ----------------------------------------------------------------------------\n// Utility Functions\n// ----------------------------------------------------------------------------\n\n// The reference for byte operations is:\n//   http://www.graphics.cornell.edu/~bjw/bitsandwords.html\n\n// Bitwise operations are performed on each bit of the inputs.\n// For example, \"input x\" is \"x[7:0]\", while \"input y\" is \"y[7:0]\".\n\n// 32-bit operations are performed on each byte of the inputs.\n// For example, \"input x\" is \"x["
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (slowena) {\n        if (reset) {\n            q[3:0] = 0;\n        } else if (q[3:0] < 10) {\n            q[3:0] = q[3:0] + 1;\n        }\n    }\n\nalways @(posedge clk)\n    if (slowena) {\n        if (reset) {\n            if (q[3:0] == 9)\n                q[3:0] = 0;\n        } else if (q[3:0] == 0) {\n            if (q[2:1] == 0)\n                q[2:0] = 1;\n            else if (q[2:1] == 1)\n                q[2:0] = 2;\n            else if (q[2:1] =="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// q = q + 1\n// At the negative edge of the clock:\n// if ena is low, reset the output q to 9.\n// Otherwise, only increment the output q if the ena input is high and q is not 0.\n\nalways @(posedge clk)\n    if (reset) {\n        q[3:0] = 0;\n    } else {\n        if (slowena) {\n            if (q[3:0] != 9) {\n                q[3:0] = q[3:0] + 1;\n            }\n        } else {\n            if (q[3:0] != 0) {\n                q[3:0] = q[3:0] + 1;\n            }\n        }\n    }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "wire input [6:0];\n\ninitial begin\n    q = 0;\n    slowena <= 1;\n    clk <= 1;\nend\n\nalways @(posedge clk)\n    if (slowena && (((input[5] ^ input[4]) ^ input[3]) ^ input[2] ^ input[1] ^ input[0] ^ input[7] ^ input[6] ^ input[5]))\n        q <= q + 1;\n\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (slowena && !reset) {\n        q[3:0] = q[3:0] + 1;\n    }\nend\n\n// On the negative edge of the clock:\n// increment the output q unless it is 0.\nalways @(negedge clk) begin\n    if (reset && (!slowena) && q[3:0] == 0) {\n        q[3:0] = 9;\n    }\nend\n);\n\n\nint main() {\n    count_slow clk(clk, reset);\n\n    for (int i = 0; i < 10; i++) {\n        wait(1);\n        clk.write(10-i);\n    }\n    wait(1);\n    clk.write(10);\n\n    return 0;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (slowena)\n        q = q + 1;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (slowena == 1) {\n        q[3] = q[2] + 1;\n        q[2] = q[1] + 1;\n        q[1] = q[0] + 1;\n        q[0] = q[3] + 1;\n    }\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (slowena) {\n        if (!rst) {\n            q[3:0] = 0;\n        }\n    } else {\n        if (rst) {\n            q[3:0] = 0;\n        } else if (q[3:0] < 9) {\n            q[3:0] = q[3:0] + 1;\n        }\n    }\n\n// On the negative edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 0. \nalways @(negedge clk)\n    if (slowena) {\n        if (rst) {\n            q[3:0] = 0;\n        } else if (q[3:0]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (slowena) q <= q + 1;\n\n// On the positive edge of the slow\n// If reset is high, reset the output q to 0.\n// Otherwise, only increment the output q if the ena input is high and q is not 9.\nalways @(posedge slowena)\n    if (slowena) q <= q + 1;\n\n// On the negative edge of the clock:\n// if reset is low, reset the output q to 0.\n// Otherwise, only increment the output q if the ena input is low and q is not 0.\nalways @(negedge clk)\n    if (reset) q <= 0;\n\n// On the negative edge of the slow\n// If reset is low, reset the output q to 0.\n// Otherwise, only increment the output q if the ena input is low.\nalways @"
+    }
+  ],
+  "created": 1663540131,
+  "id": "cmpl-AatxuU05XItNXslhhih3MU9lBkdlc",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1504,
+    "prompt_tokens": 98,
+    "total_tokens": 1602
+  }
+}

@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\talways @(present_state, x, reset)\n\tcase (present_state)\n\tIDLE:\n\tbegin\n\tif (x==1 && reset==1) next_state=S1;\n\telse next_state=IDLE;\n\tend\n\tS1:\n\tbegin\n\tif (x==0) next_state=S10;\n\telse next_state=S1;\n\tend\n\tS10:\n\tbegin\n\tif (x==1) next_state=S101;\n\telse next_state=S10;\n\tend\n\tS101:\n\tbegin\n\tif (x==0) next_state=IDLE;\n\telse next_state=S101;\n\tend\nendcase\nalways @(posedge clk or negedge reset)\nbegin\nif(reset==1'b0) present_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": " always @(posedge clk) \nbegin \n if (reset) //active high reset\npresent_state <= IDLE;\nelse \npresent_state <= next_state;\nend \nalways @(present_state or x)\nbegin \ncase(present_state) \nIDLE: begin\n\tcase(x) \n\t0: next_state = IDLE; \n\t1: next_state = S1; \n\tdefault: next_state = IDLE;\n\tendcase \n\tz = 0;\n\tend \nS1: begin\n\tcase(x) \n\t1: next_state = S10; \n\t0: next_state = S1; \n\tdefault: next_state = IDLE; \n\tendcase \n\tz = 0;\n\tend\nS10: begin\n\tcase(x)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// register every time the state changes\nalways @(posedge clk, posedge reset)\n if(reset)\n present_state <= IDLE;\n else\n present_state <= next_state;\n \n // next state if outputs are changed\nalways @(present_state, x, next_state)\ncase(present_state)\nIDLE: next_state <= x? S1 : IDLE;\nS1 : next_state <= x? S1 : S10;\nS10: next_state <= x? S101 : IDLE;\nS101: next_state <= x? IDLE : S1;\ndefault: next_state <= IDLE;\nendcase\n\n\n// assignments of output present_state for std streams\nalways @(present_state)\nif (present_state == S101)\nbegin\nz <= 1; \n\nend\nelse\nz <= 0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " always @(posedge clk, posedge reset) \n if(reset) present_state <= IDLE; else present_state <= next_state;\nalways @ (*)\ncase(next_state)\nIDLE:\nif(x==1) next_state <= IDLE;\nS1:\nif(x==1) next_state <= IDLE;\nelse next_state <= S1;\nS10:\nif(x==0) next_state <= IDLE;\nelse next_state <= S1;\nS101:\nif(x==1) next_state <= IDLE;\nelse next_state <= S101;\nendcase\n\nassign z = (present_state == S101); \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif(reset)\npresent_state <= 0; \nelse \npresent_state <= next_state;\nend\n\nalways @(present_state or x) \nbegin \ncase(present_state)\nIDLE : if(x==1) next_state = S1; else next_state = IDLE; \nS1 : if(x==0) next_state = IDLE; else next_state = S10; \nS10 : if(x==1) next_state = IDLE; else next_state = S101; \nS101 : next_state = S1; \ndefault : next_state = IDLE; \nendcase \nend\n\nalways @(present_state) \nbegin \ncase(present_state)\nIDLE : if(x==1) z=1"
+    }
+  ],
+  "created": 1663606722,
+  "id": "cmpl-zhkJRGo4jUnzmSHKLLDrB8cZ1ikwX",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 966,
+    "prompt_tokens": 232,
+    "total_tokens": 1198
+  }
+}

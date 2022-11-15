@@ -1,0 +1,89 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nvoid advshift next_clk( inout advshift st,\n                      inout reg[63:0] q);\n        clk <= next_clk;\n\nvoid main()\n{\n        reg[63:0] q;\n        advshift st;                              // input\n        q <= st.data[63:0];\n        assign q = st.data[63:0];                   // load\n        // Turn the oscillator on, and load the shift register\n        st.ena <= 1;\n        st.next_clk;                              // synchronous load\n        system.run;\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "  \n  assign ena = ena ? \"1\" : \"0\";\n// When clock is high, chore moves data[63:0] into shift register q.\n  assign clk = clk & ! load ^ ena;\n  reg [63:0] long_shift[3:0] = case (amount[0]) \n    // 2'b00 (shift left by 1 bit)\n    : data[63:0] and (load << prev()[8:0] | ~(1<<prev()[8:0])) | prev().req();\n  \n  assign clk = clk && (amount[1]) == (amount[0]);\n  \n  reg [63:0] short_shift[3:0] = case (amount[2]) \n    // 2'b10 (shift right by 1 bit)\n    : ~data[63"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// Initialization/use\n// selects shift direction @a dir (alow, aright), and amount @a aamt.\n// @para op: operator for reading the content of the register (read(), capture())\nmodule AdvancedShiftPort(input clk,\ninput load,\ninput data,\ninput ena,\ninput [1:0] dir,\ninput [3:0] aamt,\noutput [63:0] d,\noutput [ENABLEN:0] clear_req,\noutput [OPCONTROL:0] opr,\noutput [ADDRESS:0] index,\noutput [DATA:0] data_in,\ninput [DATAOUT:0] data_out,\noutput [MSYNCH1:0] msync1,\noutput [MSYNCH2:0:0] msync2); \n// @para clear_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// commented out\n//module [63:0] foo;\n// reg always @(posedge clock) begin\n// // 4-bit right shift on the input to the 64-bit shifter\n//        foo <= {data[5:0], data[63:56], data[127:120], load, ena, amount};\n// // 4-bit left shift on the input to the 64-bit shifter\n//        foo <= {data[5:0], data[63:56], data[127:120], load, ena, amount, 2'b00};\n// // 8-bit right shift on the input to the 64-bit shifter\n//        foo <= {data[5:0], data[63:56], data[127:120], data[191:184], load, ena, amount};\n//        foo <= {data[5:0], data[63:56"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "    always @(posedge clk) {\n        if( load && ena ) {q <= data; }\n    }\n    assign q <<= (amount-1); // shift depending on action\n    assign q[63] = ena;\n    assign q = 32'damagedleftmost;\n    assign out = q; // just to have something writing here, rather than assign nothing to q.\n\n    always @(posedge clk) {\n        if(enb & load) {\n            if( ena & ~(1'b0) ) {\n                q[31] <= 2'h00;\n                q[30:27] <= 2'h10;\n                q[26:23] <= 2'h00;\n                q[22:19] <= 2'h00;\n                q[18:15] <= 2'h00;\n                "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n    //int amount = 1;\n\nalways @(posedge clk) begin\n\t// shift data left by 1 bit if amount = 0;\n\tif(amount == 0) begin\n\t\tq <= data << 1;\n\tend\n\n\t// shift data right by 1 bit if amount = 1;\n\tif(amount == 1) begin\n\t\tq <= data >> 1;\n\tend\n\t// shift data right by 8 bits if amount = 2;\n\t//amount == 2 ? begin\n\t//\tq <= data - data[7:0];\n\t//end\t\n\n\t// update the shift register if load = 1 and ena = 1,\n\tif(load && ena) begin\n\t\tq <= data;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// \u2022 The shift register is implemented by wires holding 8-bit numbers.\n// \u2022 We use the normal <reg + 1> addressing to read the register.\n//   Shift register s[i] is defined as follows:  \n//   s[0] to s[63]\n//   \u2022 In the case where each bit i of the 64 bits in data is shifted, \n//     the input amount is set to zero and the output is written to s[i].\n//   \u2022 In the case where 8 bits are shifted left, the input amount is set to 1 \n//     and the output is written to s[i-1].\n//   \u2022 In the case where 8 bits are shifted right, the input amount is set to \n//     8 and the output is written to s[i+1], which must be a valid register.\n//   \u2022 In the case where 2 bits are shifted right, the input amount"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\n\n//attention.\n(* KEEP, DONT_TOUCH, LOC = CONST[48])\n#(clock reset)\n#(normal port inst finish)\n\n#(set registeres)\nassign q = data[63:0];\n\n#(set output)\nassign reg[63:0] = q;\nassign clk = !ena && clk;\n#(end)\n\n\n\n\n\n\n#(initial const)\nconst(int res0, int res1, int res10) #(0:1 bit mackerel)\n    return 10;\n// res0: 0,1,10\n\n// res1: (!\n//\n// res10: (<)\n// 0 bit: 1.1.1.1\n// 4 bit: 1.8.0.0.9\n// 8 bit: 1.2.3.6\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "    assign q[/*1*/64] = (load ? {data[63:0]} : ({shiftena !== 0} ? ({enabitemsaplaceholder: {shiftbits}}) : ({sldata: {shiftbits}})) + ({periphdata: {shiftena !== 0 ? toint(data[63:8],amount) : 0}})) $\n                      ({byemasters1bits:{shiftbits} = 0x{shiftbits}})\n\n\n\n`\n# pragma export \n#oeuvre_base += open_arch(`\n\t// shorthand for primitive clock functions\n\tfunction set_reset(rst);\n\t\t\t\tinput rst //Clock reset\n\t\t\t\t//protection fases\n\t\t\t\tif rising_edge(rst); erase_won_and_won_paused = false reset_asserted_int nop\n\t\t\t\tif rising_edge(rst"
+    }
+  ],
+  "created": 1663534823,
+  "id": "cmpl-BrtO24KLOgiDZ3UVAydEgL86aqPaI",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1708,
+    "prompt_tokens": 184,
+    "total_tokens": 1892
+  }
+}

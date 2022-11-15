@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign z = present_state == Sme; \n\n// x register was sampled in its previous cycle\nalways @(posedge clk, posedge reset)\nbegin\n\tif(reset)\n\t\tpresent_state <= IDLE;\n\telse \n\t\tpresent_state <= next_state;\nend\n\nassign ones =present_state == S3; \n// end of end PDO, all other cases need ACK\n//assign x = ~present_state[1];  // all other cases need ACK\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nassign z = (present_state == S8 ||present_state == S4) && (x==1 || x==0) );\n//complete if no other cases\n//always@(present_state or x or y)\n//    case(present_state)\n//       IDLE:\n//                          next_state = prefix_1;\n//         S1: \n//                           next_state = S2;\n//        S10:\n//                           next"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n always @ (posedge clk, posedge reset) begin\n if (reset) begin\n   clear_count <=0;  // default values\n  end else begin\n   // if the current state is blank or we should reset state at the default value\n   if (state == S0) begin // cleared state when all switches are a toggle\n      begin\n         clear_count <=clear_count+1;\n      end\n        else begin\n        clear_count <=0;\n      end\n  end\n end\n \n assign z = (clear_count+1)%16;\n \n \n"
+    }
+  ],
+  "created": 1663299200,
+  "id": "cmpl-8i2YzdFgqKXcfXAfg7cPpoz64UdKc",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 495,
+    "prompt_tokens": 232,
+    "total_tokens": 727
+  }
+}

@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nalways @ (posedge clk or posedge reset)\nbegin\nif (reset) \npresent_state = IDLE;\nelse\npresent_state = next_state ;\nend\n\nalways @ (*)\nbegin\n// always transitioning to a new state after reseting or changing values of reg\nif (reset) \nnext_state = IDLE;\nelse if (present_state == S1 && x) next_state = S10;\nelse if (present_state == S10 && ~x) next_state = S101;\nelse if (present_state == S101 && x) next_state = IDLE;\n// otherwise stay in same state\nend \n\n \n//always transitioning to new state after input value changes\nalways @ (*)\nbegin\nif (reset) \ncase (3'b001)\n4'b0001: next_state = IDLE;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(clk, next_state)\ncase (present_state)\nIDLE : begin z = ~reset; next_state = (x) ? IDLE : RESET; end\nIDLE : begin z = 1; next_state = (x) ? IDLE : GETZ; end\nS1: next_state = (x) ? S1 : RESET;\nS10: next_state = (x) ? S1 : S10;\nS101:next_state = (x) ? S1 : S101;\nGETZ: next_state = IDLE;\nEND: next_state = IDLE;\ndefault begin z = 1'b0; next_state = IDLE; end\nendcase \nalways @ (present_state, x, z)\nbegin\nif (z ===1'b1) zff = 1'b1;\nelse zff"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n/*initial*/\npresent_state <= #0 IDLE;\n/*always*/\n//next state variable is updated at every behavioral statement \nnext_state <= #0 IDLE;\n/*instantiation*/\ninteger clk_counter = 0;\nreg [4:0] x_and;\nalways @(posedge clk)//counter implementation\nbegin\n\tif (reset==0)\n\tclk_counter = 0;\n\telse \n\tclk_counter = clk_counter + 1;\nend\n\nalways @(present_state or x)\nbegin\n\t//combinational circuit following the VHDL task \"always\" \n\tif (present_state == IDLE)\n\tbegin\n\tif (x == 1'b1)// @S1\n\tnext_state = S1;\n\telse\n\tnext_state = IDLE;\n\tend"
+    }
+  ],
+  "created": 1663304489,
+  "id": "cmpl-xYHMNvf1if4s2lIKhE0y7BiajaBIZ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 232,
+    "total_tokens": 832
+  }
+}

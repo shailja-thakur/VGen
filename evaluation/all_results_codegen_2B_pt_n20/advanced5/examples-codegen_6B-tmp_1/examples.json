@@ -1,0 +1,93 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign z = {1,1,1,1};\nalways @(posedge clk)\nbegin\n    cur_state <= SA | SB | SAB;\n    next_state <= (_eval(a) | _eval(b));\n    if ((cur_state == SAB) & (_eval(a) | _eval(b) | _eval(a) | _eval(b)))\n        z <= 1;\n    if((cur_state != IDLE) &&\n    ((a | b) != 0) &\n    (_eval(a) | _eval(b) |\n    (_eval(a) | write_a() | _eval(b)) |\n    (_eval(b) | write_b() | _eval(a))))\n    {\n        next_state <= SAB;\n        cur_state <= next_state;\n    }\n    if(cur_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nif (next_state != cur_state)\n{\ncur_state = next_state;\nnext_state = SAB;\n// z is high when cur_state is SAB\n}\nif (((cur_state==IDLE) && (a == 1) && (b == 1)) ||\n((cur_state==IDLE) && (a == 1) && (b == 0)) ||\n((cur_state==IDLE) && (a == 0) && (b == 1)) ||\n((cur_state==IDLE) && (a == 0) && (b == 0)) ||\n((cur_state==SA) && (b == 1) && (a < 109)) ||\n((cur_state==SAB) && (b == 1) && (a < 109)) ||\n((cur_state==SAB) && (b == 0)"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    next_state <= (a == 1) && (b == 1) ? SAB: false;\nbegin\n    if (next_state) z <= 1;\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(*) begin\n  cur_state = IDLE;\n  next_state = IDLE;\n  case (a,b)\n  \t//\n   \t// If inputs are low, set new state to IDLE\n   \t//\n\t\t// cur_state = IDLE\n\t  a < {1'b0,1'b0}\n\t\t& b < {1'b0,1'b0}\n\t  //cur_state = IDLE\n\tend\n  // cur_state = SAB\n  case (a,b)\n  \t//\n   \t// If inputs are low, set new state to SAB\n   \t//\n\t\ta < {1'b0,1'b0}\n\t\t& b < {1'b0,1'b1}\n\t  cur_state = SAB\n\tend\n  // cur_state = SA\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nbegin\n    if (reset) begin\n             cur_state <= IDLE;\n\t next_state <= IDLE;\n    end\n    else if (next_state == SAB) begin\n\t\t       cur_state <= SAB;\n\t\t       next_state <= IDLE;\n    end\n    else if (cur_state == IDLE and (a or b)) begin\n\t\t       next_state <= SA;\n\t\t       cur_state <= SAB;\n    end\n    else if (cur_state == IDLE and !(a or b)) begin\n\t\t       cur_state <= SB;\n\t\t       next_state <= SAB;\n    end\n    else if (cur_state == SA and b) begin\n\t\t       next_state <= SAB;\n\t\t       cur_state <= SA;\n    end\n    else if"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(*)\nbegin\n  if(reset) begin\n    next_state = IDLE; // reset the FSM\n    z = 0iconc;\n  if(clk) begin\n    if(next_state == SA and a) next_state = SAB; // SAB if SA and a is high\n    if(next_state == SB and b) next_state = SAB; // SAB if SB and a is high\n    if(next_state == SAB and (a | b)) next_state = SAB; // SAB if (A | B) is high\n    if(cur_state == IDLE) begin\n      case(next_state)\n        SA : // \u00a0SA state from idle\n          next_state = SB; // SB state if IB comes from IDLE\n          z = 1; // if no error happens during next_state test, output of"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    cur_state <= SA;         // when a is high, cur_state is SA\n    if (cur_state == SA)\n        next_state <= SAB; // when a is high, next_state becomes SAB\n    cur_state <= SB;         // when b is high, cur_state is SB\n    if (cur_state == SB)\n        next_state <= SAB; // when b is high, next_state becomes SAB\n\n    if (next_state == SAB)\n        next_state <= SA; // next_state is SA\n    cur_state <= SAB;        // next_state is SAB, but set cur_state\n    next_state <= SB;        // cur_state is SB\n    cur_state <= next_state; // next_state is SB, so set cur_state to SB\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nz <= (~a & b);\nalways @(negedge clk)\ncur_state <= SA;\nalways @(negedge clk)\nnext_state <= A' && B' && !A && !B && ~(A && B);\n// This parse the normal redistributed input with normal and inverse\nalways @(posedge clk)\nif (cur_state && next_state)\nnext_state <= A' && B' && !A && !B && ~(A && B);\nalways @(negedge clk)\ncur_state <= C' && B' && !A && !B && ~(A && B);\nalways @(negedge clk)\ncur_state <= A' && C' && !A && !C && ~(A && C);\nalways @(negedge clk)\ncur_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n   cur_state <= IDLE;\n   inc_z <= a & b;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge result)\nz <= (\n(\nprev_state == IDLE and ((a == 1 and b == 1) or\n                    (a == 1 and b != 1 and next_state == SAB))\n            or next_state == IDLE\n) and cur_state != IDLE\nand cur_state != SA\nand cur_state != SB\n);\n// Generate states in English.\nalways @(posedge clk or negedge result)\nnext_state <= AMALOGICAL_MATRIX(\n                        \\\n'AB',\n                        \\\n'OA',\n                        \\\n'OSA',\n                        \\\n'OB',\n                        \\\n'OBA',\n                        \\\n'S',\n                        \\\n'SS',\n                        \\\n'SSA',\n                        \\\n'SSB',\n                        \\\n'SA',\n"
+    }
+  ],
+  "created": 1663519835,
+  "id": "cmpl-aTnhp0qwODtMgcdtGRiUvgTXKxy0X",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1687,
+    "prompt_tokens": 218,
+    "total_tokens": 1905
+  }
+}

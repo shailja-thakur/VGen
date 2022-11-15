@@ -1,0 +1,116 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// Add two numbers a and b, using the 2's complement method.\n//  - a[7:0] and b[7:0] are summed.\n//  - The most significant bit of the sum is stored in the output s[7:0].\n//  - The signed overflow bit in the output overflow[7:0] is set if the most significant bit of a[7:0] is low and the most significant bit of b[7:0] is high.\n\n// Assume all 16 bits of a and b are valid (i.e. do not overflow).\n\nconst a: [7:0] = 0xd3;\nconst b: [7:0] = 0x46;\n\nconst s: [7:0] = 0xd3;\nconst overflow: [7:0] = 0x00;\n\n// Output\n\n// s[7:0]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\ninput [7:0] a;\ninput [7:0] b;\noutput [7:0] s;\noutput overflow;\n\ninitial\n    s = 0;\n    overflow = 0;\n    \nalways\n    s [7:0] = a [7:0] + b [7:0];\n    \n    if\n        ((a [7:0] < 0) and (b [7:0] < 0) and (s [7:0] < 0))\n            overflow = 1;\n        else if\n            ((s [7:0] < 0) and (a [7:0] < 0))\n                overflow = 1;\n        else if\n            ((s [7:0] < 0) and (b [7:0] < 0))\n                overflow = 1;\n    \n    else if\n        ((a [7"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nsignal unsigned_sum;\nsignal signed_sum;\nsignal overflow;\n\n// for each inputs\n    for (i = 0; i < 7; i++) {\n    \t//  for each other inputs\n        for (j = 0; j < 7; j++) {\n        \tif (((a[i] & 0x80) == 0x80) && ((b[j] & 0x80) != 0x80)) {\n        \t\tunsigned_sum = a[i] + b[j];\n        \t\t// if (((a[i] & 0x80) == 0x80) && ((b[j] & 0x80) == 0x80)) {\n        \t\t// \tunsigned_sum = a[i] + b[j];\n        \t\t// }\n        \t}\n        \telse if (((a[i] & 0x80) !="
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nsign_adder : signed_adder (a[7:0], b[7:0], s[7:0], overflow)\nbegin\n    \n    // Saturate the maximum value of an 8-bit number\n    s[7:0] = (s[7:0] > 0xFF) ? 0xFF : s[7:0] + 1;\n    \n    // If the inputs have the same sign then the output is the same sign\n    if ((a[7:0] & b[7:0]) == 0) \n        s[7:0] = a[7:0];\n    else \n        // If the inputs have different signs then the output is the sum of the inputs' most significant bits\n        s[7:0] = a[7:0] + b[7:0];\n    \n    // The overflow bit is set if the sum of"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\ntask main()\n{\n  s = a + b;\n  overflow = ((a > b) && (s > 0)) || ((a < b) && (s < 0));\n} \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nassign s[7:0] a[7:0] + b[7:0]; \n\n// if a and b are both 0, then the signed overflow occurs\n// if a is 0 and b is not 0, then the overflow occurs in s when b is set to 0\n// if a is not 0 and b is 0, then the overflow occurs in s when a is set to 0\n// \n// if a is 0 and b is 0, then the overflow occurs in s when b is set to 0\n// if a is not 0 and b is 0, then the overflow occurs in s when a is set to 0\n// if a is not 0 and b is not 0, then the overflow occurs in s when a is set to 0\n// \n// if a is 0 and b is not 0, then the overflow occurs in s when a is set to 0\n// if a is not 0 and b is 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// As with the adder, the inputs and outputs are 2's complement numbers.\n\n// input number is modular arithmetic.\n// output number is not modular arithmetic.\n\n// input number is of the form abcd\n// output number is of the form sbc\n\n// Write a function adder that takes two arguments a and b of type signed_int and returns the output of type signed_int\n\n// 1. Compute the highest bit of a and the highest bit of b and store in a_high and b_high respectively.\n// 2. If a_high and b_high are equal, then the signed overflow occurs.\n// 3. If a_high is equal to 0 and b_high is equal to 0, then the signed overflow occurs.\n// 4. Compute the actual result of a + b and store in s.\n// 5. If the highest bit of s is not 0, then the signed overflow"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\ns <= b;\n\n\ns\n#ifdef USE_HEADER\n  : overflow <=\n    #10{!b1}\n    #1{!b0}\n    #0{!a0}\n#endif\n\n#ifdef USE_HEADER\n  AND a1\n#endif \n\n#ifdef USE_HEADER\n  AND b1\n#endif\n\n#ifdef USE_HEADER\n  AND s1\n#endif\n\n#ifdef USE_HEADER\n  AND overflow1\n#endif\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nint signed_adder_customer_example() {\n    int _s = 0;\n\n    int _a = 0;\n    int _b = 0;\n\n    _a = a[7]; // 0b11101101\n    _b = b[7]; // 0b00011011\n    // overflow\n    //_a = ~a[7];\n    //_b = ~b[7];\n\n    _a = ~_a;\n    _b = ~_b;\n\n    // a[7] is 0b10110101\n    // b[7] is 0b11111101\n\n    _s = _a + _b;\n    //_s = _a + _b;\n\n    //_s = _a + _b;\n    //_s = _a + _b;\n\n    //_s = _a + _b;\n    //_s"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nsigned_adder(a[7:0], b[7:0], s[7:0], overflow[7:0]);\n\n\ntask main()\n{\n  while (true)\n  {\n    s = a[7:0] + b[7:0];\n  \n    overflow = a[7:0] < b[7:0] && s[7:0] > 0b11010111;\n  }\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n      \n\n//@begin_example\ninput a[7:0], b[7:0], s[7:0], overflow;\n\n// a:  0x55555555\n// b:  0x55555555\n// s:  0x55555555\n// overflow:  0x00000000\n\nadd_signed_overflow(a, b, s, overflow);\nprint_signed_overflow(overflow);\n// s:  0x55555555\n// overflow:  0x00000000\n//@end_example\n//@begin_figure_input\n\n//@end_figure_input\n//@end_module"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nsigned adder(input [7:0] a,\n            input [7:0] b,\n            output [7:0] s,\n            output overflow\n); \n\n\n// This is a helper function to sign extend the 8-bit input\n// a[7:0] to a 16-bit signed integer\n\nsigned signed_extend(input [7:0] a,\n                    output [15:0] s\n);\n\n\nsigned signed_extend(input [7:0] a)\n{\n    output [15:0] s;\n    a[7:0] = a[7:0] | 0x80;\n    s[15:0] = a[7:0];\n    return s;\n}\n\nsigned_adder(a, b, s, overflow)\n{\n    // Signed_extend the msb of b to its full range"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nsneg_compare(s, overflow);\n\n// This subroutine reads data from a port until it is empty. It then writes\n// the data to a port until the data is cleared. This returns the number of\n// bytes read.\n\nbyte read_port(byte out_port, byte in_port)\n{\n  byte out;\n  do {\n    out = in_port;\n    in_port = data_in;\n  } while (out_port != in_port);\n  return out;\n}\n\n// This subroutine writes data to a port until it is full. It then reads\n// the data from a port until it is cleared. This returns the number of\n// bytes written.\n\nbyte write_port(byte in_port, byte out_port)\n{\n  do {\n    out_port = in_port;\n    in_port"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nvoid main() {\n  const int a_max = int(0xFF);\n  const int b_max = int(0xFF);\n  const int s_max = int(0xFF);\n\n  int a = a_max - 1, b = b_max - 1;\n  int s = 0;\n  bool overflow = false;\n\n  while (a > 0 || b > 0) {\n    if (a > 0 && b > 0 && a > b) {\n      s += a;\n      a = a_max - 1;\n    } else if (a > 0 && b > 0 && a < b) {\n      s += a;\n      a = a_max - 1;\n      overflow = true;\n    } else if (a > 0 && b == 0) {\n      s += a;\n      a = a_max - 1;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nparameter overflow = signed_overflow(a, b);\n\nfunction signed_overflow(a, b)\n    return a[7:0] > b[7:0] && s[7:0] > a[7:0];\nendfunction\n\nfunction signed_add(a, b, s)\n    s[7:0] = a[7:0] + b[7:0];\n    s[7:0] = signed_overflow(a, b) ? overflow : s[7:0];\nendfunction\n\n\n\nsigned_add(a[7:0], b[7:0], s[7:0]);\n\n// assume that the signed overflow of a and b is not a problem\n\nsigned_add(a[7:0], b[7:0], s[7:0]);\n\n// assume that the signed overflow of a and"
+    }
+  ],
+  "created": 1663537417,
+  "id": "cmpl-6MrzSW5Kzef8lkN69WArar6gETctV",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2624,
+    "prompt_tokens": 164,
+    "total_tokens": 2788
+  }
+}

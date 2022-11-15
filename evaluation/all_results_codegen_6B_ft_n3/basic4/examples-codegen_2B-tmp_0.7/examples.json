@@ -1,0 +1,49 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign out = ({4{sel}}&a) | ({4{~sel}} & b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign out = (sel) ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign out[0] = sel ? b[0] : a[0];\nassign out[1] = sel ? b[1] : a[1];\nassign out[2] = sel ? b[2] : a[2];\nassign out[3] = sel ? b[3] : a[3];\nassign out[4] = sel ? b[4] : a[4];\n"
+    }
+  ],
+  "created": 1663304588,
+  "id": "cmpl-YqnF6F446pEsAl3EvotJKtUJDw3Fj",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 176,
+    "prompt_tokens": 70,
+    "total_tokens": 246
+  }
+}

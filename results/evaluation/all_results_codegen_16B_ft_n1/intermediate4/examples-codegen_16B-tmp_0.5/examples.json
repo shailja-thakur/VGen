@@ -1,0 +1,30 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// out=1 in state 1 and out=0 in state 0\nalways@(posedge clk, posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tpresent_state <= 0;\n\tnext_state <= 0;\n\tend\n\telse\n\tbegin\n\tpresent_state <= next_state;\n\tend\nend\nalways@(present_state, in)\nbegin\n\tcase(present_state)\n\t0:\n\tbegin\n\tnext_state <= in ? 0 : 1;\n\tout <= in ? 1 : 0;\n\tend\n\t1:\n\tbegin\n\tnext_state <= in ? 1 : 0;\n\tout <= in ? 0 : 1;\n\tend\n\tendcase\nend\n"
+    }
+  ],
+  "created": 1663543446,
+  "id": "cmpl-SEm36eba0gfExq3Gg2wn7QbCxeqj4",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 171,
+    "prompt_tokens": 148,
+    "total_tokens": 319
+  }
+}

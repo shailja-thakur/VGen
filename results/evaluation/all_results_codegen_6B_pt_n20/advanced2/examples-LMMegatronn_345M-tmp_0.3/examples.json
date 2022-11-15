@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// This implementation is designed to work with timing.\n\nreg [3:0] q;\n\nalways @(posedge clk) begin\n    if(reset == 1) q <= 0;\n    else if(slowena == 1) q <= q + 1;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "//\n// The counter is implemented as a shift register.\n// The \"load\" is an asynchronous input.\n//\n// For the timer, timer_val should be equal to the expected time.\n//\nreg [3:0] q_reg;\n\n// For the time, a clock pulse in the timer,\n// and the next bit is forced to the expected time.\n//\n// It is an asynchronous timer, and the next bit is forced to the expected time.\n//\nalways @(posedge clk or posedge reset)\nbegin\n  if (reset)\n    q_reg <= 0;\n  else\n    q_reg <= q_next;\nend\n\n// For the time, a clock pulse in the timer,\n// and the next bit is forced to the expected time.\n//\n// It is an asynchronous timer, and the next bit is forced to the expected time"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nreg [3:0] q_next;\n\nalways @(posedge clk, posedge reset)\nbegin\n  if (reset)\n    q_next <= 4'b0;\n  else\n    q_next <= q_next + 1;\nend\n\nalways @(q, q_next)\nbegin\n  q_next = q_next;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nreg [3:0] q_next;\n\nalways @(posedge clk or posedge reset)\nbegin\n  if (reset) q_next <= 4'b0;\n  else if (slowena) q_next <= q_next + 4'b1;\nend\n\nassign q = q_next;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// This implementation is designed to work with timing.\n\nreg [3:0] q_next;\n\nalways @(posedge clk, posedge reset)\n    if(reset) q_next <= 4'b0;\n    else q_next <= q_next + 1;\n\n// When the ena is high, reset the output q to 0.\n// This implementation is designed to work with timing.\n\nalways @(q)\n    if(q == 4'b0) q_next = 4'b0;\n    else q_next = q_next + 1;\n\n// If the ena is high, reset the output q to 0.\n// This implementation is designed to work with timing.\n\nalways @(q)\n    if(q == 4'b0) q_next = 4'b0;\n  "
+    }
+  ],
+  "created": 1663299265,
+  "id": "cmpl-DyA7NM1ouPX0ktYH5J9et5t7nNY5T",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 642,
+    "prompt_tokens": 98,
+    "total_tokens": 740
+  }
+}

@@ -1,0 +1,85 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (we)\n\tbegin\n\tram[addr]<=data;\n\tend\t\n\telse\n\tq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign q = ram[ack];\nalways @(posedge clk)\nbegin\n if (we)\n ram[addr] = data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n//set the first 6 bits of the display output\nassign q = ( we==1'b0 ) ? {q[5:0],data[5]} : {data[4:0],q[5]};\n//concatenate the 5 bit data along with the address and write to ram\nalways @(posedge clk)\nbegin\n\tram[addr] = data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\ninitial\nbegin : INIT\n \t$readmemh(\"ram.mem\", ram);\nend\n\nalways @ (clk)\nbegin\n\tif(we)\n\tbegin\n\tram[addr]<=data;\n\tend\nend\n\n//\nassign q=ram[addr];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (we)\n\t//for the posedge clk, if the we is 1, then we write the data into the ram0\n\tbegin\n\tram[addr] = data;\n\tend\n\telse\n\t//if the we is 0, then the data at 0 address is lost\n\tbegin\n\tram[addr] =ram[addr][7:0];\n\t//only because the ram is defined at 0; \n\t//that means we have to take the last 8 data; otherwise the sum of the previous 8 data and 0 (0)\n\tlb <= lb + ram[addr-1];\n\tfsm = 1;\n\tend\n\t\nfsm = 2;\nassign q[1] =\nram[addr];\nassign q[2] = \nram[addr];\nassign q[3] = "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nassign q = (we) ? ram[addr] : 8'hzz;\n\nalways @(posedge clk)\n if(we)\n ram[addr] = data;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk) \nbegin\nif (we) begin\n ram[addr]<=data;\nend\nelse begin\nq<=ram[addr];\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] = data;\nelse\nq = ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif (we) begin\n ram[addr]<=data;\nend else begin\nq<=ram[addr];\nend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n if (we)\n ram[addr]<=data;\n else\n q<=ram[addr];\nend\n"
+    }
+  ],
+  "created": 1663600410,
+  "id": "cmpl-3XX05s4724SsNnLDDzrRKjw9nffPA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 677,
+    "prompt_tokens": 143,
+    "total_tokens": 820
+  }
+}

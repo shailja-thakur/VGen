@@ -1,0 +1,78 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\n  if (rst)\n    pos = 0;\n  else if (sel)\n    pos = in;\n  else\n    pos = 0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or (sel && (in[0]==1 || in[1]==1 || in[2]==1))) begin\n  if (sel) begin\n    pos <= in[0];\n  end\n  else begin\n    pos <= 0;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\n  if( rst )\n  begin\n    pos <= 0;\n  end\n  else if( sel )\n  begin\n    pos <= in[2];\n  end\nend\n\nentity priority_encoder_1 is priority_encoder(.sel = 1, .in = 1, .out = 0);\nentity priority_encoder_2 is priority_encoder(.sel = 1, .in = 1, .out = 1);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge rst) begin\n\tpos <= in;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\nbegin\n  int_to_rgb(in, pos);\n  if (rst)\n    pos <= 0;\n  else if (sel)\n    pos <= 1;\n  else\n    pos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge rst)\n  if (sel) pos = in;\n// when clk=1, output is high if pos is high\nalways @(posedge clk and not rst)\n  if (sel) pos = pos & in;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n  begin\n    case( in[2] )\n      when 0 => pos = 1;\n      when 1 => pos = 0;\n    endcase\n  end\nend\n\n// This is a 3-bit priority decoder. If the input bits are high, output is the \n// corresponding value. If none of the input bits are high, output is 0.\nmodule priority_decoder( \ninput [2:0] in,\noutput reg [1:0] pos );  \n// When sel=0, assign b to out\nalways @(posedge clk)\n  begin\n  begin\n    case( in[2] )\n      when 1 => pos = 1;\n      when 0 => pos = 0;\n    endcase\n  end\nend\n\n// These are the two priority encoder modules that combine to form the "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst)\nbegin\n  pos <= b;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (sel) out = b;\n\n// Priority encoder\nalways @(posedge clk)\n  if (sel) priority_encoder_pos = (priority_encoder_pos + 1) & 3;\n\nalways @(posedge clk)\n  if (sel) priority_encoder_in = (priority_encoder_in << 1) | in[1];\n\nalways @(posedge clk)\n  if (sel) priority_encoder_sel = 1;\n\n//\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk) \n  priority_encoder <= pos ? b'1' : b'0';\n"
+    }
+  ],
+  "created": 1663519989,
+  "id": "cmpl-jTaTQ189pucx8Z51ePE1K8y5go7Zq",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 788,
+    "prompt_tokens": 65,
+    "total_tokens": 853
+  }
+}

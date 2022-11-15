@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = (a & b) | (a & b) | (a & b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign {cout, sum} = a + b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = (a & b) | (a & b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\txor(w1, a, b);\n\txor(sum, w1, a);\n\tand(w2, a, b);\n\tand(w3, b, a);\n\tor(cout, w2, w3);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nxor( sum, a, b );\nand( cout, a, b );\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\n// Create wires to connect each half adder to the other half adder.\nwire p, q;\n\n// Create instances of the half adders each with a unique name.\nhalf_adder ha1(.a(a), .b(b), .cout(p), .sum(sum));\nhalf_adder ha2(.a(p), .b(q), .cout(cout), .sum(sum));\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nxor( sum, a, b );\nand( ~cout, a, b );\n"
+    }
+  ],
+  "created": 1663606943,
+  "id": "cmpl-6vXUA3NhWGPhpgwKlowKDpxDcSgtO",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 357,
+    "prompt_tokens": 43,
+    "total_tokens": 400
+  }
+}

@@ -1,0 +1,114 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// Reset register is connected to reset.sig and can be clocked in any state. Prepare state register for initial load. bit[0]=1, bit[1]=0 in state 0, bit[0]=0, bit[1]=0 in state 1. out=0 at initial load.\nalways @(posedge clk)\n  if (reset)\n    present_state = 0;  // or some value that is non zero\n  else if(present_state == 0)\n    present_state = ( in<1 ) && ~in<1; // second condition required because in<1 has no effect if in=1\n  next_state = next_state(present_state);\n  out = present_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign out = present_state;\nalways @(posedge clk)\nif (reset)\n  present_state = 0;\nelse\n  present_state = next_state;\nassign next_state = (present_state == 1)? 0 : 1;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "wire jump_if_not_present;\nalways @(posedge clk || posedge reset)\nbegin\n\tif (reset)\n\t\tpresent_state <= 0;\n\telse\n\t\tpresent_state <= present_state;\n\tif (present_state == 0 && in != 0)\n\t\tnext_state <= 0;\n\telse if (present_state == 1 && in != 0)\n\t\tnext_state <= 1;\n\telse next_state <= 0; // if reset, initial state is 0 and init value is here emitted\n\tout <= jump_if_not_present <= present_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n  if (reset) begin\n    present_state <= 0;\n  end else begin\n    if (present_state == 0) begin\n      present_state <= 1;  // implicit transition rule\n      next_state <= in;  // implicit transition rule\n      out <= next_state;\n    end else begin\n      next_state >= present_state;  // implicit transition rule\n      out <= next_state;\n    end\n  end\nend\n\n// ...........................................................................\n\n#3 en 0 ff 0 00\n#8 en 0 ff 0 01\n#15 en 0 ff 0 00\n#22 en 0 ff 0 01\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\ninitial begin:\n present_state = 0;\n next_state = 0;\n out=0;\n  lsfsm_${IL}(clk,reset,in,out,present_state,next_state);\nend\n\nalways @(posedge clk or posedge reset) begin\n case(present_state)\n   0:\n     begin\n       if (in=1) begin\n         next_state = 0;\n         out=1;\n       end \n     end\n     case(next_state)\n       0:\n         begin\n           case(present_state)\n              0:\n               end\n           end\n           case(next_state)\n              0:\n               begin\n                 if (in=1) begin\n                    next_state = 0;\n                    u_${P}_out = out;\n                 end\n               end\n               case(next_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\nif (reset) present_state <= 0;\nelse if (in) present_state <= 1;\nelse present_state <= 0;\nend\n// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1\n// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0\n// out=1 in state 0 and out=0 in state 1\nalways @(posedge clk) begin\nif (reset) present_state <= 0;\nelse if (in) present_state <= 1;\nelse present_state <= 0;\nend\nassign out = present_state;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always_ff @(posedge clk, phantms)+ begin //Construct the Moore state machine\n\n\tif(reset)  present_state=0;\n\telse if(present_state==0 and (in==1)) present_state=0; // Start the thing off\n\telse present_state=1;\n\n\tif(present_state==0) \n\t\tnext_state=0; // State 0\n\telse \n\t\tnext_state=1; // State 1\n\n\tout=next_state; //Go with the newly computed values\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always begin begin\npresent_state = 0;\nnext_state = next_state + 1;\nwait100 [(present_state == 0) & (reset == 0) & (in != 0)];\nend;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "// Assume high-high on in for initialization\nif(reset) present_state = 0;\nelse       present_state = 1;\n\nalways @(posedge clk) begin begin\n    if(reset) present_state = 0;\n    else       present_state = 1;\n    case (present_state)\n        0 : if(in) next_state = 0;\n        1 : if(!in) next_state = 1;\n        endcase\n    endbegin\n// assign next_state to present_state\n    present_state <= next_state;\n    // assign output\n    case (present_state)\n        0 : out=1;\n        1 : out=0;\n        endcase\n// assign present_state to next_state\n    next_state <= present_state;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "simple_fsm myfsm(clk, in, present_state, next_state, out);\nalways begin\n\t// enable the FSM\n\tpresent_state = 0;\n\tnext_state = 1;\nend\nalways begin\n\t// update the FSM, set clk true if ready\n\t// to avoid collecting latency, increment clock before since more than one operation might need to\n\t// happen on it at a time\n\tclk = !clk;\n\t\t\t\n\t// if clk is high signal a latching reset\n\tout = !reset;\n\t\n\t// update our output\n\tout = out && present_state;\n\t\n\t// read our input\n\tpresent_state = present_state;\n\tpresent_state = present_state;\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset) begin\n\tif (~reset) begin\n\t\tnext_state <= 0; present_state <= 0; out <= 0;\n\tend else begin\n\t\t// Resynchronize the FSM and the pipeline\n\t\tif ((present_state = next_state) != 0) begin\n\t\t\t// Block FSM in state 1 if there is some in task aganist\n\t\t\tnext_state <= present_state;\n\t\tend else begin\n\t\t\t// There is no in task against, go to state 0\n\t\t\tnext_state <= 0;\n\t\tend\n\t\t\n\t\t// Afterwards, begin behavior based on present_state\n\t\tswitch (present_state)\n\t\t{\n\t\t\tcase 0: // State 0\n\t\t\t\t\n\t\t\t\t// Define the behaviour of this FSM state if there is an out task again\n\t\t\t\tif (out) begin\n\t\t\t\t\t// Assign input to present_state"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @ (posedge clk) begin\n\tif(reset){\n\t\tpresent_state = 0;\n\t}\n\telse {\n\t\tif(in){\n\t\t\tpresent_state = 0;\n\t\t\tout = 1;\n\t\t}\n\t\telse {\n\t\t\tpresent_state = 1;\n\t\t\tout = 0;\n\t\t}\n\t}\n\tnext_state = present_state;\n\tif(present_state == 0){\n\t\tif (in && present_state != next_state) {\n\t\t\tout = 1; present_state = 1;\n\t\t}\n\t}\n\tif(present_state == 1){\n\t\tif (!in && next_state != present_state) {\n\t\t\tout = 0;\n\t\t\tnext_state = 0;\n\t\t}\n\t}\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "initial\n    present_state = 0;\n    next_state = 1;\n    out = 1;\n    next_state = present_state;\n\nalways @(posedge clk or posedge reset)\n    if (reset == 1) {\n        present_state = 0;\n    } else {\n        if (in == 1) present_state = next_state;\n    }\n    next_state = present_state;\n    if (present_state == 0 && in == 1) out = 1;\n    if (present_state == 1 and in == 1) out = 1;\n    out = next_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset) begin\n    next_state <= 0;\n    present_state <= 0;\n    out <= 0;\nend\nelse if (out) begin\n    next_state <= 0;\n    present_state <= 1;\n    out <= 1;\nend\nelse if (in) begin\n    next_state <= 1;\nend\nelse begin\n    next_state <= 0;\nend\nendassign next_state;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "int main() {\n    present_state = 0;\n    next_state = 0;\n    out = 0;\n    always @(posedge(clk)) {\n        if(reset) {\n            present_state = 0;\n        }\n        else {\n            out = present_state == 0 ? 1 : 0;\n            next_state = present_state == 0 ? 1 : 0;\n        }\n        if(in) {\n            present_state = next_state;\n        }\n    }\n\n}\n'''\n\nsetup_tb(t, 'simple_fsm.v', '-odbug -fpga -p ' +\n      '' + ' --defbzero 0 ' + ' -f Sanity')\n"
+    }
+  ],
+  "created": 1663535152,
+  "id": "cmpl-clfMsZkxQOCivIcU1HkhRcbAx0prj",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2240,
+    "prompt_tokens": 148,
+    "total_tokens": 2388
+  }
+}

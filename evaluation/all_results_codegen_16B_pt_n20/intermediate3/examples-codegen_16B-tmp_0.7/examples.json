@@ -1,0 +1,147 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n    if (reset)\n        r_reg <= 1;\n    else\n        r_next <= r_reg;\n    feedback_value <= $xor(bit[2],bit[4]) || $concat(4,r_reg[4:0]);\n    q <= feedback_value[2:0];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign q = r_reg;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or rising_edge reset)\n    if (r_reg[4])\n        r_reg[0] = 1;\n    else\n        r_reg[0] = r_reg[4] ^ r_reg[2];\n    r_reg[1] = r_reg[0];\n    r_reg[2] = r_reg[0];\n    r_reg[3] = r_reg[1] ^ r_reg[2];\n    q = r_reg[3];\n    r_next = (r_reg[3] & ~3) ^ \n        ((r_reg[3] & ~3) >> 1) ^ \n            (r_reg[3] >> 2);\n    feedback_value = (r_reg[3] & 2) | ((r_reg[3] & 2) >> 1"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n    if(reset) \n        r_reg <= 1;\n    else \n        r_reg <= r_reg | (r_reg >> 4) | (r_reg >> 2) | r_reg;\n    r_next <= r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    feedback_value <= r_reg[2] ^ r_reg[3];\n    q <= r_next & 0xF;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) r_reg <= 1;\n    else r_reg <= r_reg xor (r_reg[2] ^ r_reg[4]);\n    r_next <= r_reg xor (r_reg[2] ^ r_reg[4]) & 16;\n    if (r_reg[3]) r_next <= r_reg xor (r_reg[2] ^ r_reg[4]) & 8;\n    r_next <= r_reg xor (r_reg[2] ^ r_reg[4]) & 4;\n    r_next <= r_reg xor (r_reg[2] ^ r_reg[4]) & 2;\n    r_next <= r_reg xor (r_reg[2] ^ r_reg[4]) & 1;\n    q <= r"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk and reset == 0) begin\n    if (reset) begin\n        r_next <= 0;\n    end else begin\n        r_next <= r_reg;\n        feedback_value <= r_reg[2] ^ r_reg[4];\n    end\nend\n// return the state of the LFSR\nassign q = r_next;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset) \n        r_reg = 1;\n    else \n        r_next = r_reg ^ (r_reg ^ (r_reg >> 2) & 0xF);\n    q = r_next;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        r_reg <= 1; \n    end else begin\n        r_reg <= r_reg | (r_next[2] ^ feedback_value);\n        feedback_value <= r_reg[2] ^ r_next[4];\n        r_next <= (r_reg[3] << 4) ^ (r_reg[3] >> 1) ^ feedback_value;\n        q <= r_reg;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @(posedge clk) begin\n    if (reset) begin\n        r_reg <= 1;\n    end else begin\n        r_next <= r_reg ^ (r_reg >> 2) ^ (r_reg >> 1);\n        r_reg <= r_next;\n        feedback_value <= (r_reg >> 2) ^ (r_reg >> 3);\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "r_reg <= 1;\nr_next <= (r_reg ^ (r_reg << 2)) >> 4;\nfeedback_value <= not (r_reg[2] ^ r_reg[3]);\nq <= r_next[4:0];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        r_reg <= 1;\n    end else begin\n        r_next <= r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n        feedback_value <= (r_reg >> 2) ^ (r_reg >> 4);\n        q <= r_next;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @(posedge clk) begin\n  if (reset) begin\n    r_next <= 0;\n  end else begin\n    if (r_reg[2] == 1) begin\n      r_next <= r_reg[4] & 0xF;\n    end else begin\n      r_next = (r_reg[0] & 0x10) ? feedback_value : r_reg[0];\n    end\n    feedback_value <= r_reg[2] ? (r_reg[4] >> 4) : r_reg[4];\n    r_reg <= r_next;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge reset) begin\n    r_reg <= 1;\n    r_next <= r_reg ^ (r_reg ^ (r_reg >> 1) ^ (r_reg << 2));\n    feedback_value <= r_reg ^ (r_reg >> 2) ^ (r_reg >> 3);\n    q <= feedback_value[3:0];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if(reset) begin\n        r_reg <= 1;\n    end else begin\n        r_reg <= r_reg >> 1;\n        r_reg <= r_reg << 1;\n        r_reg[2] <= r_reg[2] ^ r_reg[4];\n        r_next <= r_reg[4:2] ^ feedback_value;\n        feedback_value <= r_reg[4:0] & r_reg[4:0];\n        q <= r_next;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        r_reg <= 1;\n    end else begin\n        r_next <= r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n        feedback_value <= r_reg[2] ^ r_reg[4] ^ r_reg[2] >> 4;\n        q <= r_next[2:0] ^ feedback_value;\n        r_reg <= r_next;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "assign q = { \n    r_reg[0] ^ r_reg[2]^r_reg[4], \n    r_next[0]\n};\nalways @(posedge clk or posedge reset) begin\n    if (reset) begin\n        r_reg <= 0;\n    end else begin\n        r_reg <= r_reg + 1;\n        r_next <= r_reg ^ (r_reg >> 3) ^ (r_reg >> 2);\n        feedback_value <= r_reg[4] ^ r_reg[2];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        r_reg <= 1;\n    end\n    else begin\n        r_reg <= r_reg + r_reg;\n        r_next <= ~r_reg & (feedback_value ^ r_reg);\n        feedback_value <= r_reg[2] ^ r_reg[4];\n        q <= r_next;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "assign q = {\n    (r_reg == 0b00000100'00001010),\n    (r_reg == 0b00000100'00000110),\n    (r_reg == 0b00000100'00000011),\n    (r_reg == 0b00000100'00000100),\n    (r_reg == 0b00000100'00000010)\n};\nlfsr logic( \n    input clk,\n    input reset,\n    input [4:0] x,\n    output [4:0] q\n);\nreg [4:0] r;\n// on reset set r to 1\n// otherwise assign r to x\n// assign the xor of bit positions 2 and 4 of r to feedback_value\n// assign feedback concatenated with 4 most significant bits of r to r\n// assign r to the output q\nassign q = {\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n  if (reset) begin\n    r_reg <= 1;\n  end else begin\n    r_next <= (r_reg ^ (r_reg >> 2));\n    feedback_value <= r_reg[2] ^ r_reg[4];\n    r_reg <= r_next;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "assign r_reg = 1'b0;\nassign r_next = (r_reg & 3) ^ ((r_reg >> 2) & 1) ^ ((r_reg >> 3) & 1);\nassign feedback_value = (((r_reg[2] & 1) << 3) ^ r_reg[4] ^ ((r_reg[2] << 1) & 1)) | \n                        (((r_reg[3] & 1) << 1) ^ r_reg[5] ^ ((r_reg[3] << 1) & 1));\nassign q = r_next ^ feedback_value;\n\n// DFF with clk and reset as inputs\n// Design a 6-bit maximal-length Galois LFSR with taps at bit positions 0, 2, 3, 5, and 6\nmodule lfsr2( \n    input clk,\n    input"
+    }
+  ],
+  "created": 1663535869,
+  "id": "cmpl-jrfkyZ9YHASZkUCcg9kSNLUFaVeMY",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2384,
+    "prompt_tokens": 155,
+    "total_tokens": 2539
+  }
+}

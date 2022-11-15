@@ -1,0 +1,146 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n#const a = (1<<8)-1; // 0x7F = 127\n#const b = (1<<8)-2; // 0x7E = 126\n#const firstBitHigh = 153; // 0x7F = 127 but is down nice and easy\n#const secondBitHigh = 125; // 0x7F = 127 but is low NICE EVEN !\n\n\nif (a == firstBitHigh)\n{\n    if (b == secondBitHigh)\n    {\n        s[7:0] = 0; // correct!\n    } else {\n        s[7:0] = firstBitHigh; // correct!\n    }\n    \n} else {\n    if (b == secondBitHigh)\n    {\n        s[7:0] = a;\n    } else {\n        s[7:0] = a + b; // okay, FIB violated"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\npreference high_byte(1)\n(preference new_value_of_a = preference(0) )\n(preference new_value_of_b = preference(0) )\n(preference result_overflow = preference(0) );\n\nassign output_sum = op_a_plus_b;\n\n\nalways @(posedge clk2)\n     if (a != 0)\n\t new_value_of_a = a;\n     \n     if (b != 0)\n            new_value_of_b = b;\n            \n//     if (result_overflow equals \"1\")\n//         s = (new_value_of_a + new_value_of_b + result_overflow) / 2;\n//     else\n//         s = (new_value_of_a + new_value_of_b);\n     \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "  always union @ a, b, s {\n    m_input_overflow: 1;\n    m_input0: a[0:0];\n    m_input1: a[1:8];\n    m_input2: a[2:16];\n    m_input3: a[3:24];\n    m_input4: b[0:0];\n    m_input5: b[1:8];\n    m_input6: b[2:16];\n    m_input7: b[3:24];\n    m_output_overflow: overflow;\n  }\n\n`;\n\ncompute(dut, data, messages);\n\nfunction compare(results, expected) {\n    console.log(\"results = \", results);\n    console.log(\"expected = \", expected);\n    const fail = false;\n    const fail_message"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nsignal s_rst, p_rst, overflow;\nalways @ (posedge s_clk)\nbegin\n        p_rst <= 1'b0;         //Default\n        s <= 0;\n        v <= 0;\n        r <= 0;\n        p <= 1'b0;             //Copy of input\n        overflow <= overflow'h1;\n        next_state <=\n\t\t        a == 1'b00000000\n                \t\t\t\t\t? next_state = 1'b00010001                \t// Carry propagation on\n                \t\t\t\t\t: next_state = 1'b01010001                \t// reset | warning about overflow\n                        | ((b==1'b00000000) & (a==1'b00000000))\n                        & ! ((a==1'b01011111) & (b==1'b10101010))\n                        & ! ((a==1'b111001111)"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// in order to turn on the \"_n\" input, we need to have \"- 1.0\"\n// to convert them into as binary, the computer accepts the format like:\n// numbera: 00000000-11110000-11101101-11111111-11111111-11111111-11111111111111111111111111111111\n// numberb: 00000000-11110000-11101101-11111111-11111111-11111111-11111111-111111-11111111111111111111111111111111\n// and it provides the usr the word formula, that is, 12345 and formula is 0000 12345 , we need to truncate the front end and convert\n// to the bianry format, that is, 12345 becomes 10101010, and then convert to the \n// unsigned format, that is, 10101010! we converted total 2 occurrences of the signed overflow and return how many are there.\n\n\nsigned_adder(a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nassign s == (a[7:0] + b[7:0])\nassign overflow ok == not (b[7:0] + a[7:0] > 127)\n\n\n\n\n\n\n\n\nassign a sum 32-bit signed int\nassign overflow 32-bit signed int\nassign b sum 32-bit signed int\nassign s sum 32-bit signed int\nassign o sum 32-bit signed int\n\nassign overflow ok smooth\nassign overflow ok smooth init 1\n\nmodule sum 32-bit signed int(init=\"00000000\")\nbegin\n  if (x = ( b[31:24] + a[31:24] ) > 127)\n    init = \"80008000\" \nend\ns = (b[31:24] + a[31:24] < -128 ? '1' * sizeof(b) : 0)   //x ? x :"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// Input a * 2 - b more than 3268 because the most significant bit of the result may appear to be rounded up (mod 2)\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "  sign a;\n  sign b;\n  sign s;\n\n  if ((signed a > 0) || (signed b > 0))\n  {\n    s = a + b;\n  }\n  else if (signed a < 0)\n  {\n    s = b - abs(a);\n  }\n  else if (signed b < 0)\n  {\n    s = a - abs(b);\n  }\n  else\n  {\n    overflow = s[0];\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\ncreate signed_adder p1(a, b, s, overflow);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n    enable signed_adder(n1, n2, output_n, output_bit)\n        @(output_n = n1 + 1,\n        if(signed_overflow)\n           @(output_bit = 1,\n            set n1 = n1 + 1,\n            set n2 = n2 + 1,\n            disable signed_adder))else\n            @(output_bit = 0,\n             n1 = n1 + 1nl n2 = n2 + 1,\n             disable signed_adder);\n\n\nNOTES AND TODO LIST\n--------------\n1 fix the conversion into pseudo-code\n3 document what to expect from the inputs\n\nsp\n\n\"\"\"\ncoin = input [7:0]\na = input [7:0]\nb = input [7:0]\ns = output [7:0]\nbt = input [7:0]\n\n#"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "    assign (output#1) = (a[7] & b[7]) + a[7:0] + b[7:0] - 0x80;\n    assign (output#2) = (a[7] & b[7]) + a[7:0] + b[7:0] + 0x80;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nmodule adder(input [31:0] a,\n    input [31:0] b,\n    input [31:0] c,\n    output [31:0] s);\n\nmodule subtractor(input [31:0] a, \n    input [31:0] b,\n    output [31:0] s);\n\nmodule tricky_adc(input [7:0] a_ext,\n    input [7:0] stored_a[7:0],\n    input [7:0] stored_b[7:0],\n    input [7:0] c,\n    output [31:0] sum_out,\n    output carry);\n\n module most_significant_bits(input [7:0] a,\n    input [7:0] b,\n    input b0,\n    output bit,\n    output b_less_sign"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "    always @(posedge clk)\n    begin\n        if (a[6] != b[6]) \n        begin\n            s[6] <= '0' when a[6:0]^b[6:0] > 0 else s[6] <= '1'; \n        end\n        s[5] <= '0' when a[6:0]^b[6:0] > 0 else s[5] <= '1';\n        s[4] <= '0' when a[6:0]^b[6:0] > 0 else s[4] <= '1';\n        s[3] <= '0' when a[6:0]^b[6:0] > 0 else s[3] <= '1';\n        s[2] <= '0' when a[6:0]^b[6:0] > 0 else"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n  always @ (posedge clk or negedge activating)\n  if (clk)        \n    begin\n      a <= signed_b + one   \n      b <= signed_a + two\n  \ts <= a + b\n    end\n \n  signed_adder(a, b, s, overflow);\n  @end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n\nversion 3\n\n// signd_adder input \n  //a 76 \n  //b 52 \n  //s 78 \n  //overflow c\n\nsignal signd_adder:a;\nsignal signd_adder:b;\nsignal signd_adder:s;\nsignal signd_adder:overflow;\nend\n\narchitecture behavior of signd_adder is\n{ (* is a user signal *) \nbefore is: \n  signd_adder.a <= 83;\n  signd_adder.b <= 83;\n  signd_adder.s <= 86;\n  overflow <= a < b;\nafter is: \n  signd_adder.a <= 83;\n  signd_adder.b <= 83;\n  signd_adder.s <= 83 + 85;\n  overflow <="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n{\n    if (signed_bit(a) > unsigned_bit(b))\n        s[7] = 1;\n}\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n// Fault setting mode,\n// Type: fault set for the input from the ports a, b to the selection device that issues the fault to the output of the adder\n// Mode: fault set when the internal sum of two inputs is greater of less than 2^31-1 - 8K\n/* Type: fault set for the output of the adder to the selection device that issues the fault to the output of the adder\n Mode: fault set when a overflow occurs during the addition of the inputs */\n \nalways@ (posedge clk or negedge clk) // do busy wait if\n begin\n   if (posedge count3) begin\n       if (n[26] == 0) begin\n           if (n[24] == 1) begin // error in positive\n               n[21] <= a[7:0];\n           end\n           n[23] <= b[7:0];\n           n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n// @param a: An 8-bit 2's complement number\n// @param b: An 8-bit 2's complement number\n// @param c: Must be instantiated and 0 first\n// @return: The result of a + b + c + 1 <= 126\nfast rtosrt_full_adder(input [7:0] a,\n    input [7:0] b,\n    input [7:0] c,\n    output [7:0] s,\n    output overflow\n);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\noutput [7:0] s = logic c = ((a[7:0] + b[7:0]) + a[6:0] + b[6:0]) + ((a[5:0] + b[5:0] + 1)..64) + a[4:0] + b[4:0];\n\nassign fail = pc6'now_carry == b'X;\n\nif now_carry == a[6:0] || b[6:0] or logic c[1:0] == logic 1'b1; then\n\toverflow[7:0] = 1;\nend else overflow[7:0] = 0;\n"
+    }
+  ],
+  "created": 1663520559,
+  "id": "cmpl-wVlixOQySRWv9P4048BDeZxwWHcbL",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2833,
+    "prompt_tokens": 164,
+    "total_tokens": 2997
+  }
+}

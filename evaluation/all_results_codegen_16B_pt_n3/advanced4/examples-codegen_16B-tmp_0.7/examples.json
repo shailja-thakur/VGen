@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\nreg ena;\nreg clk;\nreg load;\nreg amount;\n\nalways @(posedge clk or posedge load)\n   if (load) q <= data;\n   else if (ena) \n      q = data;\n   else if (amount)\n      q = q << amount;\n   else if (amount)\n      q = q >> amount;\n\nalways @(posedge clk)\n   ena <= 1;\n   if (ena)\n      amount <= amount;\n   else\n      amount <= 1;\n\nalways @(posedge clk)\n   load <= 1;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n// ADDRESS: \n// 0xF0001000\n// Registers: \n// - CLK:      ADDR[0], bit 0.\n// - LOAD:     ADDR[1]\n// - DATA[63:0]: ADDR[2:0]\n// - Q[63:0]:  ADDR[3:0]\n\n// LINK: \n// 0xF0001800\n// Registers: \n// - CLK:      LINK[0], bit 0.\n// - DATA[63:0]: LINK[1:0]\n// - Q[63:0]:  LINK[3:0]\n// \n// XADDR:0xF0002000\n// Registers: \n// - CLK:      XADDR[0], bit 0.\n// - DATA[63:0]: XADDR[2:0]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\n// when load is high"
+    }
+  ],
+  "created": 1663534035,
+  "id": "cmpl-khQBvPY77ESSFKy39NpYQaSjrIx8d",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 552,
+    "prompt_tokens": 184,
+    "total_tokens": 736
+  }
+}

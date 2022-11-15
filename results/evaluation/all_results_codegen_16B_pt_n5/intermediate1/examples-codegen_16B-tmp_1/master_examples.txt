@@ -1,0 +1,115 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+void half_adder( input a, b, output cout, sum ) {
+	
+	@*$.1 = b[0]; // Instead of using bit_input( b );
+	
+	@*$.2 = {~0, ~0, a[0], add_inv, a [1], bit_add, {(!a[2]), b[1], b[2]}}; // {a[2] + b[1] + b[2], b[0], b[1], b[2]};
+	@*$.3 = inserter!3( $*$.2 );
+
+	bit_add( {!a[3], b[2]}, $*$.3 );
+	
+	@*$.1 = a[2];
+	bit_output( $*$.3 );
+}
+
+// Similar to half adder, we need a multiplication circuit that
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+input range = [{0,0},{1,1},{-1,-1},{0,1}];
+
+reg [3:0] sum;
+
+assign { sum, cout } = ( {sum} + ({a[0]}{b[0]}), ({a[2]})cout({b[1]},sum) );
+
+initial { sum=0; cout };
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+input a, b,
+output {sum, carry}"""
+
+def bitwise(inp, params): #pylint:disable = no-self-use
+    """
+    This block provides a basic bitwise logic implementation.
+
+    Args:
+        inp: Input array of values to be processed.
+        params: un-used
+    Returns:
+        out: The
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+    // serliza in cout the output of the half adder
+    // for the high bit
+    output high( cout[ 0 ], cout[ 1 ] );
+
+    // for the middle bit
+    bool carry;
+    if( a <= b )
+        carry = false;
+    else
+        carry = true;
+    
+    // for the low bit
+    high( cout[ 0 ], high( cout[ 1 ], cout[ 2 ] ) | carry );
+        
+    // assign the correct sum
+    sum = a + b + carry;
+    
+
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire carry_out ;
+
+Bit carry[2];
+
+reg sum;
+
+digital logic overflow( overflow_state);
+ 
+assign { overflow, sum < [2:0] } = carry_out;
+
+// Add A and B.
+assign sum = ( ( a << 1) + b + carry[1]),
+carry[0] =  (a >> 7);    // Don't forget that a<<1 must be a 15-bit number so we must shift one right before shifting left one.
+carry_out = (a >> 6);
+
+
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+input a, b;        
+output cout;
+output sum;
+
+always #( 1 )        
+begin
+  sum <= ~( ( (a && b) | ({clock} = 0, !b)) | (({clock} = 1, b) && !a) );
+  cout <= sum;
+end;
+
+================================================================

@@ -1,0 +1,51 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "wire [8:0] msg_a,msg_b,s_a,s_b;\n// The input a and b are the last 16 bits (8 bits per bus) of the last 32 bits\n// of the message. If cur_state is IDLE, these bits are all zero\n// The input reset is the low bit of the last 16 bits of the message\n// z[7:0] is set to the message bits\n// z[15:8] is assigned the input a when cur_state is SA\n// z[23:16] is assigned the input b when cur_state is SB\n// z[31:24] is assigned to cur_state when cur_state is SAB\nwire [8:0] t_a,t_b,s_a_0,s_b_0;\n// These bits are the last 16 bits (8 bits per bus) of the last 32"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset == 1)\n    cur_state = IDLE;\nelse\n    cur_state = (a == 1) ? SA : (b == 1) ? SB : (!a && !b) ? SAB : IDLE;\nif ((a == 1 && (b == 1 || cur_state == SA)) || (b == 1 && (a == 1 || cur_state == SB)))\n    next_state = SAB;\nelse if (cur_state == SAB)\n    next_state = IDLE;\nelse\n    next_state = cur_state;\nz <= next_state;\nend\n);\n// This is an FSM module abro(\n// input clk,\n// input reset,\n// input a,\n// input b,\n// output z );\nparameter IDLE = 0,\nSA = 1,"
+    }
+  ],
+  "created": 1663536921,
+  "id": "cmpl-jXBXcnygTY6HCcoGalIbuRyjTJMJa",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 403,
+    "prompt_tokens": 218,
+    "total_tokens": 621
+  }
+}

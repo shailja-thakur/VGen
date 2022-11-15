@@ -1,0 +1,34 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nwire [1:0] g, p;\n\nassign {cout, sum} = a + b + cin;\nassign cout = g[1] | (p[0] & a & b) | (p[0] & a & b);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": " \nwire [31:0] a, b;\n\nxor (sum[0], a[0], b[0], 1'b0);\nxor (sum[1], sum[0], sum[1], sum[2]);\nxor (sum[2], sum[1], sum[2], sum[3]);\n\nand (b[0], a[0], b[0]);\nand (b[1], a[1], b[1]);\nand (b[2], a[2], b[2]);\nand (b[3], a[3], b[3]);\nand (b[4], a[4], b[4]);\nand (b[5], a[5], b[5]);\nand (b[6], a[6], b[6]);\nand (b[7], a[7], b[7]);\nand (b["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nwire [2:0] g, p;\n\none_bit_adder add0(a[0], b[0], g[0], p[0], s0_in);\none_bit_adder add1(a[1], b[1], g[1], p[1], s1_in);\none_bit_adder add2(a[2], b[2], g[2], p[2], s2_in);\ntwo_bit_adder add3(a[3], b[3], g[3], p[3], s3_in);\n\n"
+    }
+  ],
+  "created": 1663299239,
+  "id": "cmpl-fMx7Zn6CSolec6QgaXpXdng6N2R68",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 402,
+    "prompt_tokens": 43,
+    "total_tokens": 445
+  }
+}

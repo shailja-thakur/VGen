@@ -1,0 +1,144 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign out = (present_state == 0) ? (in) : (~in);\nalways @ (posedge clk, negedge reset)\nbegin\nif (reset == 0)\n\tpresent_state <= 0;\nelse\n\tpresent_state <= next_state;\nend\nalways @ (in or present_state)\nbegin\ncase (present_state)\n0:\n\tbegin\n\tif (in == 1)\n\tnext_state <= 0;\n\telse\n\tnext_state <= 1;\n\tend\n1:\n\tbegin\n\tif (in == 1)\n\tnext_state <= 1;\n\telse\n\tnext_state <= 0;\n\tend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// Reset state 0 to state 1, then state 0 to state 0\n// Finally, present state is the current state\nassign out = (present_state == 0) ? 0 : 1;\nalways @ (posedge clk) begin\nif (reset) begin\npresent_state = 0;\nend\nelse begin\npresent_state = next_state;\nend\nend\nalways @ (in or present_state or reset) begin\ncase (present_state)\n0: begin\nif (in)\nnext_state = 0;\nelse\nnext_state = 1;\nend\n1: begin\nif (in)\nnext_state = 1;\nelse\nnext_state = 0;\nend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// out=0 in state 1 and out=1 in state 0\n// A reset must occur in state 0, otherwise, if in = 1, then next_state = 1.\n// If in = 0, then next_state = 0.\nalways @(posedge clk) // Triggered everytime clk is triggered\nbegin\n\tif(reset) // When reset is triggered\n\tbegin\n\tpresent_state = 0; // Set present state to state 0.\n\tnext_state = 0; // Set next state to state 0.\n\tout = 0; // Set out to 0.\n\tend\n\telse\n\tbegin\n\tpresent_state = next_state; // Assign present state to next state.\n\tout = (present_state == 0 && in == 1) ? 1 : 0; // Assign out to out.\n\tend\nend\nalways @(present_state or in"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// out=1 in state 1 and out=0 in state 0\nparameter State0 = 0;\nparameter State1 = 1;\n// Register present state, next state\nalways @(posedge clk or posedge reset)\n\tif(reset)\n\tbegin\n\tpresent_state <= State0;\n\tnext_state <= State0;\n\tend\n\telse\n\tbegin\n\tpresent_state <= next_state;\n\tend\n// Output logic\nassign out = (present_state == State1);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign out = (present_state == 1) ? 1 : 0;\nalways @(posedge clk)\nbegin\n\tif(reset == 1)\n\tbegin\n\tpresent_state <= 1'b0;\n\tend\n\telse\n\tbegin\n\tpresent_state <= next_state;\n\tend\nend\nalways @(in or present_state)\nbegin\ncase(present_state)\n1'b0:\nbegin\n\tif(in == 1)\n\tbegin\n\tnext_state <= 1'b0;\n\tend\n\telse\n\tbegin\n\tnext_state <= 1'b1;\n\tend\nend\n1'b1:\nbegin\n\tif(in == 1)\n\tbegin\n\tnext_state <= 1'b1;\n\tend\n\telse\n\tbegin\n\tnext_state <= 1'b0;\n\tend"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "// out=0 in state 0 and out=1 in state 1\nalways@(posedge clk)\nbegin \nif(reset == 1'b1)\nbegin\npresent_state <= 0;\nnext_state <= 0;\nend\nelse\nbegin\npresent_state <= next_state;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "// reset=1 means reset the state machine\nalways @(posedge clk)\nbegin\nif (reset)\nbegin\npresent_state <= 0;\nend\nelse\nbegin\npresent_state <= next_state;\nend\nend\nalways @(in, present_state)\nbegin\ncase (present_state)\n0:\nbegin\nif (in)\nnext_state <= 0;\nelse\nnext_state <= 1;\nend\n1:\nbegin\nif (in)\nnext_state <= 1;\nelse\nnext_state <= 0;\nend\ndefault:\nnext_state <= 0;\nendcase\nend\n// output logic\nassign out = (present_state == 1);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\n if(reset)\n begin\n\tpresent_state <= 0; // In state 0, if in=1, stay in state 0.\n\tnext_state <= 0; // In state 0, if in=0, go to state 1.\n end\n else\n begin\n\tpresent_state <= next_state; // In state 0, if in=1, stay in state 0.\n\tnext_state <= present_state; // In state 0, if in=0, go to state 1.\n end\nend\nassign out = present_state == 1 ? 1 : 0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\nbegin\npresent_state <= 0;\nnext_state <= 0;\nend\nelse\nbegin\npresent_state <= next_state;\nend\nend\nassign out = present_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin: STATE_MEMORY\n\tif(reset)\n\tbegin\n\tpresent_state <= 0;\n\tend\n\telse\n\tbegin\n\tpresent_state <= next_state;\n\tend\nend\nalways @(present_state or in)\nbegin: NEXT_STATE_LOGIC\n\tcase (present_state)\n\t0:\n\tbegin\n\tif(in == 1)\n\tbegin\n\tnext_state <= 0;\n\tend\n\telse\n\tbegin\n\tnext_state <= 1;\n\tend\n\tend\n\t1:\n\tbegin\n\tif(in == 1)\n\tbegin\n\tnext_state <= 1;\n\tend\n\telse\n\tbegin\n\tnext_state <= 0;\n\tend\n\tend\n\tendcase\nend\nassign out = (present_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "// Go to state 0 upon reset\nalways@(posedge clk, negedge reset)\nbegin\nif(reset == 0)\n\tpresent_state <= 0; // Begin at state 0\nelse\n\tpresent_state <= next_state; // Otherwise, begin at state 0\nend\nalways@(in, present_state)\nbegin\ncase(present_state)\n\t0: if(in)\n\tbegin\n\tnext_state = 0;\n\tout = 1;\n\tend\n\telse\n\tbegin\n\tnext_state = 1;\n\tout = 0;\n\tend\n\t1: if(in)\n\tbegin\n\tnext_state = 1;\n\tout = 0;\n\tend\n\telse\n\tbegin\n\tnext_state = 0;\n\tout = 0;\n\tend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "// out=1 in state 1 and out=0 in state 0\nassign out = (present_state & in) | (~present_state & ~in);\n// clock signal\nalways @ (posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tnext_state <= 0;\n\tpresent_state <= 0;\n\tend\n\telse\n\tbegin\n\tnext_state <= present_state;\n\tpresent_state <= next_state;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "// default values for state and nextstate are both 0\n// present state starts in state 0\nalways @(posedge clk)\nbegin\nif (reset)\n\tpresent_state <= 1'b0;\nelse\n\tpresent_state <= next_state;\nend\n// next state logic\nalways @(present_state, in)\nbegin\ncase (present_state)\n1'b0 : begin\n\tif (in==1'b1)\n\tnext_state = 1'b0;\n\telse\n\tnext_state = 1'b1;\n\tend\n1'b1 : begin\n\tif (in==1'b1)\n\tnext_state = 1'b1;\n\telse\n\tnext_state = 1'b0;\n\tend\nendcase\nend\n// output logic\nassign out = (present_state == 1'b0);"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\ncase(present_state)\n0: begin\nif(reset) next_state <= 0;\nelse if(in) begin\nnext_state <= 0;\npresent_state <= next_state;\nend\nelse begin\nnext_state <= 1;\npresent_state <= next_state;\nend\nend\n1: begin\nif(reset) next_state <= 1;\nelse if(in) begin\nnext_state <= 1;\npresent_state <= next_state;\nend\nelse begin\nnext_state <= 0;\npresent_state <= next_state;\nend\nend\nendcase\nend\nassign out = (present_state == 0)? 1:0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\npresent_state <= 1'b0;\nelse\npresent_state <= next_state;\nend\nalways @(present_state or in)\nbegin\ncase (present_state)\n1'b0 : begin\nif(in)\nnext_state <= 1'b0;\nelse\nnext_state <= 1'b1;\nend\n1'b1: begin\nif(in)\nnext_state <= 1'b1;\nelse\nnext_state <= 1'b0;\nend\nendcase\nend\nassign out = (present_state == 1'b1);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "assign out = ((present_state == 0)&(in == 1'b1))?1'b0:\n\t((present_state == 0)&(in == 1'b0))?1'b1:\n\t((present_state == 1)&(in == 1'b1))?1'b0:1'b1;\n// Use two always blocks as shown below. Note that the output is not stable until the next clock cycle.\nalways @(posedge clk)\nbegin\n\tif (reset == 1'b1)\n\tbegin\n\tnext_state <= 0;\n\tpresent_state <= 0;\n\tend\n\telse\n\tbegin \n\tnext_state <= present_state;\n\tpresent_state <= next_state;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "// Go to state 0 after reset\nalways @(posedge clk)\nbegin\nif (reset)\npresent_state <= 1'b0;\nelse\npresent_state <= next_state;\nend\nalways @(*)\nbegin\ncase(present_state)\n1'b0:\nbegin\nif(in)\nnext_state = 1'b0;\nelse\nnext_state = 1'b1;\nend\n1'b1:\nbegin\nif(in)\nnext_state = 1'b1;\nelse\nnext_state = 1'b0;\nend\nendcase\nend\nassign out = (present_state == 1'b0)? 1'b1:1'b0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\npresent_state <= 1'b0;\nelse\npresent_state <= next_state;\nend\nalways @(present_state or in)\nbegin\ncase(present_state)\n1'b0: begin\nin_delay = in;\nif(in_delay)\nnext_state = 1'b0;\nelse\nnext_state = 1'b1;\nout_delay = 1'b0;\nend\n1'b1: begin\nin_delay = in;\nif(in_delay)\nnext_state = 1'b1;\nelse\nnext_state = 1'b0;\nout_delay = 1'b1;\nend\nendcase\nend\nassign out = out_delay;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tpresent_state <= 0;\n\tnext_state <= 0;\n\tend\n\telse\n\tbegin\n\tpresent_state <= next_state;\n\tend\nend\nalways@ (present_state)\nbegin\ncase(present_state)\n0: begin if(in)\nnext_state <= 0;\nelse\nnext_state <= 1;\nend\n1: begin if(in)\nnext_state <= 1;\nelse\nnext_state <= 0;\nend\nendcase\nend\nassign out = (present_state == 1);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset)\npresent_state <= `STATE0;\nelse\npresent_state <= next_state;\nend\nalways @(present_state or in)\nbegin\ncase (present_state)\n`STATE0:\nbegin\nif (in)\nnext_state <= `STATE0;\nelse\nnext_state <= `STATE1;\nend\n`STATE1:\nbegin\nif (in)\nnext_state <= `STATE1;\nelse\nnext_state <= `STATE0;\nend\nendcase\nend\nassign out = (present_state == `STATE1);\n"
+    }
+  ],
+  "created": 1663334780,
+  "id": "cmpl-Art4V3ycaUqYzc2jc7YiPibmWOPJn",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3152,
+    "prompt_tokens": 148,
+    "total_tokens": 3300
+  }
+}

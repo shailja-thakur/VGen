@@ -1,0 +1,119 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nmodule advshift_sig(input clk,\ninput load,\ninput ena,\ninput amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule advshift_synced(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// shift_reg: 64-bit register to shift into and load from.\n// shift_ena: register to shift into.\n// shift_amount: bit position to shift left or right.\n// shift_data: bits to shift into shift_reg.\n// shift_out: register to shift out.\n\nalways @(posedge clk) begin\n  if(ena) begin\n    if(amount == 0) begin\n      reg[63:0] = shift_data;\n    end\n    else if(amount == 1) begin\n      reg[63:0] = shift_data >> 1;\n    end\n    else if(amount == 8) begin\n      reg[63:0] = shift_data << 7;\n    end\n    else if(amount == 9) begin\n      reg[63:0] = shift_data << 8;\n    end\n  end\n  else"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// This test verifies the shift operation.\n// It compares the result of the shift operation with the expected value.\n// The test is executed for every possible amount of shift.\ntestbench stimulus parallel_generated begin\n\tif (load) begin\n\t\tq <= data;\n\tend\n\tif (ena) begin\n\t\tif (amount == 0) begin\n\t\t\tq <= (data[63:0] & 0b00000) | (q[63:0] & 0b10000000);\n\t\tend\n\t\telse if (amount == 1) begin\n\t\t\tq <= (data[63:0] & 0b000001) | (q[63:0] & 0b10000000);\n\t\tend\n\t\telse if (amount == 2) begin\n\t\t\tq <= (data[63:0] & 0b000010) | (q[63:0] & 0b10000000);\n\t\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nmodule advshift_reg(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule advshift_reg_v(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nmodule clk2(input clk, output reg clk_out);\nmodule clk3(input clk, output reg clk_out);\nmodule clk4(input clk, output reg clk_out);\nmodule clk5(input clk, output reg clk_out);\nmodule clk6(input clk, output reg clk_out);\nmodule clk7(input clk, output reg clk_out);\nmodule clk8(input clk, output reg clk_out);\nmodule clk9(input clk, output reg clk_out);\nmodule clk10(input clk, output reg clk_out);\nmodule clk11(input clk, output reg clk_out);\nmodule clk12(input clk, output reg clk_out);\nmodule clk13(input clk, output reg cl"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nmodule shift(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// When load is high, assign data[63:0] to shift register q.\n// If ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\nmodule advshift(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data["
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nmodule r_shift(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule adv_shift(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nmodule advshift_in_clk(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule advshift_out_clk(input clk,\ninput load,\ninput ena,\ninput amount,\ninput [63:0] q,\noutput reg [63:0] data); \n// when load"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// Synchronous load.\n// This is the most common shift register design.\n// It is a single register that holds the shifted value.\n// The load signal is used to initiate the shift.\n// The shift register is loaded with the value of the load signal.\n//\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register is loaded with the value of the load signal.\n// The shift register"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": " \n// The shift register is implemented as a register, with the data in the shift register being\n// used to determine the next shift register.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\n  if (load == 1)\n    q = data;\n  else if (ena == 1)\n    q = shift_reg(q, amount, data);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// The following example shows how to use the shift register in a loop.\n// The shift register is loaded with the data provided as an argument.\n// The shift register is shifted with the data provided as an argument.\n// The result is then provided as an argument.\n// The shift register is reset to the same value as the data.\nmodule loop(input clk,\ninput load,\ninput ena,\ninput [63:0] data,\noutput reg [63:0] q);\n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// The result is provided as an argument.\n// The shift register is reset to the same value as the data.\n\n// The following example shows how to use the shift register in a loop.\n// The shift register is loaded with the data provided as an argument.\n// The shift register"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// The following is an example of how to use this module.\n// The example is for a 64-bit shift register.\n// This example is for a shift register with synchronous load.\n// The shift register is 64 bits wide.\n// The shift register is loaded with data.\n// The shift register is shifted left or right.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n// The shift register is shifted by 1 bit or 8 bits.\n//"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n#include \"sys/std_types.h\"\n#include \"sys/tasks.h\"\n#include \"sys/task_create.h\"\n#include \"sys/task_priority.h\"\n#include \"sys/task_wait.h\"\n#include \"sys/task_mode.h\"\n#include \"sys/task_period.h\"\n#include \"sys/task_wakeup.h\"\n#include \"sys/task_wait_all.h\"\n#include \"sys/task_wait_event.h\"\n#include \"sys/task_wait_timeout.h\"\n#include \"sys/task_set_event.h\"\n#include \"sys/task_clear_event.h\"\n#include \"sys/task_wait_all_clear.h\"\n#include \"sys/task_wait_event_clear.h\"\n#"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nmodule\n  (\n    input [1:0] load,\n    input ena,\n    input [63:0] data,\n    output reg [63:0] q\n  );\n  \n  // ----------------------------------------------------------\n\n  always @(posedge clk)\n  begin\n    if (load)\n      q <= data;\n    else\n      q <= data << amount;\n  end\n  \n  // ----------------------------------------------------------\n  \n  "
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n// 64-bit arithmetic shift register.\n// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.\n// The shift register can be loaded with any value, and the shift register can be written to any\n// of the outputs.\n//\n// The shift register is 64 bits wide.\n//\n// The 32-bit shift register is also known as the \"rotate register\".\n//\n// The shift register is implemented as two 32-bit registers, and the load and write bit is\n// implemented as a 3-bit register.\n//\n// The shift register is implemented using a \"rotating register\" technique.\n//\n// The register can shift left or right, with or without carry.\n//\n// The register can shift by 1 or 8 bit positions, with or without carry.\n//\n// If the amount is 0, the shift register is loaded with the value of the"
+    }
+  ],
+  "created": 1663520354,
+  "id": "cmpl-DizkLVZ24p8ZL3VpPagsCaJncoq7B",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2797,
+    "prompt_tokens": 184,
+    "total_tokens": 2981
+  }
+}

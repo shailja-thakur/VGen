@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or negedge reset)\nbegin\nif (reset == 1'b1)\nq <= 4'b0000;\nelse if (slowena == 1'b1)\n\tbegin\n\tif (q == 4'b1010)\n\tq <= 4'b0000;\n\telse\n\tq <= q + 1'b1;\n\tend\nelse\n\tq <= q;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n if (slowena == 1'b1 && reset == 1'b0)\n q = 4'd4;\n if (slowena == 1'b1 && q == 4'd9)\n q = 4'd4;\n if (reset == 1'b1) // slowena == 1'b0 is default value... if reset comes in after the slowena line, then q is reset to 0.\n q = 4'd0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk) begin\n\t\n\tif (slowena == 1 && reset == 1) q <= 0;\n\t\n\telse if (slowena & reset == 1 & q < 9)\n\t \tq <= q + 1;\n\t \n\t \n end\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " always @(posedge clk or posedge reset)\n if(reset) q <= 4'b0;\n else if(slowena) begin // When slowena is high the always block will keep executing\n if(q == 4'b9) q <= 4'b0;\n else q <= q + 4'b1;\n end else begin // When reset is high\n q <= 4'b0;\n end\n if(reset)\n $display(\"{%s,%b} is being asserted\", \"slowena\", slowena);\n else\n $display(\"{%s,%b} is being reset\", \"slowena\", slowena);\n if(reset)\n $display(\"{%s,%b} is being deasserted\", \"slowena\", slowena);\n else\n $display(\"{%s,%b} is being asserted\", \"slowena\", slowena);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// In the latter case, q is incremented by 1.\n reg [3:0]q_error;\n assign q = (~reset ? q'b0 : q'b10)& (~q'b0);\n always @ *\n begin\n q_error = q'b10-1;\n if (~slowena)\n q_error = q'b10;\n end\n always @ (posedge clk) begin\n if (reset is true)\n q <= 'b0;\n else begin\n if (~slowena)\n q <= q_error;\n else\n q <= q'b11;\n end\n end\n\n"
+    }
+  ],
+  "created": 1663304570,
+  "id": "cmpl-QfHYP2PYB79iAQd8Ug6T5mXmCV6RQ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 621,
+    "prompt_tokens": 98,
+    "total_tokens": 719
+  }
+}

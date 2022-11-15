@@ -1,0 +1,54 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// (z)\ninitial begin\n  out = (clk = 1)\u00a0||\u00a0~reset;\n  next_state = (~in - clk) & 1;\nend\nalways begin\n  out <=(next_state);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "begin\nnew fsm(\"InitSimpleFSM_0\",\"FSM_0\", in, out, reset);\nwait\nnew fsm(\"FSM0_0\",\"FSM_0\", in, out, reset);\n{\n  if (present_state == 1) {\n    wait 10ns;\n  } \n}\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  wait(1);\n  in = clk;\n  {\n    if (~last > reset)\n      self->reset = last;\n  }\n#define LAST1\\\n  present_state.read = ~in;\\\n  if (~in > reset)\n#define PRINT_PRESENT_STATE\\\n  out = (present_state == next_state?1:0);\n  if (~in_stable > reset)\n    {\n      in_stable = reset;\n      out_stable = reset;\n    }\n  else\n    {\n      {LAST} {PRINT_PRESENT_STATE}\n      present_state.write = ~in;\n      state_changed.read = present_state == next_state;\n      if (state_changed.read)\n\t{\n\t  next_state.read = state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "reg state  ={1'db,3'db,7'db}; // bit 0 = transition to next state\nreg input_in     ={8'db,3'db,7'db};\n\ninitial begin\nclk <= clk;\nreset <= reset;\nin <= in;\n  next_state <= reg(0);\nend\n\n// process input\nbegin\nif (state'X == 1 and input_in'X = 1)\n{\n  next_state <= 1;\n}\nelse\n{\n  out <= 1'b1;\n}\nend\n\n// next/final state conditions\nwire state_changed;\nreg state_ = next_state;\n\nassign next_state = ~next_state;\n\n\n\nreg WritableState[6]\nbegin(\n   .in1 = in,\n   .out = out\n)\n{\n  clk"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// input state 0 -> state 1\nassign next_state = (reset==1 && in==1 ? present_state : (reset==0 && in==0 ? present_state : next_state));\n// state 0 -> state 1\nassign previous_state = (reset==1 && in==0 ? present_state : previous_state);\nassign causes_back_to_state1 = (reset==0 && in==1 ? out==1 : out==0 && in==1 ? 1 : prev_state==next_state ? 0 : 2);\n// transition function\nassign outputs = (reset==0 && in==1 ?  out==1 : out==0 && in==1 ? next_state : previous_state);\n`\n"
+    }
+  ],
+  "created": 1663539980,
+  "id": "cmpl-UD78z3M6euFCtvDhKQ4k3vork3lTS",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 699,
+    "prompt_tokens": 148,
+    "total_tokens": 847
+  }
+}

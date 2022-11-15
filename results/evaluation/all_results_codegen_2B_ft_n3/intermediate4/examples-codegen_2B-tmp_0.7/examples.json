@@ -1,0 +1,42 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// FSM should be a combinational circuit with two inputs and two outputs\nparameter s0=2'b00, s1=2'b01, s2=2'b10;\n// Next State Combinational Logic\nalways@(present_state or in or reset)\nbegin\n\tif (reset==1'b1) present_state <= s0;\n\telse present_state <= next_state;\nend\n// State Sequential Logic\nalways@(posedge clk)\nbegin\n\tif (reset==1'b1) next_state <= s0;\n\telse next_state <= present_state;\nend\n// Output Combinational Logic\nassign out = (present_state==s1)&&(~in);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\npresent_state <= 0;\nelse\npresent_state <= next_state;\nend\nalways @(present_state or in)\nbegin\ncase(present_state)\n0:\nbegin\nif(in)\nnext_state <= 1;\nelse\nnext_state <= 0;\nend\n1:\nbegin\nif(in)\nnext_state <= 1;\nelse\nnext_state <= 0;\nend\ndefault:\nnext_state <= 0;\nendcase\nend\nalways @(present_state)\nbegin\ncase(present_state)\n0:\nout <= 0;\n1:\nout <= 1;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\n// $display(\"present_state=%b, next_state=%b, in=%b\", present_state, next_state, in);\nif(reset)\npresent_state <= 1'b0;\nelse\npresent_state <= next_state;\nend\nalways@(present_state, in)\nbegin\ncase(present_state)\n0:\tif(in)\nnext_state <= 1;\nelse\nnext_state <= 0;\n1:\tif(in)\nnext_state <= 1;\nelse\nnext_state <= 0;\ndefault:\nnext_state <= 0;\nendcase\nend\n"
+    }
+  ],
+  "created": 1663304498,
+  "id": "cmpl-cbvD99lGkVfElHu8JCNYzl6nILpQI",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 494,
+    "prompt_tokens": 148,
+    "total_tokens": 642
+  }
+}

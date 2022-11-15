@@ -1,0 +1,123 @@
+example-0: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+assign out = data;
+reg [7:0] temp;
+initial begin
+    temp = data;
+    load = 1;
+    out = temp;
+end;
+
+assign execute = 0;
+assign LSB = out[(0-amount)%8];
+assign MSB = out[((8-1+amount) % 8)] % {0b11111111111111111111111111111111};
+begin:
+    out = 0;
+    LSB = data[(0-amount)%8];
+    if (load == 0) begin 
+        out = out | LSB[0:amount];
+    endif
+    LSB = data[((8-1+amount) % 8)] % {0b11111111111111111111111111111111};
+    if (load == 0) begin 
+        out = out | LSB[0:amount];
+    endif
+================================================================
+example-1: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+assign load=times_and_shift(CONTENT,2'h0,1{l}).out;
+always @(posedge clk, posedge reset)
+begin
+if (reset == reset)
+  left_rotate.out = 0;
+else if (load == 0 || (load == 1 && out == 0))
+  left_rotate.out = amount;
+else
+  left_rotate.out = rotate_left(out,amount);
+end
+
+================================================================
+example-2: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @ (clk, reset)
+begin
+// when out0 is higher than calculations,
+// roll out the value reinputed to left shift amount and rotate amount bits (out0 roll1)
+// this can be combined with data only if the result is less than MODULAR
+if ( ~out[1] <= 0b1111 )
+begin
+out[1:0] = leftH(out[0],out[1],out[1],amount);
+if ( load~load )
+begin
+out[1] = left(out[1],0b1111);
+out[2:0] = data_out;
+out[3:0] = left(data,0b1111);
+end
+end
+else
+begin
+out[1:0] = data_out;
+out[2:0] = left(amount,0b1111);
+end
+end
+end
+
+================================================================
+example-3: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+assign load = out[7] = (out[7] & ~(amount-1)) | (((~out[7] & amount) << (load ? 0 : amount));
+// rotate the data register (out[7] = (out[7] >> 1))
+assign out[7] = out[7] >> 1 | (out[7] << (8 - amount));
+// write the load and the out registers to output
+
+================================================================
+example-4: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(*)
+begin
+    if (load) begin
+        out(BIT_WIDTH-amount-load_width,0) = amount_shift_in(amount);
+    else
+        out(0,0) = clock_and_shift(amount,load_width) << (BIT_WIDTH-amount);
+end
+
+================================================================

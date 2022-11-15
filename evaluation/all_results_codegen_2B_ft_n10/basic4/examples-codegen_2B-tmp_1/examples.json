@@ -1,0 +1,79 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nwire [4:0] sel_b;\nassign sel_b = ( sel ) ? b : 4'b1111;\nmux2to1 mux_inst0 (\n// Output, input1\n.out(out[0]),\n.in0(a[0]), \n// Input, input2\n.in1(sel_b[0]),\n.sel(sel)); \nmux2to1 mux_inst1 (\n// Output, input1\n.out(out[1]),\n.in0(a[1]), \n// Input, input2\n.in1(sel_b[1]),\n.sel(sel)); \nmux2to1 mux_inst2 (\n// Output, input1\n.out(out[2]),\n.in0(a[2]), \n// Input, input2\n.in1(sel"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nnot #(5) n (sel,w);\nand g1(w[0], a[0], sel);\nand g2(w[2], a[1], sel);\nand g3(w[4], b[1], w[0]);\nand g4(w[5], b[2], w[2]);\nand g5(w[1], b[3], sel);\nor g6(out[0], w[1], w[4]);\nor g7(out[1], w[2], w[5]);\nor g8(out[2], w[1], w[2]); \nor g9(out[3], w[5], w[3]);\nor g10(out[4], w[4], w[3]);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// mux can be used with an arbitrary number of i/pairs, not just 2.\nassign out = sel?b:a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign out=( sel==1'b1)? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign out=(~sel&a[0])|(sel&b[0]);\n// if sel=0 then assign from a else from b.\n// if sel=1 then assign from b else from a.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nreg [4:0] out_min;\nalways @( sel or a or b )\ncase( sel )\n\t0: out = a;\n\t1: out = b;\nendcase\nalways @( sel or out )\ncase( sel )\n\t0: out_min = out;\n\t1: out_min = {~out[4], out[3:0]};\nendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign out[0]=sel&a[0]|~(sel&a[0])&b[0];\nassign out[1]=sel&a[1]|~(sel&a[1])&b[1];\nassign out[2]=sel&a[2]|~(sel&a[2])&b[2];\nassign out[3]=sel&a[3]|~(sel&a[3])&b[3];\nassign out[4]=sel&a[4]|~(sel&a[4])&b[4];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nassign out=(sel)? b:a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": " In this case, a and b have the same width.\n// Notice out is 5 bits\nmux_4to1 UUT( .inA(a), .inB(b), .sel(sel), .out(out)) ;\n"
+    }
+  ],
+  "created": 1663606896,
+  "id": "cmpl-9eowY14UTbw1lwBTlG81Nf84rTgMJ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 813,
+    "prompt_tokens": 70,
+    "total_tokens": 883
+  }
+}

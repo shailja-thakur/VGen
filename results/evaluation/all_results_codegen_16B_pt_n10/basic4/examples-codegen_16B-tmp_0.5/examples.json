@@ -1,0 +1,79 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign both a and b to out.\n// When sel=3, do nothing.\nassign out = sel ? b : a;\n\n// Design a 2-to-1 multiplexer.\nmodule mux2( \ninput [2:0] a, b,\ninput sel,\noutput [2:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n// When sel=2, assign both a and b to out.\n// When sel=3, do nothing.\nassign out = sel ? b : a;\n\n// Design a 3-to-1 multiplexer.\nmodule mux3( \ninput [3:0] a, b,\ninput sel,\noutput [3:0] out );\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a | b to out. \n// When sel=3, assign a & b to out. \nalways @(posedge clk) begin\n  if (sel == 0) begin\n    out <= a;\n  end else begin\n    if (sel == 1) begin\n      out <= b;\n    end else begin\n      if (sel == 2) begin\n        out <= a | b;\n      end else begin\n        if (sel == 3) begin\n          out <= a & b;\n        end\n      end\n    end\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n  if (sel==0) out <= a;\n  else out <= b;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// When sel=2, do nothing.\n// When sel=3, assign a to out.\nassign out = (sel==0) ? a : b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a to out.\n// When sel=3, assign b to out.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a&b to out. \n// When sel=3, assign a&~b to out. \nassign out = (sel==0)?a:b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a to out. \n// When sel=3, assign b to out.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a to out. \n// When sel=3, assign b to out.\nassign out = (sel==0) ? a : b;\n\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n// When sel=2, assign a to out. \n// When sel=3, assign b to out.\nassign out = (sel==0) ? a : b;\n\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n// When sel=2, assign a to out. \n// When sel=3, assign b to out.\nassign out = (sel==0) ? a : b;\n\n// When sel=0, assign a to out. \n// When"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    }
+  ],
+  "created": 1663534720,
+  "id": "cmpl-PE9uBQwMp2y8c3sh334N71vj6vomJ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 745,
+    "prompt_tokens": 70,
+    "total_tokens": 815
+  }
+}

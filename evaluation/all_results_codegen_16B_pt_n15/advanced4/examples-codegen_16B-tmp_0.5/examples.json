@@ -1,0 +1,119 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// output register q is shifted by amount bit-positions.\n// q = {q[63:0]}\n// q[63] = q[63]\n// q[62:0] = q[62:0] + amount\n// q[63] = q[63]\n// q[62:0] = q[62:0] + amount\n// q[63] = q[63]\n// q[62:0] = q[62:0] + amount\n// q[63] = q[63]\n// q[62:0] = q[62:0] + amount\n// q[63] = q[63]\n// q[62:0] = q[62:0] + amount\n// q[63] = q[63]\n// q[62:0] = q[62:0] + amount\n// q[63] ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign q = (data[63:0] << (amount*8)) | (data[63:0] >> ((64-amount)*8));\n\nreg [1:0] shift_ena;\nreg [63:0] shift_amount;\nreg [63:0] shift_data;\nreg [63:0] shift_q;\n\nalways @(posedge clk) begin\n  if (ena) begin\n    shift_ena <= amount;\n    shift_data <= data;\n    shift_q <= q;\n  end\nend\n\nalways @(posedge clk) begin\n  if (ena) begin\n    if (shift_ena == 1) begin\n      shift_amount <= shift_ena;\n    end\n  end\nend\n\nalways @(posedge clk) begin\n  if (ena) begin\n    if (shift_ena == 2"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a simple two-bit adder.\n// The result is applied to the data register.\n// The result is shifted into the shifter, and then the shifter is\n// shifted by one bit to the right.\n// The shifter is implemented as a two-bit adder.\n// The shifter output is applied to the data register.\n// The shifter output is shifted by one bit to the right.\n\n\n// The adder is implemented as a two-bit adder.\n// The result is applied to the data register.\n// The result is shifted into the shifter, and then the shifter is\n// shifted by one bit to the right.\n// The shifter is implemented as a two-bit adder.\n// The shifter output is applied to the data register.\n// The shifter output is shifted by one bit to the right.\n// The shifter output"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n  if (ena)\n    q <= data[63:0];\nend\n\nalways @(posedge clk)\nbegin\n  if (ena)\n    q <= q << amount;\nend\n\nalways @(posedge clk)\nbegin\n  if (ena)\n    q <= q >> amount;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n  if(load && ena) begin\n    q <= data;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a 4-bit counter, with the\n// four data bits being loaded in parallel into it. The counter\n// is clocked by the rising edge of clock. The counter is incremented\n// by a 1, and the counter is loaded with a 1 when the load signal\n// is enabled. The counter is decremented by a 1 when the shift\n// register is shifted right. The counter is decremented by a 1\n// when the shift register is shifted left. The counter is loaded\n// with a 1 when the enable signal is enabled. The counter is\n// loaded with a 1 when the load signal is enabled.\n//\n// The shift register is implemented as a 4-bit counter, with the\n// four data bits being loaded in parallel into it. The counter\n// is clocked by the rising edge of clock. The counter is incremented\n// by a 1, and the counter is loaded with a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// 1'b0: shift left by 1 bit.\n// 1'b1: shift left by 8 bits.\n// 1'b0: shift right by 1 bit.\n// 1'b1: shift right by 8 bits.\n\nalways @(posedge clk) begin\n\tif(ena)\n\tq <= data;\nend\n\nalways @(posedge clk) begin\n\tif(ena)\n\tif(load)\n\tq <= data;\nend\n\nalways @(posedge clk) begin\n\tif(ena && load)\n\tq <= data;\nend\n\nalways @(posedge clk) begin\n\tif(ena)\n\tif(amount == 2'b00)\n\tq <= data[63];\n\telse if(amount == 2'b01)\n\tq <= data[63:56];\n\telse if(amount =="
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n//#pragma HLS RESOURCE variable=load core=AXI4-LiteS metadata=\"-bus_bundle S_AXI_BRAM\"\n//#pragma HLS RESOURCE variable=ena core=AXI4-LiteS metadata=\"-bus_bundle S_AXI_BRAM\"\n//#pragma HLS RESOURCE variable=amount core=AXI4-LiteS metadata=\"-bus_bundle S_AXI_BRAM\"\n//#pragma HLS RESOURCE variable=data core=AXI4-LiteS metadata=\"-bus_bundle S_AXI_BRAM\"\n//#pragma HLS RESOURCE variable=q core=AXI4-LiteS metadata=\"-bus_bundle S_AXI_BRAM\"\n//#pragma HLS RESOURCE variable=clk core"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a simple register that is loaded with data on the rising edge of the clock.\n// The register is shifted on the rising edge of the clock.\n// The shift register is loaded with data on the rising edge of the clock.\n// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.\n// The shifter can be loaded with data on the rising edge of the clock.\n// The shifter can be enabled and disabled by the enable signal.\n// The shifter can be reset by the reset signal.\n// The shifter can be clocked by the clock.\n// The shifter can be clocked by the load signal.\n// The shifter can be clocked by the enable signal.\n// The shifter can be clocked by the reset signal.\n// The shifter can be clocked by the clock.\n// The shifter can be"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// This is a simulation of the above logic.\nalways @(posedge clk)\nbegin\n  if (ena)\n    q <= data;\n  if (load)\n    q <= data;\n  if (ena)\n    q[amount] <= data[amount];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\nalways @(posedge clk) begin\n  if (ena) begin\n    if (load) q <= data;\n    else q <<= amount;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nvoid advshift(\n    input clk,\n    input load,\n    input ena,\n    input [1:0] amount,\n    input [63:0] data,\n    output reg [63:0] q)\n{\n    // always stay in reset\n    if (!ena) {\n        q = 0;\n    } else {\n        // shift register\n        if (load) {\n            q = data;\n        } else {\n            q = q << amount;\n            q = q | (data >> (64 - amount));\n        }\n    }\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n\n// Design a 64-bit arithmetic shift register, with synchronous load. \n// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.\nmodule advshift(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\n\n// Design a 64-bit arithmetic shift register, with synchron"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n// Registers\nreg [63:0] q;\n\n// Inputs\ninput clk, load, ena, amount;\ninput [63:0] data;\n\n// Outputs\noutput [63:0] q;\n\nalways @(posedge clk) begin\n  if (ena) begin\n    if (load) begin\n      q <= data;\n    end\n    if (amount = 2'b00) begin\n      q <= data[63:0];\n    end else if (amount = 2'b01) begin\n      q <= data[63:0] << 1;\n    end else if (amount = 2'b10) begin\n      q <= data[63:0] >> 1;\n    end else if (amount = 2'b11) begin\n      q <= data[63:0] >> 8;\n    end\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk) begin\n  if (ena) begin\n    if (load) begin\n      q <= data[63:0];\n    end\n    else begin\n      q <= q + (amount ? 8 : 1);\n    end\n  end\nend\n"
+    }
+  ],
+  "created": 1663535332,
+  "id": "cmpl-nFwT936I5NXJ5GngWq1NParH14six",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2330,
+    "prompt_tokens": 184,
+    "total_tokens": 2514
+  }
+}

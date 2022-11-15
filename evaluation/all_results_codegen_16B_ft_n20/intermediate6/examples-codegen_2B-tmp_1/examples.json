@@ -1,0 +1,54 @@
+// This is a ram module
+module ram
+(
+input [7:0] data,
+input [5:0] addr,
+input we, clk,
+output [7:0] q
+);
+reg [7:0] ram[63:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// when we is low, read data from ram at address addr\n// data is written to ram when address and write enable are high\n// ram[addr] holds the information at address addr\nalways @(posedge clk)\nbegin\nif (we) \n\t ram[addr] <= data;\nelse \n\t q<= ram[addr];\nend\n// creating a small program to show off the ram module\ninitial\nbegin\n// writing to the ram module\n#10 data=8'd100; addr=6'd25; we=1'b1;\n#10 data=8'd0; we=1'b0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(we)\nram[addr]<=data;\nelse\nq<=ram[addr];\nend\n//\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// when we is low, read data from ram at address addr\n// and assign the result to q\nlocalparam FILL = 8'h00;\nalways @(posedge clk)\n\tif(we) ram[addr] <= data;\nalways @(posedge clk)\n\tif(!we) q <= ram[addr];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// raster line loop. addr is column, counter is row\nalways @(posedge clk)\nif (we)\ncase (addr)\n\n// 0000\n7'b0000000: ram[0] <= data;\n7'b0000001: ram[1] <= data;\n7'b0000010: ram[2] <= data;\n7'b0000011: ram[3] <= data;\n7'b0000100: ram[4] <= data;\n7'b0000101: ram[5] <= data;\n7'b0000110: ram[6] <= data;\n7'b0000111: ram[7] <= data;\n// 0001\n7'b0001000: ram[8] <= data;\n7'b0001001: ram[9] <= data;\n7'b0001010: ram[10] <= data;\n7'b0001011:"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign q = we ? data : ram[addr];\nalways @ (posedge clk)\nif (we)\nram[addr] <= data;\n"
+    }
+  ],
+  "created": 1663304627,
+  "id": "cmpl-O7ii4JqgPu9wMUVmrrvgTiPcwqaAz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 502,
+    "prompt_tokens": 85,
+    "total_tokens": 587
+  }
+}

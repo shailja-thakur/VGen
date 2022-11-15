@@ -1,0 +1,84 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "state begin_state0(reg present_state, reg next_state)\n{\n  presult state0;\n\n  present_state = 1;\n  transition;\n  next_state = state1;\n  \n}\nstate1: begin\n{\nsend answer = out;\n}\nend\nstate begin_state1(reg present_state, reg next_state)\n{\n  presult state1;\n  present_state = 0;\n  transition;\n  next_state = state0;\n}\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always {present_state = next_state = 0;}\nassign out = present_state;\n\nalways @(posedge clk) begin\n  switch(reset)\n  begin\n    case(0):\n      next_state = 0;\n      out = present_state;\n      break;\n    case(1):\n      next_state = 2;\n      break;\n  end\nend\n\nalways @(posedge clk) begin\n  //  present_state will be overwritten later, keep it in a register\n  if(present_state == 0) begin\n    if(in == 1) present_state <= 1;\n    else if((in==0) & (present_state == 2)) present_state <= 0;\n  end else begin\n    if(in == 1) present_state <= 1;\n    else if((in==0) & (present_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// out=1 in state 1 and out=0 in state 0\nalways @(posedge clk)\nbegin\n    if (reset) begin\n\tpresent_state = 0;\n\tnext_state = 0;\n    end\n    else begin\n\tif (present_state == 0) begin\n\t    if (in) begin\n\t\tpresent_state = 1;\n\t    end else begin\n\t\tnext_state = 1;\n\t    end\n\tend else begin\n\t    if (in) begin\n\t\tpresent_state = 0;\n\t    end else begin\n\t\tnext_state = 0;\n\t    end\n\tend\n\tout = next_state;\n    end\nend\n  \n  \n\n#52 \"simple_fsm.cpp\" 2\n\n// Test that the code for generating the Moore (branchless) State\n// machine really works.  PUT LTD is pretty"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n    if(present_state == 0 && in) first_preset_state = 0;\n    if(present_state == 0 && !in) first_preset_state = 1;\n\tif(present_state == 1 && in)  next_state = 0;\n\tif(present_state == 1 && !in) next_state = 1;\n\n    present_state = next_state;\n\n    if(present_state == 0 && out) second_preset_state = 0;\n    if(present_state == 0 && !out) second_preset_state = 1;\n\tif(present_state == 1 && out)  next_state = 0;\n\tif(present_state == 1 && !out) next_state = 1;\n\n    present_state = next_state;\n    out = present_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "initial begin\n    present_state = 0; // Reset state is 0\n    next_state = 1; // State 1\n    out = 1;\n    if (reset)\n        if (present_state != 0)\n            next_state = 0;\n    else // only present_state can go here\n        if (in == 1)\n            next_state = 0;\n    always @(posedge clk) begin // Clock\n        if (reset) {\n            present_state = next_state; // Preset state\n            out = 1;\n        }\n        else\n            if (present_state == 0) {\n                out = 1;\n                if (in == 1) // transition to state 1\n                    next_state = 1;\n            }\n            else if (present_state == 1) {\n                if (in == 1) // no transition to state 1\n                    if ("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "simple_state 0 {\n    present_state = 0;\n\n    (* {{out}} = 1)\n}\nsimple_state 1 {\n    present_state = 1;\n\n    (* {{out}} = 0)\n    if (reset) {\n        sofnext (1);\n    } else if (in) {\n        next_state = present_state;\n        sofnext (next_state);\n    } else {\n        next_state |= 0x1;\n        sofnext (next_state);\n    }\n}\nsimple_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (pot_reset()) next_state <= 0;\n    else if (in) next_state <= 0;\n    else next_state <= 1;\n    present_state <= next_state;\n\n    if (present_state == 0) out <= 1;\n    else out <= 0;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "simple_fsm process(present_state, next_state)\n{ \n    out = present_state, present_state = next_state; \n}\n// Reset the present state to 0 and the next state to the value passed in\nsimple_fsm enable(bool state, reg next_state);\n// Forgivingly admit that I don't quite understand args to the module\nvoid a_simple_fsm();\nreg present_state, next_state;\n// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1\n// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0\n// out=1 in state 0 and out=0 in state 1\n//\n// We've only written 1 responsibility, out, that fixes our output to indicate\n// the present state"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always\n#(1.0/128.0)\nbegin\n    present_state <= 0;\n    present_state_next: switch(present_state)\n    endcase\n    next_state <= present_state\n    for(i=0 ; i<=4096; i=i+1)\n    {\n        next_state_next: switch(next_state)\n        endcase\n        next_state = i%2;\n    }\n    out <= present_state_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if present_state == 0 and in == 1\n    next_state <- 1;\n  else if present_state == 1 and in == 0\n    next_state <- 0;\n  present_state <== next_state;\n  out <= present_state;\nend\n"
+    }
+  ],
+  "created": 1663534650,
+  "id": "cmpl-NriAuBzNYKc00iRYUJaXj1d3DAyek",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1525,
+    "prompt_tokens": 148,
+    "total_tokens": 1673
+  }
+}

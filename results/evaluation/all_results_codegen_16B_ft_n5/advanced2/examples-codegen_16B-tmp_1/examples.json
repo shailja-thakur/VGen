@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n\tbegin\n// \tAssuming we're incrementing q only when ena is high (stable)\n\tif (reset) q <= 0;\n\telse\n\tbegin\n\t// Increment the reg value, but don't override if value is 9.\n\tif (q<4'b1001 && slowena) q <= q + 1;\n\tend\n\tend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\ncase (reset)\n1'b0: q <= 4'h0; //when reset is active, override output.\n1'b1: if (slowena) begin\nif (q == 4'd9)\nq <= 4'h0; // if it hits 9, override again.\nelse\nq <= q + 1'b1; // regular increment.\nend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif(reset || (!slowena)) begin\nq <= 4'b0000;\nend\nelse begin\nif(q < 9 & slowena == 1'b1) begin\nq <= q + 4'b0001;\nend\nend\nend // end always\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset) begin\n if (reset) begin\nq <= 0;\nend\nelse begin\nif (slowena) begin\nif (q < 9) q <= q + 1;\nend \nend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\ninitial begin\n\tq = 0;\nend\n\nalways @(posedge clk) begin\n\tif (reset || !slowena) begin\n\t// if reset is active or slowena is inactive, output q to be reset to 0\n\t// otherwise increment unless q is 9, at which point \"q <9 \" is true\n\t// and the output will be left unchanged\n\tend else if (~|q || q == 9) begin\n\t// the output will be clocked and the q register incremented every\n\t// time the output is inactive and the | operator is true or q is 9\n\tq = q + 1;\n\tend\nend\n\n"
+    }
+  ],
+  "created": 1663543626,
+  "id": "cmpl-BbEU0FkcGWHMNjEZ4mt1BfFKpczhL",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 471,
+    "prompt_tokens": 98,
+    "total_tokens": 569
+  }
+}

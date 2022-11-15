@@ -1,0 +1,36 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if(sel)\n  {\n    priority_encoder_sel\n        #((3&1)|(2&2)|(1&1)|(0&0))  // Select input bit order and edge detection\n        = in[0] & in[1] & in[2] & in[3];\n    priority_encoder_data\n        #((3&1)|(2&2)|(1&1)|(0&0))  // Select input bit order and edge detection\n        = in[0] & in[1] & in[2] & in[3];\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "wire sel = 0;\nalways @ ( posedge clk or (not in) )\n  if (sel)\n    pos <= in[in[0]];\n  else\n    pos <= 0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n  reg[0] <= in[sel];\n  if (sel == 1)\n    pos <= reg[0];\n"
+    }
+  ],
+  "created": 1663519425,
+  "id": "cmpl-K1XP2UURZuZrAZlNem6kkBsGFNMK8",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 238,
+    "prompt_tokens": 65,
+    "total_tokens": 303
+  }
+}

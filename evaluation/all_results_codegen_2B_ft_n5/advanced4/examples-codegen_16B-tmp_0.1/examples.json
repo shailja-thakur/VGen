@@ -1,0 +1,329 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif (load)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if (amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if (amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if (amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse\n\tbegin\n\tif(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif (load)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if (amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if (amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if (amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 20,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 21,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 22,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 23,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 24,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse\n\tbegin\n\tif(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 25,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 26,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 27,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif (load)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if (amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if (amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if (amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 28,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 29,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 30,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 31,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 32,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 33,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse\n\tbegin\n\tif(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:1] << 1;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq[63:1] <= q[63:1] >> 1;\n\tq[0] <= q[0];\n\tend\n\telse\n\tbegin\n\tq[63:1] <= q[63"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 34,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 35,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 36,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 37,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 38,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 39,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 40,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 41,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif (load)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if (amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if (amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if (amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 43,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 44,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 46,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 48,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 49,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663550724,
+  "id": "cmpl-AQhIm2AroRx8lv1iOgkf1JWddHEzP",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 7655,
+    "prompt_tokens": 184,
+    "total_tokens": 7839
+  }
+}

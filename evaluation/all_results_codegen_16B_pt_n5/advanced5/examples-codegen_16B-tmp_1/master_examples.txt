@@ -1,0 +1,222 @@
+example-0: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+reg [1:0] shr4, shr5, shr6, shr7, shr8, shr9, shr10, shr11, shr12, shr13, shr14, shr15, shr16, shr17, shr18, shr19, shr20;
+reg [1:0] shr5_6, shr7_8, shr9_10, shr11_12, shr13_14, shr15_16, shr17_18, shr19_20;
+reg [1:0] shr5_6_7_8, shr9_10_11_12, shr13_14_15_16, shr19_20_31;
+reg [1:0] int1, int2, int3, int4, int5, int6, int7, int8;
+reg [1:0] int1_2_3_4, int5_6_7_8
+================================================================
+example-1: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @(posedge clk, posedge reset)
+ begin
+ // Starts state machine, depending on states.
+ cur_state <= 1'b0;
+ z <= 1'b0;
+
+ if (reset == 1'b0)
+ begin
+ cur_state <= A_A;
+ end
+ else
+ begin
+ case (cur_state)
+ case SA:
+            if (a == 1)
+            begin
+   next_state <= SAB;
+   end
+ case SB:
+            if (b == 1)
+            begin
+   next_state <= SAB;
+   end
+ case SAB:
+            if (a == 1 && b == 1)
+            begin
+   next_state <= IDLE;
+   end
+ case IDLE:
+            if (a == 1 && b == 1)
+            begin
+   next_state <= SA;
+   end
+ case A_A:
+
+================================================================
+example-2: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+reg [1:0] state;
+wire result;
+reg idle = 0;
+// instantiation of logic functions
+reg SA1 = 0;
+reg SB1 = 0;
+reg SAB1 = 0;
+reg SA0 = 0;
+reg SB0 = 0;
+reg SAB0 = 0;
+reg FSM_INSTANTIATION = 0;
+
+// FSMInstantiation = [ a, b, clk, reset, state ]
+function FSMInstantiation(clk,reset,SA1,sb1,SAB1,sa0,sb0,SA0,SB0,SAB0);
+begin FSM_instance:
+FSM_instance  [ ! reset, ! (a = IDLE), ! (a = IDLE), ! (b = IDLE), ! (z = IDLE)] else:
+setnextstate SA0:
+if ((sa0
+================================================================
+example-3: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+// z is assigned zero otherwise
+always @(posedge clk) begin
+if( reset ) begin
+  cur_state <= IDLE;
+  next_state <= IDLE;  
+end else begin
+  if(((a==0 && b==0)||(a==1&&b==1)) && cur_state!=IDLE) begin
+    cur_state <= SAB;
+    next_state <= IDLE;
+  end else
+  if(a==1 && cur_state==IDLE) begin
+    cur_state <= SA;
+    next_state <= IDLE;
+  end else begin
+    if(b==1 && cur_state==IDLE) begin
+      cur_state <= SB;
+      next_state <= IDLE;
+    end else begin
+      cur_state <= IDLE;
+      next_state <= IDLE;
+    end
+  end
+================================================================
+example-4: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @(posedge clk or posedge reset) begin
+  if (reset) begin
+    cur_state <= IDLE;
+    next_state <= IDLE;
+  end
+  else begin
+    if (a and b) begin
+      cur_state <= SAB;
+      next_state <= SAB;
+    end
+    else if (a) begin
+      cur_state <= SA;
+      next_state <= SA;
+    end
+    else if (b) begin
+      cur_state <= SB;
+      next_state <= SB;
+    end
+    else begin
+      cur_state <= IDLE;
+      next_state <= IDLE;
+    end
+    case cur_state
+    case next_state
+      case IDLE:
+        z <= 0;
+      endcase
+    endcase
+  end
+end
+// loads SAB
+a_s
+================================================================

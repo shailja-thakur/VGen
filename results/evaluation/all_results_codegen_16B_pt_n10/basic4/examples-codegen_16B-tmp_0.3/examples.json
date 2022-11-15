@@ -1,0 +1,79 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " \nassign out = (sel==1) ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a to out. \n// When sel=3, assign b to out. \nassign out = (sel==0) ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk) begin\n  if (sel==0)\n    out <= a;\n  else\n    out <= b;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a to out. \n// When sel=3, assign b to out. \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a and b to out.\n// When sel=3, do nothing.\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// When sel=2, do nothing.\n// When sel=3, assign both a and b to out.\nassign out = (sel==3) ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nassign out = (sel==0) ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a to out.\n// When sel=3, assign b to out.\n"
+    }
+  ],
+  "created": 1663534713,
+  "id": "cmpl-vPk6EyTDazVzqPAwy1XdPpl7cxRzp",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 304,
+    "prompt_tokens": 70,
+    "total_tokens": 374
+  }
+}

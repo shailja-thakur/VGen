@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds four bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds four bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds four bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds four bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds four bits and produces a"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nalways @(posedge clk) begin\n\tif (rst) begin\n\t\tcout <= 0;\n\t\tsum <= 0;\n\tend else begin\n\t\tif (a) begin\n\t\t\tcout <= 1;\n\t\t\tsum <= b;\n\t\tend else begin\n\t\t\tcout <= 0;\n\t\t\tsum <= 0;\n\t\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nwire carry_in, carry_out, sum_in;\nwire a_in, b_in;\n\n// The adder adds two bits and produces a sum and carry-out.\n// The carry-in is the carry-out of the previous cycle.\n// The sum_in is the sum of the two bits.\n// The carry-out is the carry-in of the next cycle.\n// The sum is the sum of the two bits.\n// The carry-in is the carry-out of the previous cycle.\n// The carry-out is the carry-in of the next cycle.\nreg [3:0] sum;\nreg [3:0] carry_in;\nreg [3:0] carry_out;\nreg [3:0] sum_in;\n\nalways @(posedge clk) begin\n    sum_in = a_in + b_in;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds three bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds three bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds three bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds three bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds three bits and produces a"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nwire carry_out;\nwire sum;\n\nassign cout = sum + carry_out;\nassign carry_out = a[0] + b[0] + (sum[0] == 0);\nassign sum = a[1] + b[1] + carry_out;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nwire a_in, b_in, cin, cout_out, sum_out;\n\n// The carry-in is the bit that was added last.\nwire carry_in;\n\n// The carry-out is the bit that was added last.\nwire carry_out;\n\n// The sum is the sum of the two bits.\nwire sum;\n\n// The half adder is a full adder.\n// It adds two bits and produces a sum and carry-out.\nalways @(posedge clk)\nbegin\n  if (a_in == 1)\n    sum_out <= sum;\n  else if (b_in == 1)\n    sum_out <= sum;\n  else\n    sum_out <= 0;\n\n  if (a_in == 1)\n    carry_out <= carry_in;\n  else if (b_in == 1)\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds two bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a half adder. A half adder adds two bits and produces a sum and carry-out.\nmodule half_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds two bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a half adder. A half adder adds two bits and produces a sum and carry-out.\nmodule half_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a full adder. A full adder adds two bits and produces a"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nwire cin, sum_out;\n\nalways @(posedge clk)\nbegin\n    sum_out <= sum;\n    cout <= a + b;\n    sum <= a + b;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\nreg [2:0] sum;\nreg [1:0] carry;\nreg [1:0] a_bit;\nreg [1:0] b_bit;\nreg [1:0] sum_bit;\nreg [1:0] carry_out;\n\nalways @(posedge clk) begin\n    if (a_bit == 0) begin\n        a_bit <= 1;\n        sum <= sum + carry;\n        carry <= carry + b_bit;\n    end else begin\n        a_bit <= 0;\n        sum_bit <= sum + carry;\n        carry_out <= carry + b_bit;\n    end\nend\n\nalways @(posedge clk) begin\n    if (b_bit == 0) begin\n        b_bit <= 1;\n        sum <= sum_bit;\n        carry_out <= carry_out + a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nhalf_adder(a, b, cout, sum) {\n    sum = a + b;\n    cout = sum >> 1;\n    cout = cout << 1;\n    cout = cout + (sum & 1);\n}\n\n// This is a full adder. A full adder adds four bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\ninput a, b;\noutput cout, sum;\n\nfull_adder(a, b, cout, sum) {\n    sum = a + b;\n    cout = sum >> 2;\n    cout = cout << 2;\n    cout = cout + (sum & 3);\n}\n\n// This is a full adder. A full adder adds four bits and produces"
+    }
+  ],
+  "created": 1663534863,
+  "id": "cmpl-lYLmtRLxx9jHqar1ZnQ1lLUExSOXz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1637,
+    "prompt_tokens": 43,
+    "total_tokens": 1680
+  }
+}

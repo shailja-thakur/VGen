@@ -1,0 +1,84 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// You may use the next_state in this implementation, but this combinational always block is equivalent:\n\nassign out = present_state & (in);\n\n// \n\nalways @ (posedge clk)\n\tif(reset)\n\tbegin\n\t// When the FSM is reset, output is 0\n\tpresent_state <= 1'b0;\n\tend\n\telse\n\t// The FSM outputs a new value when there is a change\n\tpresent_state <= next_state;\n\t\n// State transitions\nalways @ (*) \n\tcase(present_state)\n\t1'b0: next_state = (in)? 1'b1 :1'b0;\n\t1'b1: next_state = (in)? 1'b0 :1'b1;\n\tendcase\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n begin \n\tif(reset) \n\tbegin\n\tpresent_state = 0;\n\tnext_state = 0;\n\tend \n\telse \n\tbegin\n\tpresent_state = next_state;\n\tend\nend\nalways @(posedge clk)\nbegin\n\tif(reset) \n\tbegin\n\tnext_state = 0;\n\tend\n\telse \n\tbegin\n\tnext_state = next_state;\n\tend\nend\nassign out = (present_state == 0) && (in == 1) ? 0:1;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign out=(present_state<>next_state);\nalways @(posedge clk)\n\tif (reset) \n\tbegin \n\tnext_state=0;\n\tpresent_state=0;\n\tend\n\telse \n\tbegin \n\tpresent_state=next_state;\n\tcase(present_state)\n\t0: next_state=in?1:0;\n\t1: next_state=in?1:0;\n\tendcase\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or posedge reset) begin\n\tif (reset)\t\n\tpresent_state <= `A;\n\telse\n\tpresent_state <= next_state;\nend\n\nalways @ (posedge clk or posedge reset) begin\n\tif (reset)\t\n\tnext_state <= `A;\n\telse\n\tif (present_state == `A && in == `A)\n\tnext_state <= `B;\n\telse\t \n\tif (present_state == `B && in == `B)\n\tnext_state <= `A;\nend\n\nassign out = `A;\n \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) \nif (reset) \npresent_state <= 0; \nelse \npresent_state <= next_state;\n// The Moore output doesn't depend on the input in this state machine\nalways @(present_state) \ncase(present_state)\n0: out <= 0;\n1: out <= in;\nendcase\n// The Moore state machine is created by declaring a always block.\n// Complementary codes are shown below.\n// Moore output depends on the present state and the input but not the next state.\n// Complementary codes are shown below.\n// bor(out, 1, out);\n// if (reset)\n// end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "assign out = present_state & in;\n\nalways @(posedge clk or negedge reset)\n\tbegin\n\tif(present_state == 0 && in == 1)\n\tbegin\n\tnext_state = 1;\n\tpresent_state = 1;\n\tend\n\telse if(present_state == 1 && in == 0)\n\tbegin\n\tnext_state = 0;\n\tpresent_state = 0;\n\tend\n\tpresen_state = present_state;\n\tend\n\t\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "assign out=(present_state==1'b1)^(~in);\n\n\n//creates two versions of the state matrix\n// one that takes no input and one that takes an input\n//Notice how the state changes are described on the same lines.\n \nassign ns[0]={ns[0][3], ns[0][4],ns[0][2], ns[0][1],ns[0][0]}; \nassign ns[1]={ns[1][3], ns[1][4],ns[1][2], ns[1][1],ns[1][0]}; \n\n//above code takes no input and sets the output, ns[2], to be equal to ns[0]\n\nalways@(posedge clk or posedge reset)\n\tif(reset)\n\tpresent_state<=ns[0];\n\telse \n\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\n\tif (reset) \n\tbegin\n\t present_state <= 0;\n\t next_state = 0;\n\t end \n\telse \n\tpresent_state <= next_state;\nalways @ (present_state or in)\n\tcase(present_state)\n\t0: \tif (in) \n\tnext_state = 0; \n\telse \n\tnext_state = 1;\n\t1: \tif (in) \n\tnext_state = 1; \n\telse \n\tnext_state = 0;\n\tendcase\nassign out = (present_state == 1 && in) ? 1'b1 : 1'b0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "assign next_state = in ? present_state : reset;\nalways @(posedge clk or negedge reset) begin // This block creates two versions of the state machine: an initialized one and an uninitialized one\n\t// This line performs depth-wise copying\n\tpresent_state = next_state;\nend\nassign out = (present_state == 1'b0);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "assign out=(present_state == 1 && in) || (present_state == 0 && ~in);\n// State transition logic\nalways @(*)\n\tcase(present_state)\n\t0: next_state=in;\n\t1: next_state=1'b0;\n\tendcase\n// Output logic\nalways @(posedge clk)\n\tcase(present_state)\n\t0: present_state=1'b0;\n\t1: present_state=1'b1;\n\tendcase\n"
+    }
+  ],
+  "created": 1663600310,
+  "id": "cmpl-CVkgAjmI3ZgIy3L2PGmUHwLvzd3hr",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1464,
+    "prompt_tokens": 148,
+    "total_tokens": 1612
+  }
+}

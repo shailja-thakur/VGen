@@ -1,0 +1,119 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "    always @(posedge clk)\n    if (ena) begin // if ena is high, assign data to shift register q.\n        q <= data;\n    end else begin // when load is high, assign data[63:0] to shift register q.\n        q <= data;\n    end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign q = (data) `amount;\n\nalways @(posedge clk) begin\n  if (ena) q <= data;\n  if (load && ena) q <= data;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// 1-bit left shift register\nalways @(posedge clk) \n\tif(ena & load) q <= data; \n\telse if(amount[1] == 1) q <= q << 1;\n\telse if(amount[1] == 0) q <= q; \n\n// 8-bit left shift register \nalways @(posedge clk) \n\tif(ena & load) q <= q << 8; \n\telse if(amount[1] == 1) q <= q << 7;\n\telse if(amount[1] == 0) q <= q;\n\n\n// 1-bit right shift register\nalways @(posedge clk) \n\tif(ena & load) q <= data; \n\telse if(amount[0] == 1) q <= q >> 1;\n\telse if(amount[0] == 0) q <= q"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// Design a 64-bit arithmetic shift register, with synchronous load. \n// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.\nmodule advshift(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\n// Design a 64-bit arithmetic shift register, with synchronous load"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// Note: Advanced arithmetic shifter can be used if the following is true:\n//  1. All inputs are asynchronous-loaded.\n//  2. All inputs are loaded and shifted before the shifter is enabled.\n//  3. All inputs are loaded and shifted with the same delays.\n//  4. The shifter is not clocked while the shifter is disabled.\n//  5. The shifter is not clocked while the shifter is enabled.\n//  6. The shifter is not clocked while the shifter is in pause mode.\n//  7. The shifter is not clocked while the shifter is in burst mode.\n//  8. There are only one or two inverters before the shifter.\n//  9. The data input is not asynchronous-loaded.\n// 10. The data input is not loaded while the shifter is disabled.\n// 11. The data input is"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\n\n// synch_load: \n//  '0' - Synchronous load.\n//  '1' - Asynchronous load.\n//\n// This function implements a synchronous load.\nvoid synch_load() {\n// load: \n//  '0' - Load shift register q with data[63:0].\n//  '1' - Load shift register q with 0.\n//\n// This function implements a synchronous load.\n  if (ena) {\n    q = data;\n    if (load) q = 0;\n  }\n}\n\n// synch_shift: \n//  '0' - Synchronous shift.\n//  '1' - Asynchronous shift.\n// \n// This function implements a synchronous shift.\nvoid synch_shift() {\n// ena: \n//  "
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// ###########################\n// ##    Notation Units    ##\n// ########################### \n\n// The loading of data from the register is performed by rising an edge on clk. \n// The clock is driven high, then data is loaded into the register, followed by a falling edge on clk.\n// The rising edge on the clk is used for the load. \n\n// When the register is written, there is a falling edge on clk.\n// The falling edge on the clk is used for the write. \n\n// The shifter is driven by rising and falling edges on clk. \n// The rising edge on the clk is used for the shift. \n// The falling edge on the clk is used for the next shift. \n\n// The ena pin is driven high on a rising edge on clk.\n// The clk is driven high on a rising edge on"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign q = {data, ena && load};\n\nalways @(posedge clk) if (ena) q <= data;\nalways @(posedge clk) if (load) q <= data;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n  if(ena) begin\n    q <= data;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// -------- begin architecture definition -------------------\n\n// input clk: synchronous shift register clock.\n// the data is loaded on the rising clock edge.\n// input ena: the enable signal, which should be high when the shift register should be shifted.\n// input load: the load signal, which should be high when the shift register should be loaded.\n// input amount: the shift amount, as 00=1 bit, 01=8 bits, 10=left, 11=right.\n// input data: the 8-bit input data.\n// output q: the 8-bit output data.\n// Advshift Register\nadvshift #(\n\t.clk(clk),\n\t.load(load),\n\t.ena(ena),\n\t.amt(amount),\n\t.data(data),\n\t.q(q)\n) advshift_inst(\n\t.clk(clk),\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// Implementation\nreg [63:0] q;   // shift register\nreg load;\nreg ena;\nreg clk;\nalways @(posedge clk)\n begin\n if(!ena)\n\tload <= 0;\n else if(load)\n {\n\tq <= data;\n\tload <= 0;\n }\n else if(ena)\n {\n\tif(amount == 2'b00)\n\t\tq <= data[63:0];\n\telse if(amount == 2'b01)\n\t\tq <= data[63:0];\n\telse if(amount == 2'b10)\n\t\tq <= data[63:0];\n\telse \n\t\tq <= data[63:0];\n }\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// Performs a left shift by 1 bit of the shift register.\n//\n// clk: The shift register's input clock. \n// load: The shift register's load input. \n// ena: The shift register's enable input. \n// amount: The shift register's amount of shift. \n// data: The shift register's data input. \n// q: The shift register's output. \nalways @(posedge clk, posedge load, posedge ena) begin\n  if (ena) q <= data;\n  if (load) q <= data;\nend\nend \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n// construct shft_reg:\n//    sreg = data[63:0]\n//    q = sreg[amount]\n// load: latch q with data[63:0].\n// ena: enables operation of shifter.\n// clk: clock source for shifter.\n// \n// asm volatile (\"sync\\n\"\n//                \"ldc r5, incr\\n\"\n//                \"ldc r6, load\\n\"\n//                \"ldc r7, ena\\n\"\n//                \"shft_reg: advshift r3, r6, r5, r7\\n\"\n//                \"swap r3, r4\\n\"\n//                \"swap r4, r5\\n\"\n//                \"swap r5, r6\\n\"\n//                \"swap r6, r7\\n\""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\n// Dont forget to define a clock generator and a load to finish the bus setup, if not they will be stuck forever.\nalways @(posedge clk) begin\n  if (ena) begin\n    if (load) q <= data;\n    else q <<= amount;\n  end else q = 0;\nend\n\n\n    \n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (ena) begin\n\t\tq <= (data << ((amount-1) << 1)) | (data >> (63 - (amount-1)));\n\tend\nend\n"
+    }
+  ],
+  "created": 1663535340,
+  "id": "cmpl-IMqE69CYozKZ0g34QmerV8hkYhpKp",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2040,
+    "prompt_tokens": 184,
+    "total_tokens": 2224
+  }
+}

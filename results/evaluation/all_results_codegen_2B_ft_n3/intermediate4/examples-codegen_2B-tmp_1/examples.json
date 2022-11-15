@@ -1,0 +1,42 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\npresent_state <= 0;\nelse if(in)\npresent_state <= 0;\nelse\npresent_state <= 1;\nend\n\n\nalways @(posedge clk)\nbegin\nif(reset)\nnext_state <= 0;\nelse\nbegin\ncase(present_state)\n1: if(in)\nnext_state <= 0;\nelse\nnext_state <= 1;\n\n0: if(in)\nnext_state <= 1;\nelse\nnext_state <= 0;\n\nendcase\ncase(next_state)\n0: #1 out <= 0;\n1: #1 out <= 1;\nendcase\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif(reset)\npresent_state <= 0;\nelse\ncase(present_state)\n0:\tnext_state <= (in)? 1 : 0;\n1:\tnext_state <= (in)? 0 : 1;\ndefault: next_state <= present_state;\nendcase\nend\nalways @(posedge clk or posedge reset)\nbegin\nif(reset)\npresent_state <= 0;\nelse\ncase(present_state)\n0:\tout <= 0;\n1:\tout <= 0;\ndefault: out <= present_state;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always@(posedge clk) begin\nif(reset==1) begin\npresent_state = 0;\nnext_state = 0;\nend\nelse\npresent_state = next_state;\nend\n// Moore FSM\nparameter begin_state=0, s0=1, s1=2, s2=3;\nreg present_state, next_state;\n// Initial block: body\nalways @(posedge clk) begin\nif(reset==1) \nnext_state <= begin_state;\nelse \nnext_state = present_state;\n// Sequential logic\ncase (present_state)\nbegin_state : next_state <= begin_state;\ns0 : next_state <= s0;\ns1 : next_state <= s1; \ns2 : next_state <= s2;\ndefault : next_state <= begin_state;"
+    }
+  ],
+  "created": 1663304499,
+  "id": "cmpl-ubUL6ey5AjTHsRo6T9iCCjYfTLknx",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 517,
+    "prompt_tokens": 148,
+    "total_tokens": 665
+  }
+}

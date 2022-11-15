@@ -1,0 +1,34 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nvoid evaluate();\n  \n\n\nint main( char *argv[] )\n{\n\n  // print argv\n  //pv(\"Argv: \", argv);\n\n  char* _a = argv[1];\n  /* int a = atoi(argv[1]); */ // argv[1] is a string arg\n  checkA(_a);\n  char* _b = argv[2];\n  int b = atoi(argv[2]);\n  checkB(_b);\n\n  setupPvs();\n  loadKernelCode();\n\n  coordinates, i;\n  unsigned n_chi = stripCount(kstart);\n\n  // compute input's length in words, assume chunk size is 2 bits!\n  int w_in = eightbit(atof(argv[3]));\n  evaluate();\n  //printf(\"w_in: %d\\"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nunit half_adder_s( \ninput a, b,\noutput cout );\n\nexport interface half_adder_s {\n\n    void half_adder_s_sPrime_i(\n    input a, b,\n    output cout );\n\n    void half_adder_s_aprime_i(\n    input a, b,\n    output cout ) ;\n\n};\n\n*/\n\n/* \nThe following should be implemented\n  sout = 0;\n  psumin =\n*/\n//public interface sout       @ sig( P.out, P.sig )\n@SledInterface\npublic interface sout( P.out, P.sig )\n{\n    void half_adder_s( \n//    input a, b,\n    input a, \n    output cout ); //sout0(\n//    input a0, b,\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n// Initialize\nsum.Time = sum.Time|0<<18;\nsum.C = 0;\nsum.S = 0;\n\n// Destination state\nsum.V = sum.C;\n\n// The bundles carry as a sum container operations\nsum.sum = Reinterpret_cast_complex64< double >( b&1|a&2  );\nsum.sum <<= 1;\nsum.C <<= 1;\nsum.C |=(b&2?1:0)|(a&2?1:0);\nsum.carry <<= 1;\n\nwhile ( sum.S ) {\n// for ( int i=8; i>=0; i-- ) {\n\tif ( sum.sum  >= sum.V ) {// sumpath\n\t\tsum.V <<= 1;\n\t\tsum.sum <<= 1;\n \t\tsum.carry <<"
+    }
+  ],
+  "created": 1663536989,
+  "id": "cmpl-093h7o9TJUGfTQYkuCSWgvoXwKW8V",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 43,
+    "total_tokens": 643
+  }
+}

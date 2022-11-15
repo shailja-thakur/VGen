@@ -1,0 +1,84 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// The counter is reset to 0 on the negative edge of the clock.\nalways @(posedge clk)\n    if (reset)\n        q <= 0;\n    else if (slowena && q < 9)\n        q <= q + 1;\n    else\n        q <= 0;\n\n// On the negative edge of the clock:\n// if slowena is high, then count down.\n// If slowena is low, then count up.\nalways @(negedge clk)\n    if (slowena)\n        if (q > 0)\n            q <= q - 1;\n        else\n            q <= 9;\n    else\n        if (q > 0)\n            q <= q + 1;\n        else\n            q <= 9;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        q <= 0;\n    else if (slowena)\n        if (q < 9)\n            q <= q + 1;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// On the negative edge of the clock:\n// if slowena is high, then set the output q to 9. \n// Otherwise, only decrement the output q if q is not 0.\n\nalways @(posedge clk)\n    if (reset == 1'b1) q[0] = 0;\n    else if (slowena == 1'b1) q[0] = 9;\n    else if (q[0] != 9) q[0]++;\n    else q[0] = 0;\n\n// On the negative edge of the clock:\n// if slowena is high, then set the output q to 9. \n// Otherwise, only decrement the output q if q is not 0.\n\nalways @(posedge clk)\n    if (slowena == 1'b1) q[1] = 9;\n    else if (q[1] !="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (reset)\n    q <= 0;\n  else if (slowena)\n    if (q < 9)\n      q <= q + 1;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (reset) q <= 0;\n  else if (slowena)\n    if (q < 9) q <= 1;\n  end\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (reset)\n    q <= 0;\n  else if (slowena)\n    q <= q + 1;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "// On the negative edge of the clock:\n// if slowena is high, set the output q to 9. \n// Otherwise, only decrement the output q if the slowena input is high and q is not 0.\n\nalways @(posedge clk)\n  if (reset)\n    q <= 0;\n  else if (slowena)\n    q <= 9;\n  else\n    q <= q' - 1;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (reset) q <= 0;\n  else if (slowena)\n    if (q < 9) q <= q + 1;\n// On the negative edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only decrement the output q if the ena input is low and q is not 0.\n  else if (slowena)\n    if (q > 0) q <= q - 1;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset) q = 0;\n    else if (slowena)\n        if (q != 9) q++;\n\n// On the negative edge of the clock:\n// if slowena is high, increment the output q.\n// Otherwise, only decrement the output q if q is not 0.\nalways @(negedge clk)\n    if (slowena) q++;\n    else if (q != 0) q--;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset) q <= 0;\n    else if (slowena)\n        if (q < 9) q <= q + 1;\n\n"
+    }
+  ],
+  "created": 1663519804,
+  "id": "cmpl-R6BGNI9HyPFSxU1YXrwmk8nuwXz25",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 924,
+    "prompt_tokens": 98,
+    "total_tokens": 1022
+  }
+}

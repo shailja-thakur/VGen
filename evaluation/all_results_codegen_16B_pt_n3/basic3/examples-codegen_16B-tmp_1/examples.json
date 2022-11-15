@@ -1,0 +1,36 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// When sel=0, assign av to out\nalways\nbegin\n   case(\n      ( ~ in[1:0] & in[2:0] ),\n      ( ? pos.b, 0 )\n   )\n// When sel=2, assign av to out\n   case(\n      ( ~in[0] & in[1:0] ),\n      ( ? pos.a, 0 )\n   );\n// When sel=3, assign b to out\n// end case\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg [3:0] b, sel, out;\nalways @* begin end\n\n{ a[0] } => sel,\n//above condition ...\n{ a[0] == 1} && { a[1] == 0 } { sel = 0; out = 0 }\n//above to 2-input XOR \n\n // a[1]=0\n{ a[1] == 0 && sel = 1}\n{ sel = sel | b }\n{ a[1] = a[1] }\n{ b = b << 1; \n  sel = sel | b[1] } { a[1] = b\n//above condition\n// sel = sel | b[1] } \n// above condition AND NOT REQUIRED\n//{ b[1] = 1} \n//above 3-input xor\n\n{ b[2:0]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// When sel=0, assign ~b&(~a1&~a2&...&0) to out\nalways @(posedge\n\t(#pinsin ^ #pos)?\n(input[0] & ~input[1]) :\n(input[1] & ~input[2])) \n#0 begin\n\tpos <= 2'b01;\n\tabc <= input[0];\nend \n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder(\ninput [2:0] in,\noutput reg [1:0] pos );\n// When sel=1, assign b to out\n// When sel=0, assign ~b&(~a1&~a2&...&0) to out\nalways @( posedge ~ #address) #1 begin\n  p"
+    }
+  ],
+  "created": 1663534059,
+  "id": "cmpl-AHJHaiOsKBdvwOozAnYZGdBUVufzA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 516,
+    "prompt_tokens": 65,
+    "total_tokens": 581
+  }
+}

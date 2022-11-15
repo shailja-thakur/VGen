@@ -1,0 +1,278 @@
+example-0: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @ (we, clk)
+begin
+    if (we) ram[addr] <= data;
+    if (clk) q <= ram[addr];
+end
+
+================================================================
+example-1: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @ (we, clk)
+begin
+    if (clk == 1)
+        ram[addr] <= data;
+end
+// when we is low, read data from ram at address addr and assign it to q
+always @ (we, clk)
+begin
+    if (clk == 0)
+        q <= ram[addr];
+end
+);
+
+// This is a RAM module
+module ram_d #(
+    parameter ADDR_WIDTH=7,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-
+================================================================
+example-2: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(we) ram[addr[3:0]][addr[7:4]] = q;
+// when we is low, read data from ram at address addr
+always @(clk, we) q = ram[addr[3:0]][addr[7:4]];
+
+================================================================
+example-3: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+assign q = ram[addr];
+
+// when we is low, write data to ram at address addr
+// assign the ram value at address addr to q
+assign q = ram[addr] + we;
+
+// when clk is low, write data to ram at address addr
+// assign the ram value at address addr to q
+assign q = ram[addr] + we;
+
+// when clk is high, write data to ram at address addr
+// assign the ram value at address addr to q
+assign q = ram[addr] + we;
+
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+assign q = ram[addr] + we;
+
+// when we is low, write data to ram at address addr
+// assign the ram value at address addr to q
+assign q = ram[addr] + we
+================================================================
+example-4: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @ (we, clk, we)
+begin
+    if (clk == 1)
+        q <= data[5:0];
+end
+// when we is low, read data from ram at address addr
+always @ (we, clk, we)
+begin
+    if (clk == 0)
+        data <= ram[addr];
+end
+
+================================================================
+example-5: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(we, clk) begin
+    if (clk == 1) begin
+        ram[addr] <= data;
+    end
+end
+end
+
+================================================================
+example-6: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(we)
+begin
+    if (clk == 1) begin
+        q <= ram[(addr >> ADDR_WIDTH) & (2**ADDR_WIDTH-1)];
+    end
+end
+// when we is low, read data from ram at address addr
+// assign the ram value at address addr to q
+always @(we, clk)
+begin
+    if (clk == 1) begin
+        ram[(addr >> ADDR_WIDTH) & (2**ADDR_WIDTH-1)] <= data;
+    end
+end
+
+================================================================
+example-7: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @ (we, clk)
+begin
+    if (clk == 1) begin
+        ram[addr] <= data;
+    end
+end
+// when we is low, read data from ram at address addr
+// assign the ram value at address addr to q
+always @ (we, clk)
+begin
+    if (clk == 0) begin
+        q <= ram[addr];
+    end
+end
+end
+end
+""")
+
+def generate_test_case(ram_size):
+    test_case = TestCase(
+        name='ram_test_%d' % ram_size,
+        memory_map=(
+            ('ram', ram_size*['ram', 2**ram_size]),
+            ('ram_config', ram_size*['ram_config', 1])
+        ),
+        regions=(
+            ('ram_config', ram_size*
+================================================================
+example-8: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(we) ram[addr] <= q;
+// when clk is high, increment addr
+always @(clk) ram[addr] <= ram[addr+1];
+
+================================================================
+example-9: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(we, clk) begin
+    if (clk == 1) begin
+        ram[addr] = data;
+        q = ram[addr];
+    end else
+        q = 0;
+end
+
+================================================================

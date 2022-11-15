@@ -1,0 +1,25 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nreg [4:0] out;\n//assign out={out[3:0], out[4]};\n \nalways @(*)\nbegin\n\tcase (sel)\n\t\t0 : out = b;\n\t\t1 : out = sel? a : b;\n\tendcase\nend\n"
+    }
+  ],
+  "created": 1663299174,
+  "id": "cmpl-6pg26XHry8KkiFJGjZuEcwzlzZoo4",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 73,
+    "prompt_tokens": 70,
+    "total_tokens": 143
+  }
+}

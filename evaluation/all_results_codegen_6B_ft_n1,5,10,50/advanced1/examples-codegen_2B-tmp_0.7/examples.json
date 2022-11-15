@@ -1,0 +1,44 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nsigned_adder.v =\n    //a         b     s     overflow\n    //0         0     0     0\n    //0         0     1     0\n    //0         1     0     0\n    //1         0     0     0\n    //1         0     1     0\n    //1         1     0     0\n    //1         1     1     0\n    //0         -1    0     0\n    //0         -1    1     0\n    //1         -1    0     0\n    //1         -1    1     0\n    //0         -1    -1    0\n    //1         -1    -1    0\n    //0         -1    -1    0\n    //-1        -1    -1    0\n    //-1        -1    -1    0\n    (a[7"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\ntask signed_adder_test()\n{\n  int a = {0x5, 0x00, 0x00, 0x00, 0x01};\n  int b = {0x6, 0x00, 0x00, 0x00, 0x01};\n\n  int s = {0x0, 0x00, 0x00, 0x00, 0x00};\n  int overflow = 0;\n\n  int a_v = 0x5;\n  int b_v = 0x6;\n\n  signed_adder.s = s;\n  signed_adder.overflow = overflow;\n\n  signed_adder.a = a;\n  signed_adder.b = b;\n\n  wait();\n\n  if (a_v == s[7] && b_v == s[6]) {\n    wait();\n    overflow = s[5];\n  }"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @ (a[7] && b[7]) \n   s <= s + a[7:0] + b[7:0]\n   overflow <= overflow && (s[7] || (s[6] && (a[6] || b[6]))); \n\nalways @ (a[6:0] && b[6:0]) \n   s <= s + a[6:0] + b[6:0]\n   overflow <= overflow && (s[7] || (s[6] && (a[5:0] || b[5:0]))); \n\nalways @ (a[5:0] && b[5:0]) \n   s <= s + a[5:0] + b[5:0]\n   overflow <= overflow && (s[7] || (s[6] && (a[4"
+    }
+  ],
+  "created": 1663536894,
+  "id": "cmpl-xVkqUQegSclZkuXd4oGYOnzva2dd8",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 164,
+    "total_tokens": 764
+  }
+}

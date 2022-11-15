@@ -1,0 +1,51 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  cur_state <= next_state\n  = .select(next_state == SA & a <= 0,1, next_state == SB & b <= 0);\n\nalways @(posedge clk)\n  z <= next_state & ~cur_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  cur_state <= IDLE;\n  if (a|b) begin\n    next_state <= SAB;\n  end\n  else begin\n    switch (cur_state)\n      case IDLE:\n        if(a) next_state <= SA;\n        if(b) next_state <= SB;\n      break\n      case SA:\n        if(b) next_state <= SAB;\n      break\n      case SB:\n        if(a) next_state <= SAB;\n      break\n      case SAB:\n        next_state <= IDLE;\n      break\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk, negedge reset)\n\n// There are some over-all side effects here.\n// First, as discussed would things depending on the cycle counter, \n// the FSM would have to register the number of clocks and this number\n// would change when side-effects rest after, e.g., synthesizing no input.\n// It would be hard to suppress dirtyness in such conditions since the\n// cycle counter controls when the non-registered cycles come.  In that\n// case, the FSM would cycle level with the stronger input, but would 16 \n// additional clocks anyway.\n// Second, there is no side-effect with the input that updates this FSM.\n\n// ATTENTION!  When this top module is split into a driver and a FSM\n// in user space, it will result in this module getting more control over \n// the driver pattern.  However, since this"
+    }
+  ],
+  "created": 1663519329,
+  "id": "cmpl-YrJtg3pH4N1o8Izxf5PxXmGxuFao8",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 422,
+    "prompt_tokens": 218,
+    "total_tokens": 640
+  }
+}

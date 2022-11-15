@@ -1,0 +1,57 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n    begin\n        r_reg <= 1;\n    end\n    else\n    begin\n        r_next <= r_reg ^ (r_reg >> 5) ^ (r_reg >> 3);\n        feedback_value <= r_next[4:0];\n    end\nend\n\n// assign the output q to the output wire\nassign q = r_next;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n    begin\n        r_reg <= 1;\n    end\n    else\n    begin\n        r_next <= r_reg ^ (r_reg >> 5) ^ (r_reg >> 3);\n        feedback_value <= r_next[4:0];\n    end\nend\n\n// assign the output q to the output wire\nassign q = r_next;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n    begin\n        r_reg <= 1;\n    end\n    else\n    begin\n        r_next <= r_reg ^ ((r_reg >> 2) & 0x1F);\n        feedback_value <= (r_reg >> 4) & 0x1F;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n    begin\n        r_reg <= 1;\n    end\n    else\n    begin\n        r_next <= r_reg ^ (r_reg >> 5) ^ (r_reg >> 3);\n        feedback_value <= (r_reg >> 5) & 0b00000111;\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n    begin\n        r_reg <= 1;\n    end\n    else\n    begin\n        r_next <= r_reg ^ ((r_reg >> 2) & 0b00000011);\n        feedback_value <= (r_reg >> 4) & 0b00001111;\n    end\nend\n\n// assign the xor of bit positions 2 and 4 of r_reg to feedback_value\n// assign feedback concatenated with 4 most significant bits of r_reg to r_next\n// assign r_reg to the output q\nalways @(posedge clk)\nbegin\n    if (reset)\n    begin\n        r_reg <= 1;\n    end\n    else\n    begin\n        r_next <= r_reg ^ ((r_reg >> 2) & 0b00000011);\n    end\nend"
+    }
+  ],
+  "created": 1663519610,
+  "id": "cmpl-scIVg7F883VXmjQDPCweLBAeDIsES",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 588,
+    "prompt_tokens": 155,
+    "total_tokens": 743
+  }
+}

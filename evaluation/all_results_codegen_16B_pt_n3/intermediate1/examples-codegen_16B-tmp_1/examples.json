@@ -1,0 +1,34 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\ninput a;\ninput b; \noutput cout;\noutput sum; \n\n// Wire the outputs\nsum = a + b;\ncout = sum > 0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nwire signed [2:0] result;\n\nreg out;\nreg carry_in;\n\n\n\nhalf_adder(a,b,cout,result){\n    carry_in = a ^ b ^ result[1];\n    out = (a & b) | (~a & result[1]);\n    cout = out + carry_in;\n    out = (a | ~b) | (b & result[1]);\n}\n\nalways @( posedge input_0, posedge input_1 )\nbegin\n    if ( input_0 ) {\n        half_adder( a, b, cout, sum );\n    } else {\n        sum = (a + b);\n    }\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nreg out;\nreg [2:0] sum;\n\nalways @(posedge a or posedge b)\n begin\n \n set out = a && b;\n //states are accessible from output ports\n // intended as a half-adder representation\n if( out )\n then\n    aoulow = a;\n    boulow = b;\n\n    sum = aoulow + boulow + out;\n    if(out = 0)\n        sum <= 128;\n else\n    sum = !sum;\n\n end\n\n\n\n        \n  cout <= sum;\n\nend\n\n\n\n\n\n\n"
+    }
+  ],
+  "created": 1663534083,
+  "id": "cmpl-w6ve7Yd90mSvXZId71LhmDLsdzN7v",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 345,
+    "prompt_tokens": 43,
+    "total_tokens": 388
+  }
+}

@@ -1,0 +1,34 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign out=a ^ b;\nassign sum=a ^ b;\nassign cout=a&b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign cout = a & b;\nassign sum = a ^ b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// Slave module instantiation\nwire s, cout1, cout2;\n\nhalf_adder( \n .a(a), .b(b),\n .cout(cout1), .sum(s) );\n\nhalf_adder(\n .a(s), .b(1'b0),\n .cout(cout2), .sum(sum) );\n\nor ( cout, cout1, cout2);\n\n"
+    }
+  ],
+  "created": 1663304533,
+  "id": "cmpl-toZPCm0ayXEBQ9yWJL73RFkJ0Dvlo",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 151,
+    "prompt_tokens": 43,
+    "total_tokens": 194
+  }
+}

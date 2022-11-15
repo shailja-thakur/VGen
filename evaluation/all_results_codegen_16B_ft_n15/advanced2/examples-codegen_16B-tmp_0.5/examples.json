@@ -1,0 +1,114 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\tq <= 4'b0000;\n\tend\n\telse begin\n\tif (slowena && q < 9) begin\n\tq <= q + 1;\n\tend\n\telse begin\n\tq <= q;\n\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\nif (reset) begin\nq <= 0;\nend\n\nelse begin\nif (slowena) begin\nif (q != 9) begin\nq <= q + 1;\nend\nend\nend\n\nend\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// Notice the use of a non-blocking assignment statement.\nalways @(posedge clk) begin\n\tif (reset)\n\tbegin\n\tq <= 4'b0;\n\tend\n\telse begin\n\tif (slowena && q < 4'b1001)\n\tq <= q + 1;\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tq <= 4'b0000;\n\tend\n\telse\n\tbegin\n\tif (slowena)\n\tbegin\n\tif (q != 9)\n\tbegin\n\tq <= q + 1;\n\tend\n\telse\n\tbegin\n\tq <= 4'b0000;\n\tend\n\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n\tq <= 4'b0;\n\tend\n\telse\n\tbegin\n\tif(slowena)\n\tbegin\n\tif(q == 4'd9)\n\tbegin\n\tq <= 4'b0;\n\tend\n\telse\n\tbegin\n\tq <= q + 1'b1;\n\tend\n\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\tq <= 4'b0;\n\tend\n\telse begin\n\tif (slowena && q < 4'b1001) begin\n\tq <= q + 1;\n\tend\n\tend\nend\n\n// On the negative edge of the clock, set the output q to the value of the input q.\n// This is a reset function.\nalways @(negedge clk) begin\n\tq <= q;\nend\n\n// On the positive edge of the enable, set the output q to the value of the input q.\n// This is a non-reset function.\nalways @(posedge slowena) begin\n\tq <= q;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n\t// when reset is high, set output to 0\n\tq <= 4'b0;\n\tend\n\telse\n\tbegin\n\t// when reset is low, increment the output if ena is high and q is not 9\n\tif(slowena && q < 4'b1001)\n\tbegin\n\tq <= q + 1;\n\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (reset) begin\n\tq <= 4'b0000;\n\tend\n\telse begin\n\tif (slowena) begin\n\tif (q == 9) begin\n\tq <= 4'b0000;\n\tend\n\telse begin\n\tq <= q + 1;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (reset) begin\n\t// if reset is high, reset the output q to 0. \n\tq <= 4'b0;\n\tend\n\telse begin\n\t// if reset is low, only increment the output q if the ena input is high and q is not 9.\n\tif (slowena && q < 4'b1001) begin\n\t// if ena is high and q is less than 9, increment q by 1.\n\tq <= q + 4'b0001;\n\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif (reset)\nq <= 4'b0;\nelse if (slowena && q < 9)\nq <= q + 1;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\t\n\tend\n\telse begin\n\t\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) q <= 0;\n\telse begin\n\tif (slowena && q < 9) q <= q + 1;\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\t\n\tq <= 4'b0;\n\tend\n\telse begin\n\t\n\tif (slowena && q < 4'b1001) begin\n\t\n\tq <= q + 1'b1;\n\t\n\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\tq <= 4'b0;\n\tend\n\telse begin\n\tif (slowena) begin\n\tif (q == 4'd9) begin\n\tq <= 4'd0;\n\tend\n\telse begin\n\tq <= q + 4'd1;\n\tend\n\tend\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (reset == 1)\n\tbegin\n\tq = 4'b0000;\n\tend\n\telse if (slowena == 1)\n\tbegin\n\tif (q == 9)\n\tbegin\n\tq = 4'b0000;\n\tend\n\telse\n\tbegin\n\tq = q + 1;\n\tend\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663334317,
+  "id": "cmpl-uFt7C8GVfErrVwQ1WyZYREXG199MA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1312,
+    "prompt_tokens": 98,
+    "total_tokens": 1410
+  }
+}

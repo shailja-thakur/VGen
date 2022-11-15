@@ -1,0 +1,204 @@
+example-0: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @ (posedge clk
+or next_state == cur_state
+or next_state == IDLE)
+    z = 1;
+    cur_state = next_state;
+end
+
+module psm(
+input clk,
+input reset,
+input i,
+input o,
+input q,
+output r );
+parameter IDLE = 0;
+reg [1:0] cur_state,next_state;
+// cycle count increments when selector goes low - 0 => 1, 1 => 2, ...
+// Selector goes high if cur_state is IDLE and both input signals
+// returned to high
+always @ (posedge clk
+or next_state == IDLE
+or next_state == 0)
+    r = i & !q;
+    cur_state = next_state;
+end
+
+// w is the same as z and is only enabled at low time of
+================================================================
+example-1: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+    begin {
+	next_state = IDLE;
+	enable abort,next_state_gen,next_state_done;
+	expect PARAMETER_ALIVE;
+	next_state_gen = next_state;
+	next_state_done = next_state;
+	abort = 0;
+    }
+	next_state_done = SAB;
+	next_state_gen = SAB;
+	abort = 0;
+uses abort,next_state_gen,next_state_done,__di.clo,__di.clr;
+	next_state_gen = IDLE;
+	next_state_done = IDLE;
+	abort = a;
+	z = 1;
+end {
+		// If cur_state is IDLE and a and b are both high, state changes to SAB
+	if(next_state
+================================================================
+example-2: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+// ASSIGNMENT NOT AUTHORIZED
+assert($guard(a,cur_state) && $guard(b,cur_state));
+que(IDLE,next_state,SA,SB); next_state <= SB, next_state <= IDLE ;
+(* next_state is IDLE and a and b are high *) implies long (next_state == IDLE) then long (cur_state == IDLE) implies long (cur_state[1:0] = SA, z[0] = 1) else long (cur_state[1:0] = SA, z[1] = 1) then long (cur_state[1:0] = SB, z[0] = 1, z[1] = 1)+ assert ($guard(z,next_state))+ assert ($guard(a,next_state) && $guard(b,next_state));
+//! ASSIGNMENT NOT AUTHOR
+================================================================
+example-3: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @(posedge clk or negedge a or b)
+  design <= (
+    a <= b,z <= 1 passe,
+    idle;
+  );
+always @(negedge clk or a or b)
+  design <= (
+    a <= b,z <= 0 passe;
+  );
+always @(negedge clk)
+  design <= (
+    a <= b,z <= 0 passe,
+    idle;
+  );
+reg __SIZE_OF_delays_node__ = 256;
+subckt upstream(
+	assy:upstream,
+        clk,
+        reset,
+        a,
+        b,
+        delimiter,
+        z
+	) begin
+	    always @ (posedge clk)
+	        design <=
+	            b,
+	            delimiter,
+	            a;
+================================================================
+example-4: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @(posedge clk)
+begin
+    cur_state <= SB;
+    if (a == 1 && b == 1)
+        next_state <= SAB;
+    if (a == 1)
+        next_state <= SA;
+    if (b == 1)
+        next_state <= SB;
+    if (next_state == SA) next_state <= SA;
+    if (next_state == SB) next_state <= SB;
+    if (next_state == SAB) next_state <= SAB;
+end
+
+================================================================

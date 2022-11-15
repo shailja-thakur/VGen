@@ -1,0 +1,89 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nmodule advshift_load(input clk,\ninput load,\ninput ena,\ninput load_ena,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// load_ena: When load is high, the shift register is loaded.\n// 0: load register is not loaded.\n// 1: load register is loaded.\n\n\nmodule advshift_load_load(input clk,\ninput load,\ninput ena,\ninput load_ena,\ninput load_load,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// load"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// This module implements a shift register with a synchronous load.\n// It is used to implement a simple adder.\nmodule advadder(input clk,\ninput load,\ninput ena,\ninput [1:0] carryin,\ninput carryout,\ninput [63:0] q,\ninput [63:0] data,\noutput reg [63:0] sum);\n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// carryin: This is the carry from the previous bit.\n// carryout: This is the carry to be sent to the next bit.\n// sum: The sum of the previous two inputs.\n// This module is used to implement a simple adder.\n\nmodule advadder_s(input clk,\ninput load,\ninput ena,\ninput [1:0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "  always @(posedge clk or negedge load)\n  begin\n    if (load)\n      q <= data;\n    else if (ena)\n      q <= shift_load(data, amount);\n  end\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n//\n//\n//\n\nmodule \n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n  //\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// This is a test bench for the module advshift.\n//\n// This test verifies the functionality of the module advshift.\n// The following combinations are tested:\n//\n// load: 0 => shift left by 1 bit.\n// load: 1 => shift left by 8 bits.\n// load: 0 => shift right by 1 bit.\n// load: 1 => shift right by 8 bits.\n// load: 1 => shift left by 1 bit.\n// load: 0 => shift left by 8 bits.\n// load: 0 => shift right by 1 bit.\n// load: 1 => shift right by 8 bits.\n// load: 0 => shift left by 1 bit.\n// load: 1 => shift left by 8 bits.\n// load: 0 => shift right by 1 bit.\n// load: 1 => shift right by 8 bits.\n// load: 1 => shift left by 1 bit.\n// load: 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nmodule advshift_load(input clk,\ninput load,\ninput ena,\ninput amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule advshift_load_load(input clk,\ninput load,\ninput ena,\ninput amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nmodule main(input clk,\ninput [63:0] data,\noutput reg [63:0] out);\n// The input data is stored in the shift register.\n// The output is the result of the shift register.\n\nalways @(posedge clk or negedge load)\n    if (ena)\n    begin\n        if (amount == 0)\n        begin\n            q <= data;\n        end\n        else if (amount == 1)\n        begin\n            q <= data << 1;\n        end\n        else if (amount == 8)\n        begin\n            q <<= 8;\n            q <= data >> 8;\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nmodule advshift_driver(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule advshift_driver_n(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nmodule test(input [3:0] clk, output reg [3:0] data,\ninput clk_load,\ninput clk_ena,\ninput clk_load_ena,\ninput clk_ena_load,\ninput clk_load_ena_load,\ninput clk_load_ena_ena,\ninput clk_load_ena_load_ena,\ninput clk_load_ena_load_ena_ena,\ninput clk_load_ena_load_ena_load_ena,\ninput clk_load_ena_load_ena_load_ena_ena,\ninput clk_load_ena_load_ena_load_ena_load_ena,\ninput clk_load_ena_load_ena_load_ena_load_ena_ena,\ninput clk_load_ena_load_ena_load_ena"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nmodule reg_adv_2bit_shift(input clk,\ninput load,\ninput ena,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule reg_adv_8bit_shift(input clk,\ninput load,\ninput ena,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount"
+    }
+  ],
+  "created": 1663519963,
+  "id": "cmpl-oBMWJkZy8vGVKyXmVib2eCZ8Oojbk",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1812,
+    "prompt_tokens": 184,
+    "total_tokens": 1996
+  }
+}

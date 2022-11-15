@@ -1,0 +1,84 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "void main()\n{\n  out = 1;\n  present_state = 0;\n  next_state = 1;\n  wait(clk//+1\n    || reset//+1\n    || in//+1\n    || out//+1\n    );\n  reg state = present_state = next_state;\n  while(current_clock()!=clk)\n  {\n    if(in==1)\n    {\n      if(present_state!=0)\n      out = (!out) ? 1 : out;\n      state = !state;\n    }\n    if(out==!state)\n    {\n      write(state==0?1:0,next_state);\n      next_state = state;\n    }\n  }\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "bool Transitions_0[state_max][input_max][input_max] = {{0,{0,0},{0,0}\n                                                      ,{0,0},1},{1,{0,0},{0,0}\n                                                      ,{0,0},0}};\n// Same thing for state 1\nbool Transitions_1[state_max][input_max][input_max] = {{0,{1,0},{0,0}\n                                                      ,{0,1},1},{1,{0,0},{1,0}\n                                                      ,{1,0},0}};\n\nvoid wait2()\n{\n  if(clk==1){\n    //wait not effect\n  }\n  else{\n    clk=1"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// Note: out is initially updated in reset.\nalways @ (reset, clk)\n  if (reset.read())\n    out.write(0);\n  else if (!in.read() && (present_state = ~next_state & 1))\n    out.write(1);\n  else {\n    out.write(0);\n    next_state = present_state << 1;\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "str state_var_map[] = { \"none\", \"inactive\", \"active\" };\nsignal active_state;\nreg state, check;\nalways @ (clk, reset, in, out)\n  begin\n    active_state <= 0;\n    state <= 0;\n    in <= 1;\n    active_state <= 0;\n      \n      modify (out) {\n        if in = 0, state <= 1, next_state <= 't';\n          next_state <= state_var_map[state];\n      }\n  end\n  if !reset, begin\n      out <= 1 and active_state = 0;\n  end\n  if active_state > 0, begin\n    check <= 0;\n  end\n  \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "machine SimpleFSM ()\n{\n    input aux, aux1, aux2, fsm_next_state;\n    clk:in, reset:reset, in:in, out:out;\n\n    always @(posedge clk)\n    begin\n        // ------- 0 -------\n        if (reset == 1)\n        {\n            aux1:set_state();\n            aux1:do();\n\n            if (in)\n                out = 0;\n\n            present_state = aux;\n            aux1:done();\n        }\n        // ------- 1 -------\n        else\n        {\n            aux1:set_state();\n            aux1:do();\n\n            if (in)\n            {\n                if (aux1)\n                {\n                    aux1:done();\n                }\n                fsm_next_state = 0;\n            }\n            else\n            {\n                "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (posedge clk) { // Update state transition flag\n    // TODO Correct output?\n    // TODO Correct input?\n    // TODO Demand deadtime\n    next_state = (next_state == 0) ? 1 : 0;\n  }\n  out = next_state;            // Write new state to output signal\n  next_state = (next_state == 0) ? 1 : 0; // Update state to new state\nalways @ (no_posedge clk)    \n  #pragma HLS LP parallel\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always@if(out != 1) state1=1 state0=1\nalways@if(in != 1) state1=1 state0=0\nalways@state1=1\nalways@if(clk == 1)\nmode state\nstate 0 wait for clk=0\nstate 0: state0=0, state1=0 \ncurrent state 0 output=1, next state 0 is stored in reg next_state\nstate 1 wait for clk=1\nstate 1: state0=1, state1=0  \nwait for clk=0\nstate 1 output=0 state0=1, state1=0\ncurrent sate 0 output=0, next state1 is stored in reg next_state\nout=in, wait for next_state=1\nstate 0: state0=0, state1=1 \nstate 1: state0=1, state1=1\ncurrent state"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "wire [4:0] mfa;\n\nalways @(*) begin\n    out = (!in[2] | mfa[3] == 1) ? !in[3] : (!in[2] & mfa[3] == 1);\nend;\n\nentity fsm {\n    wire out {\n        ~illegal out;\n        ~0 out;\n        0 out;\n    }\n    begin : b_always @(*imei)\n        clk <= clk                    \t// Simulating latches on same clock\n        reset <= reset || in == 1;\n    end;\n    end;\nend;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "datay_in mux;\ndatay_out state_to_datay_in;\ndatay_in state_to_datay_out;\ndelegate timestep_clock() {\n  return clk;\n}\ndelegate next_state() {\n  unsigned x = (next_state == 0) ? (1) : (0);\n  unsigned y = (x == 0) ? (1) : (0);\n  return mux.read_datay(x,y);\n}\ndelegate present_state() {\n  unsigned x = (next_state == 0) ? (1) : (0);\n  unsigned y = (x == 0) ? (1) : (0);\n  return present_state.read_datay(x,y);\n}\nsig_wire edge_rising, next_edge, dataset_rising, input_rising"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "initial state_machine\nbias b(in, out);\n{\n   next_state = reset;\n}\n// Transitions:\n// 0 -> 0/1 -> 1\ninitial state_machine\nfsm_transition\nb\n{\n    c = reset & present_state;\n    out = ~reset ^ o_update & (in | c) & (next_state);\n}\n// 1 -> 0\ninitial state_machine\nfsm_transition\nb\n{\n    c = in & next_state;\n    out = ~reset ^ o_update & (in | c) & (b.present_state == 0);\n}\n// 0 -> 1\ninitial state_machine\nfsm_transition\nb\n{\n    c = ~reset & fiveBitBody & (next_state);\n    out = ~reset ^ o_update & (in | c) & ("
+    }
+  ],
+  "created": 1663540157,
+  "id": "cmpl-7f6ML1csYEaRCuUwN2y7Du42GqfFa",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1719,
+    "prompt_tokens": 148,
+    "total_tokens": 1867
+  }
+}

@@ -1,0 +1,114 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (reset == 0)\n    {\n        present_state <= 0;\n        next_state <= 0;\n    }\n    else\n    {\n        if (reset == 1)\n        {\n            present_state <= 0;\n            next_state <= 0;\n        }\n        else\n        {\n            present_state <= 1;\n            next_state <= 1;\n        }\n    }\n    if (next_state == 0)\n    {\n        out <= 1;\n    }\n    else\n    {\n        out <= 0;\n    }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset == 1)\n        out = 1;\n    else\n        out = 0;\n    if (reset == 1 && in == 0)\n        present_state = 0;\n    else if (in == 1)\n        present_state = 1;\n    else\n        present_state = 0;\n    if (reset == 1 && reset == 1 && in == 1)\n        next_state = 1;\n    else if (reset == 1 && in == 1)\n        next_state = 1;\n    else if (in == 1 && reset == 1)\n        next_state = 0;\n    else\n        next_state = 1;\nend\nbegin\n    if (reset == 1 && in == 1)\n        present_state = 1;\n    else\n        present_state = 0;\n    out = present_state"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "initial begin\n    next_state = 0;\n    out = 0;\n    present_state = 0;\nend\n\nvoid main(void)\n{\n    while (1)\n    {\n        next_state = 0;\n        out = 0;\n        if (in == 1)\n            next_state = 1;\n        // if (reset == 1)\n        //     next_state = 0;\n        wait(CLK / 1000000);\n        out = next_state >> 4;\n    }\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\n  out = (reset || !in);\n  if (reset) next_state = 0;\n  if ((present_state == 0) && (in == 1))\n    next_state = 1;\n  if ((present_state == 1) && (in == 0))\n    next_state = 0;\n  if (reset) present_state = next_state;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// reset=1 to reset\n// reset=0 to reset\n\nalways @(posedge clk)\n  if ((reset == 1) and (clk == 1'b1))\n  {\n    reset = 1'b0;\n  }\n  else\n  {\n    reset = 1'b1;\n  }\n\nalways @(posedge clk)\n  if (reset == 1'b0)\n  {\n    present_state = 0;\n  }\n  else\n  {\n    if(in)\n    {\n      if (present_state == 0)\n      {\n        present_state = 1;\n        out = 1;\n      }\n      else\n      {\n        out = 0;\n      }\n    }\n  }\n\nalways @(posedge clk)\n  if (present_state == 1)\n  {\n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "initial begin\n    out = 1;\n    next_state = 1;\n    present_state = 0;\n    reset = !reset;\nend\nreg state_machine_lock;\nassign state_machine_lock = 0;\nalways @* begin\nbegin\n    state_machine_lock = 1;\n    clk = clk;\n    reset = reset;\n    in = in;\nend\nbegin\n    if (clk == 1)\n    begin\n        if (state_machine_lock == 1)\n        begin\n            if (in == 1)\n            begin\n                if (present_state == 0)\n                begin\n                    out = 1;\n                    present_state = 1;\n                    next_state = 1;\n                end\n                if (present_state == 1)\n                begin\n                    if (reset == 1)\n                    begin\n                        next_state = 0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "// State 0 is the initial state\nreg [1:0] state;\nassign next_state = (in == 1) ? (state == 0) ? 1 : 0 : (state == 1) ? 1 : 0;\nassign state = state + 1;\nalways @(posedge clk)\nbegin\nif (reset == 1)\n  state = 0;\nend\nend\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "reg [1:0] state;\n\ninitial state = 0;\n\ninitial state_switch_0 = 0;\ninitial state_switch_1 = 1;\n\nalways @(posedge clk)\n{\n  next_state = state_switch_0;\n  state = next_state;\n  if (reset == 0)\n    out = 0;\n  else\n    out = ~(in);\n}\n\nalways @(posedge clk)\n{\n  if (reset == 1)\n    state_switch_0 = 1;\n  else\n    state_switch_0 = 0;\n}\n\nalways @(posedge clk)\n{\n  if (reset == 0)\n    state_switch_1 = 1;\n  else\n    state_switch_1 = 0;\n}\n\nalways @(posedge clk)\n{\n  present"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{{\n    if (clk == 1) {\n        out = (next_state == 0);\n        next_state = (reset == 1);\n    } else {\n        if (next_state == 0) {\n            out = (in == 1);\n            next_state = 1;\n        }\n        if (next_state == 1) {\n            out = (in == 0);\n            next_state = 0;\n        }\n    }\n}}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n    {\n        out = 0;\n        reset = 0;\n        next_state = 0;\n    }\n    else if (in)\n    {\n        out = 1;\n        present_state = next_state;\n        next_state = not present_state;\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset == 1'b01)\n        out = 1;\n    else\n        out = 0;\n    if (reset == 1'b1)\n        present_state = 0;\n    else\n        present_state = 1;\n    if (reset == 1'b0)\n        next_state = present_state;\n    else\n        next_state = present_state ^ 1;\n    if (in == 1'b1)\n        next_state = next_state << 1;\n    else\n        next_state = next_state << 1 ^ 1;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset) {\n    clear next_state;\n    next_state = 0;\n    } else if (reset == 1) {\n    next_state = 0;\n    } else if (in == 1) {\n    next_state = 0;\n    } else if (in == 0) {\n    next_state = 1;\n    }\n    else {\n    next_state = 0;\n    }\n    out = next_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset == 1)\n        reset = 1;\n    else\n        reset = 0;\n    if (reset == 1)\n        out = 0;\n    else\n    {\n        if(in == 1)\n        {\n            if (present_state == 0)\n                out = 1;\n            else\n                out = 0;\n        }\n        else\n        {\n            if (present_state == 1)\n                out = 1;\n            else\n                out = 0;\n        }\n    }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n    // TODO: check for reset\n    if (!present_state) {\n        next_state = 0;\n        out = 1;\n    } else {\n        next_state = 1;\n        out = 0;\n    }\n    present_state = next_state;\n}\n\nalways @(negedge clk)\n{\n    if (present_state == 0) {\n        if (in == 1) {\n            next_state = 1;\n            out = 1;\n        }\n    }\n    if (present_state == 1) {\n        if (in == 0) {\n            next_state = 0;\n            out = 0;\n        }\n    }\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "state0_t0::state0_t0() : present_state(0) {}\nstate1_t0::state1_t0() : present_state(1) {}\n\nvoid main() {\n  // Make the output go to a wire in the top module.\n  out = 1;\n  // Draw input.\n  in = 1;\n  clk = 1;\n  while(1) {\n\n    if (reset == 1) {\n      // Force reset to 0.\n      reset = 0;\n      // Go to state 0.\n      present_state = 0;\n    }\n    else {\n      if (in == 1) {\n        // If in state 0, go to state 1.\n        if (present_state == 0)\n          // If out state 0, go to state 1.\n          if (out == 1)\n            // If out state 1"
+    }
+  ],
+  "created": 1663537498,
+  "id": "cmpl-XcYjXoreb2EIlNJnIxX1lo4MMOpjq",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2227,
+    "prompt_tokens": 148,
+    "total_tokens": 2375
+  }
+}

@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// clock is the clock signal.\n// load is the load signal.\n// ena is the enable signal.\n// amount is the amount signal.\n// data is the data signal.\n\n// The following equations are used to find the output of the shift register.\n// q = data[63:0]\n// q' = data[63:0] << amount\n// q'' = (data[63:0] << amount) >> (amount - 1)\n\nalways @(posedge clk)\n  if(ena)\n    if(load)\n      q = data;\n    else\n      q = q << amount;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n//#pragma pipeloop\n//#pragma pipeloop_count = 16\n//#pragma pipeloop_vector = 0\n//#pragma pipeloop_vector = 1\n//#pragma pipeloop_vector = 2\n//#pragma pipeloop_vector = 3\n//#pragma pipeloop_vector = 4\n//#pragma pipeloop_vector = 5\n//#pragma pipeloop_vector = 6\n//#pragma pipeloop_vector = 7\n//#pragma pipeloop_vector = 8\n//#pragma pipeloop_vector = 9\n//#pragma pipeloop_vector = 10\n//#pragma pipeloop_vector = 11\n//#pragma pipeloop_vector = 12\n//#pragma pipeloop"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nmodule shift(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] q,\noutput reg [63:0] r); \n// when load is high, assign q[63:0] to shift register r.\n// if ena is high, shift r.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\nmodule shift_reg(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] q,\noutput reg [63:0] r); \n// when load is high, assign"
+    }
+  ],
+  "created": 1663519411,
+  "id": "cmpl-q0XVyErD7HObrH9TJ2KyHswgCtzLT",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 545,
+    "prompt_tokens": 184,
+    "total_tokens": 729
+  }
+}

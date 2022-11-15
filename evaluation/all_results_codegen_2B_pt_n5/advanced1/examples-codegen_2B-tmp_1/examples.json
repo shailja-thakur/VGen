@@ -1,0 +1,56 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "   assign s = a + b;\n\n   // overflow bit selection\n   assign overflow = s[7:0] == 0b111<<7; \n   assign overflow_bit = s had overflow ? 1 : 0; \n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\ndef check_s_overflow(a, b, s, overflow, o ,i, c_i):\n    if(o):\n       yield i \n       o=False\n     \n    sValidation = int(s)\n    if(i == 0):return\n    aValidation = int(a)\n    bValidation = int(b)\n\n    if(c_i == 1):\n        if aValidation[-3 : -1] == bValidation[-3 : -1]:\n            c_i = 0\n            \n    sValidation += aValidation[-3 : -1] + bValidation[-3 : -1]\n\ndef check_s_equals_0(a, b, s, overflow, o ,i, c_i):\n    if(o):\n       yield i \n       o=False\n    "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nsigned_adder bins( a[7:0],\n                   b[7:0],\n                   s[7:0],\n                     ov[1:0] == '1');\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nsigned_adder output ;\n\nreg a ;\nreg b ;\nreg out ;\nreg overflow ;\n \nalways @n esc_dumped_to_display = @n debug('in0')$;\nalways @n esc_dumped_to_serial = @n debug('in0')$;\nalways @n esc_dumped_to_alarm = @n debug('in0')$;\nalert( in$ + '@n' + in );\n  \nalways\nbegin\n#copy a[words] reg a[words]\n#copy b[words] reg b[words]\n#assign s[words] reg out\n#assign overflow flag reg overflow\n\n#ref SDo contention with IN0\n@n SReadCONTAllIN;\n\n#lsb of s[words] valid when overflows occured\nnot  lsb (y3.d);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "      T logic carry, C logic overflow_flag; \n      if\\^(a < b)\n        overflow <= carry; \n      end;\n\n      s <= a + b;\n      C := (s [7:0] & 0100)...0;    // carry flag for overflow of the addition of a and b\n      carry <= carry;   \n      overflow <= overflow;\n\n      if\\^(carry)\n        overflow <= '1' else overflow <= '0';\n\n      // output overflow cause (0 = 0)\n      output overflow\n';\n\n"
+    }
+  ],
+  "created": 1663539939,
+  "id": "cmpl-nvM3ucUat2iTdia50WEhbBPrzu8sw",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 626,
+    "prompt_tokens": 164,
+    "total_tokens": 790
+  }
+}

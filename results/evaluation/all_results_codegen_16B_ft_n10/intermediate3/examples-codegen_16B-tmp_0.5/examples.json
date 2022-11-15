@@ -1,0 +1,87 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = (reset) ? 5'b1 : (r_reg + feedback_value);\nassign q = r_reg;\n// define the initial state\ninitial\nbegin\n\tr_reg <= 5'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? r_reg : r_next;\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign q = r_reg;\nalways @ (posedge clk)\nbegin\n\tr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// assign the output to r_reg\nassign q = r_reg;\nassign r_next = r_reg ^ (r_reg >> 3) ^ (r_reg >> 5);\nassign feedback_value = r_reg[2] ^ r_reg[4];\nalways @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tr_reg <= 5'b10000;\n\tend\n\telse\n\tbegin\n\tr_reg <= r_next;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = r_reg ^ {r_reg[4], r_reg[4] ^ r_reg[2]};\nassign q = r_reg;\nalways @ (posedge clk or posedge reset)\nbegin\nif (reset)\nr_reg <= 5'b1;\nelse\nr_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// if feedback_value is 1, then do not change q\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = (r_reg & 16'hc03f) ^ (r_reg & 16'h4000) ^ (r_reg & 16'h0400) ^ (r_reg & 16'h0800);\nassign q = r_reg;\nalways @(posedge clk, posedge reset)\nbegin\nif(reset)\nbegin\nr_reg <= 5'b10000;\nend\nelse\nbegin\nr_reg <= r_next;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "// assign q to the r_reg\nalways @ (posedge clk or posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tr_reg <= 5'b1;\n\tend\n\telse\n\tbegin\n\tr_reg = r_next;\n\tend\nend\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4], r_reg[4] ^ r_reg[0]};\nassign q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nalways @(posedge clk)\nbegin\nif(reset)\nr_reg <= 5'b1; //reset to state 1\nelse\nbegin\nr_reg <= r_next; //otherwise, shift state\nend\nend\n//feedback logic\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4], r_reg[3]};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "assign r_next = (reset) ? 5'b100001 : (feedback_value ^ r_reg);\nassign q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "assign q = r_reg;\nassign feedback_value = r_reg[2] ^ r_reg[4];\nalways @ (posedge clk or posedge reset)\nbegin\nif (reset)\nr_reg <= 5'b1;\nelse\nbegin\nr_reg <= r_next;\nend\nend\nassign r_next = {r_reg[4], r_reg[4] ^ r_reg[0]};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tr_reg <= {1'b1,1'b0,1'b0,1'b0,1'b0};\n\tend\n\telse\n\tbegin\n\tr_reg <= r_next;\n\tend\nend\nassign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = {r_reg[4], r_reg[3], r_reg[3], r_reg[3], r_reg[2]};\nassign q = r_reg;\n"
+    }
+  ],
+  "created": 1663544066,
+  "id": "cmpl-8SptyaLfOJmhSblPamo0HhbAtnsCz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1061,
+    "prompt_tokens": 155,
+    "total_tokens": 1216
+  }
+}

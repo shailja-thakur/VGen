@@ -1,0 +1,79 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a to out. \n// When sel=3, assign b to out. \n\nreg [4:0] a;\nreg [4:0] b;\nreg [4:0] out;\n\nalways @(posedge clk)\n  if (a[sel] == 0)\n    out = a;\n  else if (a[sel] == 1)\n    out = b;\n  else if (b[sel] == 0)\n    out = a;\n  else if (b[sel] == 1)\n    out = b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a and b to out.\n\nassign out[4:0] = a[sel];\n\ninitial begin\n  out = a[0];\n  sel = 0;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nwire [4:0] inp;\n\n// The second input is always the control input.\nmux_sel mux_sel(\ninp,\nout,\nsel\n);\n\nmux_out mux_out(\ninp,\nout\n);\n\nmux_sel mux_sel_out(\ninp,\nout,\nsel\n);\n\nmux_sel mux_sel_inp(\ninp,\nout,\nsel\n);\n\nmux_sel mux_sel_inp_out(\ninp,\nout,\nsel\n);\n\nmux_sel mux_sel_out_inp(\ninp,\nout,\nsel\n);\n\nmux_sel mux_sel_out_inp_out(\ninp,\nout,\nsel\n);\n\nmux_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a to out, then assign b to out.\n\n// Design a 4-to-1 multiplexer.\nmodule mux( \ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n// When sel=2, assign c to out.\n// When sel=3, assign d to out.\n// When sel=4, assign a to out, then assign b to out.\n// When sel=5, assign c to out, then assign d to out.\n// When sel=6, assign a to out, then assign b to out, then assign c to out.\n// When sel=7, assign d to out, then assign a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n// Design a 2-to-1 demultiplexer.\nmodule demux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n\n// Design a 2-to-1 demultiplexer with a delay.\nmodule demux_delay( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out,\nbit delay );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n// When delay=0, assign a to out. \n// When delay=1, assign b to out.\n\n// Design a 2-to-1 multiplexer with a delay.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a to out. \n// When sel=3, assign b to out. \n// When sel=4, assign a to out. \n// When sel=5, assign b to out. \n// When sel=6, assign a to out. \n// When sel=7, assign b to out. \n// When sel=8, assign a to out. \n// When sel=9, assign b to out. \n// When sel=10, assign a to out. \n// When sel=11, assign b to out. \n// When sel=12, assign a to out. \n// When sel=13, assign b to out. \n// When sel=14, assign a to out. \n// When sel=15, assign b to out. \n\nm"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a to out. \n// When sel=3, assign b to out. \n\nwire [16:0] out;\n\nmux mux1(\n  .a(a),\n  .b(b),\n  .sel(sel),\n  .out(out)\n);\n\nmux mux2(\n  .a(a),\n  .b(b),\n  .sel(sel),\n  .out(out)\n);\n\nmux mux3(\n  .a(a),\n  .b(b),\n  .sel(sel),\n  .out(out)\n);\n\nmux mux4(\n  .a(a),\n  .b(b),\n  .sel(sel),\n  .out(out)\n);\n\nmux mux5(\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign 0 to out. \n// When sel=3, assign 1 to out. \n\nwire [4:0] in[4];\n\n\n// This is a design-time \"thing\". \n// The \"thing\" is a wrapper around a real hardware device. \nmux mux_dev(\nin[4] a,\nin[4] b,\nin [4:0] sel,\nout [4:0] out );\n\n// The \"thing\" is a wrapper around a real hardware device. \nmux mux_dev(\nin[4] a,\nin[4] b,\nin [4:0] sel,\nout [4:0] out );\n\n// The \"thing\" is a wrapper around a real hardware device. \nmux mux_dev(\nin[4] a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": " \n\nwire [4:0] in_a, in_b;\n\nmux_sel_in_a mux_sel_in_a( in_a, sel, in_b );\nmux_sel_in_b mux_sel_in_b( in_b, sel, in_a );\n\nmux_sel_out_a mux_sel_out_a( out, sel, in_a );\nmux_sel_out_b mux_sel_out_b( out, sel, in_b );\n\nmux_mux mux_mux( out, sel, in_a, in_b );\n\nmux_sel mux_sel( out, sel, in_a, in_b );\n\nmux_sel_in mux_sel_in( out, sel"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": " \n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer.\n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer.\n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer.\n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer.\n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer.\n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer.\n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer.\n\n// The instruction set of the Mux is the same as the\n// instruction set of the Multiplexer"
+    }
+  ],
+  "created": 1663540188,
+  "id": "cmpl-8ITNU6ARGzhmhxmIBA6Vi7Jw7d4hf",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1795,
+    "prompt_tokens": 70,
+    "total_tokens": 1865
+  }
+}

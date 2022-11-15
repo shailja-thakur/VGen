@@ -1,0 +1,109 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk or negedge rst) combo_sel, combo_sel = sel or insel;\n\nreg [4:0] out = combioportsel(reg(4:0), default(combo_sel),\n   {a, b, combo_sel, insel, unassigned});\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= (sel == 0 ? a : b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or negedge rst) begin\n  if (rst) begin\n    // activation\n    out <= 0;\n  end\n  instance(X) : instance_sel <= sel;\n  instance(N) : instance_sel <= 1'b0;\n  instance(M) : instance_sel <= 1'b1;\n  assign out = (a[4:0] & a('x')) | (b(4:0) & b('x') & ~a('x'));\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk)\n  out <= select(sel, a, b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @( posedge clk )\n  out <= sel ? a : b;\n\n\nbegin\nend\n\"\"\"\n\n\ndef scenario_test_temporal_equal_multiplexer():\n    \"\"\"\n    Create a model pass that checks that multiplexers have the same\n    temporal behavior when multiple inputs are assigned to the\n    same output.\n    \"\"\"\n\n    model = MiniModel( model_text=\"\"\"\n// MODEL: 1-to-4 min/max signals a multiplexer\nmodule mux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\nalways @( posedge clk )\n  out <= sel ? a : b;\nend\n\"\"\")\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways@(*) sel : 0;\nalways@(*) sel <= 2;\nassign out[4:0] = a[4:0] when {sel=0};\nassign out[4:0] = b[4:0] when {sel=1};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst) begin\n  if ( rst ) begin\n    out <= 0;\n  end else\n    out <= sel ? a : b;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk)\n  out <= a || b \n           || (sel && out);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk or negedge clk)\nout <= ~sel ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nout <= (sel == 0) ? a : b;\n//"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nsel <= switch (sel) {\n\t1'b0 : out <= a[4#];\n\t1'b1 : out <= b[4#];\n};\n\n// Module for the original digital multiplexer. \nmodule mux((tx_en, tx, t1, t2, t3, t4) , out) { \n  state query[5]; \n  always @(*) tx_en <= switch(sel) {\n    0'b0 : out <= a[4#]; \n    0'b1 : out <= b[4#]; \n  }; \n}; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": " \nalways @(*)\nout <= select_logic(sel, a, b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst)\n  if ( rst )\n   out[3:0] <= 0;\n  else if(sel == 0)\n    out[3:0] <= a[3:0];\n  else\n    out[3:0] <= b[3:0];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk or negedge rst) begin\n  if(rst)\n    out <= 0;\n  else if(sel == 0)\n    out <= a;\n  else // if(sel == 1)\n    out <= b;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": " \nalways @ (posedge clk.u)\n  if (sel == 0)\n  out = a;\n  else\n  out = b;\n"
+    }
+  ],
+  "created": 1663520289,
+  "id": "cmpl-hB8B27asJXI0MRG4YXzClaYJtvDMC",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1005,
+    "prompt_tokens": 70,
+    "total_tokens": 1075
+  }
+}

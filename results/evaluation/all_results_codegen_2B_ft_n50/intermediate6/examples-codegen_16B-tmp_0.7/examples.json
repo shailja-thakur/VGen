@@ -1,0 +1,325 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": ", the output port\nalways @ (posedge clk) begin\nif (we)\nram[addr]<=data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\n// when we is high, write data to ram at address addr\n// assign the ram value at address addr to q\nalways @ (posedge clk) begin\nif (we)\nram[addr] = data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)\nbegin\nif (~we)\nbegin\nram[addr]=data;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk) begin\n\tif (we)\n\tbegin\n\tram[addr] <= data;\n\tend\n\telse\n\tbegin\n\tq <= ram[addr];\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk) begin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)begin\nif(we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @ (posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk) begin\n\tif (~&we)\n\tbegin\n\tram[addr] = data;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// this is a write-only RAM\n// read-only RAM: assign q to the ram value at address addr\nalways @(posedge clk) begin\nif (~we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)begin\nif(we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n// all clock and data signals are active high\n// when we is true, write to the ram\nassign q = ram[addr];\nalways @(posedge clk) begin\n\tif (we)\n\tbegin\n\tram[addr] = data;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\n// flush the contents of ram when we goes high\nalways @ (we)\nbegin\n\tif (we)\n\tbegin\n\t// write a value to the ram module\n\tram[addr] = data;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nassign q = (we) ? ram[addr] : 8'bz;\nalways @(posedge clk)\nif (we)\nram[addr] <= data;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk) begin\n\tif (we)\n\tram[addr] <= data;\n\tq <= ram[addr];\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @ (posedge clk) begin\nif (we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nwe <= 1'b1;\ndata <= data;\naddr <= addr;\nq <= ram[addr];\n// enable writing to ram\nend\n// disable writing to ram\nalways @(posedge clk) begin\nwe <= 1'b0;\nend\n// this is a two port RAM\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif(we)\nram[addr] <= data;\nq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 20,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @ (posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 21,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk) begin\nif(we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 22,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\nif(we)\nram[addr]<=data;\nelse\nq<=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 23,
+      "logprobs": null,
+      "text": "\nassign q=ram[addr];\nalways@(posedge clk)begin\nif(we)\nram[addr]=data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 24,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)\nif (we)\nram[addr] = data;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 25,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 26,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif(we)\nram[addr]=data;\nend\nassign q=ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 27,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 28,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nif (we) \nram[addr] <= data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 29,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk) begin\nif (we)\nram[addr] <= data;\nq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 30,
+      "logprobs": null,
+      "text": "\n// use tri-state buffer to perform a write\n// to a RAM, don't care if we change the value\n// at addr.\nalways @(posedge clk) begin\nif (we)\nram[addr] <= data;\nend\n// assign q to the value at address addr\nassign q=ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 31,
+      "logprobs": null,
+      "text": ".\nalways @(posedge clk) begin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 32,
+      "logprobs": null,
+      "text": ".\nalways @(posedge clk) begin\nif(we)\nram[addr]<=data;\nend\nassign q=ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 33,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 34,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)\nbegin\nif (we)\nbegin\n ram[addr] = data;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 35,
+      "logprobs": null,
+      "text": "\n\n\nalways @(posedge clk) begin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 36,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk) begin\nif (we) \nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 37,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 38,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)\nif (we)\nram[addr] = data;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 39,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif(we)\nram[addr] = data;\nq = ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 40,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)begin\nif(we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 41,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nalways @(posedge clk)\nbegin\nif(we)\nram[addr]=data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif (we == 1'b1)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 43,
+      "logprobs": null,
+      "text": ".\nalways @(posedge clk)\nbegin\ncase(addr)\n6'h00: ram[6'h00] <= data;\n6'h01: ram[6'h01] <= data;\n6'h02: ram[6'h02] <= data;\n6'h03: ram[6'h03] <= data;\n6'h04: ram[6'h04] <= data;\n6'h05: ram[6'h05] <= data;\n6'h06: ram[6'h06] <= data;\n6'h07: ram[6'h07] <= data;\n6'h08: ram[6'h08] <= data;\n6'h09: ram[6'h09] <= data;\n6'h0A: ram[6'h0A] <= data;\n6'h0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 44,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) \nbegin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (we)\n\tram[addr] <= data;\n\tq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 46,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 48,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 49,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\ninitial\nbegin\n$readmemh(\"ram_data.txt\", ram);\nend\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\n"
+    }
+  ],
+  "created": 1663550903,
+  "id": "cmpl-R3D48HGopYboV0XhqAJAzChEdZq3g",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2276,
+    "prompt_tokens": 143,
+    "total_tokens": 2419
+  }
+}

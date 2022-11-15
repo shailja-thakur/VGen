@@ -1,0 +1,86 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst) begin\n    if (rst) begin\n        s <= 0;\n        overflow <= 0;\n    end\n    else begin\n        if (a[7:0] > 127) begin\n            s <= b[7:0];\n            if (a[7:0] > 127) begin\n                if (b[7:0] > 127) begin\n                    s <= 255;\n                end\n            end\n        end\n        else begin\n            s <= a[7:0] + b[7:0];\n            if (s[7:0] > 127) begin\n                if (b[7:0] > 127) begin\n                    s <= 255;\n                end\n            end\n        end\n        if (s[7:0] > 127) begin\n            overflow <= 1;\n        end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n#include \"port.h\"\n\nint main()\n{\n  int a, b, s, overflow;\n  int a_plus_b;\n\n  while (1) {\n    a = get_int();\n    b = get_int();\n    s = a + b;\n    overflow = (int) (s >> 31);\n    a_plus_b = a + b;\n\n    if (overflow == 0) {\n      put_int(s);\n    } else {\n      put_int(a_plus_b);\n    }\n  }\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// main\nbegin\n    input[0] = 0;\n    input[1] = 0;\n    input[2] = 0;\n    input[3] = 0;\n    input[4] = 0;\n    input[5] = 0;\n    input[6] = 0;\n    input[7] = 0;\n    output[0] = 0;\n    output[1] = 0;\n    output[2] = 0;\n    output[3] = 0;\n    output[4] = 0;\n    output[5] = 0;\n    output[6] = 0;\n    output[7] = 0;\n    overflow = 0;\n    \n    while (1) {\n        if (a[7:0] < 0) {\n            if (b[7:0] < 0) {\n                if (a[7"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst) begin\n    if(rst == 1)\n        s <= 0;\n    else if(a <= 127)\n        s <= a + b;\n    else if(b <= 127)\n        s <= a + b + 128;\n    else if(a < 0)\n        s <= a + b + 128;\n    else if(b < 0)\n        s <= a + b + 128;\n    else\n        s <= a + b + 128;\n    if(s > 255)\n        overflow <= 1;\n    else\n        overflow <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (a[7] == 1 && b[7] == 1) begin\n        s[7] <= 0;\n        s[6] <= 0;\n        s[5] <= 0;\n        s[4] <= 0;\n        s[3] <= 0;\n        s[2] <= 0;\n        s[1] <= 0;\n        s[0] <= 0;\n        overflow <= 1;\n    end\n    else begin\n        if (a[7] == 1 && b[7] == 0) begin\n            s[7] <= a[6];\n            s[6] <= a[5];\n            s[5] <= a[4];\n            s[4] <= a[3];\n            s[3] <= a[2];\n            s[2] <= a[1"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// The signed adder should be able to accept inputs in the range -128 to 127.\n\nalways @(posedge clk)\nbegin\n    if (a <= 127) begin\n        s <= a + b;\n    end else begin\n        s <= b - a;\n        if (s > 127) begin\n            overflow <= 1;\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or negedge rst) begin\n    if (rst) s <= 0;\n    else if (a[7:0] <= 0) s <= b[7:0];\n    else if (b[7:0] <= 0) s <= a[7:0];\n    else if (a[7:0] > b[7:0]) s <= a[7:0] - b[7:0];\n    else if (b[7:0] > a[7:0]) s <= b[7:0] - a[7:0];\n    else if (a[7:0] == b[7:0]) s <= 0;\n    else if (a[7:0] < b[7:0]) s <= b[7:0] - a[7:0];\n    else if (b[7"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// The signed overflow is high if the most significant bit of s is high. \n// The most significant bit of s is high if the most significant bit of a and b are high and the most significant bit of s is low.\n// The most significant bit of s is high if the most significant bit of a and b are low and the most significant bit of s is high.\n\nalways @(posedge clk or negedge rst) begin\n   if (rst) begin\n      s <= 0;\n      overflow <= 0;\n   end else begin\n      if (a > 127 or b > 127) begin\n         s <= 0;\n         overflow <= 1;\n      end else begin\n         s <= a + b;\n         overflow <= 0;\n      end\n   end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// The signed adder will be used as follows:\n// \ta: a[7:0]\n// \tb: b[7:0]\n// \ts: s[7:0]\n// \toverflow: overflow[7:0]\n\nalways @(posedge clk)\n{\n\tif(clk == 1)\n\t{\n\t\ts <= a + b;\n\t}\n\telse\n\t{\n\t\ts <= b - a;\n\t}\n}\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// Example 1:\n// Input: a = 0x8, b = 0x9, s = 0x10, overflow = 0\n// Output: a = 0x9, b = 0x9, s = 0x19, overflow = 0\n\n// Example 2:\n// Input: a = 0x8, b = 0x9, s = 0x10, overflow = 1\n// Output: a = 0x9, b = 0x9, s = 0x19, overflow = 1\n\n// Example 3:\n// Input: a = 0x8, b = 0x9, s = 0x10, overflow = 0\n// Output: a = 0x9, b = 0x9, s = 0x19, overflow = 1\n\n// Example 4:\n// Input: a = 0x8, b = 0x9, s = 0x10, overflow = 1\n//"
+    }
+  ],
+  "created": 1663519749,
+  "id": "cmpl-abZgdxPAguQ8luZso2Ui5RjkvJkut",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1674,
+    "prompt_tokens": 164,
+    "total_tokens": 1838
+  }
+}

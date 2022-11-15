@@ -1,0 +1,48 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@(in)\nbegin\n\tcase(in)\n\t\t3'b000:\tpos = 0;\n\t\t3'b001:\tpos = 1;\n\t\t3'b010:\tpos = 2;\n\t\t3'b011:\tpos = 3;\n\t\t3'b100:\tpos = 4;\n\t\t3'b101:\tpos = 5;\n\t\t3'b110:\tpos = 6;\n\t\t3'b111:\tpos = 7;\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(in)\nbegin\n\tcase (in)\n\t\t0: pos <= 3'b010;\n\t\t1: pos <= 3'b100;\n\t\t2: pos <= 3'b000;\n\t\t3: pos <= 3'b001;\n\t\tdefault: pos <= 3'b111;\n\tendcase\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// We assume that they are in the \"1\" case. \nalways @ ( in )\n    case ( in )\n        3'b001: pos = 0;\n        3'b010: pos = 1;\n        3'b100: pos = 2;\n        3'b000: pos = 3;\n        3'b001: pos = 4;\n        default: pos = 0;\n    endcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always@( in )\n\tcase( in )\n\t\t3'b001: \n\t\t\tpos = 2'b11;\n\t\t3'b010:\n\t\t\tpos = 2'b10;\n\t\t3'b011:\n\t\t\tpos = 2'b01;\n\t\t3'b100:\n\t\t\tpos = 2'b00;\n\t\tdefault: \n\t\t\tpos = 2'b11;\n\tendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// This is a 4 bit comparator, then in is zero.\nalways @ (in )\nbegin\n\tcase({in})\n\t\t3'b010: pos <= 2'b10;\n\t\t3'b100: pos <= 2'b10;\n\t\tdefault: pos <= 2'b00;\n\tendcase\nend\n//assign b to out\nassign out = pos[3] ? (in[1] ? in :\n\t\t\t\t\t\t\t\t\t\tin[0]) : 1'b0;\n"
+    }
+  ],
+  "created": 1663299309,
+  "id": "cmpl-lP66ZCarslEGudWV0D9raWPfkqosL",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 582,
+    "prompt_tokens": 65,
+    "total_tokens": 647
+  }
+}

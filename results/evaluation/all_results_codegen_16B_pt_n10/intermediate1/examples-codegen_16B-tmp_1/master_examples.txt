@@ -1,0 +1,247 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+input in;
+reg tmp;
+wire carry;
+input [cube(3) / 2] sum;
+module half_adder(
+input a, b,
+output cout, sum );
+input in;
+reg tmp;
+wire carry;
+input [cube(3) / 2] sum;
+output half_adder(
+input a, b,
+output half_adder, sum );
+input in;
+reg tmp;
+wire carry;
+
+reg [cube(3) / 2] sum;
+wire cout;
+wire sum;
+assign {
+	sum = 0;
+	cout = 0;
+} sum #sum;
+	always_ff( {
+		tmp = $width - 1;
+	} );
+	// 2'b0 : sum[1:0]
+	// 2'b1 : sum[3:2]
+	// 2'b0 ; other 3
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum ); 
+
+input clk;
+input a_in, b_in; 
+input logic[1:1]; 
+
+reg sum; 
+
+always begin
+if rising_edge(clk) begin a_in <= a || b; b_in <= b || a;
+sum <= a_in + b_in;
+end 
+end 
+
+//AA+B = C
+assign cout = sum && ~ a_in;
+//A&C = D&E
+assign sum = b_in && sum;
+
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = ( a + b ) - ( a + ( b ^ 0x22 ) );
+
+// This is a full adder. A full adder adds three bits and produces a sum and carry-out.
+module full_adder(
+input a, b, c,
+output cout, sum );
+
+assign sum = ( a + b ) + ( ( a + c ) + ( b ^ 0x22 ) );
+
+// This is a half subtractor. A half subtractor subtracts three bits.
+// The carry-out goes to the result: use the extra carry-out pin because the library does not have a register for it.
+module half_subtractor(
+input a, b, c,
+output cout, sum );
+
+assign sum = ( c ) ); // in XTL is an implicit zero bit
+
+// This is a full subtractor. A full subtractor subtract
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+struct half_adder_proto {
+	unsigned char vars_[2];
+};
+
+void half_adder_encode( half_adder_proto*, unsigned* /*i*/, input a );
+
+void half_adder_rewrite( half_adder_proto* );
+
+void half_adder_encode_elems( half_adder_proto*, unsigned /*i*/, input a );
+
+void half_adder_init( half_adder_proto );
+
+void half_adder_decode( half_adder_proto*, unsigned* i, input a, output cout );
+
+void half_adder_call( half_adder_proto* );
+
+void half_adder_renum( half_adder_proto* p, input a, output cout );
+
+void half_adder_encode_keys( half_adder_proto*, unsigned /*
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum ); 
+      
+assign sum = (a + b);
+
+// write results to cout. 
+output cout = sum + carry_out;
+
+// inorder simulation. 
+int main()
+ {
+int a = 0, b = 1, cout = 0, sum = 0;
+ 
+cout = 1; 
+ 
+reset_nodes(); 
+
+while (cout != 0) { 
+/*While statement condition ensures that this iteration is executed on first carry-out.
+It is an infinte loop, does the ahfull_adder run continously the programme execute once for every iteration.
+Outof while loop print statements are called to inform the user of which variables are running their operation.
+One After adding a and b to cout, a computation is carried out and is the sum.
+Once again cout is used in order to move to the next line in assembly, incases required. Method is
+================================================================
+example-5: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire dout, sum;
+wire cin = a, cout_b, sum_b; 
+
+// input two bits each via a
+always @(posedge clk) begin
+  cout_b <= {dout, cout_b, a};
+  if ( A ) {
+    sum_b <= b;
+  } else {
+    sum_b <= {sum, sum_b, b};
+  }
+  sum <= ( sum_b | ~cout_b ); 
+end
+
+
+================================================================
+example-6: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+{
+    $add, \ragged{
+        cout( sum )
+    }
+}
+
+================================================================
+example-7: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+input a, b : 1;
+output cout : 1;
+output sum : 1;
+output cin : 1;
+reg ABCD, ABCD0, ABCD1, BC, BC0, BC1, Cin, sum : 1;
+
+begin
+
+ABCD0 <= a;
+BC <= b;
+Cin <= bit_or( ABCD0, BC );
+BC0 <= ABCD;
+BC1 <= bit_and( ABCD0, BC );
+sum <= BC0 + BC1;
+Cin <= bit_or( BC, Cin );
+ABCD <= bit_or( ABCD0, ABCD1 );
+
+sum <= bit_and( ABCD1, BC1 );
+Cout <= bit_and( Cin, sum );
+
+end architecture half_adder;
+
+
+================================================================
+example-8: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+always @(posedge a, b) begin
+  sum <= a & b;
+  if(a & ~b){ // if (rst || !a & b)
+    // Carry-out is bit 0 of sum
+    cout <= ~bit(sum, 1);
+    // The sum is meant to produce 0 for 'carry', therefore output the 0 here.
+  } else { // This 'else' statement is to get it to have some output in non-RST.
+    cout <= 1;
+  }
+end
+
+half_adder uut0( s0, s1, cout, sum );
+
+always @(posedge c2) begin
+  case(c2) begin
+    // The 'case' manipulates the 'sum' of uut0 and outputs to cout.
+    if( uut0.uut_x.a ) begin
+      cout
+================================================================
+example-9: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+    
+connection { port: cout; signal: sum; }
+
+*in {port : a; signal : sum;}
+*in {port : b; signal : sum;}
+
+
+
+
+
+half_adder( a, b, cout )
+half_adder( b, a, cout )
+
+================================================================

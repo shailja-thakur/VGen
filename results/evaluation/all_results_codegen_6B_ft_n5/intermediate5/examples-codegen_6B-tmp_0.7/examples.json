@@ -1,0 +1,52 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset)\n\tout<=0;\nelse if (load)\n\tout<=data;\nelse begin\n\t//$display(\"amount = %d\",amount);\n\tout <= {out[6:0],out[7]};\n\t//$display(\"out = %b\",out);\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nif (load) out<=data;\nelse begin\n\tif(amount==3'd0) out<=out;\n\telse out<={out[6:0],out[7]};\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg [7:0] out_d;\nalways@(posedge clk)\n\tbegin\n\tif(reset)\n\tbegin\n\tout<=8'b0;\n\tout_d<=8'b0;\n\tend\n\telse if(load)\n\tbegin\n\tout<=data;\n\tout_d<=out;\n\tend\n\telse\n\tbegin\n\tout_d<={out_d[6:0],out_d[7]};\n\tout<={out_d[7],out_d[6:1]};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tout<=0;\n\tend\n\telse if (load)\n\tbegin\n\tout<=data;\n\tend\n\telse if (amount==3'd3) //as the key is 3 bits, we have to iterate 3 times to get the final output\n\tbegin\n\tout<={out[5:0],out[6]};\n\tend\n\telse if (amount==3'd4)\n\tbegin\n\tout<={out[4:0],out[5]};\n\tend\n\telse if (amount==3'd5)\n\tbegin\n\tout<={out[3:0],out[4]};\n\tend\n\telse if (amount==3'd6)\n\tbegin\n\tout<={out[2:0],out[3"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nif(reset)\n\tbegin\n\tout <= 0;\n\tend\nelse\n\tbegin\n\tif(load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],out[7]};\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663600147,
+  "id": "cmpl-LC68wp7zv1dcZWeTzHW7iRZrEqQIs",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 579,
+    "prompt_tokens": 94,
+    "total_tokens": 673
+  }
+}

@@ -1,0 +1,36 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk)\nif (sel==1)\n  pos <= b;\nelse\n  pos <= a;\nend\n\n// This is a 2-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [1:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\n// When sel=0, assign a to out\nalways @(posedge clk)\nif (sel==1)\n  pos <= b;\nelse\n  pos <= a;\nend\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,\noutput reg ["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if(sel==1)\n    pos <= in;\n  else\n    pos <= in;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge in) begin\n\tif ( in[1] == 1 )\n\t  pos <= 1;\n\telse if ( in[0] == 1 )\n\t  pos <= 2;\n\telse\n\t  pos <= 3;\nend\n"
+    }
+  ],
+  "created": 1663534048,
+  "id": "cmpl-pBKvkIjCb9gyHT0wj7Swh70NhB8Ws",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 321,
+    "prompt_tokens": 65,
+    "total_tokens": 386
+  }
+}

@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nfunctional addr( integer );\n\nalways @(posedge clk)\nr <= sum + addr( mul( a, clk_mod ) );\n\nalways @(posedge clk)\nb <= a + addr( mul( b, clk_mod ) );\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n`octonion_half_adder( Signal_I, Signal_B );\n\nart.pure\nfunction half_adder_cout is half_adder.cout;\n`octonion_half_adder_cout( c );\n\nfunc half_adder_sum(\ninput a, b,\noutput cout, sum \n);\nhalf_adder_sum_input a, b, c;\n`octonion_half_adder_sum( x, y );\na = To_Octonion_Cell(11, 13, 14);\nb = To_Octonion_Cell(16, 23, 31);\nCarrier C = half_adder_sum(a, b, c.cout, c.sum);\nConsole.WriteLine( C.C );\n\nagca( 32, 56789 );\n\nConsole.WriteLine(\"Some typed interface works in 68k"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nRunResult half_adder_wrap(\noutput cout, sum,\noutput carry_out,\ninput a, b);\n`)\n\n} else if _, ok := VC.importExpr(\"HalfAdderWrap\"); ok {\n\tvar sum int64\n\tdefer ast.Nil(VC.importExpr(\"Sum\"))\n\tvar carry_out int64\n\t\n\ttran  := VC.newtrans()\n\t\n\tfor _, in := range VC.inputs {\n\t\t\n\t\ttran.setInput(input, in)\n\t\tloop( tran, switchCase, conChannel, in )\n\t\t\n\t}\n\t\n\tcmdfmt := ` sum =  0; tran.tobegin()\n\t\n\tfor tran.done==0 {\n\t  var x, y int64\n\n\t  x, cout = tran"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nprev_carry: cin; // The previous carry-out cin.\n  \nhalf_adder( a(cin), b, cout, sum(cin);\nsum < cout; // Carry-out.\n  \nsum += a(sum) +b cin; // The sum together with the shifted carry-out cin.\ncout(sum);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk)\nvoid sum_fcns()\n{\n  cout = (sum[1] << 4|\n         sum[0]);\n}\n\nalways @(negedge clk)\nvoid out_set_fcns()\n{\n  sum[2] = (a << 4 | b);\n  sum[1] = (sum[1] >> 1);\n  sum[0] = (sum[1] >> 1);\n}\n"
+    }
+  ],
+  "created": 1663519684,
+  "id": "cmpl-QesRdUr2n0ZCD3ocIiNGpLacj1HZV",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 658,
+    "prompt_tokens": 43,
+    "total_tokens": 701
+  }
+}

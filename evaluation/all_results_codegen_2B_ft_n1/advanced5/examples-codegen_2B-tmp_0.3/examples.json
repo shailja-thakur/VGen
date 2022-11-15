@@ -1,0 +1,33 @@
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to IDLE.\n// if input a is high and input b is low, state changes to SA.\n// if input a is low and input b is high, state changes to SB.\nalways @(posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(*)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif (a && b)\nnext_state <= SA;\nelse if (a && !b)\nnext_state <= SB;\nelse if (!a && b)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif (a && b)\nnext_state <= SAB;\nelse if (!a && b)\nnext_state <="
+    }
+  ],
+  "created": 1663606651,
+  "id": "cmpl-3svksvrh2IEDPKxjGODMByf0DkNb6",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 123,
+    "total_tokens": 323
+  }
+}

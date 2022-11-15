@@ -1,0 +1,52 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\nif (reset == 1) out <= 8'b00000000;\nelse if (load == 1) out <= data;\nelse if (amount != 0) begin\ncase(amount)\n3'b000: out <= {data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7]};\n3'b001: out <= {data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[0]};\n3'b010: out <= {data[2],data[3],data[4],data[5],data[6],data[7],data[0],data[1]};\n3'b011: out <= {data[3],data[4],data[5"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @ (posedge clk, posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse\n\tbegin\n\tif(load)\n\tout <= data;\n\telse\n\tbegin\n\tout <= {data[7] , data[6] , data[5] , data[4] , data[3] , data[2] , data[1] , data[0]};\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// assign out to data\nalways@(posedge clk)\nif(reset)\nout <= 0;\nelse if(load)\nout <= data;\nelse if(amount == 3'b000)\nout <= data << 1;\nelse if(amount == 3'b001)\nout <= {data[1], data[0], data[7], data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0], data[7], data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0]};\nelse if(amount == 3'b010)\nout <= {data[2], data[1], data[0], data[7], data[7], data[6], data[5], data[4], data[3],"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// Note: it is very important that the rotates be done in the same direction!\nalways @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tout <= 0;\n\tend\n\telse if(load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tcase(amount)\n\t3'b000:\n\tbegin\n\tout <= {data[0],data[7:1]};\n\tend\n\t3'b001:\n\tbegin\n\tout <= {data[1],data[7:2]};\n\tend\n\t3'b010:\n\tbegin\n\tout <= {data[2],data[7:3]};\n\tend\n\t3'b011:\n\tbegin\n\tout <= {data[3],data[7:4]};\n\tend\n\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif(reset)\nout<=8'b0;\nelse if(load)\nout<=data;\nelse\nbegin\nout<={data[7:0],data[15:8]};\nout<={out[7:0],out[15:8]};\nend\nend\n"
+    }
+  ],
+  "created": 1663606770,
+  "id": "cmpl-wxD0emBbOO7uN6LplT03YRtjJjFrb",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 800,
+    "prompt_tokens": 94,
+    "total_tokens": 894
+  }
+}

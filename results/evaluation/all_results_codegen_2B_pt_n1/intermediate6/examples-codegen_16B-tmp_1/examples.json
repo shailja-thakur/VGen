@@ -1,0 +1,54 @@
+// This is a ram module
+module ram
+(
+input [7:0] data,
+input [5:0] addr,
+input we, clk,
+output [7:0] q
+);
+reg [7:0] ram[63:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (we)\n\tram[addr] <= data;\n// for (i = 0; i < 64; i = i+1) begin\n// \tif (&w[5:0])\n// \tbegin\n// \tend\nend\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign q = ( we & clk ) ? ram[addr] : 8'bzzzz_zzzz;\nalways@(posedge clk)\nbegin\nif(we)\n ram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tcase({we, addr})\n\t{2'b10, 5'b00000}: q <= 8'h00;// should sets ram[0] = 0\n\t{2'b10, 5'b00001}: q <= 8'h01;// should sets ram[1] = 1\n\t{2'b10, 5'b00010}: q <= 8'h02;// should sets ram[2] = 2\n\t{2'b10, 5'b00011}: q <= 8'h03;// should sets ram[3] = 3\n\t{2'b10, 5'b00100}: q <= 8'h04;// should sets ram[4] = 4\n\t{2'b10, 5'b00101}: q <= 8'h05;// should sets ram[5] = 5\n\t{"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif (we)\n\tbegin\n\tram[addr] = data;\n\tend\n\t\n\t\nend\n\t//prepends a 0 when reading from address 0\n\t//so as to effect a reset of the ram\n\t//when we = 0, cause q to be returned when we clk is high\n\tassign q = (addr[0] == 1'b0) ? ram[addr] : 8'b0; //inside main this causes the 0 to be returned\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n if (we)\n begin\n ram[addr] = data;\n end\n q = ram[addr];\nend\n"
+    }
+  ],
+  "created": 1663333895,
+  "id": "cmpl-7ePwyuWkBkAlCQvOY23FHDFVzlrNr",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 493,
+    "prompt_tokens": 85,
+    "total_tokens": 578
+  }
+}

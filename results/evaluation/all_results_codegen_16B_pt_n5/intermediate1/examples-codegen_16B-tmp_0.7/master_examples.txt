@@ -1,0 +1,104 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire clk = clk;
+wire carry_in = carry_in;
+
+reg a_reg = a_reg;
+reg b_reg = b_reg;
+reg sum_reg = sum_reg;
+
+// output logic
+reg [7:0] sum = sum;
+
+// carry logic
+wire carry_out = carry_out;
+
+always @(posedge clk) begin
+  if( a_reg == 1 )
+  {
+    sum_reg <= sum + b_reg;
+    carry_out <= sum_reg[6];
+    sum_reg[6:5] <= carry_out;
+  }
+  else
+  {
+    sum_reg <= sum + carry_in;
+    carry_out <= sum_reg[6];
+    sum_reg[6:5] <= carry_out;
+  }
+end
+
+ass
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+always @(posedge clk) begin
+    if (!rst)
+        cout <= a;
+    else 
+        cout <= a + b;
+end
+
+reg [2:0] sum;
+always @(posedge clk) begin
+    sum <= a + b;
+end
+
+
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+always @(posedge clk)
+ begin
+   sum <= {a, b, cout}
+ end
+
+
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire cin, cout, sum;
+wire carry_in, carry_out;
+
+// compute sum = a + b + carry_in
+assign sum = a + b + carry_in;
+// compute carry_out = a + b + cin
+assign carry_out = a + b + cin;
+
+// compute cout = sum&carry_out
+assign cout = sum & carry_out;
+
+
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+input a, b,
+output cout, sum;
+
+always @(posedge clk) begin
+  sum <= (a + b);
+  cout <= sum[2:0];
+end
+
+
+================================================================

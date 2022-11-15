@@ -1,0 +1,15 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+always @ (sel)
+begin // Start of sel block
+	case (sel) // Start of sel case
+	0: out = a; 
+	1: out = b; // End of sel case
+	endcase // End of sel case
+end // End of sel always block
+endmodule

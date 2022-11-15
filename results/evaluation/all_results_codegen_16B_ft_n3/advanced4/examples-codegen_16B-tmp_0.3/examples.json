@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load == 1'b1)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena == 1'b1)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\t\n\tif(load) begin\n\t\n\tq <= data;\n\t\n\tend\n\t\n\telse if(ena) begin\n\t\n\tif(amount == 2'b00) begin\n\t\n\tq[0] <= q[63];\n\t\n\tq[63:1] <= q[62:0];\n\t\n\tend\n\t\n\telse if(amount == 2'b01) begin\n\t\n\tq[0] <= q[31];\n\t\n\tq[31:1] <= q[30:0];\n\t\n\tq[63:32] <= q[31:0];\n\t\n\tend\n\t\n\telse if(amount == 2'b10) begin\n\t\n\tq[63:1] <= q[0];\n\t\n\tq[0] <= q[31"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif (load)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00)\n\tq <= q << 1;\n\telse if (amount == 2'b01)\n\tq <= q << 8;\n\telse if (amount == 2'b10)\n\tq <= q >> 1;\n\telse if (amount == 2'b11)\n\tq <= q >> 8;\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663333589,
+  "id": "cmpl-2rgcmBfcwTGA0hdjhZpLyiz0uQ6iB",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 490,
+    "prompt_tokens": 184,
+    "total_tokens": 674
+  }
+}

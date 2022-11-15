@@ -1,0 +1,52 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n if (load) out = data ;\n else begin\n\tif(amount == 3'd0) out = out;\n\telse if(amount == 3'd1) out = {out[6:0],out[7]};\n\telse if(amount == 3'd2) out = {out[5:0],out[7:6]};\n\telse if(amount == 3'd3) out = {out[4:0],out[7:5]};\n\telse if(amount == 3'd4) out = {out[3:0],out[7:4]};\n\telse if(amount == 3'd5) out = {out[2:0],out[7:3]};\n\telse if(amount == 3'd6) out = {out[1:0],out[7:2]};\n\telse if(amount"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge areset)\nbegin\n\tif (areset) \n\tbegin\n\tout = 8'b00000000;\n\tend\n\tif (load)\n\tbegin\n\tout = data;\n\tend\n\telse \n\tbegin\n\tif (amount == 3'b111)\n\tout = 8'b00000000;\n\telse\n\tbegin\n\t//$display($time,\" amount = %b\",amount);\n\t//$display($time,\" ROTATE\");\n\tout = {out[0],out[7:1]};\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign out = load ? data : rotate(out,amount);\n//anti_rotate would be the inverse of rotate, used to \"undo\" the rotation\nassign rotate = (~load) & (amount) & data[7];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(reset==1)\n\tbegin\n\tout <= 0;\n\tend\n\telse if(load==1)\n\tbegin\n\tout<=data;\n\tend\n\telse \n\tbegin\n\tout<={1'b0,out[6:0],amount};\n\t//out<={amount,out[5:0],1'b0};\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif(load)\n\tout = data;\n\telse begin\n\tcase(amount) // amount rotations\n\t3'd1: out = {out[6:0],out[7]};\n\t3'd2: out = {out[5:0],out[6]};\n\t3'd3: out = {out[4:0],out[5]};\n\t3'd4: out = {out[3:0],out[4]};\n\tendcase\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663600151,
+  "id": "cmpl-xWAkpvRGKZ8hrWVj4esoX9oZTrXzz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 636,
+    "prompt_tokens": 94,
+    "total_tokens": 730
+  }
+}

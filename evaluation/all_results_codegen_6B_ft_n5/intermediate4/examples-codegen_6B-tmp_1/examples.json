@@ -1,0 +1,54 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// setup state 0\nparameter A=1'b0; \nparameter B=1'b1; \nalways @(present_state or in)\n\tcase(present_state)\n\tA: if(in) next_state = A;\n\tB: if(in) next_state = B;\n\tendcase\n// State 0 code\nalways @(posedge clk or posedge reset)\n\tif(reset)\t\n\tbegin\n//\tif(out)\n\tstate <= 4'b0000;\n\tend\n\telse\t\n\tstate <= next_state;\t\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign next_state = present_state & ~in;\nassign out = present_state;\nalways @(*) begin \n\tif (reset) begin // Synchronous code first determines the next state, then sets the output\n\t \t//present state = next state;\n\t \tcase(next_state)\n\t \t//0 and 1; can be written as 01 and 10\n\t \t2'b01: present_state = 2'b10;\n\t \t2'b10: present_state = 2'b01;\n\t \tendcase\n\t \t//setting the values of out and other variables\n\t \tcase(next_state)\n\t \t//0 and 1; can be written as 01 and 10\n\t \t2'b01:\n\t \tassign out = 1'b0;\n\t \t2'b10:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// if you're in state 0 and in is 0, then move to state 1, on the next clock edge it should goto state 0\n// if you're in state 1 and in is 0, then move to state 0, on the next clock edge it should goto state 1\nalways @(posedge clk or posedge reset)\n\tif (reset) begin // if this statement is reached during reset, then both present and next are 0s.\n\t //this means we have a reset, meaning we are going from state 0 -> state 1.\n\tpresent_state <= next_state;\n\tend\n\telse begin \n\t//if this statement is reached during a clock edge, then both present and next are 1s\n\t//if next is 1 and present is 0, then this means we have a new input and we're going from state 1 -> state 0\n\tpresent_state <= next_state;\n\t//if next"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign out = present_state & in;\nalways @ (posedge clk or posedge reset)\n\tbegin\n\t// If the reset is active, return to state 0\n\tif (reset)\n\tpresent_state = 0;\n\telse\n\tpresent_state = next_state;\n\tcase(present_state)\n\t0: if (in) next_state = 0; else next_state = 1;\n\t1: if (in) next_state = 0; else next_state = 1;\n\tendcase\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n\tnext_state=0;\n\tpresent_state=0;\n\tend\n\telse\n\tbegin\n\tpresent_state=next_state;\n\tend\nend\nalways @(next_state or in)\nbegin \n\tcase(next_state)\n\t0: if(in)\n\tbegin\n\tnext_state=1;\n\tend\n\telse\n\tbegin\n\tnext_state=0;\n\tend\n\t1: if(in)\n\tbegin\n\tnext_state=1;\n\tend\n\telse\n\tbegin\n\tnext_state=0;\n\tend\nendcase\nend\nassign out=(present_state==0);\n"
+    }
+  ],
+  "created": 1663600105,
+  "id": "cmpl-cNxYqdrWFpXjrtjxQF1GvFCVvzrKN",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 842,
+    "prompt_tokens": 148,
+    "total_tokens": 990
+  }
+}

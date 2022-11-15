@@ -1,0 +1,57 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@ clock posedge clk;\nassign feedback_value = r_reg ^ (0b11 << ((clk >> 1) & 4));\nassign r_next = r_reg, r_reg.read = ((r_reg ^ r_next) & feedback_value) + 4;\nassign q[4] = r_reg;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "wire lfsr_sig;\nalways @(posedge clk) \n  // decrement bit values at output\n  if (r_next[0] != 128) {\n    feedback_value = r_reg[0] >> 1;\n    // FXn is (FULL_DISPLAY|DISABLED|2nd FRAME|3RD_FRAME|PREVIOUS_BIT_SHIFTED)\n    switch ((uint8_t)(r_reg[0] & THREE_QUARTER_MASK))\n{\n\n      case FULL_DISPLAY : for (i = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}; i < 64; i = i + 1) \n        r_reg[i] = r_reg[i] & (~ONE_BIT) | (0b1 << 7"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// automata\n\nalways @(posedge clk)\n    if(reset)\n        r_next = 0;\n    else\n\t{\n\t// on rising clock value of feedbram will always result in the 1\n\t// this allows the system to process input and output with any clock\n\t\tr_next = r_reg ^ feedback_value;\n\t\tr_reg = (r_reg >> 1) | (r_next << 3);\n\t}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// clock 20 forwarded from clk 16\nalways @(dx)\nbegin\n    // clock 20 for 1ms\nbegin\n  if (clk == in_clk) // test for clk rising edge\n    begin // store the CRS bits and advance the pointer\n      r_reg = r_reg>>1 | (r_next & 0x80);\n      r_next = r_reg<<3;\n      if ((r_next is bit2) or (r_next is bit4)) {\n        feedback_value = r_reg;\n        r_reg = 0;\n        if (not reset) r_reg = r_reg | (r_next & 0x80);\n      }\n    end else begin //clk rate is too slow, we are awake\n      r_reg = r_reg>>1 | (r_next & 0x180); // copy 4 most"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nbegin\n\n    // code from GF(2^5) generator function of \n    // the generator circuit can draw the table below\n    // check if this is what you want to use it\n    // see http://manual.gamedev.net/topic/46616-the-certification-certificate-and-doxygen/index.html\n    \n    case (0b100001)\n    {\n        feedback_value = r_reg ^ (clk ? 0b11 : 0);\n        if (reset != 0)\n        {\n            r_reg = r_next = 1;\n        }\n        else\n        {\n            r_reg = r_next;\n            r_next--;\n            r_next = r_next & 1 ? 293 : itr(clk);\n        }\n        q:output[4:0] = r_reg;"
+    }
+  ],
+  "created": 1663540014,
+  "id": "cmpl-84k0pEHMOGmQEQV3X7fJ6GgNPecFw",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 789,
+    "prompt_tokens": 155,
+    "total_tokens": 944
+  }
+}

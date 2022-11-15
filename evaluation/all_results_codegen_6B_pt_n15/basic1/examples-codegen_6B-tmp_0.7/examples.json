@@ -1,0 +1,106 @@
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "module wire_assign2( input in, output out ) {\n  out <= in;\n}\n\n// Different types of wire assignments\nmodule wire_assign_int_out_int_in( input in, output out ) {\n  out <= in;\n}\n\nmodule wire_assign_string_out_string_in( input in, output out ) {\n  out <= in;\n}\n\n// Use wire assign with a function\nmodule wire_assign_mem_int_out_int_in( input in, output out ) {\n  out <= wire_assign(in, x);\n}\n\nmodule wire_assign_int_out_int_in( input in, output out ) {\n  out <= out;\n}\n\nmodule wire_assign_int_out_int_in( input in, output out ) {\n  out <= in;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "void wire_assign_module() {\nout = in;\n}\n\n// Design a module that prints the input\nmodule print_input( input in );\n// print the input\nvoid print_input_module() {\ncout << in << endl;\n}\n\n// Design a module that prints the input\nmodule print_output( output out );\n// print the output\nvoid print_output_module() {\ncout << out << endl;\n}\n\n// Design a module that prints both the input and the output\nmodule print_both( input in, output out );\n// print both\nvoid print_both_module() {\ncout << in << \" \" << out << endl;\n}\n\n// Design a module that consumes the input\nmodule consume( input in );\n// consume the input\nvoid consume_module() {\ncin >> in;\n}\n\n// Design a"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// module wire_assign( out, in );\n// assign out to out\nmodule wire_assign( output out, input in );\n// assign out to out\n// module wire_assign( out, out );\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "module wire_assign_out_to_in( input in, output out );\n`\n\nfunc TestCompilerWireAssign(t *testing.T) {\n\tc := NewCompiler()\n\tvar m Module\n\tm.Compile([]byte(testModule))\n\tif m.Err() != nil {\n\t\tt.Fatalf(\"failed to compile module: %v\", m.Err())\n\t}\n\tif len(m.Wires) != 9 {\n\t\tt.Fatalf(\"module has wrong number of wires: %d\", len(m.Wires))\n\t}\n\tif !reflect.DeepEqual(m.Wires[0], Wire{\n\t\tSrc: 0, Dst: 0, WireType: \"output\", WireDir: \"in\",\n\t}) {\n\t\tt.Fatalf(\"bad wire: %#v\", m."
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// wire_assign( in, out )\n// wire_assign( in  , out  )\n// wire_assign( in.a , out.a )\n// wire_assign( in.a, out.a )\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "module wire_assign( output out, input in ) {\n  out <= in;\n}\n\nmodule test_assign( input i_in, output o_out, output o_in )\n  input o_in;\n  output o_out;\n  input i_out;\n\n  assign( o_out, i_in );\n  assign( o_in, i_out );\n  assign( i_in, i_out );\n  assign( i_out, i_in );\n  assign( o_out, i_out );\n  assign( o_out, i_in );\n  assign( i_out, i_in );\n  assign( i_out, i_in );\n  assign( i_out, i_in );\n  assign( o_out, i_out );\n\n\n\n// Design"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "void assign(input in, output out) {\n  out = in;\n}\n\n// Design a module that prints the contents of the input to the stdout.\nmodule print_io( input in, output out ) {\n  out = in;\n  dout << in;\n}\n\n// Start the program.\nvoid main_program() {\n  // Instantiate the modules.\n  output out = print_io( in, \"out\" );\n\n  // run the modules\n  assign( in, out );\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "assign out = in;\n// wire_assign is given an input value to assign to an output value\n// and returns the output value\nmodule wire_assign2( input in );\nassign out2 = in;\n// wire_assign2 is given an input value to assign to an output value\n// and returns the output value\n//\n// wire_assign2 can also be used as a function\n//\nfunction wire_assign2( in ) return out2;\n// wire_assign2 can also be a procedure\nfunction wire_assign3( in ) return out2;\n// wire_assign3 can also be a procedure\n//\n// wire_assign2 can also be used as a module\n//\nmodule wire_assign3( in ) return out2;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// Module 'wire_assign'\n\n// Define the inputs of the module\n\nint in;\n\n// Define the outputs of the module\n\nint out;\n\n// Implement the module\n\nwire_assign( in, out )\n{\n  out = in;\n  return out;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "out.a = in.a;\n// assign in to out\nout.b = in.b;\n\nmodule wire_assign_id( input in, output out, input id );\n// assign out to in\nout.a = in.a;\n// assign in to out\nout.b = in.b;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "wire_assign( in, out );\n`\n\nfunc TestWire_assign(t *testing.T) {\n\tverifyTest(t, sink, \"{input=1, output=1}\")\n}\n\nconst wire_assign_1 = `\nmodule wire_assign_1( input in, output out );\n// assign out to in\nwire_assign_1( in, out );\n`\n\nfunc TestWire_assign_1(t *testing.T) {\n\tverifyTest(t, sink, \"{input=1, output=1}\")\n}\n\nconst wire_assign_2 = `\nmodule wire_assign_2( input in, output out );\n// assign out to in\nwire_assign_2( in, out );\n`\n\nfunc TestWire_assign_2(t *testing.T) {\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "module wire_assign_2( input in, output out );\n\n//------------------------------------------------------------------------------\n// wire_assign\n//------------------------------------------------------------------------------\n\n// function wire_assign_module( input in, output out )\n//  wire_assign( input in, output out )\n//  end\n\n//------------------------------------------------------------------------------\n// wire_assign_2\n//------------------------------------------------------------------------------\n\n// function wire_assign_module( input in, output out )\n//  wire_assign_2( input in, output out )\n//  end\n\n//------------------------------------------------------------------------------\n// end of wiring_assign.v\n//------------------------------------------------------------------------------\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "// module wire_assign( input in, output out ) {}\n// Wire the blocks together using the wire_assign module\nwire_assign( input in, output out ) {\n\tout = in + 2;\n}\n// The module wire_assign is only a module. It does not need to be\n// included in the program.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "module wire_assign( input in, output out ) {\n\tassign( out, in );\n}\n\n/*\n * Functions with ports\n */\n// A module that reads from input and outputs to output\nmodule input_output( input in, output out ) {\n\tassign( out, in );\n}\n\n// A module that reads from input1 and outputs to output1\nmodule input_output1( input in1, output out1 ) {\n\tassign( out1, in1 );\n}\n\n// A module that reads from input1 and inputs to output1\nmodule input_input1( input in1, input in2 ) {\n\tassign( in2, in1 );\n}\n\n// A module that reads from input1 and outputs to output1 and output2\nmodule input_output2( input in1, output out1, output out2 ) {\n\tassign"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "module assign_out( input in ) {\n  out <= in;\n}\n\n// The input module takes non-equally spaced values from 0 to N-1, and outputs\n// the sum of the input values.\n// Note: The output of the sum module is assigned to the output of the input\n// module, which is a wire.\nmodule add( input in, output out, int N ) {\n  out <= sum( in );\n  output_list[0] <= in(N-1);\n  output_list[1] <= in(N-2);\n  output_list[2] <= in(N-3);\n  output_list[3] <= in(N-4);\n  output_list[4] <= in(N-5);\n  output_list[5] <= in(N-6);\n  output_list[6] <= in(N"
+    }
+  ],
+  "created": 1663520241,
+  "id": "cmpl-xvUEIfpVPVHGStzBo4D92feLziW7i",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2169,
+    "prompt_tokens": 31,
+    "total_tokens": 2200
+  }
+}

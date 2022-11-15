@@ -1,0 +1,53 @@
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n if (reset)\n begin\n q <= 4'b0001;\n end\n else if (q == 4'b1201)\n begin\n q <= 4'b0001;\n end\n else\n begin\n q <= q + 1;\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif(reset) q <= 1;\n\telse if (q == 12) q <= 1;\n\telse q <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) \nbegin\n\tif(reset == 1'b1)\n\tbegin\n\tq <= 1'b1;\n\tend\n\telse if(q == 4'b1111)\n\tbegin\n\tq <= 1'b1;\n\tend\n\telse if(q == 4'b1001)\n\tbegin\n\tq <= 1'b1;\n\tend\n\telse\n\tbegin\n\tq <= q + 1'b1;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// Note that q is clocked in the negative edge of the clock\nalways @(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n// set q to 1\n\tq = 4'b0000;\n\tend\n\telse if (q == 4'b12)\n\tbegin//if q is 12, set q to 1\n\tq = 4'b0000;\n// else, increment q by 1 \n\tq = q + 1;\n\tend\n\telse\n\tbegin//if q is 1, set q to 1\n\tq = 4'b0000;\n\t// else, increment q by 1 \n\tq = q + 1;\n\tend\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n\tq <= 1;\n\tend\n\telse if(q==12)\n\tbegin\n\tq <= 1;\n\tend\n\telse \n\tbegin\n\tq <= q + 1;\n\tend\nend\n"
+    }
+  ],
+  "created": 1663304585,
+  "id": "cmpl-cFZjsH713nTtwtPHYePZ53MxBCSre",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 465,
+    "prompt_tokens": 88,
+    "total_tokens": 553
+  }
+}

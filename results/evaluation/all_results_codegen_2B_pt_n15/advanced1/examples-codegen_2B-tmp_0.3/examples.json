@@ -1,0 +1,116 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// $ cat input.txt\n// 0001 0000 0000 0000\n// 0010 0001 0000 0000\n// 0100 0100 0100 0100\n// 1000 1000 0000 0000\n// $ cat output.txt\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// $ cat overflow.txt\n// 1\n// $ cat output.txt\n// 0001 0000 0000 0000\n// 0010 0001 0000 0000\n// 0100 0100 0100 0100\n// 1000 1000 0000 0000\n// $ cat overflow.txt\n// 0\n// $ cat output.txt\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// $ cat overflow.txt\n// 1\n// $ cat output.txt\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n// 0000 0000 0000 0000\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high\n// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low\n\n// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high\n// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low\n\n// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high\n// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low\n\n// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high\n// a signed overflow may also occur if"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// $ cat t1.in\n// a = 0x00\n// b = 0x00\n// s = 0x00\n// overflow = 0\n// $ cat t1.out\n// s = 0x01\n// overflow = 1\n// $ cat t2.in\n// a = 0xFF\n// b = 0x00\n// s = 0xFF\n// overflow = 0\n// $ cat t2.out\n// s = 0xFE\n// overflow = 1\n\n// $ cat t3.in\n// a = 0x00\n// b = 0xFF\n// s = 0x00\n// overflow = 0\n// $ cat t3.out\n// s = 0x01\n// overflow = 1\n\n// $ cat t4.in\n// a = 0xFF\n// b = 0xFF\n// s = 0xFF\n// overflow = 0\n//"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\ndef signed_adder_saturate(a, b, s, overflow):\n  if (a & 0x80) == 0x80 and (b & 0x80) == 0x80 and (s & 0x80) == 0x80:\n    overflow = 1\n  else:\n    overflow = 0\n  s = a + b\n  return s, overflow\n\ndef signed_adder_saturate_2(a, b, s, overflow):\n  if (a & 0x80) == 0x80 and (b & 0x80) == 0x80 and (s & 0x80) == 0x80:\n    overflow = 1\n  else:\n    overflow = 0\n  s = a + b\n  return s, overflow\n\ndef signed_adder_saturate_3(a, b, s, overflow):\n  if ("
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// $ cat t1.in\n// a = 0x80, b = 0x00\n// $ gcc -o t1 t1.c\n// $ ./t1\n// a = 0x80, b = 0x00\n// a = 0x80, b = 0x80\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x80\n// a = 0x00, b = 0x00\n// a = 0x80, b = 0x00\n// a = 0x80, b = 0x80\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x80\n// a = 0x00, b = 0x00\n// a = 0x80, b = 0x00\n// a = 0x80, b = 0x80\n// a = 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nvoid main() {\n  // a[7:0] = 0x00;\n  // b[7:0] = 0x00;\n  // s[7:0] = 0x00;\n  // overflow = 0;\n  // a[7:0] = 0x00;\n  // b[7:0] = 0x00;\n  // s[7:0] = 0x00;\n  // overflow = 0;\n  // a[7:0] = 0x00;\n  // b[7:0] = 0x00;\n  // s[7:0] = 0x00;\n  // overflow = 0;\n  // a[7:0] = 0x00;\n  // b[7:0] = 0x00;\n  // s[7:0] = 0x00;\n  // overflow = 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// This is the output of the design\n// [0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]\n// [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]\n// [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]\n// [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]\n// [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]\n// [0x00, 0x00, 0x00, 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// $ cat t1.in\n// a = 0x80, b = 0x00\n// $ gcc -o t1 t1.c\n// $ ./t1\n// a = 0x7f, b = 0x00\n// a = 0x80, b = 0x00\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x80\n// a = 0x00, b = 0x7f\n// a = 0x7f, b = 0x00\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x00\n// a = 0x00, b = 0x00\n//"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// A simple implementation of signed_adder\n// This is an example of a simple design pattern\n// The design pattern is the separation of the logic from the implementation\n// The implementation is the code that does the actual work\n// The logic is the code that does the checking and the assignment\n// The design pattern is to separate the logic from the implementation\n// The implementation is the code that does the actual work\n// The logic is the code that does the checking and the assignment\n// The design pattern is to separate the logic from the implementation\n// The implementation is the code that does the actual work\n// The logic is the code that does the checking and the assignment\n// The design pattern is to separate the logic from the implementation\n// The implementation is the code that does the actual work\n// The logic is the code that does the checking and the assignment\n// The design pattern is to separate the logic from the implementation\n// The implementation is the code that does the"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// $ cat t1.txt\n// 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\ns = a[7:0] + b[7:0];\n\nif (a[7:0] < b[7:0])\n    s[7:0] = 1;\nelse\n    s[7:0] = 0;\n\nif (a[7:0] < 0)\n    s[7:0] = 1;\nelse\n    s[7:0] = 0;\n\nif (a[7:0] > 0)\n    s[7:0] = 1;\nelse\n    s[7:0] = 0;\n\nif (a[7:0] > b[7:0])\n    s[7:0] = 1;\nelse\n    s[7:0] = 0;\n\nif (s[7:0] == 1)\n    overflow = 1;\nelse\n    overflow = 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// This is a simple implementation of the signed_adder.\n// The input a and b are stored in the registers a and b.\n// The output s is stored in the register s.\n// The output overflow is stored in the register overflow.\n\n// The following registers are used:\n// a, b, s, overflow\n\n// The following instructions are used:\n// add, sb, sbz, sbz_c, sbz_c_c, sbz_c_c_c, sbz_c_c_c_c, sbz_c_c_c_c_c, sbz_c_c_c_c_c_c, sbz_c_c_c_c_c_c_c, sbz_c_c_c_c_c_c_c_c, sbz_c"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n// $ cat t1.in\n// a = 0x00\n// b = 0x00\n// s = 0x00\n// overflow = 0\n// $ cat t1.out\n// a = 0x00\n// b = 0x00\n// s = 0x00\n// overflow = 0\n// $ cat t2.in\n// a = 0x01\n// b = 0x00\n// s = 0x01\n// overflow = 0\n// $ cat t2.out\n// a = 0x01\n// b = 0x00\n// s = 0x01\n// overflow = 0\n// $ cat t3.in\n// a = 0x80\n// b = 0x00\n// s = 0x00\n// overflow = 1\n// $ cat t3.out\n// a = 0x80\n// b = 0x00\n// s = 0x00\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n// function adder(a, b, s, overflow)\n//     if a[7:0] < b[7:0] then\n//         s[7:0] = a[7:0] + b[7:0]\n//         overflow = 0\n//     else\n//         s[7:0] = a[7:0] - b[7:0]\n//         overflow = 1\n// endmodule\n\n// function adder(a, b, s, overflow)\n//     if a[7:0] < b[7:0] then\n//         s[7:0] = a[7:0] + b[7:0]\n//         overflow = 0\n//     else\n//         s[7:0] = a[7:0] - b[7:0]\n//         overflow = 1\n// end"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\ntask signed_adder_task()\n{\n  unsigned int i;\n  unsigned int carry = 0;\n  unsigned int overflow = 0;\n\n  for (i = 7; i >= 0; i--)\n  {\n    carry = a[i] + b[i] + carry;\n    s[i] = carry & 0x80;\n    carry = carry >> 7;\n  }\n\n  overflow = a[7] + b[7] + carry;\n  s[7] = overflow & 0x80;\n  overflow = overflow >> 7;\n  overflow = overflow + carry;\n  s[6] = overflow & 0x80;\n  overflow = overflow >> 7;\n  overflow = overflow + carry;\n  s[5] = overflow & 0x80;\n  overflow = overflow >> 7;\n  overflow = overflow + carry;"
+    }
+  ],
+  "created": 1663537410,
+  "id": "cmpl-AEad50ZExD8UcsOgQOq0IxPyHqbNh",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3000,
+    "prompt_tokens": 164,
+    "total_tokens": 3164
+  }
+}

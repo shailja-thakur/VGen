@@ -1,0 +1,116 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\tassign s = a + b;\n\tassign overflow = ( ~ ( (a[7]==b[7]) && (a[7]==s[7]) ) ) && (a[7] != s[7]);\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " \nassign s = ({b[7], b[6:0]} + {a[7], a[6:0]});\nassign overflow = (a[7]==b[7] && a[7]!=s[7]) ? 1'b1 : 1'b0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign s = a + b; \nassign overflow = (a_high&b_high&(~s_high))|(~a_high&~b_high&s_high);\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\tassign overflow = ((~a[7] & ~b[7] & ~s[7]) | (~a[7] & b[7] & s[7]) | (a[7] & ~b[7] & s[7]))\n\t// Question text says addition of a and b\n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b \n\t // Question says addition of a and b "
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign s[0] = a[0] ^ b[0] ^ s[0];\nassign s[1] = a[1] ^ b[1] ^ s[0];\nassign s[2] = a[2] ^ b[2] ^ s[1];\nassign s[3] = a[3] ^ b[3] ^ s[2];\nassign s[4] = a[4] ^ b[4] ^ s[3];\nassign s[5] = a[5] ^ b[5] ^ s[4];\nassign s[6] = a[6] ^ b[6] ^ s[5];\nassign s[7] = a[7] ^ b[7] ^ s[7];//loop1\n\n\nassign s[8] = a[8] ^ b[8] ^ s["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7]) ? (a[7] == s[7])?1'b1:1'b0:1'b0;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": " assign s[7] = s8;\n assign s[6] = s7;\n assign s[5] = s6;\n assign s[4] = s5;\n assign s[3] = s4;\n assign s[2] = s3;\n assign s[1] = s2;\n assign s[0] = s1;\n assign overflow = aof_s && bof_s;\n\n// Add operations of one by one\n\nalways @ (a[0:0], b[0:0], s[0:0])\n begin \n\tcase(s[0:0])\n\n// define the values of the adder switches\n\t2'b00:\n\t begin\n\t s10 = s[0] + b[0];\n\t s11 = s[1] + b[1];\n\t s12 = s[2] + b[2"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign s = (a[7] == b[7]) ? (a + b) : ({1'bz, a + b});\nassign overflow = a[7]==b[7] ? ((a[7] == s[7]) ? (a[7] ? 1'b1:1'b0) : 1'b1) : overflow;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\n\nassign overflow = (a[7] == b[7] && a[7] != s[7]) ? 1'b1 : 1'b0;\nassign s[7] = overflow;\nassign s[6:0] = a[6:0] + b[6:0];\n\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": " adder add_ab(.a(a),\n \n \n /// ======= ONLY WORKS IF MSB OF a>MSB OF b ===/\n /// not needed if MSB OF a == MSB OF b\n assign s[7:0] = s[6:0] + a[7:0] + b[7]; //We can merge the BUS and LATCH clear outputs into one module which doens't require a\n scroll flicker\n \n assign s[8] = a[8] & b[8] & (~s[7] | ~a[7] & ~b[7]);\n \n always @(s[7] or a[7] or b[7]) //timing diagram showed this level of nesting is correct??????\n begin\n assign s[8:1] = s[7:0] + {1'b0,s[8]}; //1 bit"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n\nassign s[0] = a[0] ^ b[0];\nassign s[1] = a[1] ^ b[1] ^ (a[0] & b[0]);\nassign s[2] = a[2] ^ b[2] ^ (a[1] & b[1]) ^ ((a[0] & b[0]) & a[1]);\nassign s[3] = a[3] ^ b[3] ^ (a[2] & b[2]) ^ ((a[1] & b[1]) & a[2]) ^ ((a[0] & b[0]) & a[1] & a[2]);\nassign s[4] = a[4] ^ b[4] ^ (a[3] & b[3]) ^ ((a[2] & b[2]) & a[3]) ^"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": " assign overflow = a[7] & b[7] & s[7];\n \n // The actual addition of the most significant 8-bits of (a + b) to the least significant 8-bits of s requires 101 operations. \n // Since the operation is carried only through the output s, all the calculations can be done in parallel on the inputs only. \n // Each total of 8 operations corresponds to adding two 8-bit numbers together, hence a simple parallel adder construction is used.\n\n always @(a, b)\n when (a[7] ^ b[7] ^ s[7]) // if the two most significant bits of a or b are not the same as the most significant bit s it indicates an overflow\n \tbegin // an overflow is adped to the result s\n li mult_a[7:0] = {1'b1, a[7:0]}; // assigns a copy of a to"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nreg signed [7:0] s_out_initial;\nreg overflow;\n\nalways @ ( a , b ) begin\n\nalways @* begin\n\nif( ( a[7] == 0 & b[7] == 1 ) | ( a[7] == 1 & b[7] == 0 ) \n\n) begin\n\n overflow=1'b1;\n \n end\nelse begin overflow=1'b0;\nend\n\n\n\n\nassign s_out_initial = a + b;\n\nend\n\n\n\n\n\n\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nassign s[7] = a[7] & b[7] & ~s[7] | a[7] & ~b[7] & s[7] | ~a[7] & b[7] & ~s[7] | \n a[7] & b[7] & ~s[6];\nassign s[6] = a[7] & b[7] & ~s[6] | a[7] & ~b[7] & ~s[6] | ~a[7] & b[7] & ~s[6] | \n a[7] & b[7] & ~s[5];\nassign s[5] = a[6] & b[6] & ~s[5] | a[6] & ~b[6] & ~s[5] | ~a[6] & b[6]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": " assign overflow = a[7] && b[7] && ~ s[7] || ~b[7] && ~a[7] && s[7];\nassign signed_output = b[7] ? {b[7], b[6:0]} + a[7:0] + overflow: a[7] ? {1'b1, a[6:0]} + a[7] + overflow: {1'b0, a[6:0]} + b[6:0];\n\nalways @(*) begin\n\nif(signed_output[8] == 1 && signed_output[7] == 1) begin\ns = 8'b01111110;\n\nend else if(signed_output[8] == 0 && signed_output[7] == 0) begin\ns = signed_output[7:0];\n\nend\nelse begin\ns = 7'b"
+    }
+  ],
+  "created": 1663334247,
+  "id": "cmpl-WRbssc0bh5G9dgDDtjByTTWzCc53e",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2117,
+    "prompt_tokens": 164,
+    "total_tokens": 2281
+  }
+}

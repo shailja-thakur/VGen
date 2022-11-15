@@ -1,0 +1,52 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout <= 0;\n\telse if (load)\n\tout <= data;\n\telse begin\n\t// shift the out value and at the same time rotate the out value\n\t// the shift is accomplished by using a 16-bits counter\n\t#1;\n\tout = {out[6:0],out[7]};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout <= 0;\n\telse if (load)\n\tout <= data;\n\telse begin\n\t//$display(\"amount = %d\",amount);\n\t//$display(\"out = %d\",out);\n\tout = {out[6:0],out[7]};\n\tcase(amount)\n\t3'b000: out = out;\n\t3'b001: out = {out[5:0],out[6]};\n\t3'b010: out = {out[4:0],out[5]};\n\t3'b011: out = {out[3:0],out[4]};\n\t3'b100: out = {out[2:0],out[3]};\n\t3'b101: out = {out[1"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout <= 0;\n\telse if (load)\n\tout <= data;\n\telse begin\n\t// shift the out value and at the same time rotate the out value\n\t// the shift is accomplished by negating the amount\n\tout = {out[6:0],out[7]};\n\tout[7-:amount] = out[7-:amount];\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout <= 0;\n\telse if (load)\n\tout <= data;\n\telse begin\n\t// shift the out value and at the same time rotate the out value\n\t// the shift is accomplished by using a 16-bits counter\n\t#1;\n\tout = {out[6:0],out[7]};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout <= 0;\n\telse if (load)\n\tout <= data;\n\telse begin\n\t// shift the out value and at the same time rotate the out value\n\t// The shift is accomplished by using a 16-bits wide shift reg.\n\t// The rotation is accomplished by using a 8-bits wide shift reg.\n\tout = {out[6:0],out[7]};\n\tout = {out[5:0],out[6]};\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663600137,
+  "id": "cmpl-FQRaVcLU37i4UiU13J6PBCxmPFSQr",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 657,
+    "prompt_tokens": 94,
+    "total_tokens": 751
+  }
+}

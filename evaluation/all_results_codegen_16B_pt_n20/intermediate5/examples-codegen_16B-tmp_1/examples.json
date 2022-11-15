@@ -1,0 +1,142 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// Otherwise reset data to either the left shift A out form or left shift B out form\n#1 begin\n    if( load ) begin\n            out <= data << amount;\n        end\n        else begin\n            out <= rotate(data, amount) << reset;\n        end\n    end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\nif (load) begin\n   out <= data & 0xff;\nend else begin\n   while(amount > 0) begin\n      out = out << 1;\n      out = out | data & 1;\n      amount = amount - 1;\n   end\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign out = {data,(data << amount) | (data >> (amount+7))};\n// assignment of load data {-1,0,1} as -1, do nothing as 0, 0 rotated register as 1\nassign load_data = {-1, 0, 0, 1};\nassign load_wait = { !load, !load, !load, !load };\nalways @(posedge clk or ~reset)\n    if (!load) begin\n    \tif (reset) begin\n    \t\tout <= 0;\n    \tend\n    \telse begin\n    \t\t// 0 <= amount < 8 rotate_clock cycle\n    \t\tfor (int i=7; i>=amount; i--) begin\n    \t\t\t// left rotate the data then shiftout the leftmost 8 bits\n    \t\t\tout <= ({data, (data << 1) | ((data & 0x80) >>"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (load)\n\t\tout <= data;\n\telse {\n\t\tout = (data << amount ) | (out >> (8-amount));\n\t}\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\nif (reset) begin\nout <= (otherwise data);\nend\nelse begin\nif (load) begin\nout <= data;\nend\nelse begin\nout[(amount-1)*8 + 1:amount*8] <= data[8:1];\nout[((amount-1)*8 + 3):((amount-1)*8 + 4)] <= data[7:0];\nout[((amount-1)*8 + 2):((amount-1)*8 + 3)] <= out[((amount-1)*8 + 3):((amount-1)*8 + 4)];\nout[((amount-1)*8 + 0):((amount-1)*8 + 1)] <= data[15:8];\nout[((amount-1)*8 + 1):((amount-1)*8 + 2)] <= data[15:8];\nend"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always begin\n    case(load)\n    \tif(reset == 0) begin\n            \t  out = data;\n    \t    end\n    \telse begin\n            \t  out = {data,0};\n    \t    end\n    end\nend\nalways begin\n    for(#10000 clock = 100,reset = 1,amount = 2)\n        left_rotate #10000\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk or (reset == 1)) begin\nif (load) begin out <= data;\nelse begin out = {(data << amount) | ({out<0}),out<(8-amount)}\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin, assign out=~(load|(data<<amount)); if(reset) begin out=~0; end else begin if(load) begin out=data; end else begin amount=((amount)&7)+(((amount)>>4)&7)+(((amount)>>8)&7); out=out<<amount; end end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "reg out;\nalways @(posedge clk or posedge reset) begin\n if(reset) begin\n     out<0;\n     out_=0;\n end else if(load){\n     out=data;\n } else begin\n     out_ = (out<<amount) | (out>>(8-amount));\n     out = out_;\n end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin out := (load) ? data : (out << amount) | (out >> (8 + amount - 1));\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "// timescene\treset is active\n\tbegin seq_reset:\n\t\tddram_reset <= 1'b0;\n\t\twait {}\n\t\tddram_reset <= ddram_reset_active;\n\t\twait {}\n\t\tddram_controller_reset <= 1'b1;\n\t\twait {}\n\t\tddram_controller_reset <= ddram_controller_reset_active;\n\t\twait {}\n\t\twhile(clk), wait {}\n\t\tddram_reset <= 1'b0;\n\t\twait {}\n\t\tddram_reset <= ddram_reset_active;\n\t\twait {}\n\tendseq\n\tbegin seq_store:\n\t\tif(load) begin\n\t\t\tddram_reset <= 1'b0;\n\t\t\twait {}\n\t\t\tddram_reset <= ddram_reset_active;\n\t\t\twait {}\n\t\t\twhile(clk), wait {}\n\t\t\tddram_device_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin end\nvoid main(){\n    if(load){\n\t    out=data;\n    }else{\n\t    out= (out<<amount) | (out>>(size-1-amount));\n    }\n}\n//***************************************************\n\t// Additional method for left shift with rotate\n\t// input: clk, reset, shift[2:0], data, load, ack\n\t// output: out\n\t//***************************************************\n// Extern error_handler\n\n\t// 0418 additional module left_rotate\n\t// combined with enc28j60 and comparator, which could be called\n\t// by a /start we need to include load,ack\n\t// ack - indicate that ack has been received\n\t// load - decide whether to load data to out register\n\n\tlogic clk,reset,ack;\n\tlogic [2"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always begin\n  if(load)\n    out = data;\n  else begin\n    if(amount == 0) begin\n      out = data;\n    end\n    else begin\n      out = {data,(data && ({data % 2})) || ((data >> amount) & 1)};\n    end\n  end\nend\n// register implementation\nreg [4:0] counter;\n// left rotate with load\nassign out = {left_rotate(clk,reset,2'b00,counter[4]), counter[4] = (counter[3] >> 1) | (reset), counter[3] = counter[2] >> 1, counter[2] = counter[1] >> 1, counter[1] = counter[0] >> 1, counter[0]};\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nbegin\nif (reset == 0) begin \nload: begin\n  if (load)\n  {\n    out = data;\n  }\n  else if (amount[1] == _bsf(amount[0],amount[0]-1))\n  {\n    out = data[2:0];\n    _shift_left_sub(data[2:0],_modulo(amount[0],8),1,data[2:0])\n  }        \n  else if (amount[2] == _bsf(amount[1],amount[1]-1))\n  {\n    out = data[2:1];\n    _shift_left_sub(data[2:1],_modulo(amount[1],8),1,data[2:1])\n  }        \n  else if (amount"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "if(load==1)\n{\nout=data;\n}\nelse\n{\n#pragma HLS ARRAY_PARTITION variable=out block factor=16\no:=out[47:0];\no=o<<amount;\no=o|out[15:8];\nout=o;\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge reset)\n    if (load == 1) begin\n        out <= data;\n    end else begin\n        if (reset == 1) begin\n            out <= 0;\n        end else begin\n            out =   (out << amount) | (out >> ((8-amount) & 0b111)); \n\n    end\nend\n//right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to  out\n// otherwise rotate right shift the out register \n// followed by right rotate the out register by amount bits first\nalways @ (posedge clk or negedge reset)\n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n if (load) begin\n   out<=(data <<(amount-1)) | (data >> amount);\n }\n end else begin\n   $display(\"left_rotate \\v [7:0]\\n clk=%d   data=%d   load=%d\\n amount=%1d  \", clk, data, load, amount);\n   out<=rotate(data,(amount-1) & 7);\n end\nend;\n\n\n// smart_bit_field\n// smart bit vector that\n// 1. shifts inner data bits when a 0 is inserted, and gets rid of the inserted value\n// ANDs inner data and inserted value when a 1 is inserted, and does not affect inner data\n// 1. we will divide the inner data and the inserted value by 9 and need to decide\n// 2. when to AND"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "(* @clk = !reset && !load ? @out[data & 0x7F] : \n  @out[(@out >> amount) | (@out << (31-amount))] & 0xFFFFFF80) | \n  (!load ? (@out >> (amount+1)) : @data);)\n  \n// left shift and rotate operation\nmodule lshr_rrotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by left shift the out register by amount bits\n(* @clk = !reset && !load ? @out[data & 0x7F] : \n  @out[(@out >> amount)"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin begin\n\tif(reset == 1 && load == 0) begin\n\t\tout[7:0] <= data;\n\t\tout <<= amount;\n\tend\n\telse begin\n\t\tout <<= amount;\n\t\tout[7:0] <= out[amount+1:0];\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n   if (reset) begin\n      out <= 0;\n   end else begin\n      out <= (load) ? {data,0} :\n         (data << amount) | (out >> (8-amount));\n   end\nend\n\n\n// right rotate and left shift operation\nmodule right_shift_rotate(clk,reset,amount,data,load,out);\ninput clk, reset, load;\ninput [2:0] amount;\ninput free;\ninput data;\ninput [7:0] load;\noutput reg [1:0] out;\nalways @(posedge clk or posedge reset) begin\n   if (reset) begin\n      out <= 0;\n   end else begin\n      out <= (load & free) | ((amount) ? data : out >> (32-amount));\n   end"
+    }
+  ],
+  "created": 1663535910,
+  "id": "cmpl-teMJ5nGA5BunAiKDD2m60fKn4XB0u",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2699,
+    "prompt_tokens": 94,
+    "total_tokens": 2793
+  }
+}

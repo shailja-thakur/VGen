@@ -1,0 +1,63 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [1:0] shr4, shr5, shr6, shr7, shr8, shr9, shr10, shr11, shr12, shr13, shr14, shr15, shr16, shr17, shr18, shr19, shr20;\nreg [1:0] shr5_6, shr7_8, shr9_10, shr11_12, shr13_14, shr15_16, shr17_18, shr19_20;\nreg [1:0] shr5_6_7_8, shr9_10_11_12, shr13_14_15_16, shr19_20_31;\nreg [1:0] int1, int2, int3, int4, int5, int6, int7, int8;\nreg [1:0] int1_2_3_4, int5_6_7_8"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\n begin\n // Starts state machine, depending on states.\n cur_state <= 1'b0;\n z <= 1'b0;\n\n if (reset == 1'b0)\n begin\n cur_state <= A_A;\n end\n else\n begin\n case (cur_state)\n case SA:\n            if (a == 1)\n            begin\n   next_state <= SAB;\n   end\n case SB:\n            if (b == 1)\n            begin\n   next_state <= SAB;\n   end\n case SAB:\n            if (a == 1 && b == 1)\n            begin\n   next_state <= IDLE;\n   end\n case IDLE:\n            if (a == 1 && b == 1)\n            begin\n   next_state <= SA;\n   end\n case A_A:\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg [1:0] state;\nwire result;\nreg idle = 0;\n// instantiation of logic functions\nreg SA1 = 0;\nreg SB1 = 0;\nreg SAB1 = 0;\nreg SA0 = 0;\nreg SB0 = 0;\nreg SAB0 = 0;\nreg FSM_INSTANTIATION = 0;\n\n// FSMInstantiation = [ a, b, clk, reset, state ]\nfunction FSMInstantiation(clk,reset,SA1,sb1,SAB1,sa0,sb0,SA0,SB0,SAB0);\nbegin FSM_instance:\nFSM_instance  [ ! reset, ! (a = IDLE), ! (a = IDLE), ! (b = IDLE), ! (z = IDLE)] else:\nsetnextstate SA0:\nif ((sa0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// z is assigned zero otherwise\nalways @(posedge clk) begin\nif( reset ) begin\n  cur_state <= IDLE;\n  next_state <= IDLE;  \nend else begin\n  if(((a==0 && b==0)||(a==1&&b==1)) && cur_state!=IDLE) begin\n    cur_state <= SAB;\n    next_state <= IDLE;\n  end else\n  if(a==1 && cur_state==IDLE) begin\n    cur_state <= SA;\n    next_state <= IDLE;\n  end else begin\n    if(b==1 && cur_state==IDLE) begin\n      cur_state <= SB;\n      next_state <= IDLE;\n    end else begin\n      cur_state <= IDLE;\n      next_state <= IDLE;\n    end\n  end"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n  if (reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n  end\n  else begin\n    if (a and b) begin\n      cur_state <= SAB;\n      next_state <= SAB;\n    end\n    else if (a) begin\n      cur_state <= SA;\n      next_state <= SA;\n    end\n    else if (b) begin\n      cur_state <= SB;\n      next_state <= SB;\n    end\n    else begin\n      cur_state <= IDLE;\n      next_state <= IDLE;\n    end\n    case cur_state\n    case next_state\n      case IDLE:\n        z <= 0;\n      endcase\n    endcase\n  end\nend\n// loads SAB\na_s"
+    }
+  ],
+  "created": 1663534230,
+  "id": "cmpl-DZ7yOjsZFzO9vwYR5YrHKi5LAsRk5",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 218,
+    "total_tokens": 1218
+  }
+}

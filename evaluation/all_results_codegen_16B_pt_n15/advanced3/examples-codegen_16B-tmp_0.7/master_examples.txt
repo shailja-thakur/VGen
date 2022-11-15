@@ -1,0 +1,635 @@
+example-0: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always begin
+  if ( reset == 0 ) begin
+    present_state <= IDLE;
+  end else begin
+    present_state <= IDLE;
+  end
+end
+
+always begin
+  next_state <= present_state;
+end
+
+always begin
+  if ( present_state == IDLE ) begin
+    if ( x == 1 ) begin
+      next_state <= S1;
+    end 
+    else begin
+      next_state <= IDLE;
+    end
+  end
+  else if ( present_state == S1 ) begin
+    if ( x == 0 ) begin
+      next_state <= IDLE;
+    end
+  end
+  else if ( present_state == S10 ) begin
+    if ( x == 1 ) begin
+      next_state <= S101;
+    end 
+    else begin
+      next_state <= IDLE;
+    
+================================================================
+example-1: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always @(posedge clk) begin
+if (reset) begin
+present_state <= IDLE;
+next_state <= IDLE;
+end
+else begin
+present_state <= IDLE;
+next_state <= IDLE;
+
+case (present_state)
+IDLE :
+next_state <= IDLE;
+
+// S1
+S1 :
+if ((x == 1)) begin
+present_state <= S1;
+next_state <= S1;
+end
+
+S10 :
+if ((x == 0)) begin
+present_state <= S10;
+next_state <= S10;
+end
+
+S101 :
+if ((x == 1)) begin
+present_state <= S101;
+next_state <= S101;
+end
+end
+end
+
+================================================================
+example-2: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+================================================================
+example-3: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always @(posedge clk) begin
+  case(present_state)
+    0: present_state <= IDLE;
+    1: present_state <= S1;
+    2: present_state <= S10;
+    3: present_state <= S101;
+    default: present_state <= IDLE;
+  endcase
+  // assign next_state to present_state
+  case(present_state)
+    IDLE: next_state <= S1;
+    S1: next_state <= S10;
+    S10: next_state <= S101;
+    S101: next_state <= IDLE;
+    default: next_state <= present_state;
+  endcase
+  // if present_state is IDLE, assign z to 1 if x is 1, otherwise assign z to 0
+  if(present_state == IDLE)
+    if (
+================================================================
+example-4: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always begin
+// present_state is assigned next_state if present_state is IDLE
+present_state <= next_state;
+
+// assign x to present_state if x is 1
+if ( x ) 
+   next_state <= S1;
+else
+   next_state <= IDLE;
+
+end
+
+================================================================
+example-5: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always begin
+// process the input clock
+if (clk) begin
+// present_state is assigned present_state'
+present_state <= present_state_new;
+end
+else begin
+// present_state is assigned present_state'
+present_state <= present_state_new;
+end
+
+
+// process the input reset
+if (reset) begin
+// present_state is assigned IDLE
+present_state <= IDLE;
+end
+else begin
+// present_state is assigned next_state
+present_state <= next_state;
+end
+
+// process the input x
+if (present_state = IDLE) begin
+// present_state is assigned S1 if x is 1, otherwise present_state stays at IDLE
+if (x = 1) begin
+// present_state is assigned S1
+present_state <= S1;
+end
+else begin
+// present_state is assigned
+================================================================
+example-6: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always @(posedge clk or posedge reset) begin 
+    if (reset) begin
+        present_state <= IDLE;
+    end else begin
+        present_state <= IDLE;
+        next_state <= IDLE;
+        if (x) begin
+            next_state <= S1;
+        end else begin
+            next_state <= IDLE;
+        end
+    end
+end
+
+reg [1:0] z;
+always @(posedge clk) begin
+    if (present_state == S101) z <= 1;
+end
+end
+
+adv_fsm(
+    .clk(clk),
+    .reset(reset),
+    .x(x),
+    .z(z)
+);
+
+================================================================
+example-7: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always @(posedge clk) begin
+  if (reset) begin
+    present_state <= IDLE;
+  end
+  else begin
+    // wait for rising edge of clock, the first bit of x is sampled at the falling edge
+    // the first bit from x is extracted at the rising edge of clock
+    present_state <= present_state + 1;
+    if (present_state == S1) begin
+      next_state <= S1;
+    end
+    else if (present_state == S10) begin
+      next_state <= S10;
+    end
+    else if (present_state == S101) begin
+      next_state <= S101;
+    end
+  end
+  
+  next_state <= present_state;
+  if (present_state == S101) begin
+    z <= 2;
+  end
+end
+
+================================================================
+example-8: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always @(posedge clk) begin
+        if(reset) begin
+            next_state <= IDLE;
+        end else begin
+            // present_state is assigned next_state
+            present_state <= next_state;
+            if(next_state == S101) begin
+                next_state <= IDLE;
+            end else begin
+                next_state <= present_state;
+            end
+        end
+end
+
+always @(posedge clk) begin
+    if(reset) begin
+        present_state <= IDLE;
+    end else begin
+        present_state <= IDLE;
+        if(x) begin
+            next_state <= S1;
+        end else begin
+            next_state <= IDLE;
+        end
+    end
+end
+
+================================================================
+example-9: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+// This is the code from Fig.6 of the post.
+
+always begin
+    z <= x;
+end
+
+always begin
+    if (reset) begin
+        present_state <= IDLE; 
+        next_state <= IDLE; 
+    end else begin
+        if (x) begin
+            present_state <= S1; 
+            next_state <= S10; 
+        end else begin
+            present_state <= IDLE; 
+            next_state <= IDLE; 
+        end
+    end
+end
+
+
+================================================================
+example-10: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always @(posedge clk) begin
+    if(reset) begin
+    	present_state <= IDLE;
+    end
+    else if(present_state == IDLE) begin
+    	if (x == 1) begin
+    		present_state <= S1;
+    	end
+    	else begin
+    		present_state <= IDLE;
+    	end
+    end
+    else if(present_state == S1) begin
+    	if (x == 0) begin
+    		present_state <= IDLE;
+    	end
+    	else begin
+    		present_state <= S10;
+    	end
+    end
+    else if(present_state == S10) begin
+    	if (x == 1) begin
+    		present_state <= S101;
+    	end
+    	else begin
+    		present_state <= IDLE;
+================================================================
+example-11: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+ 
+always @(posedge clk) begin
+ if(reset) begin
+  present_state <= IDLE;
+  next_state <= IDLE;
+ end
+ else begin
+  if(present_state == IDLE) begin
+   if(x) begin
+    present_state <= S1;
+    next_state <= S1;
+   end else begin
+    present_state <= IDLE;
+    next_state <= IDLE;
+   end
+  end else begin
+   if(present_state == S1) begin
+    if(x) begin
+     present_state <= S10;
+     next_state <= S10;
+    end else begin
+     present_state <= IDLE;
+     next_state <= IDLE;
+    end
+   end else begin
+    if(present_state == S10) begin
+     if(x) begin
+      present_state
+================================================================
+example-12: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+ // FSM state logic
+always @(posedge clk or posedge reset)
+begin
+	if (reset) begin
+		present_state <= IDLE;
+		next_state <= IDLE;
+	end
+	else begin
+	  	present_state <= IDLE;
+		if(x) begin
+			next_state <= S1;
+		end else begin
+			next_state <= IDLE;
+		end
+	end
+end
+
+================================================================
+example-13: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always #(1) begin
+	if (reset) begin
+		present_state <= IDLE;
+	end else begin
+		// present_state is assigned next_state when x is 1
+		if (present_state == S1) begin
+			next_state <= S10;
+		end else begin
+			// present_state is assigned next_state when x is 0
+			if (present_state == S10) begin
+				next_state <= S101;
+			end else begin
+				next_state <= IDLE;
+			end
+		end
+	end
+end
+
+always #(1) begin
+	if (clk) begin
+		present_state <= next_state;
+	end else begin
+		// present_state is assigned next_state when x is 1
+		if (present_state == S1) begin
+			next_state <= S10;
+		end
+================================================================
+example-14: 
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+
+always begin
+	if (rst) begin
+		present_state <= IDLE;
+		next_state <= IDLE;
+	end else begin
+		if (present_state == IDLE) begin
+			if (x) begin
+				present_state <= S1;
+				next_state <= S1;
+			end else begin
+				present_state <= IDLE;
+				next_state <= IDLE;
+			end
+		end else if (present_state == S1) begin
+			if (x == 0) begin
+				present_state <= S10;
+				next_state <= IDLE;
+			end else begin
+				present_state <= IDLE;
+				next_state <= IDLE;
+			end
+		end else if (present_state == S10) begin
+			if (x == 1) begin
+				present_state <= S101;
+				next_
+================================================================

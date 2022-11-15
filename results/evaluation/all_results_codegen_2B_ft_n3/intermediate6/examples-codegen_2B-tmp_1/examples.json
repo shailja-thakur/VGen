@@ -1,0 +1,42 @@
+// This is a ram module
+module ram
+(
+input [7:0] data,
+input [5:0] addr,
+input we, clk,
+output [7:0] q
+);
+reg [7:0] ram[63:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge we)\nbegin: WRITE_QUANTITY\nif (addr[0])\nram[addr[7:0]]<=data;\nend\n// if data is high, read the ram value at that address and assign it to output q -- 4 devices are available since we demand the data at port 4,5,6,7\n// Else output is z (high impediance)\nalways @ (posedge clk)\nif (~we)\nif (~((~addr[0])||addr [7:1]))\nq = 8'hzz;\nelse\nq=ram[addr[7:0]]; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @ (posedge clk) \nassign q = (we==1'b1) ? data: ram[addr];\n\ninitial\nbegin\nram[0] = 0;\nram[1] = 1;\nram[2] = 2;\nram[3] = 3;\nram[4] = 4;\nram[5] = 5;\nram[6] = 6;\nram[7] = 7;\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nassign q = ram[addr];\nend\n"
+    }
+  ],
+  "created": 1663304536,
+  "id": "cmpl-0HKKtdICGrG59ddwoVVCX5Tka2EIQ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 285,
+    "prompt_tokens": 85,
+    "total_tokens": 370
+  }
+}

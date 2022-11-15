@@ -1,0 +1,114 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (clock) begin\n    if (reset) begin\n        q <= 0;\n    end\n    else begin\n        if (slowena && !q[2]) begin\n            q <= q[0] + 1;\n        end\n        else begin\n            q <= q[0];\n        end\n    end\nend\n\n// On the negative edge of the clock:\n// when E is valid and Q <= 9, reset the output Q back to 0.\n// Just before the positive edge of the clock, if the enable signal is high,\n// and the previous value of Q is not 9, then 160 + value(Q) is incremented.\nalways @ (clock ~slow) begin\n    if (!slowena && q[2]) begin\n        q <= 0;\n    end\n    else begin\n        if (q <= 9) begin \n            q <= 160 + value(q[0]);"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or p0)\n    if (reset) q := 0;\n    else if (slowena && 9 !<= q) q := q + 1;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// If y is low, do not increment q.\nalways @(posedge clk) begin\n    case({\n        1,\n        0,\n        slowena\n        } ) q <= (slowena ? q + 1 : 8);\nend\n\n/* This comes about from the \"for\" loop: 2000000x4=6000000.  By\n * initializing y, we can purge it and get rid of the implicit\n * for loop.  \n */\nreg [3:0] q;\nalways @(posedge clk) begin\n    q <= 0;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if(reset)\n    q <= 0;\n  else if (slowena)\n    q <= q + 1;\nend\n\nmodule count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// On the positive edge of the clk:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\nalways @(posedge clk)\n  if(reset)\n    q <= 0;\n  else if (slowena)\n    q >= q + 1;\nend\n\nmodule cnt{{range (.0+1.2,2.999)}\n  +clk(clock);\n  always @(posedge clk)\n    if"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign reg = idle;\nreg [1] = slowena;\nalways @(posedge clk)\n    if(reset)\n        reg = low;\n    else\n        begin\n            if(q < 9\" and slowena) q++; \n            else begin\n                if(q == 9\")q = 0;\n            end\n        end\nend\n\nmodule count_fast_or(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// On the positive edge of the clock: \n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\nassign reg = idle;\nreg [1] = slowena;\nalways @(posedge clk)\n    if(reset)\n        "
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "timed fast_mem8 Decadecounter1 === \"countSlowDecadeBy1.vhd\";\n\n(* total_cycle += \"\\nDecadecounter\\n\";* end *)\n\nbegin fast_decadecounting(Decadecounter1);\n\nend\n\n// ## Expander_vhd\n/*\nI'LITERATE_EXPANSION += O.DMA(\n    phase_next,\n    default implicit_phase ,\n    unitBoundL = \"fast_decadecounting\"\n );\n*/\n\n// ----------------------------------------------------------------------------\n// | BY PORT 133, EXPANSION PARAMS EXPANSION PARAMS EXPANSION PARAMS |\n// ----------------------------------------------------------------------------\n\n// KEEP THIS SIMPLE, DRILL ON TO THE SMALLGATE2 computation OR LOOK FOR \n// '** Program Small Gate <tt><> >.vhd **'\n\n// # ***** TRAFO"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\n  if (reset) begin\n    q <= 0;\n  end\n else if (q < 9 and slowena) begin\n    q <= 1;\n  end\n\nend\n`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "RESET: ena <= clk & reset => q <= 0;\nENABLE: slowena <= clk & ena & q <= 9;\n\n// On the negative edge of the clock:\n// if ena is high & q = 9, decrement q by 1; \n// if ena is low, q < 0, then simply increment q by 1.\n// or: if res is high and q = 9, q <= 0, set to 0; \n// otherwise, do nothing and the counters remain unchanged.\ndisable: clk & ~ena & ~q <= slowena;\nenable:  clk & ena & slowena & ~q <= 9;\n\n// Time constraints (tBV): \n// input to register instantiation: < 1 nsec\n// register constant folding: < 1 nsec\n// register communication: < 5 nsec\n// clock low time: < 20 nsec"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if(reset) begin\n        q[3:0] <= 0;\n    end\n    else if(slowena) begin\n        if(q[3:0] < 9) begin\n            q[3:0] <= q[3:0] + 1;\n\tend\n    end\n    end\nend\n\nmodule count{\n    \n    input clk;\n    input slowena;\n    input reset;\n    reg [3:0] q;\n    \n    always @(posedge clk) begin\n        if(reset) q <= 0;\n        else if(slowena) begin\n            if(q >= 9) begin\n                q <= 0;\n            end\n            else begin\n                q <= q + 1;\n            end\n        end\n    end\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always (posedge clock)\n    if (reset) q = 0;\n    else if (slowena)\n        if (q != 9) q = q + 1;\n        else q = 0;\n/* Synchronization signals:\n * slowena (input): high value indicates i/o is slave\n * clk (input): indicates decrementing operation\n * reset (input):  high value indicates counter is reset\n */\n\nreg [2:1] last_ena;\n\nfunction reset_count(input clk, input slowena, output reg [3:0] q);($timeparam slowena, clock, reset)\n    accept_last_ena: fast release last_ena;\n    accept_ena: fast dual enable fast always;\n    accept_reset: fast release reset;\n    wait_ena:     begin    loop\n        if (slowena == 0) then \n            exit"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "VARICOUNTRESET: ena <= 1 ;\nVARICOUNTCLAUSE: q <= input clk & ena & slowena & _vreset;\nENASLOW: q <= (q + 1) & slowena & _vreset;\n\nreg [3:0] countq;\n\ncountq <= 0 | < 9;\n\nENACTCLK: when{ counterq = slowq; } => countq <= slowq;\nENACTCLK: when{ countq = slowq; } => countq <= (slowq + 1);\n\nreset <= inputs[6];\nslowena <= input inputs[7];\n_vreset <= slowena;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "behavior count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\nendbehavior\n\nmodule count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// bool clock_busy indicates the clock is high and it is active.\n// Note: slot $4 inserted to enable fast clock. $4 indicates CLS signal.\nmethod clock_busy();\nsignal cls:clk'clock_busy;\nendmethod\n\n// After bufram logical signals:\n// bufram:CLS_OQ_BITS times port() to get the bit of the new latch value. \n// bufram:LSW_OQ_BITS times port() to get the new low-bit for the next LSW of hla."
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (slowena || reset) q[0] <= 0;\n    else if (slowena && q[0] == 9) q[0] <= 0;\n    else q[0] <= 1 + (~slowena && q[0] < 9);\n\n// On the negative edge of the clock:\n// if reset is high and the output q is 0, it is set to 9.\n// Otherwise, the output q is clamped to 0 if it is not 9.\nalways @(negedge clk)\n    if (slowena && q[0] == 0) q[0] <= 9;\n    else q[0] <= ~slowena && q[0] != 9;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    begin\n        if (reset == 1'b0) \n                q[0] <= 0;\n        else if (slowena == 1'b1 && q[3:0] != 9)\n\t\t\tq[0] <= q[3:0] + 1;\n    end\n\n// It is okay (efficiently) for clock to floor to 0 when resetting since we do not\n// count the 6 least significant bits.\nalways @(negedge clk)\n    begin\n        if (slowena == 1'b1)\n\t\t\tq[0] <= q[2:0] - 1;\n    end\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always@(posedge clk)\n  if (reset)\n  begin\n    q <= 0;\n    more_data == 1'b0;\n    carry == 1'b0;\n  end\nelse\nbegin\n  if (slowena and q <= 9)\n    carry <= 1'b0;\n  if(slowena == 1'b1 and carry == 1'b1)\n    q <= q + 1;\n  else\n    q <= q;\nend\n\n"
+    }
+  ],
+  "created": 1663520176,
+  "id": "cmpl-hR8PTvDjKqkfcII6lgLbsmqSkmtTP",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2415,
+    "prompt_tokens": 98,
+    "total_tokens": 2513
+  }
+}

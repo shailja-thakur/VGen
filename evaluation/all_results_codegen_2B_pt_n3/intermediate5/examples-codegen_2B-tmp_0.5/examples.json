@@ -1,0 +1,40 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(clk,reset)\nbegin\n  if (load)\n  begin\n    out = data;\n  end\n  if (load == 1)\n  begin\n    out = data;\n    out <<= amount;\n    out >>= amount;\n  end\nend\nend\n\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nalways @(clk,reset)\nbegin\n  if (load)\n  begin\n    out = data;\n  end\n  if (load == 1)\n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (load)\n    out = data;\n  else\n    out = left_shift(out, amount);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (load)\n    {\n        out = data;\n    }\n    else\n    {\n        out = (out << amount) | (data >> (32 - amount));\n    }\nend\n"
+    }
+  ],
+  "created": 1663536963,
+  "id": "cmpl-WffqKSwUvPqAOtVIJcGZMgt0dvoVq",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 298,
+    "prompt_tokens": 94,
+    "total_tokens": 392
+  }
+}

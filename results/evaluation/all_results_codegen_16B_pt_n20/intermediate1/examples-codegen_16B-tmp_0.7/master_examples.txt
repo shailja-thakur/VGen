@@ -1,0 +1,547 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+always #( .INIT = 4'b0 ) begin 
+	cout = a + b;
+end
+
+always #( .INIT = 4'b0 ) begin 
+	sum = a + b + 1'b1;
+end
+
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire cin;
+reg out;
+
+always @(posedge cin) begin
+  if( cin ) begin
+    out <= a + b;
+  end
+end
+
+always @(posedge cin) begin
+  if ( a == 1 && b == 1 ) cout <= out;
+  else cout <= 0;
+end
+
+
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+reg a;
+reg b;
+reg cout;
+reg sum;
+
+always @ (posedge clk) {
+  if( a == 1 ) {
+    sum <= (a and b);
+    cout <= (b and not a);
+  } else if( b == 1 ) {
+    sum <= (not b and b);
+    cout <= (a and not b);
+  } else {
+    sum <= (a and b);
+    cout <= (a and not b);
+  }
+
+}
+
+always @ (posedge clk) {
+  if( a == 1 ) {
+    b <= ~b;
+  } else if( b == 1 ) {
+    a <= ~a;
+  }
+}
+
+always @ (posedge clk) {
+  if( a == 1 ) {
+    sum <= (a and b);
+
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+reg [4:0] sum;
+reg [3:0] carry_in;
+reg [3:0] carry_out;
+
+reg [3:0] in;
+
+always @(posedge clk) 
+begin
+  in <= (a < 30) ? a : in;
+  in <= (b < 30) ? b : in;
+
+  sum <= in + carry_in;
+  carry_out <= carry_in + carry_out;
+  carry_in <= sum[3] && carry_out;
+  cout <= sum[2:0];
+  
+end
+
+
+
+// This is a full adder. A full adder adds three bits and produces an output.
+module full_adder( 
+input a, b, c,
+output cout);
+
+reg [4:0] sum;
+reg [3:0] carry_in;
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// This is a full adder. A full adder adds three bits and produces a sum and carry-out.
+module full_adder(
+input a, b, c,
+output cout, sum );
+
+// This is a half carry-adder. A half carry-adder adds two bits and produces a sum and carry-out.
+// It also updates the carry-in bit based on the carry-out from the previous addition. 
+module half_carry_adder( 
+input a, b,
+output cout, sum, carryin );
+
+// This is a full carry-adder. A full carry-adder adds three bits and produces a sum and carry-out.
+// It also updates the carry-in bit based on the carry-out from the previous addition. 
+module full_carry_adder( 
+input a, b, c,
+output cout, sum, carryin );
+
+// This
+================================================================
+example-5: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+input [2:0] a, b;
+output sum;
+
+always @(posedge clk) begin
+	if (a == 1 && b == 1) begin
+		sum <= 1;
+	end else if (a == 1 && b == 0) begin
+		sum <= a;
+	end else if (a == 0 && b == 1) begin
+		sum <= b;
+	end else begin
+		sum <= a + b;
+	end
+end
+
+
+================================================================
+example-6: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+always@(posedge clk) begin
+	if(a == 1)
+	{
+		sum <= (a + b);
+	}
+	else if(a == 0 && b == 1)
+	{
+		sum <= b;
+	}
+	else if(a == 1 && b == 0)
+	{
+		sum <= a;
+	}
+	else if(a == 0 && b == 0)
+	{
+		sum <= 0;
+	}
+	if(sum >= 2)
+	{
+		cout <= 1;
+	}
+	else
+	{
+		cout <= 0;
+	}
+end
+
+================================================================
+example-7: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+  cout = a + b;
+  sum = cout[31:0]
+
+================================================================
+example-8: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire carry_in, carry_out;
+
+always @( posedge clk or negedge rst )
+begin
+    if( rst == 1 )
+        carry_in <= 0;
+    else if( clk == 1 )
+        carry_in <= carry_out;
+
+    sum <= (a ^ b) + carry_in;
+    cout <= sum[31:16];
+end
+
+
+================================================================
+example-9: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// This is an inverter. Inverters inverts the input.
+module inverter (
+input a,
+output cout );
+
+// This is a full adder. A full adder adds three bits and produces a sum and carry-out.
+module full_adder(
+input a, b, c,
+output cout, sum );
+
+// Inverter
+inverter(
+a,
+cout );
+
+// Half adder
+half_adder(
+a, b,
+cout, sum );
+
+// Full adder
+full_adder(
+a, b, c,
+cout, sum );
+
+
+================================================================
+example-10: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+reg carry, sum;
+
+always @(posedge clk)
+begin
+    if (a) sum = a&b;
+    else     sum = 0;
+    if (carry) cout = sum|carry;
+    else       cout = sum;
+end
+
+reg a, b, cout;
+reg clk;
+
+half_adder half_adder_inst (
+    .a(a), .b(b), .cout(cout), .clk(clk)
+);
+
+always @(posedge clk) begin
+    if (a) a = 1; else a = 0;
+    if (b) b = 1; else b = 0;
+end
+
+// This is a full adder. A full adder adds four bits and produces a sum and carry-out.
+module full_adder( 
+input a, b,
+output cout
+================================================================
+example-11: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+register input [2:0] a;
+register input [3:0] b;
+register output [2:0] sum;
+
+always @(posedge clk)
+begin
+  sum <= a;
+  if (b==0)
+    sum <= a;
+  else
+    sum <= a + b;
+  
+  if (b==3)
+    cout <= sum;
+  else
+    cout <= sum + 1'b0;
+end
+
+================================================================
+example-12: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+reg a, b, sum;
+
+always @(posedge clk)
+begin
+    if (rst)
+    begin
+        a <= 0;
+        b <= 0;
+        sum <= 0;
+    end
+    else
+    begin
+        a <= ~a & ~b & ~sum;
+        b <= ~a & ~b;
+        sum <= ~a & ~b | ~sum;
+        cout <= a | b | sum;
+    end
+end
+
+
+================================================================
+example-13: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+    
+// Half adder output
+assign cout = sum + ( ( (a && b) || ( !a && !b )) ? 1 : 0 );
+
+// Half adder sum
+assign sum = (a || b) && !(a && b);
+
+
+================================================================
+example-14: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// Register the inputs and outputs.
+reg a, b;
+reg cout;
+reg sum;
+
+// This is the instantiation of the half adder.
+// It receives the inputs A and B and produces
+// the outputs SUM and CARRY-OUT.
+
+void half_adder_inst(
+input A, B,
+output SUM, CARRY-OUT );
+
+// The instantaneousiation of the half adder.
+inst half_adder(
+input a, b,
+output cout, sum
+)
+{
+  // Register instantiation
+  half_adder_inst(
+    a, b, cout, sum
+  );
+}
+
+// The top level method for the half adder.
+void half_adder_top(
+input a, b,
+output cout, sum
+)
+{
+  // Assign registers to the input values
+  a = A;
+  b =
+================================================================
+example-15: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+output cout;
+input a, b;
+integer sum;
+// The four states are:
+// 00: output = 0, carry = 0
+// 01: output = 0, carry = 1
+// 10: output = 1, carry = 0
+// 11: output = 1, carry = 1
+// In the circuit below, the carry-out is always generated, and the input a and b are always generated.
+// This means that the output is always generated, and the sum is always generated.
+// Note that the output goes to cout.
+
+// For the four states, the output is:
+// 00: cout = 0.
+// 01: cout = 0.
+// 10: cout = a.
+// 11: cout = b.
+
+// For the four states, the sum is:
+// 00: sum = a + b.
+// 01: sum = a.
+// 10: sum = a.
+================================================================
+example-16: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+real a, b;
+real cout;
+real sum;
+
+begin
+  a = a + b;
+  cout = a;
+
+  if( a >= 4 )
+  {
+    a = a - 8;
+    sum = a + b;
+    cout = a + b;
+  }
+  else
+  {
+    sum = a;
+  }
+end
+
+================================================================
+example-17: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire a_out, b_out;
+wire sum_out;
+
+reg a_in;
+reg b_in;
+
+reg sum_out_reg;
+reg a_in_reg;
+reg b_in_reg;
+
+void half_adder( 
+input a, b, 
+output cout, sum ) 
+{
+  a_out = a;
+  b_out = b;
+  sum_out = sum_out_reg;
+  a_in_reg = a_in;
+  b_in_reg = b_in;
+  sum_out_reg = sum_out;
+
+  assign a_out = a_in_reg;
+  assign b_out = b_in_reg;
+  assign sum_out = sum_out_reg;
+  assign a_in_reg = a_out + b
+================================================================
+example-18: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire cin, cout_sum, sum_out;
+
+reg[4] sum_r;
+
+always
+begin
+  cin = a or b;
+  sum_r = sum_r + cin;
+  cout_sum = sum_r[3];
+  sum_out = sum_r[2];
+end
+
+always
+begin
+  // assign output signals
+  sum = sum_out;
+  cout = cout_sum;
+end
+
+
+================================================================
+example-19: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+void half_adder_1( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_2( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_3( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_4( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_5( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_6( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_7( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_8( 
+input a, b, 
+output cout, sum ); 
+
+void half_adder_9
+================================================================

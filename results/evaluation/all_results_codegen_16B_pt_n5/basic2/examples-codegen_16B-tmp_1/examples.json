@@ -1,0 +1,50 @@
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n    assign out = ( a and b );\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n    assignments *= out = a && b;\n \n    // instate the module used by and_gate\n    module( node [in + out],\n            assignments,\n            min_delay );\n\n    // assign ports to the module\n    assign list __in { &a, &b, &out } to module;\n    assign list __pw { &_ } to module;     // _ is a power-weak port \n    assign { 1 } _pw to module;\n    \n    // Instantiate the module created above, and pass through \n    // some different signals\n    T n_a( input a, T init, T delay );\n    T n_b( input b, T init, T delay );\n    T r( T a, T b, T init, T delay );\n\n    T a( n_a( a, 2, 0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " \n    assign out = a and b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nand_gate flip_flops(\n    input clock, \n    input clr, \n    output q\n);\n\n    // ...\n\n    // quit the module\n\n// terminate normally\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": " \n\n"
+    }
+  ],
+  "created": 1663534144,
+  "id": "cmpl-s2CUKFCw3NnDMtRyWKYaMhwpFe0a5",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 277,
+    "prompt_tokens": 47,
+    "total_tokens": 324
+  }
+}

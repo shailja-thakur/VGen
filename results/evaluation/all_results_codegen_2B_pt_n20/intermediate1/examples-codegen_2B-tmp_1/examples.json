@@ -1,0 +1,136 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nvoid \nsta_ic    (ic_wire input a\n             ,ic_wire chan_input _cout, \n     cout_wire _sum) ;\nvoid and_ic  (ic_wire chan_input _cout, \n                ic_wire and_chan_output _sum)   ;\nvoid or_ic   (ic_wire and_chan_output _sum, \n                ic_wire or_chan_output _cout)  ;\nvoid done   (ic_wire rd)   ;\n\ninput w;\n    \nalways @   (a,b)\nrequest cout = rd;\nalways @   (clk_a, clk_b);\nbegin \nrstim.clk = 1;\n    \nmachine clk_a20b;\nradio_port rcd_a20b = clk_a20b"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n[[code]]\n [[code]]\n\n/** Bit is the number of sync, data and/or internal registers. */\nparam bit\n\n/** The 'internal_registers' bits are a single register. The bits for sync, data and internal registers are connected to the same bit number.*/\nparam int register_type\n\n/** Number of assert on errors. */\nparam int assert_on_assert_failure\n\n/** Zero bit observed between syncs. Defines when a zero is written indicating that ok() is done. */\nparam int half_adder_zero_pulse\n\n/** Counter for internal registers*/\nparam int internal_registers\n\n/** Type of encoding register expected on external pins. Volatile because of conditions_reg access.*/\nparam int register_encode\n\n/** Configuration variable for number of external pins. */\nparam int external_pins\n\n/** SI5. It's (log2"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\ninitial \nbegin\n  cout = 0;\n  sum = 0;\n  [3:0] = ( b[3:0] << 4 ) + a[3:0];\n  cout = 1;\nend\n\ninitial\nbegin\n  cout = \\b[[2'b00]:take( 4, \\b[3:0] )] + ( \\b[1'b11] & a[1:0] );\nend\n\n//   MCU:Xilinx based 32-bit joystick controller core. Runs on Arduino boards.\nend\n`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nformat concat( \n   format f_in, format f_out); \n\nwire boolean_cout;\nwire sum_cout;\nwire sum_cout_carry;\nwire fout\nconstant b := \"000010111\"\nconstant unused := \"0\"\nconstant carry := \"0\"\nconstant eq := 0\nconstant d := \"000010011\"\nconstant n : integer := 0\nconstant o := 1\n     \nconstant m := binary:=8\nconstant w := \"33333333333\"\nconstant silence := 8\n    \nlocation(\"6f\", \"chip\")\n    \n    \n    \n    \n    // define \"io logic gate\" which gets us back the floating inputs\n    // as Boolean values \n  module left_logic_maker( \n   format l \\nextract Z_L[i]_left,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\ninput run;\ninput ch;\n\nint level = 0;\nsigned int carry_out;\n\nwire v;\nwire h = 0;\nwire f = 0;\n\ninput address;\n\n// Run clock\nregister type2 i = 0;\nvoid i_fsm( RunClock );\nstatic unsigned int i_n( );\nstatic void h_fsm( RunClock );\nstatic void f_fsm( RunClock );\nstatic void i_i( RunClock );\nstatic void i_c( RunClock );\n\n// Run state machine implementation\nstatic pair< bool, unsigned int > run_fsm( RunClock );\nstatic pair< bool, unsigned int > run_state_machine();\nstatic pair< bool, unsigned int > run_zeropage_transition();\nstatic pair< bool, unsigned int > run_halfpage_transition();\nstatic pair< bool, unsigned"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\ninput inputs [1], \n         in [1], \n         carry, \n         current_out [1];\ninput sum_res, carry_res\n\nbegin\n\ncarry = 0;\n\nsum = 0;\ncarry_res:= 0;\nsign = a < 0;\n\n\n  // interpret the input bits into an array by taking each bit\n  // where the number of bits is half a counter\n  for ( n=0; n < ((a + b) /2 ) & 1; n++)\n    in[n] = a & 1;\n    \n  // increment the carry\n  carry += (carry_res = a >>= 1 & 1 );\n\n  current_out [0] = b >> 2;\n  if ( carry == 1 ) {\n    current_out [1] = b >> 1 & 1; \n    current_out [2] = b &"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n//0x0\t\t\t\t\t\t -> 0x30\n//0x1\t\t\t\t\t\t -> 0x31\n//0x2\t\t\t\t\t\t -> 0x33\n//0x3\t\t\t\t\t\t -> 0x34\n//0x4c\t\t\t\t\t\t -> 0x4D\n//0x5c\t\t\t\t\t\t -> 0x5D\n//0x60\t\t\t\t\t\t -> 0x20\n//0x61\t\t\t\t\t\t -> 0x21\n//0x62\t\t\t\t\t\t -> 0x22\n//0x63\t\t\t\t\t\t -> 0x23\n//0x64\t\t\t\t\t\t -> 0x24\n//0x65\t\t\t\t\t\t -> 0x25\n//0x66\t\t\t\t\t\t -> 0x26\n//0x67\t\t\t\t\t\t -> 0x27\n//EOF\t\t\t\t\t\t -> 0x65\n//(0x80 <= c <= 0xff) -> (0x80 <= c <= 0x47:5)\n\ncmp_conditions( \nc0 == a1,\nc2 == a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": " // three output ports: sum, carry status, and overflow bit\n\n\n#incremented_output counter_output;\nmodule counter_module(\ninput clk,\ninput reset,\ninput [3:0] counter_in,\noutput counter_output );\n\n\n// A wire player that has room for 3 bits of supply!!!\nmodule wire {\n// aWire -> [3:0] input bus requires three bits\ninput aX;\ninput bX;\ninput sumX;\nalways @(posedge clk, negedge reset) begin\n  if (clk == 0)\n    aWire = `aX;\n  if (clk == 1)\n    bWire = `bX;\n  if (clk == 1)\n    denner( `aX, `bX, `sumX )\nend\n\nterm denner(a, b, sum) {\n  //"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\nlet // This is a half subtractor. It subtracts two bits and produces a sum and carry-out.\nmodule half_subtractor( \ninput a, b,\noutput r, cout, sum );\n\n`;\n\nlet hadd = blackhole( `add(\"a\", \"b\", \"out\")` );\nlet hbin = blackhole( `add(\"a\", \"b\")` );\nlet hout = binary( `0,0, yyyy,yyy,yyy,yyy,yyy,yyy` );\n\nlet h2a = blackhole( `add(\"a\", \"a\")` );\nlet h2a_subtract = h2a.subtractor( `0`, \"a\", `out` );\n\nlet h2b = blackhole( `add(\"a\", \"b\")` );\nlet h2b_subt"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\n// Halfadder bit 0 = sum; halfadder bit 1 = carry-out\n// Bits definitions:\n//   0    output bit 0 = sum bit\n//   1    output bit 0 = carry out bit\n //   2-7  montgomery (mod2^5) bit number\nstruct HalfAdder {\n@MACHOP R( a,   b )\n#if ZCYCLES > 0\n  RALOCDATA;\n#endif\n} \nw_sum {\nR( 0 )\n#if ZCYCLES == 0;  // no factor COEFF\nzmul lor( l,  M(z) )  ;// Portal LOR factor l .. perform Montgomery multiply for l\n#endif  // ZCYCLES == 0\nR( 1 ) ;// output logic: 1 bit\n} \nw_carry {\nR( 2 )\n#if Z"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n\ninput a_l, a_h;\ninput b_l, b_h;\ninput charge_l, charge_h;\n\nregister unsigned int a_r;\nregister unsigned int b_r;\nregister unsigned int charge_r;\n\nvoid Update_Register( \ninput& a_h, \ninput& a_r, \nunsigned int a_l, \ninput& b_h, \ninput& b_r, \nunsigned int b_l);\n\nvoid Init_Adder( \ninput a, \ninput b);\n\nvoid Clear_Sum_And_Carry_Out( \noutput& cout, \nunsigned int sum, \nunsigned int carry_out);\n\nvoid Enable_Half_Adder( input r = 0 );\n\nmain\nConstrain the input a to [0,255]\nConstrain the input"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n\n// The full adder adds to three bits.\n// The carry-out is made from the two least-significant bits.\nmodule full_adder( \ninput a, b,\ninput cout, sum, \noutput carry );\n\n// The converter produces a single byte.\nmodule converter ( \ninput q,\noutput byte_out );\n\n\nmodule top (1);\n\ntop(\nRNDM => RNDM )\n    full_adder ( QA ~ U_P( V_P DB in AC in DB ).bus )\n    non_w_r{1, 0};\ntop -> full_adder[1];\n\n.finish\n.precision_keep32\n.endn\n''' )\n\n            hanp = pkind_pref_name(\n                    pkind.name,\n                    {\n                        'RNDM':\n                            'bit unsigned rotate-mod"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": " \n\nreg ahi, adi, ashift, bhi, bdi, blshift; \n\nalways @(posedge clk) \n  { \n    if (a.read() > 0)\n      ahi.write(BIT(a.read(),0));\n    else\n      a.write(0);\n    a.nc_write(a);\n\n    if (b.read() > 0)\n      bhi.write(BIT(b.read(),0));\n    else\n      b.write(0);\n    b.nc_write(b);\n\n    ahi += ahi << blshift;\n      if (ahi == 1)\n\tblshift = (blshift+1)&32;\n      // Prevents carry-out to take effect\n    ahi <<= ashift;    \n    if (ahi == 1)\n\tashift = (ashift"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\nwire  in_a[N_WIRE];\nwire  carry_out[N_WIRE];\nwire sum_wire, carry_out_wire;\n\ninitial_conditions out0 = {0, 0, 0, 0, 0, 0};\n\nvoid out0_r( rst_n negedge clk p21 );\nvoid bodf_in_Phase_A( rst_n negedge, posedge p21 )                \n{\n  sum_wire = a[0];\n  carry_out_wire = a[1];\n}\n\nvoid bodf_in_Phase_B( rst_n negedge, posedge p21 )  \n{\n  OUT_Sum( sum_wire );\n\n  carry_out_wire = 0;\n}\n\nvoid do_sets( boundary_time t, sensitivity s)\n{\n  switch"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\ninitial begin\n\n  cout = 0;\n  sum = 0;\n\nend\n\nassign [ a ] 5;\nassign [ b ] 0;\n\ninc ( { a } );\nnext;\nassign [ sum] 0;\nnext;\n\ntri ( [ a ] | [ b ] );\nnext;\nassign [ cout ] { sum|cout }[ 1 ];\nnext;\n\nendprogram\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n\n// Bit shifter is input is binary and outputs bitwise shifted input.\nmodule creative_shifter( \ninput combine, bit_out,\noutput shiftout );\n\n// Pipe an 8-bit input loaded in CPU_ID in the first half of the CPU pipe.\nmodule combiner( \ninput cfun, memory a,\noutput spineout );\n\nmodule shifter ( \ninput fuse,\noutput shiftin );\n\n// The 10-bit output shifter on an LCR is the 8-bit shifter in-set\n// and an 8-bit external shifter.\nmodule ex_shifter(\ninput shiftr,\noutput ex_shiftr,\ninput a8,\noutput a_shiftr );\n\nalways @( posedge ex_shiftr )\nrec A8_shiftr(\noutput a_shiftr,\ninput a8 );\n\n///// INTERN"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n`,\n\t\t}\n\t\tassert.Equal(t, expectedAsmBin, asmBin, \"produced AsmBin should match expected\")\n\t})\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n\n/*..................................................................................................................................\n@@. part of \"pack fru\" part which does the \"full\" adder:                                                       @*/\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\nmodule encoder( \ninput in,\ninput rw,\noutput adder );\n\n// this module generates the sequence rw | in1 | in2 ..\nmodule frid_3013_0( \ninput rw,\ninput in1, in2, ...);\n//This module generates the sequence adder | rw | in1 | in2 ...\nmodule frid_3013_full( \ninput rw,\ninput in1, in2, ...,\noutput cout1, cout2 );\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n\nalways @ (ca)\nbegin\n    for( integer me = 1; me<=48; me=me+4) ; \n    sum add( a , b , cout);\n    sum substract( a , b , cout);   \nend\n\nhalf_adder add_out( \ninput a, b,\noutput cout, sum);\n\nalways @(ca)\nbegin \n    sum substract_out( a , b , cout);\n    sum add_out2( a , b , cout);\nend\n\nhalf_adder add_out2( \ninput a, b,\noutput cout, sum);\n\nalways @(ca)\nbegin \n    for( integer me = 1; me<=48; me=me+4) ; \n    sum substract_out2( a , b , cout);\nend\n\nmodule adder( \ninput"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n\n\n// This is a half subtractor. A subtractor subtract two bits and produces a sum.\nmodule half_subtractor( \ninput a, b, \noutput cout, sum );\n\n\n// This module computes a 16 bit unsigned half-carry number.\nmodule unit_run( input s4p,\n              output c, a, b );\n\n#"
+    }
+  ],
+  "created": 1663537983,
+  "id": "cmpl-khiO1TbzUNLA5Nl3EXs9JIoRlXaxl",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3528,
+    "prompt_tokens": 43,
+    "total_tokens": 3571
+  }
+}

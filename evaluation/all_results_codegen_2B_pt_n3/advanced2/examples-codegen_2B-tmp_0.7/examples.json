@@ -1,0 +1,42 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (!reset && !slowena)\n        q <= 0;\n    else if (!slowena)\n        q <= 0;\n    else if (clk && !reset)\n        q <= (q + 1);\n\n// On the zero edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\nalways @(negedge clk)\n    if (reset && slowena)\n        q <= 0;\n    else if (!slowena)\n        q <= 0;\n    else if (clk && slowena)\n        q <= (q + 1);\n\n// On the 1-bit edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// The top bit of the q input is always 0.\n\nalways @(posedge clk) begin\n    if (slowena && !reset)\n        q = q + 1;\nend\n\n// On the negative edge of the clock:\n// If q is not 0, and the ena input is high, reset the output q to 0.\n// Otherwise, the ena input of 0 means reset the output q to 0.\n\nalways @(negedge clk) begin\n    if (slowena && (slowena || (q != 0)))\n        q = 0;\nend\n);\n\nint main() {\n    count_slow clk(\"clk\");\n    count_slow ena(\"ena\");\n\n    //clk.w <= 0\n    //ena.w <= 0\n    //ena.w <= 1\n    //ena.w <= 1\n    //ena.w <="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (slowena == 0)\n        q <= 0;\n    else {\n        if (reset == 1)\n            q <= 0;\n        else\n            q <= q + 1;\n    }\n"
+    }
+  ],
+  "created": 1663536912,
+  "id": "cmpl-KGFjrdUS1DnRpy2s0mkqC3XsnjVff",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 459,
+    "prompt_tokens": 98,
+    "total_tokens": 557
+  }
+}

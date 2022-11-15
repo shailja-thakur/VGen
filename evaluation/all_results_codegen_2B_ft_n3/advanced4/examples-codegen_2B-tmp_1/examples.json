@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk) \n\tbegin\n\tif (load)\n\tbegin\n\tq <= data;\n\n\tend\n\telse if (ena) begin\n\tq <= {q[62:0], q[63]};\n\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " reg [64:0] tmp;\n always @(posedge clk)\n if (load)\n tmp <= {data[63:0], 1'b0};\n else if (ena)\n case(amount)\n \t1'b1:\n\tbegin\n\ttmp <= {tmp[54:0], 1'b0};\n\tend\n\t1'b0:\n\tbegin\n\ttmp <= {tmp[59:0], 1'b0};\n\tend\n\tdefault:\n\tbegin\n\ttmp <= {tmp[64:0], 1'b0};\n\tend\n 1'b0,1'b1, 1'b0,1'b1,\nendcase\nalways @(posedge clk)\n q <= tmp[63:0];\n//connect outputs to correct equation.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways@ (posedge clk) begin\nif (ena) begin\nif (amount == 2'b00) begin\n\tq <= {q[62:0],1'b0};\n\tq[63] <= q[63];\n\tend\n\t\n\telse if (amount == 2'b01) begin\n\tq <= {1'b0,\tq[63:1]};\n\tend\n\t\n\telse if (amount == 2'b10) begin\n\tq <= {q[61:0],1'b0};\n\tend\n\t\n\telse if (amount == 2'b11) begin\n\tq <= {q[63],1'b0};\n\tend\nend\nend\n\n"
+    }
+  ],
+  "created": 1663304526,
+  "id": "cmpl-ynbRzAUW1qyEsRLXLIw7xKOgpVfRa",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 417,
+    "prompt_tokens": 184,
+    "total_tokens": 601
+  }
+}

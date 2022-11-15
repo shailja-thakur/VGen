@@ -1,0 +1,119 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (reset) next_state = IDLE;\n    else\n        if (x == 1) next_state = S1;\n        else if (x == 0) next_state = S10;\n        else next_state = IDLE;\n    if (next_state != present_state)\n        z = 1;\n    present_state = next_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (reset) next_state = IDLE;\n  else if (x == 1) next_state = S1;\n  else if (x == 0) next_state = S10;\n  else next_state = IDLE;\n  if (present_state != next_state) z = 1;\n  present_state = next_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif (reset == 1)\n{\n    next_state = IDLE;\n}\nelse if (x == 1)\n{\n    if (present_state == IDLE)\n    {\n        next_state = S1;\n    }\n    else if (present_state == S1)\n    {\n        next_state = S10;\n    }\n    else if (present_state == S10)\n    {\n        next_state = S101;\n    }\n    else if (present_state == S101)\n    {\n        next_state = IDLE;\n    }\n}\nelse\n{\n    if (present_state == IDLE)\n    {\n        next_state = IDLE;\n    }\n    else if (present_state == S1)\n    {\n        next_state"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (reset) next_state = IDLE;\n    else if (x == 1) next_state = S1;\n    else if (x == 0) next_state = S10;\n    else next_state = IDLE;\n    if (next_state != present_state) present_state = next_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (reset)\n    present_state = IDLE;\n  else\n    present_state = next_state;\n  next_state = IDLE;\n  z = present_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (reset == 1)\n        next_state = IDLE;\n    else if (x == 1)\n        next_state = S1;\n    else if (x == 0)\n        next_state = S10;\n    else\n        next_state = IDLE;\n    if (next_state != present_state)\n    {\n        present_state = next_state;\n        z = 1;\n    }\nend\n\n// This is a finite state machine that recognizes the sequence 001 on the input signal x. \nmodule adv_fsm2(\ninput clk,\ninput reset,\ninput x,\noutput z ); \nreg [1:0] present_state, next_state;\nparameter IDLE=0, S1=1, S10=2, S001=3;\n//"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (reset) next_state = IDLE;\n  else if (x == 1) next_state = S1;\n  else if (x == 0) next_state = S10;\n  else next_state = IDLE;\n  if (x == 1) present_state = S101;\n  else present_state = next_state;\n  if (x == 0) present_state = IDLE;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\ninitial begin\n    next_state = IDLE;\n    present_state = IDLE;\n    z = 1;\nend\n\nalways @(posedge clk) begin\n    if (reset == 1)\n    {\n        next_state = IDLE;\n    }\n    else\n    {\n        if (x == 1)\n        {\n            if (present_state == IDLE)\n            {\n                if (next_state == IDLE)\n                {\n                    next_state = S1;\n                }\n            }\n            else if (next_state == IDLE)\n            {\n                next_state = S10;\n            }\n        }\n        else if (x == 0)\n        {\n            if (present_state == IDLE)\n            {\n                if (next_state == IDLE)\n                {\n                    next_state = S"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (reset)\n        next_state = IDLE;\n    else if (x == 1)\n        next_state = S1;\n    else if (x == 0)\n        next_state = S10;\n    else\n        next_state = IDLE;\n    \n    if (next_state == IDLE)\n        present_state = IDLE;\n    else if (next_state == S1)\n        present_state = S1;\n    else if (next_state == S10)\n        present_state = S10;\n    else\n        present_state = S101;\n    \n    z = present_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (reset) next_state = IDLE;\n    else if (x == 1) next_state = S1;\n    else if (x == 0) next_state = S10;\n    else next_state = IDLE;\n    if (next_state != present_state) {\n        z = 1;\n        present_state = next_state;\n    }\nend\n\nalways @(posedge clk)\nbegin\n    if (reset) next_state = IDLE;\n    else if (x == 1) next_state = S1;\n    else if (x == 0) next_state = S10;\n    else next_state = IDLE;\n    if (next_state != present_state) {\n        z = 0;\n        present_state = next_state;\n    }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (reset) next_state = IDLE;\n    else if (x == 1) next_state = S1;\n    else if (x == 0) next_state = S10;\n    else next_state = IDLE;\n    if (present_state == IDLE) {\n    if (next_state == IDLE) present_state = IDLE;\n    else if (next_state == S1) present_state = S1;\n    else if (next_state == S10) present_state = S10;\n    else if (next_state == S101) present_state = S101;\n    }\n    else if (next_state == IDLE) present_state = IDLE;\n    else if (next_state == S1) present_state = S1;\n    else if (next_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n  if (reset)\n    next_state = IDLE;\n  else if (x == 1)\n    next_state = S1;\n  else if (x == 0)\n    next_state = S10;\n  else\n    next_state = IDLE;\n  if (reset)\n    present_state = IDLE;\n  else if (x == 1)\n    present_state = S1;\n  else if (x == 0)\n    present_state = S10;\n  else\n    present_state = IDLE;\n  z = present_state;\nend\n\nalways @(posedge clk)\nbegin\n  if (reset)\n    next_state = IDLE;\n  else if (x == 1)\n    next_state = S1;\n  else if (x == 0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (reset == 1)\n    {\n        present_state = IDLE;\n        next_state = IDLE;\n    }\n    else if (x == 1)\n    {\n        if (present_state == IDLE)\n        {\n            next_state = S1;\n        }\n        else if (present_state == S1)\n        {\n            next_state = S10;\n        }\n        else if (present_state == S10)\n        {\n            next_state = S101;\n        }\n    }\n    else\n    {\n        if (present_state == IDLE)\n        {\n            next_state = IDLE;\n        }\n        else if (present_state == S1)\n        {\n            next_state = IDLE;\n        }\n        else"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (reset == 1)\n        next_state = IDLE;\n    else\n        next_state = present_state;\n    if ((x == 1) && (present_state == IDLE))\n        next_state = S1;\n    if ((x == 0) && (present_state == IDLE))\n        next_state = IDLE;\n    if ((x == 1) && (present_state == S1))\n        next_state = S10;\n    if ((x == 0) && (present_state == S1))\n        next_state = IDLE;\n    if ((x == 1) && (present_state == S10))\n        next_state = S101;\n    if ((x == 0) && (present_state == S10))\n        next_state = IDLE;\n    if"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (x == 1)\n    {\n        if (present_state == IDLE)\n        {\n            present_state = S1;\n        }\n        else if (present_state == S1)\n        {\n            if (reset == 1)\n            {\n                present_state = IDLE;\n            }\n            else\n            {\n                next_state = S10;\n            }\n        }\n        else if (present_state == S10)\n        {\n            if (reset == 1)\n            {\n                present_state = IDLE;\n            }\n            else\n            {\n                next_state = S101;\n            }\n        }\n        else if (present_state == S101)\n        {\n            if (reset == 1)\n            {\n                present_state = IDLE;\n"
+    }
+  ],
+  "created": 1663537443,
+  "id": "cmpl-bog9xcnMPTRTj4oa45jzJRxG3KL3j",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2403,
+    "prompt_tokens": 232,
+    "total_tokens": 2635
+  }
+}

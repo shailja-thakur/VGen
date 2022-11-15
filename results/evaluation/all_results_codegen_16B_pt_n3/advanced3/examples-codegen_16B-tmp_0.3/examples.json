@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) begin\n    if (reset) begin\n        present_state <= IDLE;\n        next_state <= IDLE;\n    end else begin\n        present_state <= IDLE;\n        next_state <= IDLE;\n        if (x) begin\n            next_state <= S1;\n        end else begin\n            next_state <= IDLE;\n        end\n    end\nend\n\nalways @(posedge clk) begin\n    z <= present_state;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) begin\n  if (reset) begin\n    present_state <= IDLE;\n  end\n  else begin\n    if (present_state == IDLE) begin\n      if (x) begin\n        present_state <= S1;\n      end\n    end\n    else if (present_state == S1) begin\n      if (x == 0) begin\n        present_state <= S10;\n      end\n    end\n    else if (present_state == S10) begin\n      if (x) begin\n        present_state <= S101;\n      end\n    end\n    else if (present_state == S101) begin\n      if (x) begin\n        present_state <= IDLE;\n      end\n    end\n  end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n  if (reset) begin\n    present_state <= IDLE;\n  end\n  else begin\n    if (present_state == IDLE) begin\n      next_state <= S1;\n    end\n    else begin\n      if (present_state == S1) begin\n        if (x == 1) begin\n          next_state <= S10;\n        end\n        else begin\n          next_state <= IDLE;\n        end\n      end\n      else begin\n        if (present_state == S10) begin\n          next_state <= S101;\n        end\n        else begin\n          next_state <= IDLE;\n        end\n      end\n    end\n  end\nend\n"
+    }
+  ],
+  "created": 1663533826,
+  "id": "cmpl-TUCEJjJC5aikRkyy8BjQ5B2EYsHcl",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 483,
+    "prompt_tokens": 232,
+    "total_tokens": 715
+  }
+}

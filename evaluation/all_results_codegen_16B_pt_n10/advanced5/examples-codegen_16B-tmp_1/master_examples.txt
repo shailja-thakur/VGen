@@ -1,0 +1,436 @@
+example-0: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+reg [1:0] z = 2'h0,state_out;
+reg [1:0] a = 1'b0,b = 1'b0;
+assign cur_state = state_out;
+// One cycle of the FSM
+@always_reset
+void resetState(){
+	if (reset) cur_state = IDLE;
+}
+// Invariants:
+// cur_state either SAB or SA
+//
+// we do not handle vexing cases like this:    (SA)(SAAB), since
+// vexing the set of allowed values would make the alphabet very large.
+//            (SA)(a,b),        (SA) first clock is b, second is a;
+//            (SA)(a,b),        (SA) if first clock is a, second is b
+//            (SA)(a--b),       (SA) if clock is decre
+================================================================
+example-1: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always@(posedge clk or posedge reset) begin
+  case(cur_state)
+    case(IDLE)
+      if((a==b) and (a)) begin
+        cur_state <= SAB;
+      end else case(SA)
+        if( a ) begin
+          cur_state <= SAB;
+        end else case(SB)
+          if( b ) begin
+            cur_state <= SAB;
+          end else case(SAB)
+            begin
+              cur_state <= IDLE;
+            end
+        end 
+      end
+    endcase
+  end
+end
+
+================================================================
+example-2: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @(posedge clk or posedge reset)
+begin
+  if ("0" = reset) begin
+    cur_state = IDLE;
+  end else begin
+    switch (cur_state)
+    case IDLE:
+      if (a and b) begin
+        next_state = SAB;
+      end else if (a) begin
+        next_state = SA;
+      end else if (b) begin
+        next_state = SB;
+      end
+  end case
+  switch (next_state)
+    case IDLE:
+      z <= 0;
+    case SA:
+      if (b) begin
+        cur_state = SB;
+      end else begin
+        cur_state = SAB;
+      end
+      z <= 1;
+    case SB:
+      if (a) begin
+        cur_state = SAB;
+      end else begin
+================================================================
+example-3: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+assign cur_state = cur_state;
+event e = a && b && posedge(clk);
+// state is guaranteed to be in IDLE
+always @(posedge only once // multiple hit on next_state before z
++ posedge clk) begin
+// cur_state is guaranteed to be only two bits (IDLE, SAB) since there are no
+// more events possible by defintion and no more simultaneous events possible
+// by src/always @(...) statement.
+switch(cur_state) {
+   case IDLE:
+      if(a && b){  // Moves to SAB
+         cur_state = SAB;
+         next_state = IDLE;
+      } else next_state = IDLE;
+   break;
+   case SAB:
+      if(a && b){ // moves to are both high
+         next_state = SAB;
+         
+================================================================
+example-4: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+reg[0] z;
+always @(posedge clk or posedge reset) begin
+  if (reset) begin cur_state = IDLE; end
+  else if (a) begin cur_state = (a=1?SA:0); end
+  if(!a && b) begin
+    if(cur_state == IDLE) cur_state = (b=1?SB:0); else cur_state = SAB;
+  end
+  next_state = cur_state;
+  if(next_state != cur_state) begin
+    switch (next_state)
+    case IDLE     => next_state = IDLE;
+    case SA       => z = a;
+    case SB       => z = b;
+    case SAB      => $display(z);
+    end;
+  end
+  yield z;
+end
+
+================================================================
+example-5: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+reg [3:0] sel_r_sa,sel_r_sb,sel_n_sa,sel_n_sb;
+reg [1:0] sa_clk,sb_clk,sa_seg,sb_seg,sa_bit,sb_bit;
+reg [1:0] sa_sel_red_o,sb_sel_red_o,sa_sel_cvt_red_o,sb_sel_cvt_red_o;
+reg [1:0] sa_pack,sb_pack;
+reg [7:0] adr,data,rdata,sel;
+
+
+assign sa_sel_red_o = {cur_state,sa_clk,sa_seg,sa_bit,sa_pack};
+
+assign t = {sel_r_sa,sa_clk,sa_seg
+================================================================
+example-6: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+reg z;
+initial begin
+	cur_state = IDLE;
+	next_state = cur_state;
+	z <= 0;
+	process (clk,reset) begin
+		if (reset) begin
+			cur_state <= IDLE;
+		end else begin
+			next_state <= cur_state;
+			if (cur_state == SA && a) begin
+				next_state <= SB;
+			end else begin
+				if (b && next_state == SA) begin
+					next_state <= SAB;
+				end
+				if (a && next_state == SA) begin
+					next_state <= SAB;
+				end
+				if (cur_state == SA && b) begin
+					next_state <= SAB;
+				end
+				if (cur_state == SB && b) begin
+					next_state <= SAB;
+				end
+				
+================================================================
+example-7: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+
+always { clk = cur_state==0; }
+
+always   @(posedge clk) begin
+    if(reset)
+    begin
+        // Set initial conditions
+        cur_state <= 0;
+        next_state <= 0;
+    end
+    else if (cur_state == IDLE)
+    begin
+      z <= 0;
+      next_state <= SAB;
+    end
+    else if ((cur_state == SAB) && (a == 1 && b == 1))
+    begin
+      cur_state <= SB;
+      next_state <= SA;
+      z <= 1;
+    end
+    else if ((cur_state == SAB) && (a == 1))
+    begin
+      z <= a;
+      cur_state <= SA;
+      next_state <= SB;
+    end
+    else if ((cur_state == SAB)
+================================================================
+example-8: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @(posedge clk, posedge reset)
+begin
+    if(reset) begin
+	cur_state <= IDLE;
+    end
+    else begin
+	case(a)
+	    case(b) begin
+		i <= SB;
+		cur_state <= SAB;
+		'0' <= z;
+		end
+	    end
+	    case(!a && !b) begin
+		i <= SB;
+		cur_state <= SAB;
+		'1' <= z;
+	    end
+	    case(!b && a) begin
+		i <= SAB;
+		cur_state <= SAB;
+		'1' <= z;
+	    end
+	    case(!b) begin
+		i <= SB;
+		cur_state <= SAB;
+		'0' <= z;
+	    end
+	    case(
+================================================================
+example-9: 
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+always @clk begin
+with cur_state,next_state
+// Using FSM Framework
+if (clk.negedge && reset = '0' && SAB == cur_state) begin
+next_state <= IDLE;
+end
+else begin
+next_state <= cur_state;
+end
+end
+endaction
+// This is intended to do the following for a FSM:
+// clock = 1,reset = 1 would reset the FSM and then reset again after clk.negedge.
+// clock = 1,reset = 0 would read in the input pins a and b and then send them to the next stage of the FSM or a stub.
+// clock = 0,reset = 1 would allow the FSM to read the inputs.
+// clock = 0,reset = 0 would not perform any action at all.
+always @clk begin
+if (reset = 1) begin
+next_
+================================================================

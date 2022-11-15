@@ -1,0 +1,116 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7] && a[7] != s[7]) || (a[7] != b[7] && s[7] == 1'b0);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (~a[7] & b[7] & s[7]) | (~a[7] & ~b[7] & ~s[7]) | (a[7] & ~b[7] & ~s[7]);\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7] && a[7] != s[7]) || (a[7] != b[7] && s[7] == 1'b1);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7] && a[7] != s[7]) || (a[7] != b[7] && s[7] == 1'b0);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7]) && (a[7] != s[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7]) && (a[7] != s[7]) ? 1'b1 : 1'b0;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nassign overflow = (a[7] == b[7] && a[7] == s[7]) ? 1'b1 : 1'b0;\n\nassign s[0] = a[0] ^ b[0] ^ s[0];\nassign s[1] = a[1] ^ b[1] ^ s[1];\nassign s[2] = a[2] ^ b[2] ^ s[2];\nassign s[3] = a[3] ^ b[3] ^ s[3];\nassign s[4] = a[4] ^ b[4] ^ s[4];\nassign s[5] = a[5] ^ b[5] ^ s[5];\nassign s[6] = a[6] ^ b[6] ^ s[6];\nassign s[7] = a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign overflow = (a[7] == b[7]) && (a[7] != s[7]) || (a[7] != b[7]) && (s[7] == 1);\n\n\n// if the most significant bit of a or b is high, then add 1 to the output \nassign s[0] = a[0] ^ b[0] ^ s[7];\nassign s[1] = a[1] ^ b[1] ^ (a[0] & b[0]) ^ s[7];\nassign s[2] = a[2] ^ b[2] ^ ((a[0] & b[0]) & (a[1] & b[1])) ^ s[7];\nassign s[3] = a[3] ^ b[3] ^ ((a[0] & b[0]) & (a["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\tassign s = a + b;\n\tassign overflow = (a[7] == b[7]) && (a[7] != s[7]) ? 1'b1 : 1'b0;\n\t\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nreg [7:0] s;\nreg overflow;\n\nalways @(a or b) begin\n\nif (a[7] == 1'b0 && b[7] == 1'b0 && s[7] == 1'b1) begin\noverflow = 1'b1;\nend\nelse if (a[7] == 1'b1 && b[7] == 1'b1 && s[7] == 1'b0) begin\noverflow = 1'b1;\nend\nelse begin\noverflow = 1'b0;\nend\n\nend\n\nalways @(a or b or s) begin\n\nif (s[7] == 1'b0 && a[7] == 1'b0 && b[7] == 1'b0) begin\ns = 8'b00000000;\nend\nelse if (s[7] == 1'"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n\nalways @(a or b or s)\nbegin\nif(a[7] == 1'b0 && b[7] == 1'b0 && s[7] == 1'b1)\nbegin\n\noverflow = 1'b1;\nend\n\nelse if(a[7] == 1'b1 && b[7] == 1'b1 && s[7] == 1'b0)\nbegin\n\noverflow = 1'b1;\nend\n\nelse\nbegin\noverflow = 1'b0;\nend\nend\n\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7] && a[7] != s[7]) || (a[7] != b[7] && s[7] != 1'b0);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = (a[7] == b[7] && a[7] != s[7]) ? 1'b1 : 1'b0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nassign s = (a + b);\nassign overflow = (((a[7] == 0) && (b[7] == 1) && (s[7]) && (s[6:0] == 7'b1111111)) || ((a[7] == 1) && (b[7] == 0) && (s[7] == 0) && (s[6:0] == 7'b1111111)));\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = a[7] ^ b[7] ^ s[7];\n\n"
+    }
+  ],
+  "created": 1663334232,
+  "id": "cmpl-MbuEBUFYNosgwWVvRAM66kgXQyFnj",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1364,
+    "prompt_tokens": 164,
+    "total_tokens": 1528
+  }
+}

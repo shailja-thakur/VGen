@@ -1,0 +1,57 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) \n\tif(reset) \n\tr_reg <=6'b000000; \n\telse \n\tr_reg <= r_next; \n// transition logic, used by other internal muxes\nalways @(*)\n\tcase(r_reg[4:2])\n\t0: r_next ={r_reg[3:1],q[0]};\n\t1: r_next ={r_reg[3:1],q[1]};\n\t2: r_next ={r_reg[3:1],q[2]};\n\t3: r_next ={r_reg[3:1],q[3]};\n\t4: r_next ={r_reg[3:1],q[4]};\n\tdefault: r_next = {r_reg[3"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// internal registers and wires and their sizes\n//`include \"assign_static_l.v\"\nassign r_next[0] = r_reg[0];\nassign r_next[4:1] = r_reg[2:0];\nassign where_to_come_from = ((r_reg[2] == 1) | (r_reg[4] == 1))? {r_reg[1], 2'd0}: {r_reg[3], r_reg[1], 2'd2};\nassign feedback_concat = {{!where_to_come_from[0], where_to_come_from[1], where_to_come_from[2]},{where_to_come_from[3]}};\nassign feedback_xor = (r_reg[0] ^ r_reg[2] ^ r_reg["
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset)\nr_reg <= 5'b10000;\nelse\nr_reg <= r_next;\nend\nassign xor2 = r_reg[0]^r_reg[3]; // a^b\nassign xor4 = r_reg[1]^r_reg[2]; // c^d\nassign q[0] = r_reg[4]^xor2; // e^a\nassign q[1] = r_reg[3]^xor2; // d^a\nassign q[2] = r_reg[2]^xor2; // e^c\nassign q[3] = r_reg[1]^xor2; // d^c\nassign q[4] = r_reg[0]^xor2"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// q = ~0101;\nassign q = {~r_reg[3]^r_reg[2]^feedback_value^r_reg[0],r_reg[3],r_reg[2],r_reg[1],r_reg[0]};\n\n\nalways @ * \t\n\tcase( {reset,feedback_value,r_reg[3],r_reg[2],r_reg[1],r_reg[0]} ) \n\t//case block to handle all 8-bit inputs\n\t0: \tr_next = {1'b0,q[2],q[0],q[3],q[4],q[1],q[2]^q[3]};\n\t1: \tr_next = {1'b0,q[1],q[3],q[2],q[0],q"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nbegin\nif (reset == 1'b0)\n\tbegin\n\tr_reg <= 5'b0;\n\tend \nelse\n\tbegin\n\tr_reg <= r_next;\n\tend\nend\nassign r_next = {r_reg[4],r_reg[3]^r_reg[4]};\nassign feedback_value = r_reg[2]^r_reg[4];\nassign q = r_reg;\n"
+    }
+  ],
+  "created": 1663600134,
+  "id": "cmpl-WGVyDp7fty8az6146OiyTG6HI6yCe",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 923,
+    "prompt_tokens": 155,
+    "total_tokens": 1078
+  }
+}

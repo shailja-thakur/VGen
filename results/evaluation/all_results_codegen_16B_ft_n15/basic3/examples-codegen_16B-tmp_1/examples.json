@@ -1,0 +1,108 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ ( * )\nbegin\n // case all inputs sequentially falling\n casex ( in ) \n // Set output high no matter what input state is\n 3'bx_xx : pos = 2'b11 ;\n // Input one bit lower than highest is output low\n 3'bx1_x1: pos = 2'b00 ;\n // Input two bits lower than highest is output mid\n 3'bx_11 : pos = 2'b01 ;\n // Input three bits lower than highest is output low\n 3'bx1_xx: pos = 2'b00 ;\n // Otherwise output is high\n default: pos = 2'b11 ;\n endcase \nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(*)\nbegin\n\tcase(in)\n//\t2'b11: pos <= 2'b00;\n\t3'b010: pos <= 2'b01;\n\t3'b011: pos <= 2'b00;\n//\t3'b100: pos <= 2'b10;\n\tdefault: pos <= 2'b00; \n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ ( in or din )\nbegin\n\t// If any input is high, output is high and all the inputs are assigned 0.\n\tcase ( in ) \n\t3'b000: pos = 2'b11;\n\t3'b001: pos = 2'b10;\n\t3'b010: pos = 2'b01;\n\t3'b011: pos = 2'b00;\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @ (in or negedge pos)\nif (in > 2'b0 && ~pos) //If none inputs are high, position = 0\n\tpos = 2'b00;\nelse if (in[0] > 0) //CLAIM WHICH S/B SELECTED // CASE 0:\n\tpos = 2'b00; \nelse if (in[1] > 0) //CASE 1\n\tpos = 2'b01; \nelse if (in[2] > 0) //CASE 2\n\tpos = 2'b10;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @ (in or negedge pos)\nbegin\nif( ~pos ) // active low\npos = 1'b0; end\nelse begin\ncasex (in) // case statement x\n3'x0 : pos = 2'b00; \n3'x1 : pos = 2'b01;\n3'x1 : pos = 2'b10; \n3'x2 : pos = 2'b10;\ndefault : pos = 2'b10;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @( in ) \nbegin\ncase ( in )\n3'b0: pos=2'b11;\n3'b01: pos=2'b10;\n3'b10: pos=2'b01;\n3'b11: pos=2'b00;\nendcase\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(*)\n\tbegin\n\tcase(in)\n\t// Using a 3x1 mux to implement the priority encoder in a readable manner\n\t// Would usually use a case statement for this sort of use and ignore the \n\t// flipflop it generates, but what would be created in the flipflop \n\t// is actually an AND and an OR, handled in infix logic\n\t// Priority flags assigned\n\t 4'b0000: begin pos = 2'b00; end\t// Highest priority goes to 0\n\t 4'b0001: begin pos = 2'b01; end\t// Higher than 0\n\t 4'b0010: begin pos = 2'b10; end\t// Higher than 0 and 1\n\t 4'b0011: begin pos = 2'b11; end\t// Higher than all\n\t// Non-priority flags go to output 0\n\t default: begin pos ="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "// When sel=1, and b is 0, out is 0\n// When sel=0, assign a to out\n\n\nalways @(in) begin\ncase (in)\n\n[2] : pos = 2'b01;\n\n[1] : pos = 2'b10;\n\n[0] : pos = 2'b00;\n\ndefault : pos= 0;\n\nendcase\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(*) begin\n if (in[0]) pos = 2'd0; // 0000\n else if (in[1]) pos = 2'd1; // 0001\n else if (in[2]) pos = 2'd2; // 0010\n else pos = 2'd3; // 0011\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @ ( in or sel ) \n\tbegin\n\tif ( in < 2 ) // 1-3 \n\t \tpos = 0;\n\t else if ( in < 5 ) // 4-6\n\t \tpos = 1;\n\t else // >=7\n\t \tpos = 2;\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always@ (*) begin\nif(in[0]) begin\n pos = 2'b11;\nend\nelse if(in[1]) begin\n pos = 2'b10;\nend\nelse if(in[2]) begin\n pos = 2'b01;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(in) \nbegin\ncase (in)\n3'b000: pos=2'b00; // lost to floor\n3'b001: pos=2'b01;\n3'b010: pos=2'b10;\n3'b011: pos=2'b11;\n3'b100: pos=2'b11;\ndefault: pos=2'b00;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "// When sel=x, output the selected A or B \nalways @ ( * ) \nbegin \ncase(in) \n// When none of input is high, output is zero \n3'b000: begin \nsel = 0; \nout = 2'b00; \npos = 2'b00; \nend \n/* \n3'b001: begin \nsel = 1; \nout = bits_100(A); \npos = bits_100(B); \nend \n3'b010: begin \nsel = 1; \nout = bits_010(A); \npos = bits_010(B); \nend \n3'b011: begin \nsel = 1; \nout = bits_001(A); \npos = bits_001(B); \nend \n3'b100: begin "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(*)\nbegin\ncase(in)\n3'd0: begin pos=2'b00; end\n3'd1: begin pos=2'b01; end\n3'd2: begin pos=2'b10; end\n3'd3: begin pos=2'b11; end\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @ * begin\n case(in)\n 3'b000: pos = 2'b00;\n 3'b001: pos = 2'b01;\n 3'b010: pos = 2'b10;\n 3'b011: pos = 2'b11;\n default: pos = 2'b00;\n endcase \nend\n\n"
+    }
+  ],
+  "created": 1663334562,
+  "id": "cmpl-7O7BzLv9T3Af0ZFGzcpGgaT5Q1EYx",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1626,
+    "prompt_tokens": 65,
+    "total_tokens": 1691
+  }
+}

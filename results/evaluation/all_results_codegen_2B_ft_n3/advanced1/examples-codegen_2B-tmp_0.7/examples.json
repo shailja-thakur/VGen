@@ -1,0 +1,44 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nreg signed [7:0] s;\nreg overflow;\n\nalways @ (a or b)\nbegin\n\ts <= a + b;\n\toverflow <= (a[7] == b[7] && a[7] == s[7]);\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nwire [7:0] a_and_b; \nwire [7:0] a_or_b;\n\nwire [7:0] s_and_b;\nwire [7:0] s_or_b;\n\nwire [7:0] a_xor_b;\n\nwire [7:0] s_xor_b;\n\nassign a_and_b = {1'b0, a} & {1'b0, b};\nassign a_or_b = {1'b0, a} | {1'b0, b};\n\nassign s_and_b = {1'b0, s} & {1'b0, b};\nassign s_or_b = {1'b0, s} | {1'b0, b};\n\nassign s_xor_b"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nassign overflow = ((a[7] & b[7]) & (~s[7]) & (~a[7] | b[7])) | ((a[7] | b[7]) & (~s[7]) & (~a[7] | b[7]));\n\n// add the two numbers using the synchronous up/down counter adder example\n\n// The output s is displayed on the left (e.g. s=0) and the overflow on the right (e.g. overflow=1).\n// The output overflow is a three-bit binary number, where 1 indicates the event that occurred.\n// The subtraction of b from a is shown on the left and subtraction of a from b is shown on the right.\n\nalways @ (posedge a or posedge b) \nbegin\n\tif (a[7] & b[7] & (~s[7]))"
+    }
+  ],
+  "created": 1663304474,
+  "id": "cmpl-FAhHhi82zVdHEXN81xpoijHBxJJ6L",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 465,
+    "prompt_tokens": 164,
+    "total_tokens": 629
+  }
+}

@@ -1,0 +1,146 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (clk)\n    begin\n        s <= a + b;\n        if (a > 127)\n        begin\n            if (b > 127)\n            begin\n                overflow <= 1;\n            end\n            else\n            begin\n                overflow <= 0;\n            end\n        end\n        else\n        begin\n            if (b > 127)\n            begin\n                overflow <= 1;\n            end\n            else\n            begin\n                overflow <= 0;\n            end\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// The following is the signed_adder function\n\nalways @(posedge clk)\nbegin\n    s <= a + b + signed(overflow);\nend\n\n// The following is the signed_adder function\n\nalways @(posedge clk)\nbegin\n    if (s[7] == 1)\n        s <= a + b + signed(overflow);\n    else\n        s <= a + b;\nend\n\n// The following is the signed_adder function\n\nalways @(posedge clk)\nbegin\n    if (s[7] == 1)\n        s <= a + b + signed(overflow);\n    else\n        s <= a + b;\nend\n\n// The following is the signed_adder function\n\nalways @(posedge clk)\nbegin\n    if (s[7] == 1)\n        s <= a + b + signed"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// The signed adder function will return a value of type [7:0]\n\nalways @(posedge clk or negedge rst) begin\n\nif (rst) begin\n    s <= 0;\n    overflow <= 0;\nend\nelse begin\n    s <= a + b;\n    if (a > 127) begin\n        if (b > 127) begin\n            s <= -2;\n            overflow <= 1;\n        end else begin\n            s <= b;\n            overflow <= 0;\n        end\n    end else begin\n        if (b > 127) begin\n            s <= a;\n            overflow <= 0;\n        end else begin\n            s <= a + b;\n            overflow <= 1;\n        end\n    end\nend\n\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "    always @(posedge clk)\n    begin\n        case a:\n            if (a[7:0] > b[7:0]) {\n                s[7:0] <= a[7:0] + b[7:0] + 128;\n                overflow <= 1;\n            } else {\n                s[7:0] <= a[7:0] + b[7:0];\n                overflow <= 0;\n            }\n            break;\n        case b:\n            if (a[7:0] > b[7:0]) {\n                s[7:0] <= b[7:0] + a[7:0] + 128;\n                overflow <= 1;\n            } else {\n                s[7:0] <= b[7:0] + a[7:0];\n                overflow <= 0;\n            }"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// The input a and b are left-justified in the input registers a and b. \n// The most significant bit of a and b is the bit that is shifted to the leftmost position in the output registers s and overflow.\n// The bit of the output register s is shifted to the rightmost position in the output registers s and overflow. \n// The bit of the output register overflow is shifted to the rightmost position in the output registers s and overflow.\n\nalways @(posedge clk)\nbegin\n  s <= a + b;\n  if (s[7] == 1'b1)\n    overflow <= 1;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    s <= a + b + '0' when not(overflow)\n    else if (a > b)\n        s <= a - b + '1' when not(overflow)\n    else if (a < b)\n        s <= b - a + '1' when not(overflow)\n    else if (a == b)\n        s <= '0' when not(overflow)\n    else if (a > '0' and b > '0')\n        s <= a - b + '1' when not(overflow)\n    else if (a < '0' and b < '0')\n        s <= b - a + '1' when not(overflow)\n    else if (a > '0' and b < '0')\n        s <= a - b + '1' when not(overflow"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// http://www.cs.cmu.edu/~dga/cmsc-619/Revisited-1.pdf\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// The signed adder does not support the addition of negative numbers.\n\nalways @(posedge clk)\nbegin\n    if (a < 0) begin\n        s <= -1;\n        overflow <= 1;\n    end else begin\n        s <= a + b;\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// The signed adder must be able to handle the largest signed number.\n\n// The signed adder should not overflow.\n\n// The signed adder should not underflow.\n\n// The signed adder should not return a negative number.\n\n// The signed adder should not return a number that is greater than 2^31.\n\n// The signed adder should not return a number that is greater than 2^32.\n\n\n\nmodule signed_adder_2(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\n// The numbers a and b are added to the output s. \n// assign the occurence of the signed overflow of a and b to the output overflow.\n// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\tif (clk)\n\tbegin\n\t\ts <= a + b;\n\t\tif (a[7] || b[7])\n\t\t\toverflow <= 1;\n\t\telse\n\t\t\toverflow <= 0;\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    s <= a + b + select(overflow == 0, a[7:0], b[7:0]);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n  if(clk)\n  begin\n    s <= a + b;\n    if(a > 0x7f)\n      overflow <= a > 0xff;\n    else\n      overflow <= b > 0xff;\n  end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n\n// The equation for adding two numbers that are stored as two's complement numbers is:\n// s = a + b\n// s is two's complement, so the result is the same as the sum of the two's complement numbers.\n// The equation for adding two numbers that are stored as two's complement numbers is:\n// s = a + b\n// s is two's complement, so the result is the same as the sum of the two's complement numbers.\n// The equation for adding two numbers that are stored as two's complement numbers is:\n// s = a + b\n// s is two's complement, so the result is the same as the sum of the two's complement numbers.\n// The equation for adding two numbers that are stored as two's complement numbers is:\n// s = a + b\n// s is two's complement, so the result is the same as the sum of the two's complement numbers.\n// The"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nmodule signed_adder_output_overflow(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\n\n// The output s is the sum of a and b\n\nmodule signed_adder_output_s(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s\n); \n\n\n// The output overflow is the bitwise OR of the occurence of the signed overflow of a and b\n\nmodule signed_adder_output_overflow(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\n\n// The output overflow is the bitwise OR of the occurence of the signed overflow of a and b\n\nmodule signed_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n\nmodule signed_adder(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\n// The numbers a and b are added to the output s. \n// assign the occurence of the signed overflow of a and b to the output overflow.\n// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high\n// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low\n\n\n\nmodule signed_adder(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\n// The numbers a and b are added to the output s. \n// assign the occurence of the"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (slv_active) begin\n        s <= a + b;\n        if (s[7] == 1) begin\n            overflow <= 1;\n        end\n    end\nend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk) begin\n    if (clk) begin\n        s <= a + b;\n        if (a < 0 and b < 0 and s < 0) begin\n            overflow <= 1;\n        end else begin\n            overflow <= 0;\n        end\n    end\nend\n\n"
+    }
+  ],
+  "created": 1663520548,
+  "id": "cmpl-OIhdngjfabADa8GIrUPXeeb7pAhDY",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2295,
+    "prompt_tokens": 164,
+    "total_tokens": 2459
+  }
+}

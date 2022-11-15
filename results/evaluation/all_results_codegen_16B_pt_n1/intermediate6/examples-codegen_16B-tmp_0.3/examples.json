@@ -1,0 +1,31 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (we)\n        ram[addr] <= data;\n    q <= ram[addr];\n"
+    }
+  ],
+  "created": 1663533752,
+  "id": "cmpl-kS9L70NFh6rov9y5TIclkQR8p65Oy",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 35,
+    "prompt_tokens": 143,
+    "total_tokens": 178
+  }
+}

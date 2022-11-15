@@ -1,0 +1,11 @@
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    output[out_n] <= a[a_n] and b[b_n];
+
+endmodule

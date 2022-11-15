@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// Outputs the sum of inputs.\nfunction sum()\n{\n    var sum = a + b;\n    cout = sum;\n}\n\n// Outputs the carry-out of the half adder.\nfunction carryout()\n{\n    var sum = a + b + carryout;\n    cout = sum;\n}\n\n// Outputs the carry-out of the half adder, shifted by one.\nfunction carryout_shift()\n{\n    var sum = a + b + carryout_shift;\n    cout = sum;\n}\n\n// Outputs the carry-out of the half adder, shifted by two.\nfunction carryout_shift_2()\n{\n    var sum = a + b + carryout_shift_2;\n    cout = sum;\n}\n\n// Outputs the carry-out of the half adder, shifted by"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\noutput half_adder_out;\n\nfunction half_adder_func( a, b )\n    half_adder_out <= (a + b + a + b);\nend half_adder_func;\n\nend half_adder;\n\nmodule half_adder_mod(\ninput a, b,\noutput cout, sum, carry_out )\n\nhalf_adder_out <= (a + b + a + b + carry_out);\nend half_adder_mod;\n\nend half_adder_mod;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nalways@(posedge clk)\nbegin\n    sum <= (b + a) + carryout;\n    carryout <= (b + a) + sum[63];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds two bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b, c,\noutput cout, sum );\n\n// This is a half subtracter. A half subtracter subtracts two bits and produces a sum and carry-out.\nmodule half_subtracter( \ninput a, b,\noutput cout, sum );\n\n// This is a full subtracter. A full subtracter subtracts two bits and produces a sum and carry-out.\nmodule full_subtracter( \ninput a, b, c,\noutput cout, sum );\n\n// This is a bit shifter. A bit shifter shifts a bit to the right and produces a sum and carry-out.\nmodule bit_shifter( \ninput a, b,\noutput cout, sum );\n\n// This"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n(*output cout[0], output cout[1] =\n\nhalf_adder( a[0], b[0], cout[0], cout[1] ) \n\n, half_adder( a[1], b[0], cout[0], cout[1] ) \n\n, half_adder( a[0], b[1], cout[0], cout[1] ) \n\n, half_adder( a[1], b[1], cout[0], cout[1] ) \n\n);\n*/\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk)\n  sum <= a + b + carry_out;\n\nalways @(posedge clk)\n  cout <= sum[2];\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n// The half adder will carry out the sum of two bits.\nfunction half_adder_carry( a, b, cout );\n\n// The half adder will add two bits.\nfunction half_adder_sum( a, b, cout );\n\n// The half adder will return the sum.\nfunction half_adder_return( a, b, cout );\n\n// This is a full adder. A full adder adds a number of bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// The full adder will carry out the sum of two bits.\nfunction full_adder_carry( a, b, cout );\n\n// The full adder will add two bits.\nfunction full_adder_sum( a, b, cout );\n\n// The full adder will return the sum.\nfunction full"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\nvar cin, carry_out;\n\ncarry_out <= (a + b + carry_out);\n\n// This is a full adder. A full adder adds two bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b, \noutput cout, sum );\n\nvar cin, carry_out;\n\ncarry_out <= (a + b + carry_out);\n\n// This is a subtracter. A subtracter subtracts two bits and produces a sum and carry-out.\nmodule subtracter( \ninput a, b,\noutput cout, sum );\n\nvar cin, carry_out;\n\ncarry_out <= (a + b - carry_out);\n\n// This is a full subtracter. A full subtracter subtracts two bits and produces a sum and carry-out.\nmodule full_subtractor( "
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\nfunction half_adder_add( a, b, cout, sum ) {\n  if ( a == 0 ) {\n    cout = b;\n    sum = b;\n  }\n  else if ( b == 0 ) {\n    cout = a;\n    sum = a;\n  }\n  else {\n    sum = (a + b) & 0x7;\n    cout = (a + b) >> 3;\n  }\n}\n\nfunction half_adder_carry( a, b, cout, sum ) {\n  if ( (a + b) >> 3 == 0 ) {\n    cout = 0;\n    sum = 0;\n  }\n}\n\nfunction half_adder_sum( a, b ) {\n  return (a + b) & 0x7;\n}\n\nfunction half_adder_carry_sum( a, b )"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\n\talways_comb\n\t\tcout <= sum + a + b;\n\t\tsum <= a + b + carry_out;\n\t\tcarry_out <= b;\n"
+    }
+  ],
+  "created": 1663520005,
+  "id": "cmpl-xTElgGtemrqbCzQFJceTVIvHLV0fy",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1370,
+    "prompt_tokens": 43,
+    "total_tokens": 1413
+  }
+}

@@ -1,0 +1,96 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+#(define buffer_width 32)
+#(define buffer_height 32)
+
+input [ buffer_width-1:0 ] in_a, in_b;
+input [buffer_height-1:0] in_cout;
+output [buffer_width-1:0] out_cout;
+output [buffer_height-1:0] out_sum;
+
+always @(posedge clk) begin
+    if (rst) begin
+        out_cout <= 0;
+        out_sum <= 0;
+    end else begin
+        in_a <= in_a_prev;
+        in_b <= in_b_prev;
+        out_cout <= in_cout;
+        out_sum <= in_sum;
+        in_a_prev <= in_a;
+        in_b_prev <= in_b;
+        in
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+        
+wire carry_in, carry_out, sum_out;
+
+input [7:0] a, b;
+
+reg [2:0] temp;
+
+always @( posedge a or posedge b ) begin
+    if ( a or b ) begin
+        temp = a;
+        a = b;
+        b = temp;
+    end else begin
+        sum_out = 0;
+        carry_out = 0;
+    end
+end
+
+always @( posedge a or posedge b ) begin
+    if ( a ) begin
+        cout = temp + 1;
+        temp = b;
+        carry_in = carry_out;
+        carry_out = a;
+    end else begin
+        cout = temp + 1;
+        temp = a;
+        carry_in = carry_out;
+        carry_out = b;
+    end
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+        
+// The core of the half adder.
+module core(
+input a, b,
+output sum);
+
+// The output latch.
+module latch(
+input a, b, sum,
+output out);
+
+reg a, b;
+wire cout, sum;
+
+core( a, b, sum )
+    sum = a + b;
+    
+latch( a, b, sum, cout )
+    if (a or b or sum)
+        cout = 1;
+    else
+        cout = 0;
+
+half_adder( a, b, cout, sum )
+    sum = a + b;
+    
+
+================================================================

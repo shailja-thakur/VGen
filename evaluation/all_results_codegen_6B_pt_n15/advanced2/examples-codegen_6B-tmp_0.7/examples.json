@@ -1,0 +1,114 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (reset)\n    q <= 0;\n  else if (slowena)\n    q <= 1;\n  else\n    q <= 0;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge slowena)\nif (slowena) begin\n    if (reset) begin\n        q <= 0;\n    end\n    else if (q <= 9) begin\n        q <= q + 1;\n    end\nend\n\n// On the negative edge of the clock:\n// if the ena input is high, reset the output q to 0.\n// Otherwise, if q is 9, set q to 10, and if q is not 9, decrement q by 1.\nalways @(negedge clk or negedge slowena)\nif (slowena) begin\n    if (slowena) begin\n        q <= 0;\n    end\n    else if (q <= 9) begin\n        q <= 10;\n    end\nend\n\n// On the positive edge of the clock:\n// if q is 9, set q to 0, otherwise"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge slowena)\n  q <= (reset ? 0 : reg[3] ? reg[2] ? reg[1] ? 1 : 2 : 3);\n\n// On the negative edge of the clock:\n// If slowena is high, then the output q should be incremented by one.\n// Otherwise, if q is not the maximum, increment q by 1.\nalways @(negedge slowena or negedge clk)\n  if (slowena) q++;\n  else if (reg[3] && q < 9) q++;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset != 1) begin\n        q <= 0;\n    end else begin\n        if (slowena != 1) begin \n            if (q != 9) begin\n                q <= q + 1;\n            end else begin\n                q <= 0;\n            end\n        end\n    end\nend\n\nmodule count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// On the positive edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\nalways @(posedge clk) begin\n    if (reset != 1) begin\n        q <= 0;\n    end else begin\n        if (slowena != 1"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "behavior count_slow_mcu(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// On the positive edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\nbehavior count_slow_block(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// The counter counts from 0 through 9, inclusive.\n// The counter resets on the negative edge of the clock.\nbehavior count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// The counter counts from 0 through 9, inclusive.\n// The counter resets"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "// If slowena is high, also increment the output q by 10 (bypassing the counter).\n\nalways @(posedge clk or negedge slowena)\n    if (slowena == 1)\n        q[1] <= q[0];\n    else if (slowena == 0)\n        if (q[0] != 9)\n            q[1] <= q[0] + 1;\n\n// On the negative edge of the clock:\n// if slowena is high, decrement the output q by 10 (bypassing the counter).\n// Otherwise, only decrement the output q if the reset input is high and q is not 0.\n\nalways @(negedge clk or (slowena == 1))\n    if (slowena == 1)\n        q[0] <= q[1] - 10;\n    else if (reset == 1)\n        q["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset <= 0) begin\n    q <= 0;\n    end\n    else if (!slowena && q < 9) begin\n    q <= q + 1;\n    end\nend\n\n// On the negative edge of the clock:\n// if the reset input is low, reset the output q to 0.\n// Otherwise, only decrement the output q if the ena input is low and q > 0.\nalways @(negedge clk) begin\n    if (slowena && q > 0) begin\n    q <= q - 1;\n    end\n    else if (!slowena && q > 0) begin\n    q <= 0;\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "// On the negative edge of the clock:\n// if ena is high, then set q = 0. \n// Otherwise, decrement q if q is not 0.\n\nalways @(posedge clk)\nbegin\n    if (reset) begin\n        q <= 0;\n    end\n    else if (slowena == 1 && q != 9) begin\n        q <= 1;\n    end\n    else if (slowena == 0 && q != 0) begin\n        q <= -1;\n    end\nend\n\n// Create a module to count a number in a decade from 0 through 99, inclusive.\n\nmodule count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// On the positive edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\t\tif (reset) begin\n\t\t\tq <= 0;\n\t\tend\n\t\telse if (slowena) begin\n\t\t\tif (q < 9) begin\n\t\t\t\tq <= q + 1;\n\t\t\tend\n\t\tend\n\tend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        q = 0;\n    else if (slowena && q < 9)\n        q++;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "entity slow_decade_counter0 = make_decade_counter(\n    clk, slowena, reset, q[0], slow_decade_counter0_slowena, slow_decade_counter0_reset);\n\n// On the negative edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only decrement the output q if the ena input is high and q is not 0.\nentity slow_decade_counter1 = make_decade_counter(\n    clk, slowena, reset, q[1], slow_decade_counter1_slowena, slow_decade_counter1_reset);\n\n// On the positive edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 8."
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n    if (slowena && reset) q <= 0;\n    else if (slowena && !(slowena && q == 9)) q <= q + 1;\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always clk_rising.next = clk;\nalways clk_rising.posedge =\n    slowena && !reset;\nalways clk_rising.falling = !slowena && !reset;\nalways clk_rising.falling = !slowena && !reset && q == 9;\n\nreg [3:0] q = 0;\n\nalways @(posedge clk) {\n  if (slowena) q = q + 1;\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge slowena)\n  if (reset) q <= 0;\n  else if (slowena)\n    if (q < 9) q <= q + 1;\n// The counter is reset to zero on the negative edge of the clock.\n// See Programming the PIC for details of the negative edge / reset.\n  else if (slowena) q <= 0;\n\nreg [3:0] count;\n\nalways @(posedge clk or negedge slowena)\n  count <= count_slow(slowena, reset, q);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge slowena)\nif (slowena == 1) begin\n    if (reset == 1) q[0] = 0;\n    else if (q[0] < 9) q[0] += 1;\nend\n\n// On the negative edge of the clock:\n// if ena is high, increment the output q.\n// Otherwise, only decrement the output q if q is not 0.\nalways @(negedge clk or negedge slowena)\nif (slowena == 1) begin\n    if (slowena == 1) q[0] += 1;\n    else if (q[0] > 0) q[0] -= 1;\nend\n\n"
+    }
+  ],
+  "created": 1663520171,
+  "id": "cmpl-G9bELVus0GO54wl2S52I155d7iX4q",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2110,
+    "prompt_tokens": 98,
+    "total_tokens": 2208
+  }
+}

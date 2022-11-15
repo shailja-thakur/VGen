@@ -1,0 +1,142 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// left shift and rotate the register out by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [7:0] temp;\nalways@(posedge clk or posedge reset)\nbegin\nif(reset)\nout<=0;\nelse if(load)\nout<=data;\nelse \nbegin\n\ttemp<=data;\n\tif(amount!=0)\n\tbegin\n\tcase(amount)\n\t3'b000:\n\tbegin\n\tout<=temp;\n\tend\n\t3'b001:\n\tbegin\n\tout[7:1]<=temp[6:0];\n\tout[0]<=temp[7];\n\tend\n\t3'b010:\n\tbegin\n\tout[7:2]<=temp[6:0];\n\tout[1:0]<=temp[7:3];\n\tend\n\t3'b011:\n\tbegin\n\tout[7:3]"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always@(posedge clk)\n\tbegin\n\tif(reset)\n\tbegin\n\tout=0;\n\tend\n\telse\n\tbegin\n\tif(load)\n\tbegin\n\t out = data; \n\tend\n\telse\n\tbegin\n\tfor(i=0;i<amount;i=i+1)\n\tbegin // This can be done with some combinational logic...\n\tout={out[6:0],out[7]};\n\tend\n\tend\n\tend\n\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\nif(load)\n\tout <= data;\nelse if(reset)\n\tout <= 8'd0;\nelse if(amount > 0)\n\tout <= {out[6:0],out[7]};\n\tout[7] <= out[0];\nelse\n\tout <= {out[0],out[7:1]};\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n\tif (reset) begin\n\t// we use instead of initial statements\n\t// initial begin\n\t// \tout = 8'b0;\n\t// end\n\t// load it now to save time\n\tout <= data;\n\t// do the left shift and rotation\n\t// https://www.geeksforgeeks.org/rotate-shift-register-logic/\n\t// for rotation\n\t// depending on whether left shift or right shift,\n\t// has to switch 1s or 0s on amount\n\tif (load) begin\n\t// then just load the data in\n\t// note it is loaded to out as well\n\tout = data;\n\tend\n\t// below the left shift or right shift\n\t// set the data as indicated\n\t// whether amount is 3 or 4 while rotating\n\telse if(amount=="
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset == 1'b0) begin\n\t// make reset active high to rotate the output...\n\t// seems odd, but it's what the lab wants\n\tend\n\telse if (load == 1'b1) begin\n\t// disable the element in the shift register at the end\n\t// when load is high the output becomes the new input with itself as the\n\t// output on the next cycle\n\t// this is the correct carry through value for shifting\n\tend\n\telse if (clk == 1'b1)begin\n\t// rotate the value\n\t/*reg [8-amount:0] temp;\n\ttemp[amount*9-1:0] = out[0][7:4]\n\t0000000000000000000000001101\n\ttemp[8-amount:0] = out[0][3:0]\n\t0011111101"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always@(posedge clk, negedge reset)\nbegin\t\ncase(load)\n1'b0:if(reset==1'b1)begin out={1'b0,{6{1'b0}}}; end\n1'b1:begin\nout={data,data[7:1]};\nif(amount==3'b000)begin out={out[6:0],1'b0};end\nelse if(amount==3'b001)begin out={out[14:7],1'b0};end\nelse if(amount==3'b010)begin out={out[14:0],out[7:1]};end\nelse if(amount==3'b011)begin out={out[20:15],out[7:1]};end\nelse if(amount==3'b100)begin out={out[7:0],"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "parameter [3:0] S0 = 4'd0,S1 = 4'd1,S2 = 4'd2,S3 = 4'd3,S4 = 4'd4;\n\nreg [7:0] shift_reg;\nreg [2:0] rot_reg;\nreg [2:0] rot_tmp;\nreg [3:0] state;\n\ninitial\nbegin\n\tshift_reg <= 0;\n\trot_reg <= 0;\n\trot_tmp <= 0;\nend\nassign angle1_in = amount-1;\nassign angle2_in = amount-1;\nassign degree1_in = amount;\nassign degree2_in = amount;\nalways @(posedge clk or posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tshift_reg\t<= 0;\n\tend\n\telse"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\nif (reset)\n\tout <= 8'b0;\nelse if (load)\n\tout <= data;\nelse begin\n\tout[7:0] <= data[7:amount];\n\tout[32-(amount):8] <= data[7:0];\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin\nif(reset) out <= 8'x00000000; // reset condition statement\nelse if(load == 1) out <= data ; // when high - load data to gate output\nelse begin // Otherwise condition (clock edge)\ncase(amount)\n3'o04: out <= {data[7],data[7:1]};\n3'o05: out <= {data[6],data[7],data[7:2]};\n3'o06: out <= {data[5],data[7],data[7:2]};\n3'o07: out <= {data[4],data[7],data[7:2]};\n3'o08: out <= {data[3],data[7],data[7:2]};\n3'o09: out <= {data[2],data[7],data"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)begin\n\tif (reset) begin\n//\tif reset is high, all is reset to zero\n// if the reset is high that'll mean the function is being called\n// first, so there's no need to load out with the next input\n\tout = 8'b0;\n\tend\n\telse begin\n\tcase (load)\n\t1'b0: out = data; // out is loaded at the start of the circuit (what's in data?)\n\t1'b1: out = out << amount; // the other case\n\tendcase\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "// when shift or rotate value is one, the function creates a 1 bit\n// when rotate is 0, the shift is simply logical operation\nalways @( posedge clk, \n\treset, \n\tload, \n\tamount, \n\tdata ) \n\tbegin \n\tif ( reset )\n\tout <= { 1'b1,8'b0 };\n\telse if ( load )\t\n\tout <= data;\n\telse if ( amount !=0 ) \n\tbegin\n\tif ( amount == 1 )\n\tout <= out << 1;\n\telse out <= out << ( amount - 1 )\n//case statement can also be used to manually control output with case\n// always case(load) //Pick condition to case\n// [7:0]out; \n// default //append all instructions defaut takes default value 0 \n\tendcase\n\tend //end of anlay"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin\nif(reset)\nout = 0;\nelse\nbegin\nif(load)\nout = data;\nelse\nout = out << amount;\nout = out >> amount;\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @ (posedge clk )\nbegin\n// implement as always block\nif (reset | load)\nout = 8'b0;\nelse if (amount == 3'b 111)\ncase (amount)\n3'b000 : begin out = data; end\n3'b001: begin out = {data[4],data[7],data[2],data[3]}; end\n3'b010: begin out = {data[5],data[7],data[3],data[4]}; end\n3'b011: begin out = {data[6],data[7],data[4],data[5]}; end\n3'b100: begin out = {data[7],data[7],data[5],data[6]}; end\n3'b101: begin out = {data[0],data[7],data[6],data[7]}; end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "always@(posedge clk,posedge reset)\nif(reset)\nbegin\nmem<=0;\nout <=0;\nend\nelse if(load)\nbegin\nout <=data;\nend\nelse\nbegin\nmem[4'b0000] <= data[0];\nmem[4'b0001] <= data[1];\nmem[4'b0010] <= data[2];\nmem[4'b0011] <= data[3];\nmem[4'b0100] <= data[4];\nmem[4'b0101] <= data[5];\nmem[4'b0110] <= data[6];\nmem[4'b0111] <= data[7];\nend\nalways@(*)\nif(amount<=3'b111)\nbegin\nout = mem[4'b0000] + mem[4'b0001]*(8"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\n begin\nout <= 1;\n end\nelse if (load)\nbegin\nout <= data;\nend\nelse\nbegin\nout <= {out[6:0],out[7] << amount};\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset) \n\tbegin\n\tif(reset)\n\tout<=8'b0;\n\telse if(load)\n\tout <= data;\n\telse\n\tout <= {out[6:0], out[7] ^ out[0] ^ (^amount)};\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\nif(reset)\n out <= 8'b0;\nelse begin\nif(load)\n out <= data;\nelse \n begin\n case(amount)\n // rotate right by one bit \n 3'b000: out <= out;\n // rotate right by two bits\n 3'b001: out <= {out[6:0],out[7]};\n // ... add more cases here\n default: out <= out;\n endcase\n end\n end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin: left_rotate\nif (reset) begin\n\t// when reset is high, set all bits to zero\n\tout = 8'h00;\n\tend\n\telse\n\tbegin\n\tif (load)\n\t// value is input to data\n\tbegin\n\tout = data;\n\t// left shift out by amount bits\n\tout = out << amount; \n\tend \n\telse begin\n\t// keeping bits from left shift\n\tout = out << amount;\n\t// rotating from the right\n\tout = out >> amount;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (reset)\nbegin\nout[7:0] <= data[7:0];\nend\nelse\nbegin\nif(load)\nbegin\nout[7:0] <= data[7:0];\nend\nelse\nbegin\ncase (amount)\n3'b000: out[7:0] = {data[6:0],data[7]};\n3'b001: out[7:0] = {data[4:0],data[7:1]};\n3'b010: out[7:0] = {data[3:0],data[7:2]};\n3'b100: out[7:0] = {data[2:0],data[7:3],data[7]};\n3'b101: out[7:0] = {data[1:0],data"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif(reset) out <= 8'b0;\n\telse begin\n\tif(load) begin out[7:0]<=data[7:0];\n\tend\n\t// do the left rotation\n\telse begin\n\tcase(amount)\t\n\t3'b000 : out <= out;\n\t3'b001 : out <= {out[0],out[7:1]};\n\t3'b010 : out <= {out[1:0],out[7:2]};\n\t3'b011 : out <= {out[2:0],out[7:3]};\n\t3'b100 : out <= {out[3:0],out[7:4]};\n\t3'b101 : out <= {out[4:0],out[7:5]};\n\t3"
+    }
+  ],
+  "created": 1663334926,
+  "id": "cmpl-RAejT3A7kH38dm2iNuNLKzvIu84WK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3105,
+    "prompt_tokens": 89,
+    "total_tokens": 3194
+  }
+}

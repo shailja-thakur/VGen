@@ -1,0 +1,33 @@
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// if a or b is high, state changes to SIAB if a is LOW or SIA is HIGH.\n// if a or b is NOT high, state changes to IDLE.\nalways @(cur_state or a or b) begin\n\tcur_state = next_state;\nend\n// State machine. Procedural assignment Has the following form:\n// next_state = cur_state;\n// The line below is a continuous assignment that generates a combinational circuit.\n// output_z = cur_state == SAB ? 1 : (cur_state == SIA) ? 0 : (cur_state == IDLE) ? 1 : 0;\n// It also has select lines that makes it into a Shift register.\n// The shift register is used to generate the z output.\n// It should be noted that cur_state and next_state are NOT LATCHED.\n// It is assumed that any output is"
+    }
+  ],
+  "created": 1663599964,
+  "id": "cmpl-XC5u6IYt3oMiJB4TqR7oCk2LHDY8c",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 123,
+    "total_tokens": 323
+  }
+}

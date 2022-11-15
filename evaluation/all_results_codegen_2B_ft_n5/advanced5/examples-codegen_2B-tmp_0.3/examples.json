@@ -1,0 +1,57 @@
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA\n// if input a is low and input b is high, state changes to SB\nalways @(posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif (a == 1'b1)\nnext_state <= SA;\nelse if (b == 1'b1)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif (a == 1'b1)\nnext_state <= SA;\nelse\nnext_state <= SAB;\nend\nSB:\nbegin\nif (b == 1'b1)\nnext_state <= SB;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// if input a is high and b is low, state changes to SA.\n// if input a is low and b is high, state changes to SB.\nalways @(posedge clk)\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways @(*)\ncase (cur_state)\nIDLE:\nif (a)\nnext_state <= SA;\nelse if (b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nSA:\nif (a)\nnext_state <= SA;\nelse\nnext_state <= SAB;\nSB:\nif (b)\nnext_state <= SB;\nelse\nnext_state <= SAB;\nSAB:\nnext_state <= SAB;\ndefault:\nnext_state <= IDLE;\nendcase\nassign z = (cur"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA. \n// if input a is low and input b is high, state changes to SB. \nalways @(posedge clk)\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways @(*)\nbegin\ncase(cur_state)\nIDLE:\nif (a)\nnext_state <= SA;\nelse if (b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nSA:\nif (a)\nnext_state <= SA;\nelse\nnext_state <= SAB;\nSB:\nif (b)\nnext_state <= SB;\nelse\nnext_state <= SAB;\nSAB:\nnext_state <= SAB;\ndefault:\nnext_state <= IDLE;\nendcase\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to IDLE.\n// if input a is high and input b is low, state changes to SA.\n// if input a is low and input b is high, state changes to SB.\nalways @(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a)\nnext_state <= SA;\nelse if(b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif(a)\nnext_state <= SA;\nelse\nnext_state <= IDLE;\nend\nSB:\nbegin\nif(b)\nnext_state <= SB;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA. \n// if input a is low and input b is high, state changes to SB. \nalways @(posedge clk, posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE: begin\nif(a)\nnext_state <= SA;\nelse if(b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSA: begin\nif(a)\nnext_state <= SA;\nelse\nnext_state <= SAB;\nend\nSB: begin\nif(b)\nnext_state <= SB;\nelse\nnext_state <= SAB;\nend\nSAB"
+    }
+  ],
+  "created": 1663606731,
+  "id": "cmpl-Iw5tdLzf32mzFlINtVNrlwhooBElc",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 123,
+    "total_tokens": 1123
+  }
+}

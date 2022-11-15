@@ -1,0 +1,41 @@
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@(posedge clk, negedge reset)\n    if(!reset)\n        q <= 0;\n    else if(q == 13)\n        q <= 1;\n    else\n        q <= 0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\n\tif(reset)\n\t\tq <= 0;\n\telse\n\t\tq <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\n\tif(reset)\n\t\tq <= 0;\n\telse\n\t\tq <= q + 1;\nend\n\n"
+    }
+  ],
+  "created": 1663299211,
+  "id": "cmpl-M4toxE96Djcxpcc7mlYCStL9jaz42",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 167,
+    "prompt_tokens": 88,
+    "total_tokens": 255
+  }
+}

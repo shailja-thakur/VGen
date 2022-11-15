@@ -1,0 +1,114 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "initial begin\n    $display(q);\n    clr_watched_memory(q);\nend\n\n// If the slowena input is high, make a slow toggle.\n// From here on, slowena is high and once the slow toggles are reset then slowena is 0.\n// If the clk trigger is available then slowwnard is driven high for the duration of the slow brown pill.\ninitial begin\n    $display(...);\n    $display(slowena);      // print \"slow enabled\"\n    if ((slowena = slowena and slow_brown) = slow_brown) then begin\n        slow_brown = 1;      // slow brown pill is enabled\n        if (clk < 20 ns)    // when clk is fast\n            slowwnard = 1;      // fast brown pill is enabled too\n        else\n        begin\n            slow_brown = 0;    // slow brown"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge q) begin\n    if (reset or posedge q)\n        q = NOT q;  // start a decade is easy when starting in 00\n    else if (ena and q < 9)\n        q++;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    q[els-1] = (slowena==1?0:q[els-1]+1);\n    if (reset==1)\n        q = {0,0,0};\nend\n// Input from low to high:\n// Update the output q if the low inputs are all equal.\nalways @(slowena==1 and\n       slowqpp==slowqpl and\n       slowqp1==slowqpl and\n       slowqp11==slowqpl) begin\n      q[els-1] = q[els-1-3];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(rxclk)\nbegin\n    // The function flip_slow() below is called inside the @(...) block in the if below.\n    // The @(...) block is a separate assembly block if very slow.\n    // Code for testing this block must precede code for profiling or predicting the\n    // slow path. This is achieved by \"OR slowena, clk\" in flip_slow().\n    if (slowena) {\n        // Only increment p if the ena input is high and the clock is not the terminal value.\n        // This is only necessary because the chips are size_t based, not boolean.\n        reg p = (clk ? -1 : (slowena & (q<9)) ? ++q : 0);\n        signal clk_active;\n        // This instruction is about 3 instructions/cycle.\n        // Assumption is that clock is very slow; then it"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    void cycler_handler(\n        output reg [3:0] q,     // The output, Q-bus.  Incremented on the clock (qclusive OR is applied).\n        input rslt,         // High when the quarter-composite last digit (5d) of the previous cycle has changed.\n        input slowena,      // Whether to slowen the zero drop-out of the counter.  True to slowen on the high.\n        input rst);         // Whether to reset the counter.  True to reset on the low (a breaker towards zero).\n\n// During the phantom push of digit zero, we add 1 to the output q, and\n// feed back the counter over the slowena on the reset rising edge.\nalways @(~clkne    // clock ne\n       posedge [5:0] q\n       / rstne     "
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nwire isn_high;\n\nalways @(posedge clk)\n    if (reset)\n        q = 0;\n    else if (slowena)\n        q<=9;\n    else \n        q<=qi;\n    \n// Operating on the positive edge of the slowena input:\n// Test if the slowena input is high and q is not 9.\n// The slowenabit should be 1 at q, 4, or 5. In the event of a transistrant value, \n// adjust the slowenabit to match the value on the fastest edge.\n// http://www.openocd.org/docs/4.4/catalogs/fig1616-2.html\n// Some include a HOLDP in the divider and in the dataport does that.\n// A QAN is implemented in this catalognum, as a base class.\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "signal enc;\n\nalways @always clk <= clk + 1;\nalways @always enc <= (slowena) ? q + 1 : q;\n\nalways @always reset = ~slowena & (slowena | ~clk);\nenable @{clk} <= slowena & slowena;\n\n\n// On the sampling clock:\n// Clear the encoder result registers next cycle.\nalways @{q} <= q & q[e5: e4];\nalways @{q} <= q & q[e2: e1];\nalways @{q} <= q & q[e0: e1];\n\n// At the sampling clock, increment the number counter by enc and cc.\nif (slowena)\n  queue #(2'000'000, 5, 2) q_output;\n\n  if (@{clk} && @{enca} && @{res1} &&"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(*)\nvoid ram_counter_gen_slow(\n    clk             clk_i,\n    slowena         slowain, \n    reset           rst_i, \n    output reg [3:0] q_o)\n{\n  if (rst_i(0)) { reset_reg = 1; }\n  else {\n    if (slowena(0)) {\n    \treset_reg = 0; \n    \tq_o(4) = 9;\n    \tif (clk_i(clk)) { sum_clock_slow((q_o(2) + 1) & 3ul, q_o(3)); }\n    }\n  }\n}\n\n// On the positive edge of the clock:\n// increment the output q when the ena input becomes high, and set the output q to 0 if the clock goes high again"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if ($reset neq 0) q[9] <= 0;  // That is, when reset is active and ena is low, output q should be reset.\n\n    if (slowena != 1) {\n        if ($rafneq == 1 && $en >= 1) q[9]++; // $en and slow clk disable sync\n        if ($upmwdneq == 1 && $upmwd_count < 30) q[9]++; // Clip never decreases\n        if ($upmwd_limit_clrneq == 1) q[9]++; // Ignore CLR if low sensitivity of on-time decision\n        if ($upm0 == 1 && $t < 1968) q[9]++; // Ignore a real signal mid24h start time\n    }\n\n// On the negative edge of the clock:\n    if ($rafneq =="
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "// Note: the logic is inverted for `slowena` relative 0.\ninitial begin\n    wreg q;\n    enable_global_reset ? rd_en : rd_sil;\n        if(!reset) I_EN && rd_enaw && rd_en != rd_enaw && en_write ? ena : release (no_en_n ? en_fl : en_write) en_write;\n        Q ? q = q + '1';\n        clk ? rq_write : release(ror(no_clk || rq_write) ? clk ? clk : Q : Q);\nend\n\n// On the negative edge of the clock:\n// decrement the output q, if the ena input is high and q is not 9.\n// if reset is low, reset the output q to 9 and full reset the clock signal, otherwise, reset"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "sc_time on_q = count_slow //neg clock\n  (   clk,\n     slowena,\n     1'b0,\n     q[3:0] ? q[0] : _r    \n  );\n\n// on the overflow is the 1'b0 signal is changed not to determine whether\n// or not q takes the overflow value instead. if slowena is high, the \n// q is changed in cd62 to 9 if q and slowena do not lead to overflow.\nsc_time on_ovf = count_slow\n  (   clk,\n     slowena,\n     0'b1,\n     q == 0'b1 or q == 0'b9\n  );\n\n// on the slow >= the divider\nsc_time on_slow = count_slow\n  (   clk,\n     slowena,\n     1'b0,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "// Note: This system runs much faster if CSEIZE is enabled.\nalways @(posedge clk,\n       slowena & reset)\n  count.write(slowena ? ((--q) < 9) : q.read());\n\n// On the negative edge of the clock:\n// if the ena input is high, increment the output q9.\nalways @(clk,reset)\n  count.write(slowena);\t\t\t\t   //Call when slowena is high!\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(slowena) begin\n    if (reset && !q[POS])\n        q[POS] = 0;\n    else if (ena && q[NEG] != 9)\n        q[POS] = q[NEG] + 1;\nend\n\n// On the negated edge of the clock:\n// increment the output q if the ena input is high.\nalways_comb @(clk, slowena, reset)\n    if (ena)\n        q[POS] = q[NEG] + 1;\nend\n);\n\nclock clk, slowena, reset, q [3:0];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(clk, slowena, reset) begin\n    if(slowena =='0')\n        q = '0';\n    else if((clk and slowena) or reset)\n        if((slowena and binary) and q < 9)\n            q = q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(*input=slowena, clk=slowEN)\nbegin : main\n    if (slowena&&reset) then\n        q<3:0> = 0;\n    else if (slowena && q<1:0> == 9) then;\n        q<3:0> = 9;\n    end else\nend\n\n\n#snippet(07_agilent_oddeven_counter)\nsnippet(08)\n@always @(clk=slowEN, selA==selB,selC,selD)\n$hex({0x10    |selA==0| clockA||slowena, \\\n      0xc0    |selB==1| clockB||slowena, \\\n\t  0xe0    |selC==2| clockC||slowena, \\\n\t  0x110    |selD==3|"
+    }
+  ],
+  "created": 1663537467,
+  "id": "cmpl-6xBq54ZVlrMKGXOy72s4TQxnHZWxp",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2526,
+    "prompt_tokens": 98,
+    "total_tokens": 2624
+  }
+}

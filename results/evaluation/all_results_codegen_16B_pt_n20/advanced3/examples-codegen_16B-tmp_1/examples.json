@@ -1,0 +1,149 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge reset) begin\nif(reset == 1) begin\n           present_state = 0; \n           next_state = 0; \nend\n\nalways @(posedge clk) begin\nif (present_state == IDLE) begin\n        if (x == 1) begin\n                if (present_state != next_state) begin\n                       present_state <= next_state; \n                end\n        end\n        else end\nelse begin\n        if (present_state == S1 || present_state == S10) begin\n                if (x == 0) begin\n                       next_state = S1; \n                end\n                else begin\n                       next_state = S10; \n                end\n        else begin\n           if (present_state == S101) begin\n                if (x == 1) begin\n                       next_state = S101; \n                "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin\n\tif(reset and present_state==IDLE) begin\n\t\tpresent_state = IDLE;\n\tend\n\telse begin\n\t\tpresent_state <= next_state;\n\t\tnext_state := IDLE;                \n    \tif(present_state == S1) begin\n    \t    next_state := S10;\n    \tend \n    \telse if(present_state == S10 && x==1) begin\n    \t    next_state := S101;\n    \tend\n    \telse if(present_state == S10 && x==0) begin\n    \t    next_state := S1;\n    \tend\n    \telse if(present_state == S101 && x==1) begin\n    \t    next_state := IDLE;\n    \tend\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways #(0) begin: FSM_prst \n  if (reset == 1) begin\n     present_state <= IDLE;  // capture reset, initial state\n     next_state <= IDLE;\n  end else if (x == 1) begin\n     present_state <= S1;  // capture positive edge\n     if (rising_edge(clk)) present_stateNext <= S10;\n  end else if (x == 0) begin\n     present_stateNext <= IDLE;\n  end else begin\n    present_stateNext <= S1;\n  end\n\n  z <= present_state;\nend  // end FSM_prst\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\n\n\n\n\n\n\n\nalways @(posedge clk or negedge reset) begin \nif (reset) begin \npresent_state <= IDLE; \nelse begin\npresent_state <- integer(~x); \nnext_state <- present_state;\nend\nend \n\n\n\n//u_next_state <= next_state;\n//assert next_state & u_present_state == 1;\n\nalways @(posedge clk) begin \nif (present_state == S101) {\nz <= 1;\n} else {\nz <= 0;\n}\nend\n\n\n\n\nalways @(posedge clk or negedge reset) begin \nif (reset) begin \npresent_state <= IDLE; \nend else if ((present_state == IDLE) && x) begin \npresent_state <= S1; \nend else if ((present"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nevent rset;\nevent clk'event();\nevent e;\nreg e;\n\n\ninitial begin\n    present_state = IDLE;\n    next_state = IDLE;\n     e <= (clk or ~rset);\nend\n\n\nalways begin\n  //initialization\n private event rset, clk'event();\n private reg rset, clk;\n process(rset or clk)\n begin\n \tcase(present_state)\n \t\tIDLE ->\n\t\t       []S1 ->\n\t\t\tpresent_state <= S1;\n\t\t       [S1]S10 ->\n       \t\t      []S101-> present_state <= S101\n\t\t              [S1]S10-> null \n\t\t\tpresent_state <= S10;\n       \t\t      [S10]S101 -> null\n\t\t\tpresent_state <= S101;\n       \t\t      else -> L"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways begin\n// perform startup operation\npresent_state <= S1;\n\n// carry-rippling calculation for encoder input, assuming only -0.5 .. 0.5 values\n// if x is more than 0.5 (clip, overdrive) make sure you use the repeat register to express new values \n// if x is less than -0.5 (discordance or underdrive) incorporate -0.5 into true/false at the end \n// (remember x - 0.5) was taken earlier to prepare input, no long lost in tmp_x\n// (x_pre, x_tmp) are the same amount of distance apart unless the bigX is enabled, then x_tmp is farther out by 1/2\n// because of this pre-truncation/post-truncation, original clip values mean post-clip values; i.e. missing .5 = .75,\n// and"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @* rst0\n  begin\n    rst0 <= !reset;\n    present_state <= IDLE;\n    next_state <= IDLE;\n    z <= 0;\n  end\n\n\nalways @(posedge clk)\n  begin\n    present_state <= next_state - 1;\n    next_state <= IDLE;\n  end\n\nalways @(posedge clk)\n  begin\n    if !rst0 and x\n      begin   // RS being asserted\n        next_state <= S1;  // Switching to first state\n      end     // RS being assert  \n    else   \n      begin   // CS being de-asserted\n        if rst0 and present_state == S101\n          begin\n            next_state <= IDLE;\n          end // Switching to Idle Check ;for next reg_cycle\n        else if present_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @* rst_u => {\n\tnext_state = IDLE;\n\tpresent_state = IDLE;\n\t\telse if (x == 1) then\n\t\tnext_state = S1;\n\t\telse if (x == 0) then\n\t\tnext_state = S10;\n\tend\n}\t\n\nalways @(posedge clk) {\n\tif (reset == 1)\n\t{\n\t\tpresent_state <= IDLE;\n\t\tnext_state <= IDLE;\n\t}\n\telse\n\t{\n\t\tif (PRESENT_STATE == IDLE)\n\t\t{\n\t\t\tif (x == 1)\n\t\t\t{\n\t\t\t\tpresent_state <= S1;\n\t\t\t\tnext_state <= IDLE;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tpresent_state <= IDLE;\n\t\t\t\tnext_state <= IDLE;\n\t\t\t}\n\t\t}"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "  always begin\n    present_state <= IDLE;\n    next_state <= IDLE;\n  end\n  \n  always #(0) begin\n    next_state <= S1 ;\n    if (IDLE || S10) begin\n      next_state <= IDLE;\n    end \n    else if (x) begin\n      next_state <= S10;\n    end  \n    else begin\n      next_state <= IDLE;\n    end\n  end \n  \n  always #(0) begin\n    z <= present_state;\n  end\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge c1, posedge clk, posedge rst ) begin \nif reset = 0\nnext_state <= IDLE;\nelse\nnext_state = IDLE;\nonly begin\n  if present_state = IDLE && c1) begin\n    if x = 0\n    next_state <= S1;\n    elif x = 1\n    next_state <= S10;\n    end\n    else begin\n      next_state <= IDLE;\n    end\n  end\nend\nend\n\nassert [present_state] @ '20;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\ninput reset; \ninput clk; \ninput x;\noutput z; \n\nbegin\n  // state registers\n  reg [1:0] present_state, next_state; \n  // connections\n  present_state <= present_state; \n  next_state <= present_state;\n  \n  assign present_state = S101; \n  assign next_state = S1; \n  next_state <= present_state;\n  assign present_state = S10; \n  assign next_state = S101; \n\n  always @(posedge clk or posedge reset)\n  begin\n    present_state <= next_state;\n  end\n  assign z = present_state == [3'b101];\n  always @(posedge clk or posedge reset) begin\n  begin\n    present_state <="
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n   if (reset) begin\n      present_state <= IDLE;\n   end\n\n   // if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE\n   if (present_state == IDLE)\n   next_state <= ( x == 1) ? S1 : IDLE;\n   end \n\n   // if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at S1\n   if (present_state == S1)\n       next_state <= ( x == 0) ? S1 : IDLE;\n   end \n\n   // if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at S10\n   if (present_state == S10)\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) begin\nif(reset == 1) begin\npresent_state <= IDLE;\nnext_state <= IDLE;\nend \nelse begin\nif(present_state > IDLE) begin\n// receiving 101 has precedence on present_state switching, so it stays in IDLE\nnext_state <= IDLE;\nend\nelse begin\ncase (present_state)\n\n  case(IDLE) begin\n    if(x == 1) begin\n      next_state <= S1;\n    end else begin \n      next_state <= IDLE;\n    end\n  case(S1) begin\n    if((x == 0) || (present_state > S10)) begin\n      next_state <= IDLE;\n    end else begin\n      next_state <= IDLE;\n    end\n  case(S10) begin\n    if"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalways begin\n    case(present_state) is\n    case(present_state): {\n        case(0): \n            next_state := S1;\n            break;\n        case(1): \n            next_state := S10;\n            break;\n        case(2): \n            next_state := S101;\n            break;\n        default: \n        case(3): next_state := IDLE; \n            break;\n    endcase;\n    reset <= 0;\n    present_state <= IDLE;\nend;\n\nalways  begin\n    case(present_state) is\n        case(CLK) is\n            present_state <= next_state;\n        default:\n            next_state <= present_state;\nendcase;\nend;\n  "
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways\nbegin\n    next_state := IDLE;\nend\n\nalways @(posedge clk) begin\n    #if $display == 1\n        if (present_state == IDLE)\n            d = 0;\n        else if (present_state == S1)\n            d = x;\n        else if (present_state == S10)\n            d = ~x;\n    #else\n        if (present_state == IDLE)\n            if (x == 1) {\n                d = 1;\n                present_state = S1;\n            } else {\n                present_state = IDLE;\n            }\n        else if (present_state == S1)\n            if (x == 0) {\n                d = 0;\n                present_state = S10;\n            } else {\n                d = 1;\n                present_state = IDLE;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": " reg [31:0] ba;\nreg [31:0] z = ba, x = ba;\nreg [31:0] i = ba;\nalways {\nif(x) ba=01;\nelse ba = 00;\nz = ba;\n}\nalways {\ni = present_state;\npresent_state = i + ba;\nif (present_state < 0) {\n\tpresent_state = IDLE;\n\t}\nif(present_state == IDLE && x == 1)  next_state = S1;\nelse if(present_state == IDLE && x == 0) next_state = S1;\nelse if(present_state == S1 && x != 1) next_state = S1;\nelse if(present_state == S1 && x != 0) next_state = S1;\nelse if(present_state == S1 && x"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n// Execute a single transition of the state machine. On error, assert high.\nfunction void next_transition( x );\n\nvoid next_transition( x )\n{ \n\tswitch(present_state) \n\t{ \n\t\tcase IDLE: \n\t\t\tswitch( x )\n\t\t\t{\n\t\t\t\tcase 1: \t// S1 \n\t\t\t\t\tpresent_state = S1; \n\t\t\t\t\tnext_state = S10; \n\t\t\t\t\tbreak;\n\t\t\t\tdefault: \t// SH,L \n\t\t\t\t\tbreak;\n\t\t\t}\n\t\t\tbreak; \n\t\tcase S1: \n\t\t\tswitch( x )\n\t\t\t{ \n\t\t\t\tcase 0: \t// S10 \n\t\t\t\t\tpresent_state = S10; \n\t\t\t\t\tbreak; \n\t\t\t\tdefault: \t// IDLE \n\t\t\t\t\tbreak; \n\t\t\t}\n\t\t\tbreak; \n\t\tcase S10:"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\nalways block_synced\nbegin\n  if rst is high\n    present_state <= IDLE;\n  else begin\n    if (x='0') undefined; \n    else begin\n      present_state <= S10;\n    end \n    switch (present_state)\n    reg [7:0] char;\n    a external;\n        with char\n        begin\n         if ((char == 0b1101) | (char == 0b0011))\n           next_state <= S10;\n\n         else if char == 0b0010\n           next_state <= S101;\n         if char == 0b0000\n           next_state <= S11;\n         default:\n           next_state <= IDLE;\n        end\n    end\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @(posedge reset) begin :rst begin :z = 2; end\nalways @(posedge clk) begin:presentState <= present_state; begin :idle if (reset == 1) begin :presentState <= IDLE; end \n        else begin :nextState <= IDLE; if (present_state == S1) begin :nextState <= S10; end \n            if (present_state == S10) begin:nextState <= S101; end \n            if (present_state == S101) begin:nextState <= IDLE; end\n            :z <= nextState; end\nend\n\nalways @(negedge clk) begin:presentState <= IDLE; begin :idle if (reset == 1) begin :presentState <= IDLE; end \n        else begin :nextState <= IDLE; if (present_state == S1) begin :"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nalways begin\n\n        casez(present_state)\n            casez(1, S1)\n                next_state <= 2;\n            casez(0, S10)\n                next_state <= 2; \n            casez(1, S101)\n                next_state <= 3;\n            casez(IDLE, IDLE)\n                next_state <= IDLE;\n            default:\n                next_state <= IDLE;\n        endcase\n        present_state <= IDLE;\n        // assign output z to 1 when present_state is S101 and the result should be in fsm as z\n"
+    }
+  ],
+  "created": 1663535595,
+  "id": "cmpl-4isi1JfGgV1b3w8ADnc5ioq1CW4cK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3721,
+    "prompt_tokens": 232,
+    "total_tokens": 3953
+  }
+}

@@ -1,0 +1,44 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// Create a 8-bit, two's complement, adder \n// Declare an 8-bit, two's complement, output result as s\n// Declare an 1-bit output overflow as overflow\n\n\n\n//If the adders result in overflow, then the overflow occurs when the sign bit with methods sign_extend: ------------------------------------------------------------------------------\n// if ( a[7] == !b[7] : s[7] == 1 : s[7] == 0 ) when they are different\n// if ( a[7] == b[7] : s[7] == 0 : s[7] == 1 ) when they are the same\n// assign overflow = ( a[7] ^ b[7] )?0:1;\n//\n// if \n// then \n// assign overflow = ( a[7] == b[7] )?1:0;\n// --------------------------------------------------------\n\t\n//"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign overflow = |a & ~b & ~|s | a & |b & ~|s;\n\nassign s = a + b ;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n//OCP state declaration\n\nparameter unsigned borrow_zero = 1'b0;\n\nparameter signed input_is_smaller = 1'b0;\n\nparameter signed overflow_smaller = 1'b0;\n\nparameter signed signed_add_smaller = 1'b0;\n\n// function definitions for a 4 bit ripplecarry adder\n\nfunction OPA4;\ninput i;\nbegin\nOPA4 <= i;\nend\nendfunction\n\nfunction OPB4;\ninput j;\nbegin\nOPB4 <= j;\nend\nendfunction\n\nfunction accepting_carry_out;\ninput adding_1;\nbegin\naccepting_carry_out <= adding_1;\nend\nendfunction\n\nlocalparam bitwidth=8;\nlocalparam [4:0] socibits = 5;\nlocalparam [4:0] linkedcombineth"
+    }
+  ],
+  "created": 1663304476,
+  "id": "cmpl-mC4Qc7pt8sHtQARtMTmf6skY3XKuJ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 438,
+    "prompt_tokens": 164,
+    "total_tokens": 602
+  }
+}

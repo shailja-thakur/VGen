@@ -1,0 +1,138 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(*)\n\tcase(in)\n\t3'b000: pos=2'b00; \n\t3'b001: pos=2'b01; \n\t3'b010: pos=2'b10; \n\t3'b011: pos=2'b11; \n\t3'b100: pos=2'b00; \n\t3'b101: pos=2'b01; \n\t3'b110: pos=2'b10; \n\t3'b111: pos=2'b11; \n\tendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(in or pos)\nbegin\n\tcasex ({in})\n\t4'b0xxx: pos = 2'b00;\t//0\n\t4'b1000: pos = 2'b01;\t//8\n\t4'b1001: pos = 2'b10;\t//9\n\t4'b1010: pos = 2'b11;\t//10\n\tdefault: pos = 2'b00;\t//0\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (*)\ncase (in)\n3'b000 : pos = 2'b00;\n3'b001 : pos = 2'b01;\n3'b010 : pos = 2'b10;\n3'b011 : pos = 2'b11;\n3'b100 : pos = 2'b01;\n3'b101 : pos = 2'b10;\n3'b110 : pos = 2'b11;\n3'b111 : pos = 2'b11;\ndefault: pos = 2'b00;\nendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(*)\nbegin\n\tcase(in)\n\t3'd0: pos = 2'b10;\n\t3'd1: pos = 2'b01;\n\t3'd2: pos = 2'b01;\n\t3'd3: pos = 2'b10;\n\tdefault: pos = 2'b00;\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(*)\nbegin\ncase(in)\n0: pos = 2'b00;\n1: pos = 2'b01;\n2: pos = 2'b10;\n3: pos = 2'b11;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @( * ) begin\n\tcasex( in ) // casex is case-insensitive\n\t// all inputs should assign to pos = 0\n\t4'b0xxx: pos = 2'b00;\n\t// all inputs should assign to pos = 1\n\t4'b1000: pos = 2'b01;\n\t// all inputs should assign to pos = 2\n\t4'b1001: pos = 2'b10;\n\t// no inputs should assign to pos = 0\n\t// no inputs should assign to pos = 1\n\t// no inputs should assign to pos = 2\n\tdefault: pos = 2'b00;\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(*) begin\n case(in)\n2'b00:\nbegin\npos = 2'b00;\nend\n2'b01:\nbegin\npos = 2'b01;\nend\n2'b10:\nbegin\npos = 2'b10;\nend\n2'b11:\nbegin\npos = 2'b11;\nend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always@(in)\n\tcase(in)\n\t3'b000: pos = 2'b00;\n\t3'b001: pos = 2'b01;\n\t3'b010: pos = 2'b10;\n\t3'b011: pos = 2'b11;\n\tendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @ ( * ) \ncase ( in ) \n3'b000: pos=2'b10; \n3'b001: pos=2'b01; \n3'b010: pos=2'b01; \n3'b011: pos=2'b00; \n3'b100: pos=2'b00; \n3'b101: pos=2'b01; \n3'b110: pos=2'b01; \n3'b111: pos=2'b10; \ndefault: pos=2'b00; \nendcase \n// When sel=0, leave output unchanged\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "// Else assign 0 to output\nalways @ ( in or sel )\nbegin\n\tif ( sel == 1'b1 )\n\tbegin\n\tout[0] = in[1];\n\tout[1] = in[2];\n\tout[2] = in[2] & in[1];\n\tend\n\telse\n\tbegin \n\tout[0]= 1'b0;\n\tout[1]= 1'b0;\n\tout[2]= 1'b0;\n\tend\nend \n// This is the decoder. If none of the input bits are high, output is zero. \n// Otherwise the output is the input value.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @ ( in or sel )\nbegin\n\tcase ( in )\n\t// Enumerate all cases\n\t3'b000: pos = 2'b00; \n\t3'b001: pos = 2'b01; \n\t3'b010: pos = 2'b10; \n\t3'b011: pos = 2'b11; \n\t// default case does not need to be specified\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @ (in or sel)\nbegin\n\tcase(sel)\n\t0: pos = 2'b00;\n\t1: pos = 2'b01;\n\t2: pos = 2'b10;\n\t3: pos = 2'b11;\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always@(in or pos)\nbegin\ncase (in)\n3'b000: pos <= 2'b00;\n3'b001: pos <= 2'b01;\n3'b010: pos <= 2'b10;\n3'b011: pos <= 2'b11;\n3'b100: pos <= 2'b01;\n3'b101: pos <= 2'b10;\n3'b110: pos <= 2'b11;\n3'b111: pos <= 2'b01;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @ ( in ) \nbegin\n\tcasex ( in ) \n\t3\u2019b000: pos = 2\u2019b10; \n\t3\u2019b001: pos = 2\u2019b01; \n\t3\u2019b010: pos = 2\u2019b01; \n\t3\u2019b011: pos = 2\u2019b00; \n\t3\u2019b100: pos = 2\u2019b00; \n\t3\u2019b101: pos = 2\u2019b01; \n\t3\u2019b110: pos = 2\u2019b10; \n\t3\u2019b111: pos = 2\u2019b00; \n\tdefault: pos = 2\u2019b00; \n\tendcase \nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @ ( in or pos )\nbegin\n\tif ( in[2] == 1'b1 || in[1] == 1'b1 || in[0] == 1'b1 ) \n\tbegin\n\tpos = 2'b11;\n\tend\n\telse\n\tbegin\n\tpos = 2'b00;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "// When sel=0, assign 0 to out\nalways @(in)\n\tbegin\n\tcase (in)\n\t3'b000: pos = 2'b00;\n\t3'b001: pos = 2'b01;\n\t3'b010: pos = 2'b10;\n\t3'b011: pos = 2'b11;\n\tdefault: pos = 2'b00;\n\tendcase\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(*) begin\ncase (in)\n3'b000: pos = 2'b00; \n3'b001: pos = 2'b01; \n3'b010: pos = 2'b10; \n3'b011: pos = 2'b11; \ndefault: pos = 2'b00; \nendcase\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(*) begin\nif (in[2])\npos = 2'b11;\nelse if (in[1])\npos = 2'b10;\nelse if (in[0])\npos = 2'b01;\nelse\npos = 2'b00;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(*)\nbegin\n\tcasex (in)\n\t3'b000: pos = 2'b00; \n\t3'b001: pos = 2'b01; \n\t3'b010: pos = 2'b10; \n\t3'b011: pos = 2'b11; \n\t// default: ???\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(in or sel) \nbegin\n\tcase(sel)\n\t2'b00: pos = 2'b00;\n\t2'b01: pos = 2'b01;\n\t2'b10: pos = 2'b10;\n\t2'b11: pos = 2'b11;\n\tendcase\nend\n"
+    }
+  ],
+  "created": 1663335001,
+  "id": "cmpl-nQBAz8792gcgc4qvk7rkvKob3Co1s",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2121,
+    "prompt_tokens": 65,
+    "total_tokens": 2186
+  }
+}

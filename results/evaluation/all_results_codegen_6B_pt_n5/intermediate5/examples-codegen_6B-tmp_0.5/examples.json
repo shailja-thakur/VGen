@@ -1,0 +1,52 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (load)\n    out = data;\n  else\n    out = left_rotate(out,amount);\nend\n\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nalways @(posedge clk or negedge reset)\n  if (load)\n    out = data;\n  else\n    out = right_rotate(out,amount);\nend\n\n// left and right shift and rotate operation\nmodule left_right_rotate"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (load) out <= data;\n  else out <<= amount;\nend\n\n// shift right operation\nmodule shift_right(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise shift the out register by amount bits\nalways @(posedge clk or negedge reset)\n  if (load) out <= data;\n  else out >>= amount;\nend\n\n// rotate right operation\nmodule rotate_right(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (load) out <= data;\n  else out <<= amount;\nend\n\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nalways @(posedge clk or negedge reset)\n  if (load) out <= data;\n  else out >>= amount;\nend\n\n// left shift and right shift and rotate operation\nmodule left_right_rotate(clk,reset,amount,data,load,out);\ninput clk,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  out <= load ? load_data : (out << amount) | (out >> (7-amount));\n\n// The above code runs on the FPGA. The following code runs on the host.\n\n/*\n * The following code is the equivalent of the above code, but using\n * the Verilog function `left_rotate_reg` instead of the built-in\n * `left_rotate`.\n */\n\n// left_rotate_reg(clk,reset,amount,data,load,out)\n// left_rotate(clk,reset,amount,data,load,out);\n\n//------------------------------------------------------------------------------\n#include \"systemc.h\"\n#include \"test_left_rotate_reg.h\"\n\nSC_MODULE(module) {\n  SC_CTOR(module) {}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (load) out = data;\n  else out = left_rotate(data, amount, out);\nend\n\n// left shift and rotate operation with carry bit\nmodule left_rotate_with_carry(clk,reset,amount,data,load,carry,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\ninput carry;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by left shift the out register by amount bits\nalways @(posedge clk or negedge reset)\n  if (load) out = data;\n  else out = left_rotate(data, amount, out, carry);\nend\n\n// left shift and rotate"
+    }
+  ],
+  "created": 1663519632,
+  "id": "cmpl-x3MN8Jz7fX1WECPgnVusk17LhRnmR",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 94,
+    "total_tokens": 1094
+  }
+}

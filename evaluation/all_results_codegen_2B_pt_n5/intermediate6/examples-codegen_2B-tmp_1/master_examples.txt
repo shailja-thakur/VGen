@@ -1,0 +1,141 @@
+example-0: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(clk, we)
+code2 #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+)
+code3 #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    ready clk, q := ram[addr/DATA_WIDTH][data*8/DATA_WIDTH];
+    ram[addr/DATA_WIDTH][data*8/DATA_WIDTH] := ~q;
+    if we'b
+    |
+    we
+  )
+{
+}
+// when we is low, read data from ram at address addr
+// write data to ram at address addr
+
+reg [ADDR_WIDTH-1:0] port_addr;
+reg [DATA_WIDTH-1:0]
+================================================================
+example-1: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(we) begin
+  if (clk && !we) ram[addr] <= data[7:0];
+end
+// input clk to the module
+assign q[7:0] = ram[addr];
+
+// the tuple q is a convenient data structure to hold data
+wire [DATA_WIDTH-1:0] dq;
+wire [ADDR_WIDTH-1:0] da;
+// the I/O primitives
+wire [DATA_WIDTH-1:0] data;
+wire [ADDR_WIDTH-1:0] addr;
+// this specifies the number of write cycles that will have to proceed before a read back character flips
+wire [DATA_WIDTH-1:0] cycles;
+reg [DATA_WIDTH-1:0] rda[NUM_WRITE_CYCLES];
+reg
+================================================================
+example-2: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+initial begin
+    r_ram = loadaddr(ram) + r_we; // hold the ram pointer here
+    q = r_ram; // write value here
+    we <= 1; // reduce a delay here
+end
+'''
+================================================================
+example-3: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(posedge clk)
+    lst_mem [DATA_WIDTH-1:0] mem;
+    we=0;
+
+    if (addr[2] == 0)
+    {
+        mem[addr[0]:addr[1]]=dat;
+        if (mem[addr[0]+1] != 0)
+        clk=1;
+    }
+   if (addr[2+1] == 0)
+        clk1=1;
+
+================================================================
+example-4: 
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+always @(we)
+// in truth, this function should never be performed
+begin
+    ram[~addr] = ~clk;
+end
+begin
+    q <= (~we) & ram[addr];
+end
+
+================================================================

@@ -1,0 +1,136 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": " \n\n// Implement each half adder as a two bit adder.\nactivations \nsum { \n\t// Low-order bit. The bit should be high by default.\n\tif a { cout <- 1 1 ; } \n\telse { cout <= 1 0 ; } \n\t\n\t// Second bit. We do not need to compute the carry bit, as it is zero by default.\n\tif b { cout <= 1; } \n\telse { cout <= 0; } \n\t\n\t// Low-order bit should be high after the second bit is sent in.\n\tif cout <= 1 { cout < 0; } \n}\n\n// Not changed. It should clone half adders a and b.\nactivations \nnot_changed { \n\tif (a - remove(1, b)) { cout < 1; } \n\telse { cout < 0; } \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n// q0 is stored with msb bits first\nreg q0;\nreg q1;\n\n// half adder\nreg a_s;\nreg b_s;\nreg sum_s;\nreg carry_out_s;\nreg sum_i_s;\nassign sum_i = sum_s[31..23];\nassign sum_s = sum_i_s[23..15];\nassign carry_out = carry_out_s[15..8];\n\nalways\n            q0 <= sum + carry_out;\n           sum <= (a + q0) b_s + (b_s + q1) carry_out;\n           carry_out == (b_s + q1) (a_s + b_s) + (a_s + sum_s) carry_out; except [31][31] assignment\n           carry_out"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n  input [7:0] a, b;\n  output sum;\n\n  always @(posedge clk)\n    if (rst)\n      sum <= 0;\n  \n  always @(posedge clk)\n if (rst == 0 and passed <= 0) {\n      sum <= 0;\n}\nrst <= 1;\n\nhalf_adder_encoding:\n\tsum <= a xor cout;\n\tif (cout == b) {\n\t      sum <= a;\n      }\n    passed <= 1;\n\n\nblocking :\n   blocking_half_adder :\n\tif (sum.n == a or sum.n == a) {\n\t    jumping -> a.n = 1;\n\t    sum <= a;\n\t    v <= sum;\n\t}\n\tif (passed.n == 0) {\n\t\tsum <= zero;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nreg a, b, sum;\nreg a_in, b_in, sum_in, c_in;\n\ninitial begin\nb_in = b;\nsum_in = sum;\na_in = a;\nsum = 0;\nend else cout = 1;\n\nalways b_in = b_in + 1;\nalways a_in = a_in + 1;\nalways c_in = &sum_in + 1;\n\nalways // a's algorithm specified as below:\n//            {                      and                        {\n//            {                            &&                        {\n//            ((!a) && (!b))      && ((~(a|b)) ||  (a&b))     && ((a)|(b))                     } } }\n\n#define A {  if(a==0){sum = b; } else {  if( b == 0 ){sum = a;}"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n// This is the\n// input # 0\n// input # 1\n// output # 1\n// state # 00\n// output # 1\n// state # 01\n// output # 0\n// state # 01\n// output # 1\n// state # 10\n// output # 2\n\n// stage of the adder \nreg [2:0] lessor; // input\nreg [2:0] litre; // output\nreg [71:61] respone; // state\n\nvoid main_entry(){\n start();\n}\n\nalways @ (*) begin\n  sum <= 0;\nif (b) begin\n  lessor <= 1;\nend else if (a) begin\n  lessor <= 2;\nend\nend\n\nalways @ clkbegin_A\n begin\n  forever begin\n    // In this 2-phase controller the second phase pivots two additions in\n    // parallel"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n    // Sum = ( b + a ) + carry_in\n    assign sum = (b + a) + cout;\n    // Carry out = b + a - reset\n    assign cout = b + a - reset;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nregister cin as input[0];\nbit carry, sum;\n\ncore:\n  de novo: \n    if (a==0)\n      goto D_no\n    if (a==1)\n      goto A_no\n    if (b==0)\n      goto A_no\n    if (b==1)\n      goto B_no\n  D_no: \n    update=0\n  A_no: \n    process(a>0)\n  B_no: \n    process(a==sum)\n  proc_fin:  \n    cout=sum\n  update_fin:\n    update=sum run Updt_Sync\n  proc_error:\n    update=!a|!b|!c|!sum||0\n  update_error:\n    update=!a|!b|!c|!"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\n#(in_aMasb), (in_aSb), (in_bMasb) // pins\n// dout: the sum of result of a and b \n// cout: carry-out of half-adder\n// sum : an address should be alkane1:0\n\nvar\n#(half_in_aLasb), (half_in_aSbasb), (half_in_bLasb), (half_in_sum_b), (half_out_a_cout)\nmass1 = 1.0;\nmass2 = 1000;\nmass3 = 1000_000;\nhalf_in_aAs_bVoid_0Pg = half_in_aAs_bVoid(sum,b, a);\nhalf_in_aS1_bsumVoid_0Pb = half_in_a1_b1( a,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nalways #(MASTER_CLK_FREQ(\"half_adder.v\")) begin: seq\n\n\tinput cin, clk;\n\toutput carryin, sum;\n\n        cout <= a;\n        sum <= b;\n        carryin <= clk;\n        // Seq End\n        if ( clk ) begin\n        a <= a + carryin;\n        b <= b + ! carryin;\n        end else begin\n        a <= 0;\n        b <= 0;\n        cout <= 0;\n        sum <= 0;\n        cout <= a;\n        sum <= b;\n        end\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout;\noutput sum;\n\nalways #(1) begin\n\tif (a)\n\t\tsum = 1, cout = a;\n\telse if (b)\n\t\tsum = 0, cout = 1;\n\telse\n\t\tsum = 1, cout = 0;\nend\n\n///////////////////////////\n// suffix code for half adder\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout;\noutput sum;\n\nalways @ (posedge clk) begin\n\tsum <= a + b;\n\tif ((a==1) && (b==1)) \n\t\tcout <= 1;\n\telse \n\t\tcout <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n    cout <= sum;\n    sum <= a + b + carry-in;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\ninput [ width-1:0 ] a, b;\noutput [ width-1:0 ] cout, sum;\nbegin\n   sum=a+b\n   cout=sum[0]+sum[1]\nend // synopsys full_adder half_adder\n        \n\n          staticFunc sequence_half_adder4;\n          staticFunc sequence_half_adder3;\n          staticFunc sequence_half_adder2;\n          staticFunc sequence_half_adder1;\n          static logic [valid_number_of_inputs:0] compute_half_adder_sum_flag = COMPUTE_HALF_ADDER_SUM_PROGRAM_DECLARATION.invalid_half_adder_inputs_flag; \n          static logic [stacked_memory_index_width-1:0] compute_half_adder_sum_flag_shift"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\n// Each stage of the half adder consists of three wires (and three fan-in/out (F8) components on the left side):\ninput wire n_in,       // Zero-terminated 1-bit compatible input signal.\ninput wire ready_in,   // Ready input when \"1\". Resets the logic.\ninput wire enable_in,  // Enable bit, currently not used.\n\n// Carry-out propagation. When a carry bit is output it enables the half adder's sum wire.\noutput wire { sum=1, carry=0 } out_{ leg, pos, net };\n\n// Logic. \noutput wire i9;     // internal ram was aux. 10 bits for working area\noutput logic s[9],   // Internal to logic. Linear half adder computation.\n    s[8];       // Internal to logic. Linear half adder computation.\noutput logic i7,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput sum;\n\ninitial begin\n  sum = a + b;\n  cout <= (a & ~b) | (b & ~sum) | (sum & ~result);\n  cout <= $display(\"%x : out = 0x%x\",a,sum); \nend\n\n// Global variables that are shared between multiple modules\ninput clock;\noutput result;\n\n/* Custom stuff */\ninput rom_enabled;\n\nbegin\n  reg [5:0] pin, sum, result, carry_in;\n  reg [4:0] Sum;\n  reg [3:0] int_cfg;\n  reg [7:0] En, Clear;\n\n  begin\n    // configuration: 1/parse, interval: 17, real clock: 66.66 MHz, \n    ram [int_cfg] = 0b0100101010;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n\nreg cout, sum;\nreg digit[5];  // \nnotify [digit] { cout << \"a: \" << {{digit}} << \"\\n\"; }\nWire a, b;\n\n// generate a carry-out signal\nnotify c[sum] { cout << \"cout: \" << {{c}} << \" bit\\n\"; }\n\n// PRAM module\npram test_adder;\n\n// this is the internal LUT. It calculates (a&b)^c where c is a H-type inc binary signal\nIf (a,b) -> sum, carry -> cout\nIn parallel\nconditional c[{{sum+carry}}] { suml[{{sum+carry}}] = {{a}} + 1 + {{b}};\n       sumh[{{sum+carry}}] = carry;                }\nelse { suml[{{sum+carry}}] = {{a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n    which wait on a, b; \n    begin \n        waiting_on = wait on a & b\n        sum = sum\n        wait on a | b \n\t;\n\tsum = overflow;\n    end  // end   full_adder\n    half_adder                 // make constructor public to instantiate \n\n\n// This is a full adder.\nmodule full_adder( \ninput a, b,\noutput cout, sum, p1, p2, out_carry);\n    initial \n\twith wa, cw;\n\n        waiting_on = wait on a & b & cw \n\t;\n        sum = sum\n        waiting on a | b | p1 | p2 \n        out_carry = out_carry \n\n       end   // end event full_adder\n\n\nhalf_adder half_a;            // this instantiates a half_adder"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n        \ninput a, b;\noutput carry_out, sum;\n);\n\n\n\n\n\n\n// Commissioning Controller\n// This module will run the Commissioning registers.\n// Its input is a vector of Programs from the Programmer.\n// Those programs are mapped over and the total\n// sum of their bytes is passed to the quartile encoder.\n// When this port also registers a fixed number of outputs, the\n// output at that index is the percent correct (pCT) for this\n// Program.\nmodule Commissioning_Controller(  \ninput  Programs,\noutput  pCT);\n        \ninput  Programs;\noutput pCT;\n);\n\n\n\n \n\n\n// microcontrollers\n// These will respond to clock cycles so that hardware related conditions\n// that could not be controlled will be watched by the software.\nmodule Microcontrollers(  \ninput toy,\noutput \ncoin_out,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n\ninput rst, clock, clear, a, b, slr, cin, acin, scin, cout, sum;\n\ninput [17:0] a, b;\noutput [17:0] cout, sum;\n\nbegin  // Integrate clock domain for one clock cycle, 1 RGCLK | 2 RGCLK\n \twhile (clock) begin\n \t\t#(0) sibling_read ( // Ties implicit master outputs to specified outputs.\n \t\t\tslr, cin, acin, scin, cout, sum;\n \t\tend\n \t\t#(1) logic reset,\n \t\t\tif (rst=0) begin\n \t\t\t\tsum=0;\n\t\t\t\tcout=0; // signals half adder carry and sum are ready\n\t\t\t\ta=0; // signals half adder clear\n\t\t\t\tb=0; // signals half adder clear\n \t\t\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n\nint out = 0;\n\nreg A, B;\nwire cyc;\n\nif (a == 1\n\tand b == 1){\n\tA = 1;\n\tB = 1;\n}\n\n\nelse{\n\tA = 0;\n\tB = 0;\n}\n\nalways #(A && B) {\n\n\tA = A and b;\n\tB = B and a;\n\n\tout = A + B;\n\n\tA = A and b;\n\tB = B and a;\n\n}\n\nalways {\n\tsum = out;\n}\n\n"
+    }
+  ],
+  "created": 1663536030,
+  "id": "cmpl-CxGZqjO2YCH3ZZqCiX1farTM40MKb",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3328,
+    "prompt_tokens": 43,
+    "total_tokens": 3371
+  }
+}

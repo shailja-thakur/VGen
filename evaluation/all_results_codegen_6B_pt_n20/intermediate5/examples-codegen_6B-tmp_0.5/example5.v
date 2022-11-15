@@ -1,0 +1,27 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or negedge reset)
+  if (load) out <= data;
+  else out <= left_rotate(out, amount[0], amount[1], out[6:0]);
+end
+
+// left shift and rotate operation with carry
+module left_rotate_carry(clk,reset,amount,data,load,out,carry);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+output reg [1:0] carry;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or negedge reset)
+  if (load) out <= data;
+  else out <= left_rotate_carry(out,endmodule

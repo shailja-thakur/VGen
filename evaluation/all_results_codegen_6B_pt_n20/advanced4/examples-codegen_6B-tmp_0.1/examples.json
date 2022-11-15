@@ -1,0 +1,149 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the data input.\n// The shift register is connected to the enable input.\n// The shift register is connected to the output.\n// The clock input is connected to the clock input.\n// The data input is connected to the data input.\n// The enable input is connected to the enable input.\n// The output is connected to the output.\n\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the data input.\n// The shift register is connected to the enable input.\n// The shift register is connected to the output.\n// The clock input is connected to the clock input.\n// The data input is connected to the data input.\n// The enable input is connected to the"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// This is a testbench for the shift register.\n// The shift register is a 64-bit register, with the leftmost bit\n// being the least significant bit.\n// The register is loaded with the input data, and the output\n// is the shifted register.\n// The register is clocked by the clock input.\n// The register is enabled by the enable input.\n// The register is cleared by the reset input.\n// The register is reset by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset output.\n// The register is cleared by the reset"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\nbegin\n  if (ena)\n    q <= data;\n  else\n    q <= load ? data : q;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the load input.\n// The shift register is connected to the enable input.\n// The shift register is connected to the data input.\n// The shift register is connected to the output.\n// The clock input is connected to the shift register.\n// The load input is connected to the shift register.\n// The enable input is connected to the shift register.\n// The data input is connected to the shift register.\n// The output is connected to the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the load input.\n// The shift register is connected to the enable input.\n// The shift register is connected to the data input.\n// The shift register is connected to the output.\n// The clock input is connected to the shift"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\n  if (load)\n    q = data;\n  else if (ena)\n    q = shift_reg(q, amount, data);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a 2-bit register, with a shift register\n// shift register.\n// The shift register is loaded with the low-order bits of data, shifted in\n// the direction of the amount parameter.\n// The shift register is loaded with the high-order bits of data, shifted in\n * the opposite direction of the amount parameter.\n// The shift register is loaded with the low-order bits of data, shifted in\n * the direction of the amount parameter.\n// The shift register is loaded with the high-order bits of data, shifted in\n * the opposite direction of the amount parameter.\n// The shift register is loaded with the low-order bits of data, shifted in\n * the direction of the amount parameter.\n// The shift register is loaded with the high-order bits of data, shifted in\n * the opposite direction of the amount parameter.\n// The shift register is loaded with the low-order"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\nbegin\n  if (load)\n    q <= data;\n  else if (ena)\n    q <= shift(q, amount);\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock input.\n// The load signal is connected to the load input.\n// The enable signal is connected to the enable input.\n// The data input is connected to the data input.\n// The shift register output is connected to the shift register output.\n// The clock input is connected to the clock input.\n// The shift register output is connected to the shift register output.\n// The enable input is connected to the enable input.\n// The clock input is connected to the clock input.\n// The shift register output is connected to the shift register output.\n// The data input is connected to the data input.\n// The clock input is connected to the clock input.\n// The shift register output is connected to the shift register output.\n// The enable input is connected to the enable input.\n// The clock input is connected to the clock input"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\nbegin\n  if (load)\n    q <= data;\n  else if (ena)\n    q <= shift(q, amount);\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register, and the shift register\n// is loaded with the data.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by the clock.\n// The shift register is clocked by"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The shift register is clocked by the clock signal.\n// The shift register is loaded by the load signal.\n// The shift register is enabled by the enable signal.\n// The shift register is shifted by the amount signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is shifted by the data signal.\n// The shift register is"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// The shift register is a register that can be written to, and read from.\n// It is a 64-bit register, and can be written to by a 64-bit value.\n// It is also a synchronous load, and can be read by a 64-bit value.\n// It is also an asynchronous load, and can be written to by a 64-bit value.\n// It is also an asynchronous load, and can be read by a 64-bit value.\n// It is also an asynchronous load, and can be written to by a 64-bit value.\n// It is also an asynchronous load, and can be read by a 64-bit value.\n// It is also an asynchronous load, and can be written to by a 64-bit value.\n// It is also an asynchronous load, and can be read by a 64-bit value.\n// It is also an asynchronous load, and can be written to by a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the data input.\n// The shift register is connected to the enable input.\n// The shift register is connected to the output.\n// The clock input is connected to the clock input.\n// The data input is connected to the data input.\n// The enable input is connected to the enable input.\n// The output is connected to the output.\n// The clock input is connected to the clock input.\n// The data input is connected to the data input.\n// The enable input is connected to the enable input.\n// The output is connected to the output.\n\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the data input.\n// The shift register is connected to the enable"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the load input.\n// The shift register is connected to the enable input.\n// The shift register is connected to the data input.\n// The shift register is connected to the output.\n// The clock input is connected to the shift register.\n// The load input is connected to the shift register.\n// The enable input is connected to the shift register.\n// The data input is connected to the shift register.\n// The output is connected to the shift register.\n// The shift register is connected to the clock input.\n// The shift register is connected to the load input.\n// The shift register is connected to the enable input.\n// The shift register is connected to the data input.\n// The shift register is connected to the output.\n// The clock input is connected to the shift"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n// The shift register is a register that can be written to, and read from.\n//"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The testbench is a simple test of the shift register.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench is not a real-world testbench.\n// The testbench"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q;\n\nalways @(posedge clk)\n  if (ena)\n  begin\n    if (load)\n      q <= data;\n    else\n      q <= 0;\n  end\n  else\n  begin\n    q <= 0;\n  end\nend\n\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q;\n\nalways @(posedge clk)\n  if (ena)\n  begin\n    if (load)\n      q <= data;\n    else\n      q <= 0;\n  end\n  else\n  begin\n    q <= 0;\n  end\nend\n\n// The shift register is implemented as a register of 64 bits."
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\n  if (ena)\n    q = data;\n  else\n    q = q << amount;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\nbegin\n  if (ena)\n    if (load)\n      q <= data;\n    else\n      q <= 0;\n  else\n    q <= 0;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nmodule advshift_load(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule advshift_load_load(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when"
+    }
+  ],
+  "created": 1663520815,
+  "id": "cmpl-155v4DOqhQ5WxvIbvMwDqOq2NWJLe",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3279,
+    "prompt_tokens": 184,
+    "total_tokens": 3463
+  }
+}

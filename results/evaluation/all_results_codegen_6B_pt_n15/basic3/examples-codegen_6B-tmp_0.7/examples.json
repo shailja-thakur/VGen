@@ -1,0 +1,108 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(*)\n  begin\n    pos <= ~in[1];\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (sel)\n        priority_encoder_output <= b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if(sel)\n  {\n    pos <= in[2];\n  }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst) // or posedge clk \n  if (rst) pos <= 0;   // when reset, high-to-low\n  else if (sel && !(in[0] && in[1])) // when in reset, low-to-high\n    pos <= 1;\nelse if (sel && in[0]) // when in reset, low-to-high\n  pos <= 4;\n\n// output the bits\nreg [1:0] a;\nalways @(posedge clk or negedge rst) // or posedge clk \n  if (rst) a <= 0;   // when reset, high-to-low\n  else if (sel && !(in[1])) // when in reset, low-to-high\n    a <= 1;\nelse if (sel && in[1"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\n  if(sel)\n    pos <= in[2];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge rst) \nif (sel) \n  pos <= 1'b0 << in[1] & in[0];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst) begin\n  if (rst) begin\n    pos <= 0;\n  end\n  else begin\n    if (in[0] && in[1]) begin\n      if (sel) begin\n        pos <= 1;\n      end\n      else begin\n        pos <= 2;\n      end\n    end else if (!in[0] && !in[1]) begin\n      pos <= 0;\n    end\n  end\nend\n\n// The priority encoder is wired such that the inputs must be\n// active to be considered valid. This is not required, but\n// provides a simple way to track the number of input\n// transitions.\nalways @ (posedge clk or negedge rst) begin\n  if (rst) begin\n    count <= 0;\n  end\n  else begin\n    if (sel) begin\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or %clk)\n  priority_encoder_out <= pos ? b : 0;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk or (sel <= 1 && in[0])) begin\n  if (sel <= 1) begin\n    pos <= 1;\n  end\n  else begin\n    if (in[0] || in[1]) begin\n      pos <= in[1] << 1 | in[0];\n    end\n  end\nend\n\"\"\"\n    )\n\n    tb.verify(check_not_sel)\n\n    tb.run()\n    tb.assertEqual(0, tb.read(pos))\n\n    tb.run()\n    tb.assertEqual(0, tb.read(pos))\n\n    tb.run()\n    tb.assertEqual(1, tb.read(pos))\n\n    tb.run()\n    tb.assertEqual(1, tb.read(pos))\n\n    t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (sel)\n    pos <= in;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst) begin\n  if (rst) begin\n    pos <= 0;\n  end else begin\n    if (in[0]) pos <= 1;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst)\n  if (rst) {\n    pos <= 0;\n  }\n  else if (sel) \n    pos <= in[2] ? in[1] : 0;\nelse \n  pos <= in[1] ? in[0] : 0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(*)\n  pos <= (\n\t  (sel && in[0] == 1) ?\n\t\tin[1]\n\t:\n\t\t0\n    );\n\n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(*) {\n\tif (sel) {\n\t\tpos = in;\n\t} else {\n\t\tpos = 0;\n\t}\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or ~sel)\n  if (sel) \n  begin\n    pos <= 1'b0;\n  end\n  else\n    pos <= in;\nend\n\n// This is a 4-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,\noutput reg [2:0] pos ); \n// When sel=1, assign b to out\nalways @(posedge clk or ~sel)\n  if (sel) \n  begin\n    pos <= 2'b0;\n  end\n  else\n    pos <= in;\nend\n\nmodule priority_encoder( \ninput [2:0] in,\noutput reg [3:0] pos ); \n// When sel=1, assign b to out\nalways @("
+    }
+  ],
+  "created": 1663520383,
+  "id": "cmpl-X1z7i6o8GkoQnKxBJkF7S4WuvzfkO",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1220,
+    "prompt_tokens": 65,
+    "total_tokens": 1285
+  }
+}

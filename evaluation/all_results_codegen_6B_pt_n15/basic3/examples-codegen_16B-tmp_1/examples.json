@@ -1,0 +1,24 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@( in or sel )\nbegin\nif (sel==1) begin\nif(in[0]==1)\nbegin\npos=2'b00;\nend\nelse if(in[1]==1)\nbegin\npos=2'b01;\nend\nelse if(in[2]==1)\nbegin\npos=2'b10;\nend\nend \nelse \npos=2'b00;\nend\n"
+    }
+  ],
+  "created": 1663333407,
+  "id": "cmpl-W3GQh3qJb1zC4k0w6GoFBHuABEvv4",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 105,
+    "prompt_tokens": 65,
+    "total_tokens": 170
+  }
+}

@@ -1,0 +1,84 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        present_state <= 0;\n        next_state <= 0;\n    end else begin\n        present_state <= next_state;\n        if (in) begin\n            next_state <= present_state;\n        end else begin\n            next_state <= present_state+1;\n        end\n        out <= present_state;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\t\tpresent_state <= 0;\n\tend\n\telse begin\n\t\tif (present_state == 0) begin\n\t\t\tif (in) begin\n\t\t\t\tpresent_state <= 1;\n\t\t\tend else begin\n\t\t\t\tpresent_state <= 0;\n\t\t\tend\n\t\tend else begin\n\t\t\tif (in) begin\n\t\t\t\tpresent_state <= 1;\n\t\t\tend else begin\n\t\t\t\tpresent_state <= 0;\n\t\t\tend\n\t\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n    if (reset) begin\n        present_state <= 0;\n        next_state <= 0;\n    end else begin\n        present_state <= next_state;\n        next_state <= present_state;\n        out <= present_state;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif (reset) begin\n\t\tpresent_state <= 0;\n\t\tnext_state <= 0;\n\t\tout <= 0;\n\tend\n\telse begin\n\t\tpresent_state <= next_state;\n\t\tnext_state <= present_state;\n\t\tout <= present_state;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        present_state <= 0;\n        next_state <= 0;\n    end else begin\n        present_state <= next_state;\n        next_state <= present_state;\n        if (in) begin\n            next_state <= present_state;\n        end else begin\n            next_state <= present_state + 1;\n        end\n        out <= present_state;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(reset) begin\n\t\tpresent_state <= 0;\n\t\tnext_state <= 0;\n\tend\n\telse begin\n\t\tif(present_state == 0) begin\n\t\t\tif(in) begin\n\t\t\t\tnext_state <= 0;\n\t\t\tend else begin\n\t\t\t\tnext_state <= 1;\n\t\t\tend\n\t\tend else begin\n\t\t\tif(in) begin\n\t\t\t\tnext_state <= 1;\n\t\t\tend else begin\n\t\t\t\tnext_state <= 0;\n\t\t\tend\n\t\tend\n\t\tout <= next_state;\n\t\tpresent_state <= next_state;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset) begin\n        present_state <= 0;\n        next_state <= 0;\n    end\n    else begin\n        present_state <= next_state;\n        next_state <= present_state;\n        if (in) begin\n            next_state <= present_state;\n        end\n        else begin\n            next_state <= present_state + 1;\n        end\n        out <= present_state;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif (reset) begin\n\t\tpresent_state <= 0;\n\t\tnext_state <= 0;\n\tend else begin\n\t\tpresent_state <= next_state;\n\t\tnext_state <= present_state;\n\t\tout <= present_state;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        present_state <= 0;\n        next_state <= 0;\n    end else begin\n        present_state <= next_state;\n        next_state <= present_state;\n        out <= present_state;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\t\tpresent_state <= 0;\n\t\tnext_state <= 0;\n\tend else begin\n\t\tif (present_state == 0) begin\n\t\t\tif (in) begin\n\t\t\t\tpresent_state <= 1;\n\t\t\t\tnext_state <= 1;\n\t\t\tend else begin\n\t\t\t\tpresent_state <= 0;\n\t\t\t\tnext_state <= 0;\n\t\t\tend\n\t\tend else begin\n\t\t\tif (in) begin\n\t\t\t\tpresent_state <= 1;\n\t\t\t\tnext_state <= 1;\n\t\t\tend else begin\n\t\t\t\tpresent_state <= 0;\n\t\t\t\tnext_state <= 0;\n\t\t\tend\n\t\tend\n\t\tout <= present_state;\n\tend\nend\n"
+    }
+  ],
+  "created": 1663534630,
+  "id": "cmpl-KnGDjrCr698aATlVfebQpmGtik0Fp",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1068,
+    "prompt_tokens": 148,
+    "total_tokens": 1216
+  }
+}

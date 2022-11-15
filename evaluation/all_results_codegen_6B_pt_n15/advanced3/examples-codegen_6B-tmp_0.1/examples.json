@@ -1,0 +1,119 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) next_state <= S1;\n\tif (x == 0) next_state <= S10;\n\tif (x == 1) next_state <= S101;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// The following is a finite state machine that recognizes the sequence 101 on the input signal x. \nmodule adv_fsm(\ninput clk,\ninput reset,\ninput x,\noutput z ); \nreg [1:0] present_state, next_state;\nparameter IDLE=0, S1=1, S10=2, S101=3;\n// output signal z is asserted to 1 when present_state is S101 \n// present_state is reset to IDLE when rset is high\n// otherwise it is assigned next state\n// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE\n// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE \n// if present_state is S10, next_state is assigned"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n  if (reset) next_state <= IDLE;\n  else if (x == 1) next_state <= S1;\n  else next_state <= IDLE;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n  if (reset) next_state <= IDLE;\n  else if (x == 1) next_state <= S1;\n  else next_state <= IDLE;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) next_state <= S1;\n\tif (x == 0) next_state <= S10;\n\tif (x == 1) next_state <= S101;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n  if (reset) next_state <= IDLE;\n  else if (x == 1) next_state <= S1;\n  else next_state <= IDLE;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) begin\n\t\tpresent_state <= S1;\n\t\tnext_state <= S10;\n\tend\n\telse begin\n\t\tpresent_state <= S10;\n\t\tnext_state <= S101;\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) begin\n\t\tif (reset == 1) next_state <= IDLE;\n\t\telse next_state <= S1;\n\tend else begin\n\t\tif (reset == 1) next_state <= IDLE;\n\t\telse next_state <= S10;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n  if (reset) next_state <= IDLE;\n  else if (x == 1) next_state <= S1;\n  else next_state <= IDLE;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n  if (reset) next_state <= IDLE;\n  else if (x == 1) next_state <= S1;\n  else next_state <= IDLE;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) next_state <= S1;\n\tif (x == 0) next_state <= S10;\n\tif (x == 1) next_state <= S101;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) begin\n\t\tnext_state <= S1;\n\tend\n\tif (x == 0) begin\n\t\tnext_state <= S10;\n\tend\n\tif (x == 1) begin\n\t\tnext_state <= S101;\n\tend\n\tif (x == 0) begin\n\t\tnext_state <= S101;\n\tend\n\tif (reset == 1) begin\n\t\tpresent_state <= IDLE;\n\t\tnext_state <= IDLE;\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) next_state <= S1;\n\tif (x == 0) next_state <= S10;\n\tif (x == 1) next_state <= S101;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nbegin\n\tpresent_state <= IDLE;\n\tnext_state <= IDLE;\n\tif (x == 1) next_state <= S1;\n\tif (x == 0) next_state <= S10;\n\tif (x == 1) next_state <= S101;\n\tif (x == 0) next_state <= S101;\n\tif (next_state == IDLE) next_state <= IDLE;\n\tif (next_state == S1) next_state <= S10;\n\tif (next_state == S10) next_state <= S101;\n\tif (next_state == S101) next_state <= IDLE;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n  if (reset) next_state <= IDLE;\n  else if (x == 1) next_state <= S1;\n  else next_state <= IDLE;\nend\n\n"
+    }
+  ],
+  "created": 1663520134,
+  "id": "cmpl-cew740NVmvrBihY7o8R0LT3wixZOX",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1317,
+    "prompt_tokens": 232,
+    "total_tokens": 1549
+  }
+}

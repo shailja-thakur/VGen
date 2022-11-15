@@ -1,0 +1,149 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk)\nr <= [63:0] (\n\tr[63:0] & {64'shifth}!(!ena & r[63:0] == r[63:0]));\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "    bool load = bool(load);\n    bool carry_count_only = bool(!!(amount & 2) && !bool(ea));\n    \n    if (load) \n    { \n        #(64, 63) io [63:0] q = data [63:0];\n        #(0) {\n        if (ena) q = 0; \n        else if (amount == 0 || amount == 2) q = q << 1; //{ handled by synthesis;\n        #}\n        #(0) {\n            for (int i = count ((~load) + 1); i > 0; --i) { \n                if (amount == 0 || amount == 2) q = q << 1; //{ handled by synthesis;\n                #(64, 64) io [63:0] val = !load ? (amount == 2 && i == 1 ? 1 : 1)"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nwire lena, lenb;\n\nassign lena = ena^1;\nassign lenb = amount & 1 ^ 1;\n\nalways @(posedge clk) begin\n    if (lena) {\n        q <= 64'h0;\n    } else if (lenb) { \n        q[63] <= 1;\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "    always @(posedge clk)\n    begin\n    q = data;\n    ena <== ~load;\n    ena <== ~ena;\n    if(~ena and amount == 2'b00)\n        q <= (data << 1);\n    else if(~ena and amount == 2'b10)\n        q <= (data >> 1);\n    else if(~ena and amount == 2'b20)\n        q <= (data >> 8);\n    else if(~ena and amount == 2'b30)\n        q <= (data << 8);\n    end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// DFF #1\n// Design a D flip-flop, add ports and signals to it as desired, \n// Sync-Load a storage register, testing both data and control signals.\n// As in: ordinary flip-flop with Normal operation. with SLFT 0. \n// (SLFT means SER flip-flop)\n\nmodule dff(input clk,\n      input  rising_edge_tdiff_1_2,\n      input  falling_edge_data_1_2,\n      input  rising_edge_tdiff_2_3,\n      input  falling_edge_data_2_3,\n      output d);\n// (ABCDEF)(ijk)(AHILKDJ)\n// . . . . . . . . . . . . . . . .\n\n// RDY #1\n// Read-enable synchronous clear operation during loading.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n \n\tif((load) && (ena)) begin\n\t\n\t\t// when load is high, assign data[63:0] to shift register q.\n\t\tq <= data[63:0];\n\t\t\n  end else if((load) && (1==amount)){\n    // Shifting left by 1bit\n\n\t\tq <<= 1;\n\t\tq |= (data[63:56] & 0x1);\n\t} else if((load) && (2==amount)){\n\t\t// Shifting left by 8 bits\n\n\t\tq <<= 8;\n\t\tq |= (data[56:43] & 0xff);\n\t} else if((load) && (3==amount)){\n\t\t// Shifting left by 1 bit\n\n\t\tq <<= 1;\n\t\tq |= (data[64:63] & 0x1);"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\n// The shifter will be enabled by selecting ena high.\n// ena is specified by sending a clk between 0 and 1,\n// and then quiting before a clk of 1.\nalways\n#0 {\n  if (ena) begin \n    // Hightogehter /Divider Register selects the scale of the output Q.\n    // Loadthe shift register selected by the selected amount to data.\n    q = data;\n    // Figure out the desired direction of the shifts, and select the direction byte.\n    q = q[63:62] +\n      q[61:56]  +\n      q[55:48]  +\n      q[47:40]  +\n      q[39:32]  +\n      q[31:24]  +\n      q[23:16]  +\n      q["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// Main logic\n    always @(posedge clk) begin \n        // See design comments for most of the following logic \n        if(ena > 0) begin \n            if (load > 0 && load_queue.count() == 1) begin\n                q <= data;\n            end else begin\n                if (amount == rdyl) begin\n                    q <-- data_load0;\n                end else begin\n                    if (amount == rdyr) begin\n                        q <-- data_load1; \n                    end\n                end\n            end\n        end\n    end\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "    // Particularly important property: amount selects the pin-level to shift into,\n    // so that shifting can be set \"instantaneously\".\n    // (2'b00 is equivalent to 1bit_a, and 2'b11 is equivalent to 8bit_a)\n    //\n    // For a shift register, not all values of amount can be high at once.\n    // For a shift register, not all values of amount can be high \n    // at once. If 0-shift is selected, the register has a default value \n    // and the shift register begins returning 0's. Shift registers can be \n    // unidirectional if clk remains low. The enable signal only affects \n    // the direction of the shift operation.\n    // SRL input is ignored by the hardware when a full shift register is \n    // read immediately after start-up. However, there is no synchronous load"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// Constructor, fills shift register, enables module.\n// clk = 0: load on rising edge.\n//       = 1: wait for load pulse, and shift on falling edge.\n// ena = 0: perform shift.\n//       = 1: enable shift \n// amount = Offset to arithmetic right. Valid value is [0:2].\n// [63:0] Output at shift register Q.\nfunction advshift(arguments) {\n/// Constructor that calls shift right.\nfunction ctor(clk, load, ena) { \n    return advshift(clk, load, ena, 2, 0, arguments[0]);\n}\n\n/// Shift left by 1 bit.\nfunction advshift(clk, load, ena, amount, data) {\n    if (typeof arguments[4] === \"undefined\") { arguments[4] = 0; }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nregall int my_register = 0;\n\nvisible main ()\n{\n  long value;\n  int amount;\n  value = data;\n  result = 0;\n// start visualization\n\n\nchar dataout;\n// Clock in Load command and store it in my_register. If load is high, read shift register q into my_register,\n//   and load shift register data%32 into my_register.\n// enable nops and wait for duration_swits of clocks, then assign value equal to my_register\n// \n// Clock in Shift command. Assign current value in my_register to dataout. Delay nops for duration_nops\n//   clocks, and latch dataout as the first word of the shift register (data%32). Store my_register in q.\n\n\n\n\n\n\n\n\n\n\n\n  while (1) {\n    if (!ena)\n      wait;\n    while"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": " /* Part of User_Interface accelerator's top level. */ \n  module reg [15:0];\n\n  (*(reg)), (()bitselect((!((*(clk)),0)), (ena, (reg(data), 1)), (una, (reg(data + 8), 1))));\n  (*(reg)), (()bitselect((!((*(clk)),1)), (ena, (reg(data + 8), 8)), (una, (reg(data + 16) , 8) \n#PACKAGE\n#UNPACKAGE\n             } )\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (ena) begin\n\t\tcase (amount)\n\t\tcase (amount[0]):\n\t\t} // end of selectic\n\t\tq <= data; // [63:0] << not(amount) | q[46:0];\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": " import go -> wire;\n`"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n// wire [19:0] i;\n// wire C[7:0] = i[7:0]; // specify which bits to cause an arithmetic left shift.\n// wire D[7:0] = i[15:8]; // specify which bits to cause an arithmetic right shift.\n// wire E[7:0] = i[23:16]; // specify which bits to cause an arithmetic right shift.\n// wire G[7:0] = i[31:24]; // specify which bits to cause an arithmetic right shift.\n// wire H[7:0] = i[39:32]; // specify which bits to cause an arithmetic right shift.\n// wire O[7:0] = i[47:40]; // specify which bits to cause an arithmetic right shift.\n// wire P[7:0] = i[55:48]; // specify which bits to cause an arithmetic right shift.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "    always @(posedge clk or negedge load) begin\n        if (ena && load) begin\n            q <= data[63:0];\n        end\n        if (amount[1]) begin\n            q <= q + 1;\n        end else if (amount[0]) begin\n            q[8:0] <= q[8:0] + 1;\n        end \n    end\nend\n`}\n"
+    }
+  ],
+  "created": 1663535955,
+  "id": "cmpl-jfocuCEwxUimhCFisWzskSPgXT62Y",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2323,
+    "prompt_tokens": 184,
+    "total_tokens": 2507
+  }
+}

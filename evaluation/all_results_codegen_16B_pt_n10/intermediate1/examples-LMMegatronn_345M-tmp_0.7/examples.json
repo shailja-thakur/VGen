@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nwire [2:0] g, p;\n\nassign {cout, sum} = a + b + cin;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nwire [3:0] g, p;\n\nxor x1(p[0], a[0], b[0], g[0]);\nxor x2(p[1], a[1], b[1], p[1]);\nxor x3(p[2], a[2], b[2], p[2]);\nxor x4(p[3], a[3], b[3], p[3]);\n\nand a1(g[0], a[0], b[0]);\nand a2(g[1], a[1], b[1]);\nand a3(g[2], a[2], b[2]);\nand a4(g[3], a[3], b[3]);\nor or1(cout, g[0], p[0], cin);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nwire [2:0] g, p;\n\nassign {cout,sum} = a + b + cin;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nwire [1:0] c;\n\nassign {c[0], c[1]} = a + b + c[0] + sum[0] + c[1] + sum[1];\nassign cout = (a&b&cin)|(a&b&cin);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nwire [3:0] c;\n\nassign {c[2:1], c[0]} = a + b + c[0] + c[3];\n\ngenvar i;\ngenerate\n    for(i = 0; i <= 3; i = i + 1)\n    begin : full_adder\n        full_adder fa(a[i], b[i], c[3],\n                         c[4], sum[i], c[3]);\n    end\nendgenerate\n\n"
+    }
+  ],
+  "created": 1663299314,
+  "id": "cmpl-FOnyVJ7LOtVnMBr3HT3Fz4UxV87FV",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 483,
+    "prompt_tokens": 43,
+    "total_tokens": 526
+  }
+}

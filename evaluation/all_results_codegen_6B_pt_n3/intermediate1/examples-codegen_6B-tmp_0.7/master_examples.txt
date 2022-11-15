@@ -1,0 +1,97 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+output half_adder.sum;
+output half_adder.carry;
+defines half_adder > ( a, b, cout, sum, carry );
+
+net half_adder_net =
+{ half_adder > ( a, b, cout, sum, carry ),
+  { cout, sum } };
+
+// The full adder is a sum and carry. A full adder adds two bits and produces a sum and carry-out.
+module full_adder( 
+input a, b,
+output cout, sum, carry );
+output full_adder.carry;
+output full_adder.sum;
+defines full_adder > ( a, b, cout, sum, carry );
+
+net full_adder_net =
+{ full_adder > ( a, b, cout, sum, carry ),
+  { cout, sum, carry } };
+
+//****************************************************************************80
+
+void run_
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+def half_adder( a, b, cout, sum ):
+    sum += a + b;
+    cout = ( a + b ) & 0x1;
+    return cout, sum;
+
+def main():
+    a = 0x3;
+    b = 0x4;
+    cout, sum = half_adder( a, b );
+    print( cout, sum );
+    assert( cout == 0x3 );
+    assert( sum == 0x7 );
+
+    a = 0x2;
+    b = 0x3;
+    cout, sum = half_adder( a, b );
+    print( cout, sum );
+    assert( cout == 0x2 );
+    assert( sum == 0x8 );
+
+    a = 0x1;
+    b = 0x0;
+    cout, sum = half_adder( a, b );
+
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+
+function carry_out_bit( cout, i );
+
+function carry_out_shift( cout, i );
+
+function sum_shift( cout, i );
+
+function carry_out_bit_and( cout, i );
+
+function carry_out_shift_and( cout, i );
+
+function sum_shift_and( cout, i );
+
+function carry_out_bit_or( cout, i );
+
+function carry_out_shift_or( cout, i );
+
+function sum_shift_or( cout, i );
+
+function carry_out_bit_xor( cout, i );
+
+function carry_out_shift_xor( cout, i );
+
+function sum_shift_xor( cout, i );
+
+module carry_out_adder(
+input a, b,
+output cout, sum, carry_out );
+
+module half_adder
+================================================================

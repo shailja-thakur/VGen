@@ -1,0 +1,256 @@
+example-0: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or posedge reset)
+begin
+ if(load)
+	out<=data;
+else
+	begin
+	out<={out[6:0],out[7]};
+	end
+end
+
+================================================================
+example-1: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or posedge reset)
+begin
+	if(reset)
+	begin
+	out = 0;
+	end
+	else
+	begin
+	if (load)
+	begin
+	out = data;
+	end
+	else 
+	begin
+	out = {out[6:0],out[7]};
+	case(amount)
+	3'b000: out = out;
+	3'b001: out = {out[5:0],out[6]};
+	3'b010: out = {out[4:0],out[5]};
+	3'b011: out = {out[3:0],out[4]};
+	3'b100: out = {out[2:0],out[3]};
+	3'b101: out = {out[1:0],out[2]
+================================================================
+example-2: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or posedge reset)
+if (reset)
+	begin
+	out <= 8'b00000000;
+	end
+else if (load)
+	begin
+	out <= data;	
+	end
+else 
+	begin
+	out <= {out[6:0],out[7]};
+	end
+
+================================================================
+example-3: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always@(posedge clk or posedge reset)
+begin
+	if(reset==1)
+	begin
+	out<=0;
+	end
+	else if(load==1)
+	begin
+	out<=data;
+	end
+	else
+	begin
+	out<={out[6:0],out[7]};
+	end
+end
+
+================================================================
+example-4: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk) 
+	begin
+	if (load)
+	out<=data;
+	else
+	begin
+	case(amount)
+	3'b000: out<=out;
+	3'b001: out<={out[6:0],out[7]};
+	3'b010: out<={out[5:0],out[6]};
+	3'b011: out<={out[4:0],out[5]};
+	3'b100: out<={out[3:0],out[4]};
+	3'b101: out<={out[2:0],out[3]};
+	3'b110: out<={out[1:0],out[2]};
+	3'b111: out<={out[0],out[1]};
+	endcase
+	
+================================================================
+example-5: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk)
+	begin
+	if (load) out<=data;
+	else
+	begin
+	case(amount)
+	3'b000: out<={out[6:0],out[7]};
+	3'b001: out<={out[5:0],out[6]};
+	3'b010: out<={out[4:0],out[5]};
+	3'b011: out<={out[3:0],out[4]};
+	3'b100: out<={out[2:0],out[3]};
+	3'b101: out<={out[1:0],out[2]};
+	3'b110: out<={out[0],out[1]};
+	3'b111: out<={out[7],out[0]};
+	
+================================================================
+example-6: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or posedge reset) begin
+	if(reset) begin
+	out <= 8'b0;
+	end
+	else if(load) begin
+	out <= data;
+	end
+	else begin
+	out <= {out[6:0],out[7]};
+	end
+end
+
+================================================================
+example-7: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or posedge reset)
+	begin
+	if(reset)
+	out<=0;
+	else if(load)
+	out<=data;
+	else
+	begin
+	case(amount)
+	3'b000: out<=out;
+	3'b001: out<={out[5:0],out[6]};
+	3'b010: out<={out[4:0],out[5]};
+	3'b011: out<={out[3:0],out[4]};
+	3'b100: out<={out[2:0],out[3]};
+	3'b101: out<={out[1:0],out[2]};
+	3'b110: out<={out[0],out[1]};
+	3'b111: out<=
+================================================================
+example-8: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or posedge reset)
+begin
+	if(reset)
+	begin
+	out<=0;
+	end
+	else if(load)
+	begin
+	out<=data;
+	end
+	else begin
+	out<={out[6:0],out[7]};
+	end
+end
+
+================================================================
+example-9: 
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+always @(posedge clk or posedge reset)
+	if(load) out <= data;
+	else begin
+	//$display($time,"amount=%d,data=%d,load=%d,out=%d",amount,data,load,out);
+	//$display($time,"amount=%d,data=%d,load=%d,out=%d",amount,data,load,out);
+	out <= {out[6:0],out[7]};
+	end
+
+================================================================

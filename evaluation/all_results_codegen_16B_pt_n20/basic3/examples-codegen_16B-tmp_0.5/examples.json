@@ -1,0 +1,138 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if (in[0]) pos <= 1'b0;\n  else if (in[1]) pos <= 1'b1;\n  else if (in[2]) pos <= 1'b2;\n  else if (in[3]) pos <= 1'b3;\n  else pos <= 1'b0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if (sel) pos <= in;\n  else pos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif( in[2] == 1 ) pos <= 1;\n\telse if( in[1] == 1 ) pos <= 2;\n\telse if( in[0] == 1 ) pos <= 3;\n\telse pos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if (sel)\n    pos <= in;\n  else\n    pos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  case(in)\n    0: pos <= 0;\n    1: pos <= 1;\n    2: pos <= 2;\n    3: pos <= 3;\n    4: pos <= 4;\n    5: pos <= 5;\n    6: pos <= 6;\n    7: pos <= 7;\n    8: pos <= 8;\n    9: pos <= 9;\n    10: pos <= 10;\n    11: pos <= 11;\n    12: pos <= 12;\n    13: pos <= 13;\n    14: pos <= 14;\n    15: pos <= 15;\n    16: pos <= 16;\n    17: pos <= 17;\n    18: pos <= 18;\n    19: pos <= 19;\n    20: pos <= 20;\n    21: pos"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n  if (sel == 1)\n    pos <= b;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @( posedge a or posedge b )\nbegin\n  if ( in[0] )\n  begin\n    pos <= 1;\n  end\n  else if ( in[1] )\n  begin\n    pos <= 2;\n  end\n  else if ( in[2] )\n  begin\n    pos <= 3;\n  end\n  else\n  begin\n    pos <= 0;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n    if(sel) pos <= in;\n    else pos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge reset) begin\n\tif (reset)\n\t\tpos <= 0;\n\telse if (in[1] == 1)\n\t\tpos <= 1;\n\telse if (in[0] == 1)\n\t\tpos <= 2;\n\telse\n\t\tpos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if (sel)\n    pos <= in;\n  else\n    pos <= a;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk)\nbegin\n  if (sel)\n    pos <= in[0];\n  else\n    pos <= in[1];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nassign out = ( sel & in ) | ( ~sel & pos );\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [3:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\n// When sel=0, assign a to out\nassign out = ( sel & in ) | ( ~sel & pos );\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [4:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\n// When sel=0, assign"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if (sel)\n  {\n    if (in[0]) pos <= 2;\n    else if (in[1]) pos <= 1;\n    else pos <= 0;\n  }\n  else\n  {\n    if (in[0]) pos <= 1;\n    else if (in[1]) pos <= 2;\n    else pos <= 0;\n  }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if (sel==1) {\n    pos <= in;\n  } else {\n    pos <= {in[1], in[0]};\n  }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n    if ( in[1] == 1 ) {\n        pos <= 1;\n    } else if ( in[2] == 1 ) {\n        pos <= 2;\n    } else if ( in[3] == 1 ) {\n        pos <= 3;\n    } else {\n        pos <= 0;\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if(sel)\n    pos <= in;\n  else\n    pos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge CLK)\nbegin\n  if (sel)\n    pos <= in;\n  else\n    pos <= 0;\nend\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\n// When sel=0, assign a to out\nalways @(posedge CLK)\nbegin\n  if (sel)\n    pos <= in;\n  else\n    pos <= 0;\nend\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n  if (sel == 1)\n    pos <= b;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  pos <= (in[0] | in[1]);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if(sel)\n    pos <= in;\n  else\n    pos <= a;\nend\n"
+    }
+  ],
+  "created": 1663535973,
+  "id": "cmpl-YnyVWIIQ2oyjsUUFw4iiHugweFXr5",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1653,
+    "prompt_tokens": 65,
+    "total_tokens": 1718
+  }
+}

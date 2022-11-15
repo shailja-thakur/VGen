@@ -1,0 +1,153 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [3:0] sig_last,sig_new,y;\n\nalways @(posedge clk) begin\n  switch (cur_state)\n    case IDLE:\n      if ((a == 1) && (b == 1)) next_state = SAB;\n      else if (a == 1) next_state = SA;\n      else if (b == 1) next_state = SB;\n      break;\n    case SA:\n      if (b == 1) next_state = SAB;\n      break;\n    case SB:\n      if (a == 1) next_state = SAB;\n      break;\n    case SAB:\n      case IDLE:\n    default:\n      sig_last = sig_new;\n      if (a == 1) sig_new = y + 1;\n      if (b == 1) sig_new ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg [1:0] state=[IDLE,SA,SB,SAB];\nreg [1:0] output;\nalways begin\noutput=0;\n// Set up state and outputs based on earlier state.\nnext_state = 0;\nif( ++cur_state[0] > 1 ){\nnext_state=0; // IDLE\n} else if( cur_state[1] == 1 && cur_state[0] == 0 ){\nnext_state=1; // SA\n} else if( cur_state[1] == 0 && cur_state[0] == 0 ){\nnext_state=2; // SB\n} else if( cur_state[1] == 1 && cur_state[0] == 1 ){\nnext_state=3; // SAB\n} \ncase(state){\ncase IDLE:\nif( a > 0 && b >"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (clk[1] && reset == 0)\nbegin\n  cur_state <= IDLE;\n  next_state <= IDLE;\n  z <= 1;\n  if (a == 1) \n  begin\n    next_state <= SA;\n    z <= 1;\n  end\n  else if (b == 1) \n  begin\n    next_state <= SB;\n    z <= 1;\n  end\n  else if (b == 1 && a == 1) \n  begin\n    next_state <= SAB;\n    z <= 1;\n  end\nend\n// Assign states of this FSM to cur_state or next_state.\nalways @ (posedge clk)\nbegin\n  if (ready != IDLE) begin\n    cur_state <= next_state;\n    next_state <= IDLE;\n  end\nend\nass"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "reg[1:0] state;\nreg [1:0] state_tmp1,state_tmp2;\nalways @ (posedge clk or posedge reset )\n\tif(clk)\n\t\tif(reset)\n\t\t\tcur_state = IDLE;\n\t\telse\n\t\t{\n\t\t\tif (a && b)\n\t\t\t{\n\t\t\t\tstate = SAB;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tif(a)\n\t\t\t\t{\n\t\t\t\t\tif(a || b)\n\t\t\t\t\t\tstate = SAB;\n\t\t\t\t\telse\n\t\t\t\t\t\tstate = SA;\n\t\t\t\t}\n\t\t\t\telse\n\t\t\t\t{\n\t\t\t\t\tif (b)\n\t\t\t\t\t{\n\t\t\t\t\t\tif (a)\n\t\t\t\t\t\t\tstate = SA;\n\t\t\t\t\t\telse\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tnext_state = SB;\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tnext_state = IDLE;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk, negedge reset) begin\n\tif (reset == 1) begin\n\t\tcur_state <= IDLE;\t// setting IDLE as default\n\tend\n\telse if(a == 1 && b == 1) begin\n\t\tcur_state <= SAB;\n\tend\n\telse if (a == 1) begin\n\t\tcur_state <= SA;\n\tend\n\telse if (b == 1) begin\n\t\tcur_state <= SB;\n\tend\t\n\telse if (cur_state == IDLE) begin\n\t\tcur_state <= IDLE;\n\tend\n\tnext_state <= cur_state;\n\tif (next_state == IDLE\n\t\tor next_state == SA\n\t\tor next_state == SB) begin\n\t\tz <= 1;\n\tend\n\telse if (next_state == SAB) begin\n\t\tz <="
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "reg [1:0] z_assigned;\nalways @(posedge clk):\n     if (reset):\n          z_assigned <= 0;\n\t  cur_state <= IDLE;\n\t  end\n     else\n          z_assigned <= 0;\n\t  next_state <= asl(~cur_state, {SA*(!~b),SAB*(!~b)*(!~a), SB*(!~a), SAB*(!~a)} ); //!!!\n          if ((cur_state == SAB) and (a & b))\n               cur_state <= IDLE;\n          if ((cur_state == SAB) and (a & !b))\n               cur_state <= SA;\n          if ((cur_state == SAB) and (!a & b))\n               cur_state <= SB;\n          if ((cur_state =="
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset, posedge a, posedge b){\n\tif (reset) {\n\t\tcur_state = IDLE;\n\t\tnext_state = IDLE;\n\t}\n\telse {\n\t\tnext_state = cur_state;\n\t\tif (IDLE == cur_state & b & a){next_state = SAB;}\n\t\tif (IDLE == cur_state & a){next_state = SA;}\n\t\tif (IDLE == cur_state & b){next_state = SB;}\n\t\tif (SA == cur_state & b){next_state = SAB;}\n\t\tif (SB == cur_state & a){next_state = SAB;}\n\t\tif (SAB == cur_state){next_state = IDLE;}\n\t\tif (SAB == cur_state & b){next_state = SAB;}\n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "logic [1:0] z;\n\nalways @(posedge clk) begin\n  cur_state <= next_state;\n  next_state <= cur_state;\n  // These messages are for updating z after the following signals a and b\n  // If both a and b are low, the output goes high, otherwise it goes low\n  if (cur_state == IDLE and a and b) begin\n    next_state <= SAB;\n    z <= 1;\n  end\n  else if (cur_state == IDLE and a) begin\n    next_state <= SA;\n    z <= 1;\n  end\n  else if (cur_state == IDLE and b) begin\n    next_state <= SB;\n    z <= 0;\n  end\n  else if (cur_state == SA and b) begin\n    next_state <= SAB;\n    z"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "reg [1:0] cur_request;\n\n// I am deleting the next two lines here because there will be multiple sources\n// for the command lines and read notifications\nalways begin\n    cur_request <= {a,b};\n    cur_state <= SAB;\n    next_state <= cur_state; \nend\n\nalways begin\n    if (cur_request )#\n    cur_state <= next_state;\nend\nend\n\n\n// Abort when cin == 0\nalways #5 begin\n    if (a) begin: wait_for2 #4, !clk\n    else begin : wait_for3 #4, !clk\n    z <= 1 ;\n    next_state <= IDLE;\n    wait;\nend\nend\n\n\n\n// If #4 is ready, it sets cur_request to 0; \nmodule hdlVerChk;\n    input"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @({clk,reset}) begin\n\tif (reset) begin\n\t\tcur_state <= IDLE;  // Idle state corresponds to all signals of both ports being high.\n\t\tnext_state <= IDLE;\n\t\tz <= 0;\n\tend\n\telse begin\n\t\tz <= 1;\n\t\tnext_state <= cur_state;\n\t\tif (a && b) begin\n\t\t\tcur_state <= SAB;\n\t\tend\n\t\telse begin\n\t\t\tif (cur_state == IDLE)  // Idle state corresponds to a and b both high.\n\t\t\tbegin\n\t\t\t\tif (a) begin\n\t\t\t\t\tcur_state <= SA;  // Idle state corresponds to only signal a being high.\n\t\t\t\tend if (a && b)\n\t\t\t\tif (b) begin\n\t\t\t\t\tcur_state <= SB; // Idle state corresponds to only signal b being high.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "// The state machine always outputs yield_ACK when 2 is received\nreg[1:0] yield_ACK;\nalways@(posedge clk)\nFILE @ \"../verilog/abro.v\";\n\tif (cur_state == IDLE)                          {\n\t\tif (!reset) {\n\n\t\t\tif ((a && b)) {\n\t\t\t\tnext_state = SAB;\n\t\t\t}\n\t\t\telse {\n\t\t\t\tnext_state = cur_state;\n\t\t\t}\n\t\t} else {\n\t\t\tnext_state = IDLE;\n\t\t}\n\t}\n\telse if ((cur_state == SA && !b)) {\n\t\tnext_state = SB;\n\t}\n\telse if ((cur_state == SB && !a)) {\n\t\tnext_state = SA;\n\t}\n\telse if (cur_state == SAB && !b&&!a) {\n\t\tnext_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\ncase(cur_state)\nidle:\n   if (a == 1 && b == 1) { cur_state <= SAB;     z <= 1;}\n   else if (a == 1 || b == 1){ cur_state <= IDLE;}\nendcase\nend\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "reg z,ediit;\nalways @(posedge clk) begin\n\tswitch(state()) {\n\t\tcase IDLE: \t\tz <= 0;\n\t\t\t\t\t\t\t\t\tif(a && b)\n\t\t\t\t\t\t\t\t\t\t\tnext_state <= SAB;\n\t\tcase SAB:\tediit <= 1;\n\t\tcase A:\tif(a)\n\t\t\t\t\t\t\t\t\tnext_state <= SA;\n\t\t\t\telse\n\t\t\t\t\t\t\t\t\tz <= 1;\n\t\tcase SA:\tif(b)\n\t\t\t\t\t\t\t\t\tnext_state <= SB;\n\t\tcase B:\tif(b){\n\t\t\t\t\t\t\t\t\tnext_state <= SAB;\n\t\t\t\t\t\t\t\t\tediit <= 0;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t\tnext_state <= IDLE;\n\t\tcase SB:\tif(a){\n\t\t\t\t\t\t\t\t\tnext_state <= SAB;\n\t\t\t\t\t\t\t\t\tediit <= 0;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t\tnext_state <= IDLE;\n\t}\n\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "assign z = state;\nalways @(posedge clk) begin\n  if (reset) begin cur_state <= IDLE; end\n  else begin\n    if (a && b) begin\n      cur_state <= SAB;\n      next_state <= IDLE;\n    end\n    if (a) port_order = SA; else be port_order;\n    if (b) port_order = SB; else be port_order;\n    next_state <= cur_state;\n    if (next_state > IDLE) begin state <= cur_state; cur_state <= next_state; end\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n // I want to check that ab>0, if ab>0, I want to stay in SAB, if not\n// I want to change to SA, other wise I stay in SB\nif (a == 1) begin\n cur_state <= SAB;\nend\nelse if (b==1) begin\n cur_state <= SAB;\n end\nelse if (a==0 && b==0) begin\n next_state <= SA;\n end\nelse if (a==1 && b==0) begin\n next_state <= SA;\n end\nelse if (a==0 && b==1) begin\n next_state <= SB;\n end\nelse if (a==1 && b==1) begin\n next_state <= SAB;\n end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @* begin\n  cur_state <= IDLE;\n  if (a == b) begin\n    z <= cur_state = SB;\n  end\n  else begin\n    if (cur_state == IDLE) begin\n      if (a) begin\n        z <= cur_state = SA;\n      end\n      else begin\n        z <= cur_state = SB;\n      end\n    end\n    else begin\n      if (a & b) begin\n        z <= cur_state = SAB;\n      end\n      else begin\n        z <= cur_state = cur_state;\n      end\n    end\n  end\nend  \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "// Busy unit last when cur_state is IDLE and output is high\n// Busy unit first when cur_state is SB and output is high\nreg [1:0] state;\nalways @(posedge clk)\nbegin\n    // wait for a completion for a few clocks or for a reset\n    if (state[state_idx] == IDLE)\n    begin\n    case (cur_state[state_idx], cur_state[other_state_idx])\n    case (SA, IDLE)\n        z <= 0;\n        go  next_state[state_idx];\n        next_state[state_idx] <= IDLE;\n        nobusy <= 1;\n        dontcare <= 1;\n   default:\n        z <= 0;\n    endcase;\n// reset implemented here.\n    case (IDLE, RESET)\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin \n    if ((reset & cur_state) == 0 && cur_state != IDLE) next_state <= IDLE;\n    else if (a && b && cur_state <= SAB) next_state <= SAB;\n    else if (a && cur_state <= SB) next_state <= SB;\n    else if (b && cur_state <= SA) next_state <= SA;\n    else next_state <= IDLE;\n    if (next_state != cur_state)\n    {\n        if (next_state == SA) next_state <= SB;\n        else if (next_state == SB) next_state <= SA;\n        cur_state <= next_state;\n    }\n    if (cur_state > IDLE)\n    {\n        switch (cur_state) {\n            case SA:\n            case"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif ( event==1 ) begin\n\t\tif ( disable_transition ) begin\n\t\t\t// No transition to attempt\n\t\tend else begin\n\t\t\tif ( a&&b ) begin\n\t\t\t\t// New state is SAB\n\t\t\t\tnext_state\t<= SAB;\n\t\t\t\t// Keep x strap off\n\t\t\t\tcur_state\t<= SA;\n\t\t\tend else if ( a ) begin\n\t\t\t\t// New state is SA\n\t\t\t\tnext_state\t<= SA;\n\t\t\t\t// Enable x strap (but keep it off)\n\t\t\t\tcur_state\t<= IDLE;\n\t\t\tend else if ( b ) begin\n\t\t\t\t// New state is SB\n\t\t\t\tnext_state\t<= SB;\n\t\t\t\t// Keep x strap off\n\t\t\t\tcur_state\t<= IDLE;\n\t\t\tend else begin\n\t\t\t\t// Cannot happen\n\t\t\t\tnext_state\t<= 0;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "reg  z = 0;\nalways @(posedge clk or posedge reset)\nwrite z\n# @(* next_state = mine*)\n# @(* cur_state = mine*)\nbegin\n  if (!reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n  end\n  else begin\n    switch (cur_state)\n    case IDLE:\n      if (a) begin\n        if (b) begin\n          z <= 1;\n          cur_state <= SAB;\n          next_state <= SAB;\n        end\n        else begin\n          z <= 1;\n          cur_state <= SA;\n          next_state <= SA;\n        end\n      else begin\n        z <= 1;\n        cur_state <= SB;\n        next_state <= SB;\n      end\n    case SA:\n      if (b)"
+    }
+  ],
+  "created": 1663535684,
+  "id": "cmpl-dqeTfAkmKNUVCR9B2CfTweM1WfARd",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3758,
+    "prompt_tokens": 218,
+    "total_tokens": 3976
+  }
+}

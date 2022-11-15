@@ -1,0 +1,89 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @( posedge clk )\t\n\tbegin\n\tif (ena)\n\tbegin\n\tcase(amount)\n\t2'b11: q <= { q[62:0], 1'b0 };\n\t2'b10: q <= { q[55:0], 8'b0 };\n\t2'b01: q <= { q[63], q[63:1] };\n\t2'b00: q <= { q[64], q[63:8] };\n\tendcase\n\tend\n\tif (load)\n\t//q <= data;\n\tq <= {data[63],data[63:8]};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n\tbegin\n\tif(load)\n\t q <= data;\n\t else if(ena)\n\t begin\n\t case(amount)\n\t 2'b00: \tq <= {q[62:0],1'b0};\n\t 2'b01: \tq <= {q[55:0],8'b0};\n\t 2'b10: \tq <= {q[63],q[63:1]};\n\t 2'b11: \tq <= {q[63],q[63:8]};\n\t endcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk) \n\tbegin\t\n\tcase(amount)\n\t2'b00: \tq <= {q[62:0],1'b0};\t// Shift left by 1 bit.\n\t2'b01:\tq <= {q[55:0],8'b0,1'b0};\t// Shift left by 8 bits.\n\t2'b10:\tq <= {q[63],q[63:1]};\t// Shift right by 1 bit.\n\t2'b11:\tq <= {q[55:0],8'b0,q[63:8]}; // Shift right by 8 bits.\n\tendcase\n\tend\n \n// Flip the bit if that was actually a shift right.\t\n\tif(amount==2'b10)\n\tbegin\n\tq[63:56] = q["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n\tbegin\n\tif(load) \n\tq=data; \n\telse if(ena)\n\tbegin\n\tcase(amount)\n\t2'b00: \tq<={q[62:0],1'b0};\n\t2'b01:\tq<={q[55:0],8'b0,1'b0};\n\t2'b10:\tq<={q[63],q[63:1]};\n\t2'b11:\tq<={q[63],q[63:8]};\n\t//\t{A[0],A[63:1]};\n\tendcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (load) \n\tq <= data; \n\telse if (ena) begin \n\tcase(amount) \n\t2'b00:\n\tq <= q << 1;\n\t2'b01:\n\tq <= q << 8;\n\t2'b10:\n\tq <= q >> 1;\n\t2'b11: \n\tq <= q >> 8;\n\tendcase\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\n\tbegin \n\tif (load)\n\tq <= data; \n\telse if (ena)\n\tq<={q[62:0],1'b0};\nend \n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk)\nbegin\n\tif (load)\n\tbegin\n \n\t//advshift(amount[0],data[63],q[63:1]);\n\t#1;\n\tq <= {data[0],data[63:1]};\n\tend\n\telse if (ena)\n\tbegin\n\t\n\t/*\tif (amount == 2'b00)\n\tbegin\n\tadvshift(amount[0],data[63],q[63:1]);\n\tq[0] = data[0];\n\tend\n\telse if (amount == 2'b01)\n\tbegin\n\tadvshift(amount[0],data[63:1],q[63:1]);\n\tq[63:1] = data[63:1];\n\tend\n\telse if (amount == 2'b10)\n\tbegin\n\tadv"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\nif (load)\n\tq <= data;\nelse if (ena)\n\tq <= q << amount;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": " \nalways @ (posedge clk)\nbegin\nif(load)\nq<=data;\nelse if (ena)\nq<={q[62:0],1'b0};\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\n\n always @ (posedge clk)\n\tbegin\n\tif (load)\n\tq <= data[63:0];\n\telse if (ena)\n\tbegin\n\tcase(amount)\n\t2'b00:\tq <= q<<1'b1;\n\t2'b01:\tq <= q<<1'b8;\n\t2'b10:\tq <= q>>1'b1;\n\t2'b11:\tq <= q>>1'b8;\n\tendcase\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663600384,
+  "id": "cmpl-hpTZTVcHuRWdvoFs6Jjc0NRfW8V8C",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1246,
+    "prompt_tokens": 184,
+    "total_tokens": 1430
+  }
+}

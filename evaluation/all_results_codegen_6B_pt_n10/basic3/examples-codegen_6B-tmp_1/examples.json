@@ -1,0 +1,78 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge enable, \"old_state\", \"old_val\")\n         begin\n           if in == 0b01 then pos <= pos + 1 else disf <= pos + 1;\n\t   else if in == 0b10 then disf <= pos;\n           else disf <= pos + 1;\n\t   old_state <= in;\n           old_val <= in << 2;\n         end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "prior s1\ts2\ts3\tpos = in;\nbegin\n\t// If we don't have any of the inputs, tristate everything wide and we'll just leave\n\t// the output level at zero. This is even faster.\n\twhen( in='1')\ts1 = '1';\n\twhen( in='0')\ts1 = '0';\n\twhen( in=='1' && reg[1]=='0' && reg[0)\ts1 = '0';\n\twhen( in=='1' && reg[1]='1')\ts1 = '0';\n\twhen( in=='0' && reg[1]=='1' && reg[0)\ts1 = '0';\n\twhen( in=='0' && reg[1]=='0')\ts1 = '1';\n\twhen( in=='"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge i)\n  if (sel) pos <= cPRESS <= cZERO;\n// The inputters don't know which pins are assigned to them.\n// We could specify the pins from a dedicated priority encoder,\n// but we'll set up the pins to the inputter directly, meaning\n// it's simpler to do the following:\nalways @ (posedge clk or negedge i)\n  begin\n    input[0] <= a <= input[1];\n  end\nend\n`\n\tres := computeRoute(grammar, TEST_PIN_1)\n\n\tassert.Equal(t,\n\t\t[]byte{\n\t\t\t0x00,\n\t\t\t0x00},\n\t\tres.Final)\n\n\tassert.Equal(t, []byte{0x08, 0x01}, res.Route[len(res.Route)-1]."
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "priority_encoder p( select( out[sel] ), select( in[sel] ) );\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "extern priority_encoder priority_encoder_sel (\ninput [1:0] lsel,\ninput logic [2:0] sel,\noutput reg [2:0] out );\n// Mask of sel<4\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst)\n  if (rst == 1)\n  begin\n  \tpos <= 0;\n  end\n    else if (sel)\n    begin\n        pos <= b;\n    end\n;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "before( reg [2:0] b, sel=1/1 ) { assign reg [b] pos; }\n\n#------------------------------------------------------------------------------\n# Hex InCoder.  Encrypts binary signal Fb using 08/04/08 Hi and Lo registers.\n#------------------------------------------------------------------------------\nmodule in_coder( in [7:0] p, out [2:0] b, inout reg [3:0] hl );\n\nbefore( reg [2:0] b )\n{\n# For the CBMC47 maps, flip some bits to have some reflectance.\n# NB: bitstream should be AND-ed with inputs.\n#   Do not AND with Clock Out tag.\nassign hl = flip_bits( p, {32,48,56,64,72,80,88,96,103,111,119,126,134,\n   142,150,158,166"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst)\n  if(sel)\n    pos <- logic_not(input);\nend\n''')\n\ndef string(out,data):\n  if not(isinstance(data,list)):\n    data = [ord(char) for char in data]\n  out.init = data\n  if len(data) > 0 and data[0] != 0:\n    data = map(lambda x: x | 128,data)\n\ndef main(args):\n  # Open the Slave device\n  # Slacc.slacc('init')\n  \n  def encode(function, a, b):\n    if libSlave.slave.getReg(interface.SENSOR_REG_FUNCTION,False) != function:\n      libSlave.slave.setRegs(interface.SENSOR_REG_FUNCTION"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk or ((sel == 0) && (in == 1))) begin\n  if(sel==1) begin\n  \tsel = 0; \n  \tor(pos, in[3]);                 \t// Write lowest bit of input to priority encoder position latch.\n  \tsignal priority_hbit;           \t// Write Last signal approximated as input with 0-1 bit high.\n  \tif(~priority_hbit) begin           \t// Because data-edge triggering, write latch bit to reg.\n    \t#5 bit pos;\n      \tbit_clear reg[1:0];            \t\t// Fill reg with zero, ie priority encoder (missing) is off.\n      \t#0 to_right 8;\n  \tend\n  endelse begin\n  \tsel = 1;                       \t// Data bit level set as new Input respective high-output.\n  \tbit"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst) begin\n  if sum(in[0]) < 32'h00 then \n    pos = 0;\n  else \n    pos = in[0] < 32'h10 ? in[0] >> 1 : 1;\nend\n"
+    }
+  ],
+  "created": 1663519993,
+  "id": "cmpl-b2Gh1mxLQ8HUNAoWlK4IWeN6MNhmI",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1306,
+    "prompt_tokens": 65,
+    "total_tokens": 1371
+  }
+}

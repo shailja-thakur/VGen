@@ -1,0 +1,119 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "  always @ (posedge clk)\n  begin\n    next_state <= ((x==1) ? S101 : IDLE );\n    \n    present_state <= ((x==1) ? S101 : IDLE ) ;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n\nbegin\n\t// declare vars and clock\n\tunsigned int i, j;\n\talways @(posedge clk or negedge reset)\n\t begin\n\t  \tidle_logic 0 <= i <=97 && i <= 122;\n    \t\tidle_logic j <= 32 && j <= 126;\t\n\t\t// z <= 1 when the even bit 7 is set\n\t\tif(i<=110&&i>=98&&j<=32) {z <= '1';}\n\t\telse { z <= '0';}\t\n\t end\n\n\t// assign inputs\n\tassign present_state = IDLE;\n\tassign next_state = IDLE;\n\tassign x = '0';\n\t// none-unlikely conditions\t\n\tif (i == 97) {next_state = S10; x = '1';}\n\tfor(i=97"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// Comment in the final .vhd file\nclock clk;\n\nend BehavioralFsm;\n\narchitecture BehavioralFsm of BehavioralFsm is\nbegin\n  component clk_ck with behavior 'hold_value 63 FF';\n - inherent clk <= clk_ck, reset <= clk_ck;\n end BehavioralFsm;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": " \nassign next_state = S1; // to propagate the sign bit\nSC_CTOR( fsm )\n{\n  SC_THREAD( c );\n}\n\n\n\n\nalways @() begin\n  if (reset) {\n    next_state = IDLE;\n    present_state = IDLE;\n  }\n  endswitch;\n\n\n\n\n\n \n\n\nalways @() begin\n  if (next_state == IDLE) {\n    if (x) next_state = S1;\n  }\n  else if (next_state == S1) {\n    if (x) next_state = S10;\n  }\n  else if (next_state == S10) {\n    if (x) next_state = S101;\n  }\n  else if (next_state == S101) {\n    next_state = IDLE;\n    z"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nmodule xlator\n(\n  input clk,\ninput reset,\ninput a,\noutput x, \noutput z, \noutput thor,\noutput thor_ack,\noutput adc,\ninput x_bits,\ninput q,\ninput p\n);\n\nxlator x;   \n// submodule xlat\ninterface(\n integer_input clk,\n integer_input reset,\n integer_output x )\n{  \n\n  x <= a;\n};\n\nmodule(\n  ALIGNED (x, 64)\n  real_output x_tmp,  \n  real_output thor_tmp,\n  real_output adc_tmp, \n  input xA,   \n  input xB,\n  input xA_bit,\n  input xB_bit,\n  input V_adc\n ) \n \n// submodule xlat\n{  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "  tck <= clk;\n\n  case (IDLE+S1): tck? \n    next_state = S10; \n    if( x == 0 ) next_state = S101; \n    present_state = IDLE; \n    z <= next_state;\t\n    return;\n\n  case (S101+S10): tck? \n    present_state = S1; \n    next_state = IDLE;\n    if( x == 1 ) next_state = S101; \n    z <= next_state;\n    return;\n\n  default: deadlock\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\nbegin \n\n\tpresent_state = IDLE;\n\tnext_state = IDLE;\nend\n\nbegin \n\tassert z == 0;\n\tif (x == 1) {\n\t\tif (next_state != IDLE) throw \"Error: previous state was not Idle\"; \n\t\tnext_state = S1;\n\t}\n\tif (next_state == S1) {\n\t\tif (x == 0) {\n\t\t\tpresent_state = next_state;\n\t\t\tnext_state = IDLE;\n\t\t\tz = 1;\n\t\t}\n\t}\n\tif (next_state == S10) {\n\t\tif (x == 1) {\n\t\t\tpresent_state = next_state;\n\t\t\tnext_state = IDLE;\n\t\t\tz = 0;\n\t\t}\n\t}\n\tif (next_state == S101) {\n\t\tif (x =="
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// Clk and Reset pins of the ADS (Aio Module)\n\nassign clk=1'b1, reset=1'b0, z=1'b0;\n\ninitial begin\n  if (x=0) begin //clear resets\n    next_state=IDLE;\n    present_state=IDLE;\n  end\n  if (x=1) begin //clear resets\n    next_state=S1;\n    present_state=IDLE;\n  end\n  if (present_state==IDLE) begin // handle data\n    z<=(next_state=S101) ? z=1'b1: z=1'b0;\n    next_state=idle;\n    present_state=next_state;\n    if (present_state==IDLE) next_state=S1;\n  end\n  if (present"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\n        //assert(next_state == IDLE);\n                if(x == 0) // reset needs to be asserted by the outside world\n                {\n                    if (reset == 1)\n                    {\n                        next_state = IDLE;\n                        present_state = IDLE;\n                    }\n                }\n                else // otherwise it must be controlled from the outside world\n                {\n                    if (x == 1) \n                    {\n                        if (present_state == S10)\n                        {\n                            next_state = S1;\n                            present_state = S1;\n                        }\n                        else if (present_state == IDLE)\n                        {\n                            next_state = S1;\n                            present_state = S1;\n                        }\n                        else if (present_state == S101)\n                        {\n                            next_state = IDLE;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "  always @(posedge clk)\n  begin\n    if (reset)\n    begin\n      next_state <= IDLE;\n      present_state <= IDLE;\n    end\n    // here is block 1\n    if (next_state == S1)\n    begin\n      next_state <= S10;\n      if (x == 0)\n      next_state <= IDLE;\n    end\n    // here is block 2\n    if (next_state == S10)\n    begin\n      next_state <= S101;\n      if (x == 0)\n      next_state <= IDLE;\n    end\n    // here is block 3\n    if (next_state == S101)\n    begin\n      next_state <= IDLE;\n    end\n  end\nend\n\n/*\n \n          S1 (0)                s1 (1)\n        "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n    if (reset) next_state = IDLE;\n    else next_state <= present_state;\n    if (x == 1 and next_state == IDLE) next_state <= S1;\n    if (x == 0 and next_state == SIDLE) next_state <= S101;\n    if (x == 0 and next_state == S1 and y == 0) next_state <= S10;\n    if (x == 1 and next_state == S10 and y == 1) next_state <= S101;\n    if (next_state == S1) z <= 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": " \\n\n //\\ tsInstance tsInstance ( );\n //\\ tsBehavior(\n//\\ .ownership(BUILTIN)\n//\\ .initial_state(IDLE)\n//\\ .state_transitions\n//\\ .\\tS1\\t\\>S10\\n\n//\\ .\\tS10\\t\\>IDLE\\n\n//\\ .\\tS101\\t\\>S101\\n\n//\\ )\\n\nadvanced_fsm_hdl(\n clk, \n reset, \n x, \n z );  \nendcase\nendbehavior\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": " always @(posedge clk or negedge reset)\n    if(reset) next_state=IDLE;\n\telse if(x==0) next_state=IDLE;\n\telse next_state=(present_state & S1) | ((~present_state) & S10);\n\tif(next_state!=IDLE) present_state=next_state;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "  always @(posedge clk)\n\tif (next_state == IDLE)\n\t{\n\t\tnext_state = (present_state >= IDLE) ? S1\t\t\t: IDLE;\n\t\tif (present_state < IDLE)\n\t\t{\n\t\t\tnext_state = (next_state == S1) ? S10: next_state;\n\t\t\tif (next_state != IDLE)\n\t\t\t\tnext_state = x ? S101 : IDLE;\n\t\t}\n\t\tif (next_state == S101)\n\t\t{\n\t\t\tnext_state = IDLE;\n\t\t}\n\t}\n\telse\n\t{\n\t\tnext_state = x ? S101 : IDLE;\n\t\tif (next_state == IDLE)\n\t\t{\n\t\t\tnext_state = present_state;\n\t\t}\n\t}\n\t\n\tassign z = {} next_state"
+    }
+  ],
+  "created": 1663520155,
+  "id": "cmpl-YkO6D5hHG3EGg9svvxuU96H5yyYfB",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2269,
+    "prompt_tokens": 232,
+    "total_tokens": 2501
+  }
+}

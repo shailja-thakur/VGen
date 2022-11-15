@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nhalf_adder(0,1,cout,sum);\nhalf_adder(1,0,cout,sum);\nhalf_adder(1,1,sum,cout);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nfunction half_adder_gate( \ninput a, b ) {\n    wait();\n    a = a & 1;\n    b = b & 1;\n    // The carry is the value of the last bit of a + b.\n    sum = a + b;\n    // Carry is the bit that carries.\n    carry = sum & 1;\n    if ( a == 1 ) {\n        // Carry is 1 if a == 1, 0 otherwise.\n        carry = carry + 1;\n    }\n    else {\n        // Carry is 0 if a == 0, 1 otherwise.\n        carry = carry - 1;\n    }\n    // The output is the sum or the carry.\n    cout = sum + carry;\n}\n\n\n\n\n// The full adder adds two bits and produces a sum and carries the carry out.\nmodule full_adder( \ninput a, b,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nnet half_adder_net = {\n\t.half_adder = half_adder,\n\t.inputs = 2,\n\t.outputs = 2\n};\n\nfunction half_adder( \ninput a, b,\noutput cout, sum ) {\n\tsum = a + b + sum;\n\tcout = sum;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nfunction half_adder_half_adder( a_in, b_in, cout_out, sum_out );\nfunction half_adder_half_adder( a_in, b_in, cout_out, sum_out )\n  cout_out <= sum_out(0) + a_in + b_in;\nend half_adder_half_adder;\nend half_adder;\nendadder;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n#define D_FORMAT \"%d:%d\\n\"\n\nvoid half_adder(\ninput a, b,\noutput cout, sum )\n{\n    for( int i = 0; i < 8; i++ )\n        sum <<= 1;\n    \n    sum += a + b;\n    cout << sum;\n    if( sum < 128 )\n        cout << \" \";\n    else\n        cout << \"\\n\";\n}\n\nint main()\n{\n    half_adder( 0x01, 0x10, cout, sum );\n    half_adder( 0x00, 0x00, cout, sum );\n    half_adder( 0x11, 0x00, cout, sum );\n    half_adder( 0x00, 0x11, cout, sum );\n    half_adder( 0x00, 0x00, cout"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nfunction sum() {\n  var a1 = a;\n  var b1 = b;\n  var sum = 0;\n  var carry = 0;\n  while(1) {\n    // Carry out the half adder adding bits from a1 and b1.\n    if( b1 == 0 ) {\n      carry = a1;\n      break;\n    }\n    sum = sum + b1;\n    // If the sum is complete, stop.\n    if( sum == 0x7f ) {\n      break;\n    }\n    // Else, move on to the next bit in b1.\n    a1 = ( a1 & 0x00ff ) << 1;\n    b1 = ( b1 & 0x00ff ) << 1;\n    \n    // Compute the next half adder.\n    if( b1 & 0x0080 ) {\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\noutput_wire cout;\n\nalways @(posedge clk)\n  sum <= sum + a + b;\n\nalways @(posedge clk)\n  cout <= sum[31];\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\nfunction half_adder_out( cout, sum )\n    return (a+b + 2*cout) mod 2^12;\n\nhalf_adder( \na, b,\ncout, sum );\n\nfunction half_adder_sum( a, b )\n    return a+b + 2*cout;\n`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\nmodule half_adder2( input a,\noutput cout, sum );\n\n// This is a full adder. A full adder adds the two inputs, \n// and produces the sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\nmodule full_adder2( input a, b,\noutput cout, sum );\n\n// These are the half-adders for each of the 8-bit values.\nmodule half_adder_1( input a, \noutput cout, sum );\n\nmodule half_adder_2( input a, \noutput cout, sum );\n\nmodule half_adder_3( input a, \noutput cout, sum );\n\nmodule half_adder_4( input a, \noutput cout, sum );\n\nmodule half_adder_5( input a, \noutput cout, sum );\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\nassign sum = a + b;\n\n"
+    }
+  ],
+  "created": 1663520009,
+  "id": "cmpl-1WOfPcxcI14dyirgB2DCAv0GFXduf",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1163,
+    "prompt_tokens": 43,
+    "total_tokens": 1206
+  }
+}

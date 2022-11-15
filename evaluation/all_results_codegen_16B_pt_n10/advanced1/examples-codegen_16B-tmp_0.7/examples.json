@@ -1,0 +1,86 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nsigned_adder(a=0x09, b=0x05, s=0x0b, overflow=0);\n\n// $signed_adder(0x09, 0x05, 0x0b, 0);\n\n// $signed_adder(0x0a, 0x05, 0x0b, 1);\n\n// $signed_adder(0x09, 0x05, 0x0a, 2);\n\n\n\n\n\n\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow);\n\n// Test Cases\n\n// a = 0, b = 0, s = 0, overflow = 0\n\n// a = 15, b = 15, s = 15, overflow = 0\n\n// a = 0, b = 15, s = 15, overflow = 1\n\n// a = 15, b = 0, s = 15, overflow = 1\n\n// a = 15, b = 15, s = 0, overflow = 0\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nsigned_adder(a,b,s,overflow)\n{\n    s = s + a;\n\n    if(a == 0x80 && b == 0x80)\n        overflow = 0;\n    else if(s < a)\n        overflow = 1;\n    else if(s > 0x7f)\n        overflow = 1;\n    else\n        overflow = 0;\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nsigned_adder(a,b,s,overflow);\n\n// The output s is the sum of a and b. \n// The output overflow is the signed overflow of a and b.\n\n// The signed adder accepts multiple inputs and multiple outputs. \n// The inputs are provided as array a, b, and s. \n// The number of inputs is given in the num_inputs parameter. \n// The outputs are provided as arrays a, b, s, and overflow. \n// The number of outputs is given in the num_outputs parameter. \n// The sizes of a, b, s, and overflow are all num_inputs. \n\n// The signed adder accepts the following parameters: \n// num_inputs is the number of inputs, in this case 2 \n// num_outputs is the number of outputs, in this case 4 \n// a is an array"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// Implementation\n\n// The adder is implemented as a two-level adder.\n// A two-level adder is made of two adders.\n// The first adder adds the high order half of the input a and b to the high order half of the result s.\n// The second adder adds the low order half of the input a and b to the low order half of the result s.\n// The two adders are both implemented as two two-level adders with additional components.\n// The first adder is implemented in a bit-sensitive fashion.\n// The second adder is implemented in a bit-blind fashion.\n// The additional components of the first adder, a[7:0]_high and a[15:8]_high, and the additional components of the second adder, b[7:0]_high and b[15:8]_high, are not used by the"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow);\n\n\n// The following is the body of signed_adder:\n\nsigned_adder(a, b, s, overflow) begin\n    // The most significant bit of a and b are compared to determine a signed overflow.\n    // If the most significant bits of a and b are low then no signed overflow occurs.\n    // If the most significant bits of a and b are high and the most significant bit of s is low then signed overflow occurs.\n    // If the most significant bits of a and b are high and the most significant bit of s is high then no signed overflow occurs.\n\n    if ((a[7] == 0) && (b[7] == 0)) begin\n        // No signed overflow occurs.\n        s[7] = a[7] + b[7];\n        s[6] = a[6] + b[6];\n        "
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow);\n\n// Assign the result of the addition to the output register s. \n// It is guaranteed that a and b are not signed overflow and that s is not signed overflow.\n// overflow is assigned in two cases: \n// if a and b have a different sign, or \n// if the most significant bits of a and b are the same and s is not all-ones \n\nsigned_adder(a, b, s, overflow);\n\n// Assign the result of the addition to the output register s. \n// It is guaranteed that a and b are not signed overflow and that s is not signed overflow. \n// overflow is assigned in two cases: \n// if a and b have a different sign, or \n// if the most significant bits of a and b are the same and s is not all-ones \n\nsigned_adder("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nsigned_adder(a[7:0], b[7:0], s[7:0], overflow);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "    // if a signed overflow occurs, set s to 0 and set the overflow signal to true\n    if( (a[7] == 0) && (b[7] == 0) && (s[7] == 1) )\n        s = 0;\n    // if a signed overflow does not occur, set s to a + b and set the overflow signal to false\n    else\n        s = a + b;\n\n"
+    }
+  ],
+  "created": 1663534493,
+  "id": "cmpl-59oXgaQHfldqiRbwm976vUR2dKvVw",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1233,
+    "prompt_tokens": 164,
+    "total_tokens": 1397
+  }
+}

@@ -1,0 +1,82 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (load)\n    out = data;\n  else\n    out = data << amount;\nend\n);\n// SPI master receive and transmission\nmodule spi_master_rx(clk,reset,data_in,data_out,clock);\ninput clk,reset;\ninput [7:0] data_in;\noutput [7:0] data_out;\n// receive and send data\nalways_comb\nbegin\n  if (clk)\n    data_out = data_in;\nend\n// transmit data\nalways_comb\nbegin\n  if (clk)\n    data_out = data_in;\nend\n);\n\n// Test the output of the left shift operation\nmodule test_left_shift(clk,reset);\ninput clk,reset;\ninput [7:0] data;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign load = (out[7] >> 7) & 1;\nassign out = left_shift(out, amount) << 7;\nassign out = out | (out[7] >> data);\n\n// left shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by left shift the out register by amount bits\nassign load = (out[7] >> 7) & 1;\nassign out = right_shift(out, amount) << 7;\nassign out = out | (out[7] >> data);\n\n// left shift and rotate operation\nmodule left_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk,posedge reset)\n  if (load)\n  {\n    out = data;\n  }\n  else\n  {\n    out = data >> amount;\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (load)\n    out = data;\n  else\n    out = out << amount;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @ (clk, reset)\nbegin\n    if load == 1'b0 then begin\n        // load the data into the out register\n        out <= data;\n    end else begin\n        // rotate the data by amount bits and then shift the out register by amount bits\n        out <= left_rotate_shift(data, amount);\n    end\nend\n\nalways @(clk,reset)\nbegin\n    if (reset == 1) begin\n        amount <= 0;\n        out <= 0;\n    end else begin\n        if (clk == 1) begin\n            // invert the result if the input is a negative number\n            if (amount == 0) out <= amount;\n            else out <= amount;\n        end\n    end\nend\n\nalways @(clk,reset)\nbegin\n    if (reset == 1) begin\n        amount <= 0;\n        out <="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (load)\n  {\n    // write to out register every time\n    out = data;\n    // load data into out register every time\n    data = load;\n  }\n  else\n  {\n    // rotate the out register\n    out = (data << amount) | (data >> (32 - amount));\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "assign load = !load;\nassign [7:0] out = (data << amount) | (load ? (data >> (32-amount)) : 0);\n\n// constructor\nfunction top_constructor()\n{\n  // set clock to low\n  clk = 0;\n  // set reset to high\n  reset = 1;\n  // set amount to 0\n  amount = 0;\n  // set data to 0\n  data = 0;\n  // set load to low\n  load = 0;\n  // return a register with all bits set to 1\n  out = 0xFFFFFFFF;\n}\n\n// destructor\nfunction top_destructor()\n{\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "assign load = (load && out) ? 1'b0 : 1'b1;\nassign out = (load && out) ? data : out << amount;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "wire [7:0] load_out;\nalways @ (posedge clk or posedge reset)\nbegin\n  if (load)\n    load_out = data;\n  else\n  {\n    // rotate the out register\n    out = (out << amount) | (out >> (32-amount));\n    // left shift the out register by amount bits\n    out = (out << amount);\n  }\nend\nend\nend\nend\n"
+    }
+  ],
+  "created": 1663540210,
+  "id": "cmpl-3e0DLtHxN7scUc80okciojf8oRzT9",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1075,
+    "prompt_tokens": 94,
+    "total_tokens": 1169
+  }
+}

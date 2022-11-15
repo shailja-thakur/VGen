@@ -1,0 +1,42 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign out=(present_state==1'b1)^(in);\nalways @(posedge clk or posedge reset)\n\tif(reset)\n\tbegin\n\tpresent_state<=2'b0;\n\tnext_state<=2'b0;\n\tend\n\telse\n\tpresent_state<=next_state;\nalways @(present_state or in)\ncase(present_state)\n2'b0: if(in)\nnext_state<=2'b1;\nelse\nnext_state<=2'b0;\n2'b1: if(in)\nnext_state<=2'b1;\nelse\nnext_state<=2'b2;\n2'b2: if(in)\nnext_state<=2'b3;\nelse\nnext_state<=2'b0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign out = present_state & (in ^ next_state);\nalways @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tpresent_state <= 0;\n\telse\n\tpresent_state <= next_state;\n\tend\nalways @(present_state or in)\n\tbegin\n\tnext_state = 0;\n\tif (present_state == 0 & in)\n\tnext_state = 1;\n\telse if (present_state == 1 & ~in)\n\tnext_state = 0;\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign out=(present_state==1)^(in);\nalways @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tpresent_state<=0;\n\telse\n\tpresent_state<=next_state;\n\tend\nalways @(present_state or in)\n\tcase(present_state)\n\t0: if(in)\n\tnext_state<=0;\n\telse\n\tnext_state<=1;\n\t1: if(in)\n\tnext_state<=1;\n\telse\n\tnext_state<=0;\n\tendcase\n"
+    }
+  ],
+  "created": 1663306596,
+  "id": "cmpl-T1Vfum2o1EZkQNGtCflr9kt46jq5i",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 475,
+    "prompt_tokens": 148,
+    "total_tokens": 623
+  }
+}

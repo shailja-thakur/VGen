@@ -1,0 +1,139 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": " \n\nalways @( posed(\"id_ar148.dat\"), posed(\"id_ar152.dat\") )\n  begin \n    if (sel == 0) {\n      out = a; \n    } else if (sel == 1) { \n      out = b; \n    }\n    return out; \n  end\n\nmodule nvco_demo();\n\nalways @ack_demo read level;\n\nfifo( in_val ); \ntez( out_val ); \n\nwire [4:0] mips; \nwire [61:0] ram; \n\nalways @clock\n  if ( level == 0 )\n    mips = in_val;\n  else\n    ram[63-level] = in_val;\n\nalways @clock\n  if ((level & 0xf) == 0) \n    mips[level"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nsig i()\n{\n  nilled = a;\n  frac = ~a;\n  reader1r = frac >> 2;\n  reader2m = frec >> 2;\n}\n\nsig j(), I()\n{\n  nilled = b;\n  frac = ~b;\n  arch = frac >> 2;\n}\n\nsig o()\n{\n  o1 = out(1);\n  o2 = out(2);\n  o3 = out(3);\n}\n\nwire [4:0] ina = d\r\n  {\r\n  {in1pin, ina[1]},\r\n  {~in1pin, ina[2]},\r\n  {~in1pin, ina[3]},\r\n  {~in1pin, ina[4]}\r\n  }\r\n\r\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a to b. \n// When sel=3, assign a and b to out.\n\ninitial begin   \n\nout = a||b||a||b;\n    \n// bla is the multiplexed input vector with index 1 and even bit\n// bla13 is input vector with index 1 and odd bit\n// dac value is the DAC output mapped to multiplexed input one bit\n// dac value can be: bla1, bla2, bla3, bla3, or blank\ndac minVal(3);\ndac maxVal(4);\ndac selectVal(3);\ndac val;\n\nout = selectVal||minVal||maxVal||(a&dac)||(b&dac);\n    \nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// When sel=2, do not assign anything to output.\n// When sel=3, do not assign anything to output.\n\n// TODO: Generate the interrupt logic.  Setup interrupt registers and a\n// function [val] external writing arg0.\n// Register 4 reads from a interrupt provider.  There are 8 bit 38x4 \n// 0:100 bases in the interrupt register.  The low nibble is for the\n// highest numbered interrupt, 0x08 through 0x38, including bit 0.  \n// 0x80 is for the lowest nibble of the interrupt register, the top bit.\n// Args 0 and 1 are: int value (0-31 k Hz), register at step or 'sel'\nclock [23:0] int0_clk;\nclock [23:0] tclk;\nwire [4:0]   int2_reg;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nassign { out[3] = a[3]; a[3] = a[2]; }\nassign { out[2] = a[2]; a[2] = a[1]; }\nassign { out[1] = a[1]; a[1] = a[0]; }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": " \n\nwire one_bit;\n\ninitial out <= 0;\ninitial out <= sel;\n\nalways @(posedge clk1)\n    // When a is clocked, toggle the one-bit state.\n    out[4] = ~out[4];\n    one_bit = (sel == 0) AND (out[4] == 0);\n\nalways @(posedge clk2)\n    // When b is clocked, target all 1s in the data register.\n    if (sel == 0)\n        a[4] = 1;\n    else\n        b[4] = 1;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": " \n// Every other cycle wins. \n\npredicate mem_rams_c_ram1(unsigned[4:0] w, unsigned[] m) =\n    (m[1:0]>0 | w[2:0]==0) & \n    (w[3:0]>0 | w[2:0]==0) &\n    m[2:0]==4+m[0];\n\ninitial begin\nif (!(sel=0) && a[3:0]) begin \n    a[3:0] <= m[4:0]; \n    out <= a[3:0];\n  end\nelse if(sel = 1 && a[2:0]) begin \n    a[2:0] <= m[3:0]; \n    out <= a[2:0];\n  end\n\n    \nend\n);\n\ninitial begin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": " \nconstexpr int inputs     [] = {4, 0, 0, 4}; \nconstexpr int input_sels[] = {1, 0, 1, 1};\nconstexpr int outputs[]   = {0, 4, 4, 0}; \nmodule new_layer(\ninputs [4:0] a, b,\ninputs [4:0] out_a, out_b );\n\ninputs out_a;\n\n\n   // Instantiate an arbitrary number of multiplexers.\nmodule top_module(\ninputs [4:0] a, b,\ninputs [4:0] out_a, out_b );\nmodule side_module(\ninputs [4:0] a, b,\ninputs [4:0] out_a, out_b );\n.\n// Each top_module feeds a needle *TERMALLY* to side_module."
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\n// Physical semantics: sel signals an inversion-state for every three\n// bits of a. \nalways @(not a[3]) begin\n  sel <= 1;\n  if (not b[3]) b <= invert(if (sel == 0 at 0) out else aout);\n  if (not b[0] and not b[1] and not b[2] and not b[3]) sel <= 0;\nend\n\n// Ivy semantics: \"the bitwise inverse of sel, mod 4, inverts the state of the input.\"\nalways @(not a[3]) begin\n  sel <= 1;\n  if (not b[0]) b <= if (sel == 0 at 0) out else aout;\nend\n\n// Communication -- always aplies to one of the inverts\nwire aout [9:0];\nwire sout [4"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// when sel=2 (3), assign 0 to out.\n// when sel=3 (2), assign 1 to out.\nalways @(posedge clk) begin\n    using out = (sel == 1) ? a : (sel == 2) ? b : 0;\n    @(posedge clk) out <= 1;\nend\n\ndigout mz = x;\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": " \n\nalways @(posedge  clk )\n// assign input a to out\n    if ( a[sel] == 31 ) // $\n           {out = 0b1;}\n    else if ( $0 ) // not $\n           {out = a[sel]}\n    else\n           {out = 0b0}\n}\n\nalways @( )\n// assign input b to out\n   if ( $0 ) {out = b}\n   else {out = $}\n\n`\n)\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "   \n\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.   \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nconstant SEL_BEGIN = 0;\nconstant SEL_B = 1 << 1;    // Valid values: 0 to 3\nconstant SEL_E = 1 << 3;    // Valid values: 0 to 3 \nconstant SEL_B_B = SEL_B | 0x1;\nconstant SEL_B_E = SEL_B | 0x2;\nconstant SEL_E_B = SEL_E | 0x1;\nconstant SEL_E_E = SEL_E | 0x2;\nconstant MPDR = 63;\n// Design buttons for entering quanta values.\nconstant A_B_ON = 0x1;\nconstant A_B_OFF = 0x0;\nvar A_B;\n// Design buttons for entering quanta values.\nconstant E_B_ON = 0x2"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nwire [4:0] a_sel, b_sel, out_sel;\ninitial begin\n\nout_sel <= 0;\nout_sel <= b_sel?(a_sel):(b_sel);\nend\n\nalways @(sel) begin\n    out_sel <= 0;\n    if (a[4:0]==0x01) out_sel <= 0b11000000 ;\n    if (b[4:0]==0x01) out_sel <= 0b10100000 ;\n    a_sel <= a[4:0];\n    b_sel <= b[4:0];\nend\n\n// Get rid of this.\n// Out input vector, lines [4:0] of input vector.\ncout [4:0] out;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": " \nreg [3:0] out;\nalways @(posedge ua,posedge ub) startup \n{ \n  if(ua && ub){\n    out <= {((sel=='010'), a), ((sel=='001'), b)}; \n  }\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nassign out = ~sel;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n// Locate out based on sel value.\n\nwire fifo_fbar;\nwire fifo_cbar;\n\ninput [8:0] dataa;\ninput rd_a;\ninput /rd_a_n count;\ninput [8:0] datab;\ninput rd_b;\ninput /rd_b_n count;\ninput [9:8] id;\ndout rd_b_n;\n\n//note xor seems totally incorrect\ninput [197:0] data;\ninput rd_z;\ninput /rd_z_n count;\n\nfunction increment_rd_z();\n{\n    //rd_z_n + count = 1;\n    if (count>0) incr(rd_z_n); //stop fsh_z from increasing its counter when one is above proper upper bound (let pulse happen between"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign anand(a,b) to out. \n\nmux\nassign out[4:0] = if(sel.v==0, a, b);\nassign out<3, 4> = out>=15       => 0;\nassign out<4, 4> = out>=16       => 0;\n\nwire sel2, a2, b2, out2;\n\n// design an 8-to-8 multiplexer\nmodule mux2( \ninput [8:0] a, b, \ninput sel2,\noutput [8:0] out );\n\n\nmux2\nassign [8:0] out[8:0] = if(sel2.v==0, a, b);\n\nassign out<6, 5> = out>=80       => 0;\nassign"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": " \nreg [4:0] x, y; \nalways@ (*b == 0 * or *b == 7 * b);\nalways@ (*a == 0 * or *a == 7 * a);\nalways@ x == 0 and y == 0;\nalways@ x == 2\tand y == 2;\nalways@ x == 2 and y == 0;\nalways@ x == 0\tand y == 2;\nNOBLK ( \n  select  sel;\n  out : x = read(b, 0); \n  out : y = read(b, 1); \n);\n);\nboot \n{\n+\tawait rgb_blk(RGB, var buf)\n  { anf(col) == 7\n  {\n  CODE: mod 34\n  \tvec a = \t{ 4, 5, 6, 7,\n  6,  7,  5"
+    }
+  ],
+  "created": 1663537890,
+  "id": "cmpl-9STqvdI2QhHR5XsLOMPBWdrZbJTjW",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2898,
+    "prompt_tokens": 70,
+    "total_tokens": 2968
+  }
+}

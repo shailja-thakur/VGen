@@ -1,0 +1,44 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "  wire [7:0] s_a = -a;\n  wire [7:0] s_b = -b;\n  wire [7:0] s_c = -c;\n  wire [7:0] s_d = -d;\n  wire [7:0] s_e = -e;\n  wire [7:0] s_f = -f;\n\n  assign s = a*b;\n  assign overflow = a[15] ^ carry[15]; \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "  wire carry_1;\n  wire was_1;\n  addsub the_comparator_add3 (a[0],b[0],carry_1);\n  addsub the_compare_3_3 (a[1],b[1],carry_1);\n  addsub the_compare_2_2 (a[2],b[2],carry_1);\n  addsub the_compare_2_1 (a[3],b[3],carry_1);\n  \n  and (overflow,carry_1,~overflow);\n  and (underflow,carry_1,overflow);\n  and (overflow,rslt_out,rslt_out_tmp);\n  or (inf,carry_1,logical_out,carry_1not);\n  not (logical_out_1,logical_out_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "  wire [7:0] s2 = a & b;\n  assign s = a | b;\n  assign overflow = s2[7];\n  \n"
+    }
+  ],
+  "created": 1663299192,
+  "id": "cmpl-LM3w4GU6uYgFOVDvg5t7N9tXkHj1T",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 355,
+    "prompt_tokens": 164,
+    "total_tokens": 519
+  }
+}

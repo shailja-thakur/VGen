@@ -1,0 +1,49 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nreg  [4:0] out;\n\nalways @(a, b, sel)\n\tcase (sel)\n\t\t1'b0: out = sel? a : b;\n\t\t1'b1: out = sel? b : a;\n\tendcase\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nwire sel_mux;\nreg [4:0] out;\n\nalways @ (sel or sel or in0 or in1 or in2 or in3 or in4 or in5)\n\ncase(sel_mux)\n\t0 : out = in0;\n\t1 : out = in1;\n\t2 : out = in2;\n\t3 : out = in3;\n\t4 : out = in4;\n\t5 : out = in5;\n\t6 : out = in6;\n\t7 : out = in7;\n\t8 : out = in8;\n\t9 : out = in9;\n\t10: out = {in10, in11, in12, in13, in14, in15};\n\t11: out = in10;\n\t12: out = in11;\n\t13: out = in12;\n\t14:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": " \n// * #5 is asserted, and the output becomes 'x' so that the\n// has allones are active\n/*\nmux2 mux_in0( .a(a[0]), .b(b[0]), .sel(sel), .y(out[0]) );\nmux2 mux_in1( .a(a[1]), .b(b[1]), .sel(sel), .y(out[1]) );\nmux2 mux_in2( .a(a[2]), .b(b[2]), .sel(sel), .y(out[2]) );\nmux2 mux_in3( .a(a[3]), .b(b[3]), .sel(sel), .y(out[3]) );\nmux2 mux_in4( .a(a[4]), .b(b[4]),"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " \n// when sel=2,\nreg [4:0] out;\n\nalways @(a or b or sel)\n\tcase (sel)\n\t\t1'b0: out = a;\n\t\t1'b1: out = b;\n\tendcase\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": " \n// BecauseIl=0, are mapping from mux. \nwire [1:0] sel_mux;\nmux mux_1_1(a[0], b[0], sel, out[0], sel_mux);\nmux mux_2_1(a[1], b[1], sel_mux, sel_mux);\nmux mux_3_1(a[2], b[2], sel_mux, sel_mux);\nmux mux_4_1(a[3], b[3], sel_mux, sel_mux);\nmux mux_5_1(a[4], b[4], sel_mux, sel_mux);\nmux mux_6_1(a[5], b[5], sel_"
+    }
+  ],
+  "created": 1663299285,
+  "id": "cmpl-rAGeEBx4Z4hfQpgB8BVS8JsZfsJvr",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 737,
+    "prompt_tokens": 70,
+    "total_tokens": 807
+  }
+}

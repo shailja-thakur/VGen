@@ -1,0 +1,33 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ ( negedge rst or posedge clk ) begin\n\tif(rst == 1'b1)\n\tbegin\n\t r_reg <= 5'b0000_11_1_1;\n\tend\n\telse\n\tr_reg <= r_next;\n\tend\nassign r_next = r_reg == 5'b1010_11_1_1 ? r_reg : \nr_reg ^ {shift_string[4] ^, shift_string[3:0]};\nassign feedback_value = {r_reg[3:0],r_reg[4] ^ r_reg[4] ^ r_reg[4] ^, \nr_reg[4] ^ r_reg[4] ^ r_reg[2] ^ };\nwire checksum_flag = (r_reg[4] ^ e_4_c)"
+    }
+  ],
+  "created": 1663606670,
+  "id": "cmpl-RKjs3FhVJ3kAupbSb95QRODM0HBvM",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 155,
+    "total_tokens": 355
+  }
+}

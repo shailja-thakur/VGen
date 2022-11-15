@@ -1,0 +1,146 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "    assign s = (a & b) | (a ^ ~b);\n    assign overflow = (a[7] == 0x01 && b[7] == 0x01);\n    assign overflow = (a[7] == 0x01 && b[7] == 0x01) || (~s == 0x80);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nsigned_adder signed_adder = [7:0] s [7:0], overflow [1:0];\n\n// The first input is a and the second input is b. The output is s and the output overflow. \nassign {s, overflow} = {a + b, a[7] + b[7]}; \n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "    s[7:0] = a[7:0] + b[7:0];\n    overflow = ((a[7:0] & b[7:0]) | ((a[7:0] == 0) & (b[7:0] == 0)));\n    overflow = (s[7:0] & (~0)) | (a[7:0] & b[7:0]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "    assign s = a + b;\n    assign overflow = (a[7:0] < 0 && b[7:0] < 0 && s[7:0] > 0) || (a[7:0] > 0 && b[7:0] > 0 && s[7:0] < 0);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow); \n\n// Implement your adder function in the module.\n//\n//\n//\n// Your adder function should return a signed value of type [7:0].\n//\n// The adder function should return s[7:0] and overflow in a tuple with two values.\n//\n//\n// The first value of the tuple should be the value of s[7:0] before the addition was performed.\n//\n// The second value of the tuple should be 0 if no signed overflow occurred, 1 if a signed overflow occurred, and -1 if both a and b were negative and the most significant bit of s was 1.\n//\n//\n//\n//\n//\n//\n// Example 1:\n//\n// Input: a = [15], b = [0], s = [0], overflow = [0]\n// Output: [15],"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "   overflow = (a[7] == b[7]) && ((a[7] == s[7]) || (s[7] == 0));\n   s[7] += a[7];\n   s[6] += a[6] + b[6];\n   s[5] += a[5] + b[5];\n   s[4] += a[4] + b[4];\n   s[3] += a[3] + b[3];\n   s[2] += a[2] + b[2];\n   s[1] += a[1] + b[1];\n   s[0] += a[0] + b[0];\n\n\n// Assign the overflow sign bit to the bit position in the most significant bit position of the output s.\n\n   overflow = (s[7]==0) && ((s[6]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "    signed_adder begin\n    \n        //s <= a + b\n        s <= a + b\n        //if s[msb] = 1 and a[msb] = 1 then s[msb] = 1\n        //if s[msb] = 0 and a[msb] = 1 then s[msb] = 0 \n        //if s[msb] = 0 and a[msb] = 0 then s[msb] = 0\n        //overflow = 1\n        //overflow <= a[msb] and b[msb] and s[msb]\n        //overflow <= a[msb] and b[msb]\n        //overflow <= a[msb] and s[msb]\n        //overflow <= b[msb] and s[msb]\n        //overflow <= a[msb]\n        //over"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nint a, b, s, ovf;\n\nsigned_adder(a,b,s,ovf);\n\n// a = +0\n// b = +0\n// s = +0\n// ovf = 0\n\n// a = +127\n// b = +127\n// s = +127\n// ovf = 0\n\n// a = +128\n// b = +128\n// s = -128\n// ovf = 1\n\n// a = -128\n// b = -128\n// s = -128\n// ovf = 1\n\n// a = -127\n// b = -127\n// s = -127\n// ovf = 0\n\n// a = -127\n// b = -127\n// s = -127\n// ovf = 0\n\n// a = -1\n// b = -1\n// s = -127\n// ovf ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// Implementation\n\n// The algorithm works by adding the two numbers, then checking the most significant bit of the result.  If the most significant bit is zero, the result is positive and no signed overflow occurs.  If the most significant bit is one, the result is negative and a signed overflow occurs.  The algorithm works by shifting one of the inputs by one bit and adding the two numbers.  The most significant bit of the result is shifted out to the output and the result is tested for a sign.\n\nsigned_adder(a, b, s, overflow)\n{\n  assign(overflow, a[0] == b[0] && a[1] == b[1] && a[2] == b[2] && a[3] == b[3] &&\n         a[4] == b[4] && a[5] == b[5] && a[6] == b[6]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nassign s = (a + b) & 0xFF; //overflow \n\n//assign s = a + b;\n//assign s = a - b;\n//assign s = a * b;\n//assign s = a / b;\n//assign s = a % b;\n//assign s = a << b;\n//assign s = a >> b;\n//assign s = a & b;\n//assign s = a | b;\n//assign s = a ^ b;\n\n\n//overflow = (a == 0x80 | b == 0x80 | s == 0x80) | ((a == 0x7F | b == 0x7F | s == 0x7F) & (a & b & 0x80 == 0x80) & (a & ~b & 0x80 == 0x80)) | ((a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n//The algorithm of the signed adder is based on the following: \n\n//Assume a[7:0] and b[7:0] are unsigned integers and s[7:0] is a signed integer. \n//Let a1, a2, a3, a4 be the four most significant bits in a[7:0]. \n//Let b1, b2, b3, b4 be the four most significant bits in b[7:0]. \n//Let s1, s2, s3, s4 be the four most significant bits in s[7:0]. \n//Let a12, a13, a14 be the three least significant bits in a[7:0]. \n//Let b12, b13, b14 be the three least significant bits in b[7:0]. \n//Let s12, s13, s14 be the three least significant"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nassign s = (a + b);\nassign overflow = ((a[7] == 0) && (b[7] == 1) && ((s[7] == 0) || (s[7] == 1)));\n\"\"\"\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nsigned_adder signed_adder_instance(.a(a),.b(b),.s(s),.overflow(overflow));\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow); \n\n$display(s); \n$display(overflow); \n\n===========================================================================\n$finish\n\n===========================================================================\n\n// ----------------------------------------------------------------------------\n// Copyright (C) 2014 Bloomberg Finance L.P.\n//\n// Licensed under the Apache License, Version 2.0 (the \"License\");\n// you may not use this file except in compliance with the License.\n// You may obtain a copy of the License at\n//\n//     http://www.apache.org/licenses/LICENSE-2.0\n//\n// Unless required by applicable law or agreed to in writing, software\n// distributed under the License is distributed on an \"AS IS\" BASIS,\n// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n// See the License for the specific language governing permissions and\n// limitations under the License"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nassign s = (a[7:0] + b[7:0])[7:0];\n\nassign overflow = (a[7] == b[7]) && (a[7] == s[7]) && a[7:0] + b[7:0] > 255;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n// Implement the signed adder. \n// The binary representations of a and b are signed numbers, meaning that the most significant bit of each number is a one.\n// A signed overflow occurs when the most significant bit of s is one. The least significant bit of s is zero.\n// The signed overflow condition is only true if the most significant bit of a and b are low and the most significant bit of s is high. \n\n\nsigned_adder(a, b, s, overflow);\n\n\n// Test cases\n\na=0b00001111;\nb=0b00001100;\ns=0b00000000;\noverflow=0;\n\nsigned_adder(a, b, s, overflow);\n\n// s=0b11111111\n// overflow=1\n\na=0b11111111;\nb=0b11111110;\ns=0b11111111;\noverflow=0;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nsigned_adder:\n    assign s = a + b;\n\n    // signed overflow occurs if a and b are signed and s is signed and the most significant bit of a or b is high and\n    // the most significant bit of s is low\n    if ((a[7:0] and b[7:0]) == 1'b0 and s[7:0] == 1'b1) {\n        overflow = 1'b1;\n    } else {\n        overflow = 1'b0;\n    }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "    assign s[7:0] = a[7:0] + b[7:0]\n    assign overflow = ( a[7] == 0 && b[7] == 0 && s[7] == 0 ) ||\n              ( a[7] == 1 && b[7] == 1 && s[7] == 1 ) ||\n              ( a[7] == 0 && b[7] == 1 && s[7] == 0 ) ||\n              ( a[7] == 1 && b[7] == 0 && s[7] == 1 )\n              \n\n// The signed adder adds two numbers and returns an overflow flag. \n// The output of the adder is the sum of the two inputs a and b \n// and the overflow flag is set to true if the most significant bit is 1 and to false if the most significant bit is 0.\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "    s = a + b;\n    if (a[7] > b[7])\n        overflow = 1;\n    else\n        overflow = 0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nsigned_adder\n    assign {s, overflow} = {\n        a + b, \n        a > 0x7f && b > 0x7f\n    };\n"
+    }
+  ],
+  "created": 1663535517,
+  "id": "cmpl-y8Ix4V8dsAmQJQzGax8YQq0Cfr3D4",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2691,
+    "prompt_tokens": 164,
+    "total_tokens": 2855
+  }
+}

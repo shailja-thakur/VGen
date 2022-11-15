@@ -1,0 +1,54 @@
+// This is a ram module
+module ram
+(
+input [7:0] data,
+input [5:0] addr,
+input we, clk,
+output [7:0] q
+);
+reg [7:0] ram[63:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign q = ram[addr];\nalways @ (posedge clk) begin\n    if (we)\n        ram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign q = ram[addr];\n\nalways @(posedge clk)\nbegin\n\tif (we)\n\t\tram[addr] <= data;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n  if (we)\n    ram[addr] <= data;\nend\n//assign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n    if (we)\n        ram[addr] <= data;\nend\nassign q = ram[addr];\n// assign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "initial\nbegin\n    $readmemh(\"ram.data\", ram);\nend\nassign q= ram[addr];\n\n// write enable is high and reset is low\nalways @(posedge clk)\nbegin\n    if (we)\n        ram[addr] <= data;\nend\n\n"
+    }
+  ],
+  "created": 1663299316,
+  "id": "cmpl-67EP1vGstQgbKXZhB1KYGJqAW8kxR",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 266,
+    "prompt_tokens": 85,
+    "total_tokens": 351
+  }
+}

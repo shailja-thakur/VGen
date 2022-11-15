@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(present_state or x or reset)\nbegin\nif (reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways @(present_state or x)\nbegin\ncase (present_state)\nIDLE: begin\nz = 1'd0;\nif (x == 1) next_state = S1;\nelse next_state = IDLE;\nend\nS1: begin\nz = 1'd0;\nif (x == 0) next_state = IDLE;\nelse next_state = S10;\nend\nS10: begin\nz = 1'd0;\nif (x == 1) next_state = IDLE;\nelse next_state = S101;\nend\nS101: begin\nz = 1'd1;\nif (x == 0) next_state = IDLE;\nelse next"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// fsm_table is used to store the next_state according to the present_state\n// the combinatorial logic of the present_state and next_state is created using the combinatorial logic of the present_state\n// the combinatorial logic of the present_state is created as follows\n// if present_state is IDLE, the combinatorial logic is:\n// present_state = x\n// next_state = (x ===1) ? S1 : IDLE\n// if present_state is S1, the combinatorial logic is:\n// present_state = x\n// next_state = (x ===1) ? S10 : IDLE\n// if present_state is S10, the combinatorial logic is:\n// present_state = x\n// next_state = (x ===1) ? S101 : IDLE\n// if present_state is S101, the comb"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\n\nalways@(present_state,x)\nbegin\ncase(present_state)\nIDLE:\nif(x)\nnext_state <= S1;\nelse\nnext_state <= IDLE;\n\nS1:\nif(x)\nnext_state <= S10;\nelse\nnext_state <= S1;\n\nS10:\nif(x)\nnext_state <= S101;\nelse\nnext_state <= S10;\n\nS101:\nnext_state <= IDLE;\n\ndefault:\nnext_state <= IDLE;\nendcase\nend\n\n// present state assignment\nalways@(present_state)\nbegin\ncase(present_state)\nIDLE:\nz <= 0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk or reset or present_state or x )\nbegin\nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\n\nend\n\nalways@(present_state or x)\nbegin\ncase(present_state)\nIDLE: z=0;\nS1: z=0;\nS10: z=0;\nS101: z=1;\nendcase\nend\n\nalways@(present_state or x)\nbegin\ncase(present_state)\nIDLE: next_state <= IDLE;\nS1: next_state <= S10;\nS10: if(x) next_state <= S101;\nelse next_state <= IDLE;\nS101: next_state <= IDLE;\nendcase\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\nif(reset)\npresent_state<=IDLE;\nelse\npresent_state<=next_state;\nalways@(present_state or x)\ncase(present_state)\nIDLE: begin\nnext_state<=x ? IDLE : S1;\nz<=0;\nend\nS1: begin\nnext_state<=x ? S1 : S10;\nz<=0;\nend\nS10: begin\nnext_state<=x ? IDLE : S1;\nz<=0;\nend\nS101: begin\nnext_state<=x ? IDLE : S101;\nz<=1;\nend\ndefault: begin\nnext_state<=IDLE;\nz<=0;\nend\nendcase\n"
+    }
+  ],
+  "created": 1663304562,
+  "id": "cmpl-wGSpWsoYuv2uQ6H6jMsFMzOJZnY5Z",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 976,
+    "prompt_tokens": 232,
+    "total_tokens": 1208
+  }
+}

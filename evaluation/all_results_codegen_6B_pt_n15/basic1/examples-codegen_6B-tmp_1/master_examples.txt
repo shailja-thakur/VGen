@@ -1,0 +1,318 @@
+example-0: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+// -> in := out
+
+// Generate a module-level event in module mod1
+in(call) event spawn_module_event(mod1);
+// -> if mod1 == :init
+//     attach_event :init -> spawn_module_event(mod1);
+// -> else
+//     attach_event spawn_module_event(mod1) -> no();
+
+// Run module mod1 in mod1
+mod_run(call) module mod1 ( call_init -> call::call_base call_init );
+// -> if mod1.initialised then join mod1.initialised with no:no
+// -> attach_event(:init) mod_run(call) mod1.initialised -> no:no
+// -> if (netId[call] != nid) then worker_prototype(call) ;
+// -> if privatised[call] then call_base call ;
+
+================================================================
+example-1: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+
+================================================================
+example-2: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+asm wor_assign(in, out) {
+        mov_reg( out,in )
+}
+
+// assume UINT17 is between -32768 and 32768; we currently force it to 0.
+// convert the input into a signed rational using two MSB ia32 flags 
+
+// exact implementation at the moment. could use a helper func to manage
+// the VM in a neat way if required.
+module unsigned_to_frac( input inthi, input intlo, output fraco )
+{
+		/* Assembler; check opcode "unsigned". */
+	  mov_imm( inthi, 0x01ffffff )
+	  mov_imm( intlo, 0xffffffff )
+	  mov_imm( fraco, 2 )
+	  mov_imm( fraco, 1 )
+			/* Bin2Dec( UINT17 & (
+================================================================
+example-3: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+unchecked( out = in );
+
+// test assign operation
+// s1::output out = as_output( s1::input in[] );
+// provides the public interface of a CPS set
+unchecked( void s1[] );
+// s1 onwire as_Foo = std::const_pointer_cast<t>( in[0] );
+// uses data in the unpacked t object to convert that to Thingy
+unchecked( thingy const * s1[] );
+// // assigns to the set of Things with covariant type t
+// int rw, cnt = 0;
+// std::set<O>::iterator itr = s1.begin();
+// std::set<O>::liveset_element_t lle = *itr;
+//
+================================================================
+example-4: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+
+// Design and implement a function that returns the element-wise product
+// of two arrays.
+// return out = {A[a] x B[b]}, with A[a] x B[b] = A[a] x B[b]
+int multi_tensor_product(int *A, int *B, int *C);
+
+module mult = wire_assign(simple_A, simple_output_A);
+function mult_line( C, C_hook );
+function mult_inline( C, C_hook );
+
+/* * '* '* */
+
+module mult_binary =
+  #(4,9) <2> simple_A, simple_output_A [A,A] -> mult(4,9,4,9,9);
+  //4<2>simple_A, mult_out[4,9,4
+================================================================
+example-5: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+
+function display(){
+  int i;
+  for( i = 0; i < 8; i++ )
+    out = display_wire( i );
+}
+// do whatever it takes to ensure that out is the desired value
+
+function display_wire( n ){
+  if ( n == 0 )  return in;
+  if ( n == 7 )  return out;
+  else  return wire_and( wire_assign( in, wire_xor( out, in ) ),
+   wire_shift_left( out, 1 ) );
+}
+
+// Here is the test program: undo any changes you made above
+wire before = 0xfffffff7;
+#define N 8
+wire wires[N] = {0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80};
+wire in = 0
+================================================================
+example-6: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+input input_output(input ,output) = in();
+module output_input( input out, output in ) = out;
+
+module simple(input input1, input input2) ( output out, clk, reset )
+        (output child_out, clk, reset) =
+                wire_assign(input1, input2);
+        reg [][128]byte regs[255];
+        generate_child (regs, out, child_out)
+        generate_child (regs, clk, clk);
+        generate_child (regs, reset, reset)
+
+        `
+
+func RunAllTests() {
+	for testName, inName, outName := range testStructs {
+		RunTestTestCase(testName, inName, outName)
+	}
+}
+
+func includeAssign(c *config) bool {
+	
+================================================================
+example-7: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+reset wire_assign_to_reset( output out );
+methods of output wire_assign_to_output( inference in );
+
+implementation wire_assign_module( input in ) returns output out;
+
+methods
+{
+  output wire_assign_to_input( inference in );
+  reset wire_assign_to_reset();
+};
+
+definition wire_assign: module & wire_assign_out_io & wire_assign_in_io =
+  output(out) <|
+    wire_assign_to_input[inf_in] &| output out = in;
+
+entity res_wire_assign_out_io = module ();
+entity res_wire_assign_in_io = module ();
+implementation res_wire_assign := module res_wire_assign_out_io & res_wire_assign
+================================================================
+example-8: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+outs = in;
+
+/*********************************** connect voltage clamp pins *************************************/
+// *CONNECT AN AUDIO OUTPUT TO THE THE OUTPUTS OF THE U2F BLASTER AND IT'S
+// PUFF BANK (U2F PUFF BANK_B), 并在 PD12(PWM A), PD10(PWM B),
+// PD13(ENCODER X), PD14(ENCODER Y), PD15(BANGER) 上运行, 将输出连接到 U2F 外面的VA的 A、B端口上的数字模拟器端口。
+
+// connect PD12 to voltage clamp A (ADC PA_X),
+SDA_X   = gnd |  pa_x
+SDA_
+================================================================
+example-9: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign_out_to_in( input out, output in )();
+
+class ObjectWithA
+{
+public:
+	ObjectWithA( const Class & a );
+	~ObjectWithA() {}
+	void execA( int ca);
+	void setA( const Class & ca);
+	Class refA(){ return a; }
+protected:
+ 	Class a;
+	typedef Class Bound;
+private:
+// Provide support for initialization
+	ObjectWithA() {}
+	ObjectWithA(const ObjectWithA & ) {}
+	ObjectWithA& operator=(const ObjectWithA &) { return *this; }
+};
+	
+	ObjectWithA::ObjectWithA( const Class & a ) 
+			: a( a ) {}
+
+	void ObjectWithA::execA( int aa )
+	{
+	a.execA( aa );
+================================================================
+example-10: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+#define mult(top) mult(top,c)
+#define shl(top) shl(top,d)
+#define add(top) add(top,l)
+#define xor(top) xor(top,l)
+#define or(top) or(top,h)
+
+//Template: input_001
+Wire mult(BAR_1, IN0);         // Assign out to mult(IN0,BAR_1)
+Wire shl(&DATA_1,IN0);        // Assign out to shl(&DATA_1,IN0)
+Wire add(&DATA_1,IN1);       // Assign out to add(&DATA_1,IN1)
+Wire xor(&DATA_1,IN2);       // Assign out to xor(&DATA_1,IN2)
+Wire or(&DATA_1,IN3);        //
+================================================================
+example-11: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+wire_assign( ) { out = in; }
+#### endfunction wire_assign
+
+// Two definitions of a time to model the delay
+// First function have a arguments operator (.&(3))
+// & marks the num of arguments
+// Second function have argument counter(true)
+// argument counter to compute the number of arguments passed to the function
+#define logic1( factor, time ) ( ( int ) ( factor.value << time ) )
+#define logic2ln( factor, time ) ( ( int ) ( factor.value << time ) )
+
+function logic1( a, b ) {
+  runtime.ram_control_reg[ 'b' ] = a + b;
+}
+logic1( a, b );
+
+function logic2ln( a, b, out ) {
+  variable v = a + b;
+  out = v;
+}
+logic2ln(
+================================================================
+example-12: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+// Output:
+//   1234
+// Examples:
+//   assign(out, in); // type of in is equal to out
+
+
+// Case 3: how to modify the output values
+// The values which are specified in the 'modify' parameter of 'fuzz' are `ik`, `fo`, 
+// and `is` of x3.c else for the configuration of the module
+//  - `ik`, `fo` and `is` of r1: get the value of the i of linear function */
+// Case 3a: changing the i-th unit if the i-th digit of the number`
+// achieve this in java by replacing ready by delay with the control back to ready to verify 
+//future happen and delay for the theard to happen the next ready
+// Second modification of the digiti i if the i-th digit of the number */
+// Case 3
+================================================================
+example-13: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign_full( input in, output out )
+        requires
+            wire_assign( in, out )
+        ensures
+            out == in;
+
+// Functions to start retrieving sources from memory
+functionNoSubst<module> expr( module &m );
+functionSubst<module> expr( module &m, template<typename T> bool with_mem )
+        requires
+            with_mem ? channel( m );
+        ensures
+            expr( m ).with_mem = with_mem;
+        ensures
+        expr( m ).address == in_addr;
+functionSubstX<module> expr_xml( module &m, template<typename T> bool with_mem )
+        requires
+            with_mem ? channel_xml( m );
+        ensures
+            expr_xml( m ).with_mem = with_mem;
+        ens
+================================================================
+example-14: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module out_to_in( output out, input in );
+
+module dummy_handheld( parameter bool gate = true );
+
+module clock() #(parameter unsigned output_tick = 1, parameter unsigned prescaler = 16) pure to_ple(output out);
+
+module digital_clock() #(parameter unsigned io_bitlength = 32, parameter unsigned output_tick = 1, parameter unsigned prescaler = 16) pure output to_ple(output out);
+
+module integerp_clock() #(parameter unsigned io_bitlength = 32, parameter unsigned output_tick = 1, parameter unsigned prescaler = 16) pure output to_ple(output out);
+
+module integerp_duty_clock() #(parameter unsigned io_bitlength = 32, parameter unsigned output_tick = 1, parameter unsigned prescaler = 16) pure output to_ple(output out);
+
+module integerp
+================================================================

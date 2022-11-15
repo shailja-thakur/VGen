@@ -1,0 +1,323 @@
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin\n\tif (reset) \n\tbegin\n\tq <= 1;\n\tend\n\telse if (q == 12)\n\tbegin\n\tq <= 1;\n\tend\n\telse\n\tbegin\n\tq <= q + 1;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin\nif(reset)\nq <= 4'b0001;\nelse if(q == 12)\nq <= 4'b0001;\nelse\nq <= q + 4'b0001;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse if (q == 4'd12)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse\n\tbegin\n\tq <= q + 4'd1;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin\n\tif (reset)\n\tbegin\n\tq <= 4'b0000;\n\tend\n\telse\n\tbegin\n\tif (q == 4'd12)\n\tbegin\n\tq <= 4'b0000;\n\tend\n\telse\n\tbegin\n\tq <= q + 4'b0001;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nq <= 4'b1;\nelse\ncase(q)\n4'b1110: q <= 4'b1;\ndefault: q <= q + 4'b1;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin\nif (reset)\nq <= 4'b0000;\nelse if (q == 12)\nq <= 4'b0000;\nelse \nq <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset) \nbegin\nif (reset) q <= 4'd1;\nelse if (q == 12) q <= 4'd1;\nelse q <= q + 4'd1;\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nq <= 4'b0000;\nelse\nbegin\nif (q == 12)\nq <= 4'b0000;\nelse\nq <= q + 4'b0001;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin\nif (reset)\n\tq = 4'b0001;\nelse if (q == 4'b1111)\n\tq = 4'b0001;\nelse\n\tq = q + 4'b0001;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) q <= 4'b1;\n\telse if (q == 4'b1111) q <= 4'b1;\n\telse q <= q + 1;\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\n\tif (reset == 1) \n\tbegin\n\tq <= 4'd1;\n\tend\n\telse if (q == 4'd12)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse\n\tbegin\n\tq <= q + 4'd1;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nq <= 4'b0000;\nelse if (q == 12)\nq <= 4'b0000;\nelse\nq <= q + 1;\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nq <= 4'b0000;\nelse if (q == 12)\nq <= 4'b0000;\nelse\nq <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tq <= 1;\n\tend\n\telse\n\tbegin\n\tif (q == 12)\n\tbegin\n\tq <= 1;\n\tend\n\telse\n\tbegin\n\tq <= q + 1;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset)\nq <= 4'b0000;\nelse\nbegin\nif (q == 12)\nq <= 4'b0000;\nelse\nq <= q + 4'b0001;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n if(reset) begin\n q <= 4'b0000;\n end\n else if(q == 12) begin\n q <= 4'b0000;\n end\n else begin\n q <= q + 1;\n end\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\nif (reset)\nq <= 1;\nelse if (q == 12)\nq <= 1;\nelse\nq <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse\n\tbegin\n\tif(q == 4'd12)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse\n\tbegin\n\tq <= q + 4'd1;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset) \nq <= 4'b0000; \nelse if (q == 12)\nq <= 4'b0000; \nelse\nq <= q + 1;\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin\nif (reset)\nq <= 4'd1;\nelse if (q == 12)\nq <= 4'd1;\nelse\nq <= q + 4'd1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 20,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif(reset)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse begin\n\tif(q == 4'd12)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse\n\tbegin\n\tq <= q + 4'd1;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 21,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\nif (reset)\nq <= 4'b0000;\nelse if (q == 4'd12)\nq <= 4'b0000;\nelse\nq <= q + 1'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 22,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset)\n\tbegin\n\tq <= 1;\n\tend\n\telse if (q == 12)\n\tbegin\n\tq <= 1;\n\tend\n\telse\n\tbegin\n\tq <= q + 1;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 23,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nq <= 4'b0001;\nelse if (q == 12)\nq <= 4'b0001;\nelse\nq <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 24,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n if(reset)\nq <= 4'b0000;\nelse if(q == 4'd12)\nq <= 4'b0000;\nelse\nq <= q + 1'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 25,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin\n\tif(reset) \n\tbegin\n\tq <= 4'd1;\n\tend\n\telse \n\tbegin\n\tcase(q)\n\t4'd5: q <= 4'd1;\n\t4'd6: q <= 4'd1;\n\t4'd7: q <= 4'd8;\n\t4'd8: q <= 4'd1;\n\t4'd9: q <= 4'd9;\n\t4'd10: q <= 4'd1;\n\t4'd11: q <= 4'd9;\n\t4'd12: q <= 4'd1;\n\tdefault: q <= q + 4'd1;\n\tendcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 26,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif(reset) begin\n\tq <= 4'b0001;\n\tend\n\telse if(q == 12) begin\n\tq <= 4'b0001;\n\tend\n\telse begin\n\tq <= q + 4'b0001;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 27,
+      "logprobs": null,
+      "text": "always @( posedge clk ) begin\n\tif ( reset )\n\tq <= 4'b0000;\n\telse if ( q == 4'b1111 )\n\tq <= 4'b0000;\n\telse\n\tq <= q + 4'b0001;\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 28,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin \nif (reset) \nq <= 4'b0000; \nelse if (q == 12) \nq <= 4'b0000; \nelse \nq <= q + 4'b0001; \nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 29,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nq <= 4'b1;\nelse if (q == 4'd12)\nq <= 4'b1;\nelse\nq <= q + 4'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 30,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\nif (reset)\nq <= 1'b1;\nelse if (q == 12)\nq <= 1'b1;\nelse\nq <= q + 1'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 31,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n if (reset)\n q = 4'b1;\n else if (q == 4'd12)\n q = 4'b1;\n else\n q = q + 4'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 32,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin\nif(reset)\nq <= 4'd1;\nelse\nbegin\nif(q == 12)\nq <= 4'd1;\nelse\nq <= q + 4'd1;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 33,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tq <= 4'b0000;\n\tend\n\telse\n\tbegin\n\tif (q == 12)\n\tbegin\n\tq <= 4'b0000;\n\tend\n\telse\n\tbegin\n\tq <= q + 1;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 34,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\nq <= 4'b1;\nelse\ncase (q)\n4'd12: q <= 4'b1;\ndefault: q <= q + 4'b1;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 35,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nq <= 4'd1;\nelse if (q == 4'd12)\nq <= 4'd1;\nelse\nq <= q + 4'd1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 36,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\tq <= 4'd1;\n\tend\n\telse if (q == 4'd12) begin\n\tq <= 4'd1;\n\tend\n\telse begin\n\tq <= q + 4'd1;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 37,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse\n\tbegin\n\tcase (q)\n\t4'd1: q <= 4'd2;\n\t4'd2: q <= 4'd3;\n\t4'd3: q <= 4'd4;\n\t4'd4: q <= 4'd5;\n\t4'd5: q <= 4'd6;\n\t4'd6: q <= 4'd7;\n\t4'd7: q <= 4'd8;\n\t4'd8: q <= 4'd9;\n\t4'd9: q <= 4'd10;\n\t4'd10: q <= 4'd11;\n\t4'd11: q <= 4'd12;\n\t4'd12: q <= 4'd1;\n\tendcase\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 38,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse if(q == 4'd12)\n\tbegin\n\tq <= 4'd1;\n\tend\n\telse\n\tbegin\n\tq <= q + 4'd1;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 39,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\nif (reset) begin \nq <= 4'b0000;\nend\nelse if (q == 4'b1111) begin\nq <= 4'b0000;\nend\nelse begin\nq <= q + 4'b0001;\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 40,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\nq <= 4'b0000;\nelse\ncase (q)\n4'b0000:\nq <= 4'b0001;\n4'b0001:\nq <= 4'b0010;\n4'b0010:\nq <= 4'b0011;\n4'b0011:\nq <= 4'b0100;\n4'b0100:\nq <= 4'b0101;\n4'b0101:\nq <= 4'b0110;\n4'b0110:\nq <= 4'b0111;\n4'b0111:\nq <= 4'b1000;\n4'b1000:\nq <= 4'b1001;\n4'b1001:\nq <= 4'b1010;\n4'b1010:\nq <= 4'b1011;\n4'b101"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 41,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\nif (reset)\nq <= 1;\nelse if (q == 12)\nq <= 1;\nelse\nq <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n if (reset)\n q <= 4'd1;\n else if (q == 4'd12)\n q <= 4'd1;\n else\n q <= q + 4'd1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 43,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin \nif (reset)\nq <= 4'd1;\nelse if (q == 12)\nq <= 4'd1;\nelse\nq <= q + 4'd1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 44,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif (reset) begin\n\tq <= 4'b0000;\n\tend\n\telse begin\n\tif (q == 4'd12) begin\n\tq <= 4'b0000;\n\tend\n\telse begin\n\tq <= q + 4'b0001;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tif(reset)\n\tbegin\n\tq <= 4'b1;\n\tend\n\telse if(q == 4'd12)\n\tbegin\n\tq <= 4'b1;\n\tend\n\telse\n\tbegin\n\tq <= q + 4'b1;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 46,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\nq <= 4'b1;\nelse if(q == 4'd12)\nq <= 4'b1;\nelse\nq <= q + 4'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\nif(reset)\nq <= 4'b0000;\nelse if(q == 4'd12)\nq <= 4'b0000;\nelse\nq <= q + 4'b0001;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 48,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\nq <= 1'b1;\nelse if(q == 12)\nq <= 1'b1;\nelse\nq <= q + 1'b1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 49,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n begin\n if(reset)\n q <= 4'd1;\n else if(q == 4'd12)\n q <= 4'd1;\n else\n q <= q + 4'd1;\n end\n"
+    }
+  ],
+  "created": 1663550518,
+  "id": "cmpl-yZ4AP2Amyg5MyKLF5M2JuN3MHIR97",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3602,
+    "prompt_tokens": 88,
+    "total_tokens": 3690
+  }
+}

@@ -1,0 +1,52 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout = 0;\n\telse if (load)\n\tout = data;\n\telse begin\n\t// shift the data left by amount\n\tout = {out[6:0],out[7]};\n\t// rotate the data right by amount\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout = 0;\n\telse if (load)\n\tout = data;\n\telse begin\n\t// shift the data left by the amount\n\t// i.e. amount=3, data=0101, shift=1000\n\tout = {out[6:0],out[7]};\n\t// rotate the data right by the amount\n\t// i.e. amount=3, data=0101, rotate=1000\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif(reset)\n\tout<=0;\nelse if(load)\n\tout<=data;\nelse begin\n\tif(amount==3'b110)\n\tout<=out;\n\telse if(amount==3'b101)\n\tout<={out[6:0],out[7]};\n\telse if(amount==3'b100)\n\tout<={out[5:0],out[6],out[7]};\n\telse if(amount==3'b011)\n\tout<={out[4:0],out[5],out[6],out[7]};\n\telse if(amount==3'b010)\n\tout<={out[3:0],out[4],out[5],out[6],out[7]};\n\telse if"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif(reset)\n\tout<=0;\n\telse if(load)\n\tout<=data;\n\telse begin\n\t// shift the data as the next value\n\t// shift left by amount\n\tout<={out[6:0],1'b0};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif(reset)\n\tout<=0;\n\telse if(load)\n\tout<=data;\n\telse\n\tbegin\n\tout<={out[6:0],out[7]};\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663306760,
+  "id": "cmpl-v1WVk0Z3abiaDWL9KNVBLF4zvEVm0",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 575,
+    "prompt_tokens": 93,
+    "total_tokens": 668
+  }
+}

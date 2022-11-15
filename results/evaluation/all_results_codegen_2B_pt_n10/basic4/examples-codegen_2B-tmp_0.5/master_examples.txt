@@ -1,0 +1,313 @@
+example-0: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// When sel=2, assign a to out. 
+// When sel=3, assign b to out. 
+
+reg [4:0] a;
+reg [4:0] b;
+reg [4:0] out;
+
+always @(posedge clk)
+  if (a[sel] == 0)
+    out = a;
+  else if (a[sel] == 1)
+    out = b;
+  else if (b[sel] == 0)
+    out = a;
+  else if (b[sel] == 1)
+    out = b;
+
+================================================================
+example-1: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When sel=2, assign a and b to out.
+
+assign out[4:0] = a[sel];
+
+initial begin
+  out = a[0];
+  sel = 0;
+end
+
+
+================================================================
+example-2: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+wire [4:0] inp;
+
+// The second input is always the control input.
+mux_sel mux_sel(
+inp,
+out,
+sel
+);
+
+mux_out mux_out(
+inp,
+out
+);
+
+mux_sel mux_sel_out(
+inp,
+out,
+sel
+);
+
+mux_sel mux_sel_inp(
+inp,
+out,
+sel
+);
+
+mux_sel mux_sel_inp_out(
+inp,
+out,
+sel
+);
+
+mux_sel mux_sel_out_inp(
+inp,
+out,
+sel
+);
+
+mux_sel mux_sel_out_inp_out(
+inp,
+out,
+sel
+);
+
+mux_
+================================================================
+example-3: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When sel=2, assign a to out, then assign b to out.
+
+// Design a 4-to-1 multiplexer.
+module mux( 
+input [4:0] a, b, c, d,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When sel=2, assign c to out.
+// When sel=3, assign d to out.
+// When sel=4, assign a to out, then assign b to out.
+// When sel=5, assign c to out, then assign d to out.
+// When sel=6, assign a to out, then assign b to out, then assign c to out.
+// When sel=7, assign d to out, then assign a
+================================================================
+example-4: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+// Design a 2-to-1 demultiplexer.
+module demux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+// Design a 2-to-1 demultiplexer with a delay.
+module demux_delay( 
+input [4:0] a, b,
+input sel,
+output [4:0] out,
+bit delay );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When delay=0, assign a to out. 
+// When delay=1, assign b to out.
+
+// Design a 2-to-1 multiplexer with a delay.
+
+================================================================
+example-5: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// When sel=2, assign a to out. 
+// When sel=3, assign b to out. 
+// When sel=4, assign a to out. 
+// When sel=5, assign b to out. 
+// When sel=6, assign a to out. 
+// When sel=7, assign b to out. 
+// When sel=8, assign a to out. 
+// When sel=9, assign b to out. 
+// When sel=10, assign a to out. 
+// When sel=11, assign b to out. 
+// When sel=12, assign a to out. 
+// When sel=13, assign b to out. 
+// When sel=14, assign a to out. 
+// When sel=15, assign b to out. 
+
+m
+================================================================
+example-6: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// When sel=2, assign a to out. 
+// When sel=3, assign b to out. 
+
+wire [16:0] out;
+
+mux mux1(
+  .a(a),
+  .b(b),
+  .sel(sel),
+  .out(out)
+);
+
+mux mux2(
+  .a(a),
+  .b(b),
+  .sel(sel),
+  .out(out)
+);
+
+mux mux3(
+  .a(a),
+  .b(b),
+  .sel(sel),
+  .out(out)
+);
+
+mux mux4(
+  .a(a),
+  .b(b),
+  .sel(sel),
+  .out(out)
+);
+
+mux mux5(
+
+================================================================
+example-7: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// When sel=2, assign 0 to out. 
+// When sel=3, assign 1 to out. 
+
+wire [4:0] in[4];
+
+
+// This is a design-time "thing". 
+// The "thing" is a wrapper around a real hardware device. 
+mux mux_dev(
+in[4] a,
+in[4] b,
+in [4:0] sel,
+out [4:0] out );
+
+// The "thing" is a wrapper around a real hardware device. 
+mux mux_dev(
+in[4] a,
+in[4] b,
+in [4:0] sel,
+out [4:0] out );
+
+// The "thing" is a wrapper around a real hardware device. 
+mux mux_dev(
+in[4] a
+================================================================
+example-8: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+wire [4:0] in_a, in_b;
+
+mux_sel_in_a mux_sel_in_a( in_a, sel, in_b );
+mux_sel_in_b mux_sel_in_b( in_b, sel, in_a );
+
+mux_sel_out_a mux_sel_out_a( out, sel, in_a );
+mux_sel_out_b mux_sel_out_b( out, sel, in_b );
+
+mux_mux mux_mux( out, sel, in_a, in_b );
+
+mux_sel mux_sel( out, sel, in_a, in_b );
+
+mux_sel_in mux_sel_in( out, sel
+================================================================
+example-9: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer.
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer.
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer.
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer.
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer.
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer.
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer.
+
+// The instruction set of the Mux is the same as the
+// instruction set of the Multiplexer
+================================================================

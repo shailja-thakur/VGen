@@ -1,0 +1,384 @@
+example-0: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+
+initial begin
+
+#ifdef IDLE
+    counter_0 = 12;
+    counter_1 = 1;
+#else    
+	counter_0 = false;
+	counter_1 = false;
+	for(clk<='p'){ 
+		counter_0 = !counter_0;
+		counter_1 = !counter_1;
+	}
+#endif // IDLE
+
+end
+
+// This is a counter that counts to 30 according to the following cases:
+// on reset, assign q to 1
+//     If counter_0 is neither true or false, assign q to 0
+// else if counter_0 is false and counter_1 is true, assign q to 10
+// else, assign q to 3
+// The purpose of the large repetition is that the only way to connect
+// simultaneously the dadat grid buffers to the counter restores and notifies the other component
+module vcount
+================================================================
+example-1: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+assrq2 clk_eq( 
+    clk, update[1:0] reset_eq( reset ), 
+    q[3] <= 1'b0,
+    q[2] <= 1'b0,
+    q[1] <= 1'b0,
+    q[0] <= 1'b0,
+    1'b1,
+    1'b0,
+    q[3] eq 1'b1,
+ 
+    q[2] eq 1'b1,
+    q[1] eq 1'b1,
+    q[0] eq 1'b1,
+    q[2] eq 1'b0,
+    q[1] eq 1'b0,
+    q[0] eq 1'b0 
+); 
+// This is a counter that counts from 1 to 12
+module counter2( 
+    input
+================================================================
+example-2: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+action main 
+{ 
+    assign q[3:0] = {3'b011, 3'b011, 3'b011};
+    if (not reset) xbegin
+    else if (q == "12'b1") xbegin
+    else xbegin
+    if (clk_b) q = q + 1;
+    xend
+}
+
+module tlmpar(
+    input a,
+    output [3:0] o
+);
+
+
+
+// This is a counter that counts and output a synchronous signal to pan
+// The counter starts off on the falling edge on plain/wire output a
+// We see the on-off signal on q's positive edge of the clock
+register reg [3:0] q = "0011", 
+            pan_n = "0000";
+
+// initialize stats
+service stats = "QC0";
+
+wire [
+================================================================
+example-3: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+void main()
+{
+  while (1)
+    {
+      if (reset != 1)
+        {
+        if (q[3] == 12)
+            emit wait;
+      if (clk == 1)
+          q[3] = 1;
+      else
+          q[3]  = q[3] + 1;      
+      }
+     else reset = 0;
+    }
+} 
+
+================================================================
+example-4: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+initial begin 
+        counter <= clk & rst; 
+        output [1:0] q:= clk==reset? 1: 
+            case (q == 12) ? 1 : 
+                if (q == 11) { q = q+1; } 
+                else { q = q+2; }. 
+  first_cycle clock reset 
+end; 
+
+================================================================
+example-5: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+wire init = 0;
+initial begin
+    q:=0
+    init=1;
+    counter.q:=init
+end 
+// counter O V d: counters IEEE 1588-compliant (O = "output", V = "input")
+active_wire_specs("counter_OV)", init_kind 
+check_constraints(counter_OVb,init_val);
+initial active_wire_specs(counter_b,0);
+
+
+================================================================
+example-6: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @ ( clk, reset,  \
+                %inc_q_1, %slow_clk_1, \
+                %inc_q_12, %slow_clk_12 \
+){
+
+    #fast region
+    // from here to $delta
+    if ($hot_clk_2 $and ($fast_clk_2 $not $slow_clk_2)){ 
+        q <= {%inc_q_12,[$csdram]}; 
+    } else {
+        //$clock_1 $is $gas_clk_rst $test_clk_1 @light
+        # 3 If {!hreg16($hot_clk_1) ... $hot_clk_2) then 
+            # 1 increase q to 1 
+            if ($hot_clk_2){
+                $q_temp <= 1;
+================================================================
+example-7: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+void main(
+    void
+);
+
+================================================================
+example-8: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+wire 
+    [3:0]
+    counter_q2;
+// Let's begin: 
+initial begin
+    clk <= clk_en;		// clock enable requires clock-cycle to be 1
+    reset <= reset_in;	// reset signal does require reset to be low before it is high
+    q <= [3:0]; 			// pointer to the first counter register
+    counter_q2 <= 12;	// 32...1
+
+loop (counter_q2!=12) // assume on_reset needs an initial value to know if it should load the initial value or increment it to the one on the next reset.
+    if (q==3) {			// clk is high, reset is low, increment is still not high
+	q <= [3:0];			// after reset, q must be reset
+	if (counter_q2 == 12)	// if next
+================================================================
+example-9: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+
+initial begin 
+    // instantiate SCC 
+    // note: SCC expects exactly three enabled outputs and three inputs
+    SCC( 
+        multiplexer( { I2C0, 2, 1 }, {clk, reset}, [q,I8,I7,I6] ) 
+    );
+
+    counter(clk, reset, q);
+end;
+
+================================================================
+example-10: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+initial begin 
+    counter.q <= 1; 
+end
+
+================================================================
+example-11: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+wire ps = reg[3:0]; 
+
+================================================================
+example-12: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+initial begin 
+    counter1.clk <= clk;
+    counter2.clk <= clk;
+    counter3.clk <= clk;
+    counter4.clk <= clk;
+    counter5.clk <= clk;
+    counter6.clk <= clk;
+    counter7.clk <= clk;
+    counter8.clk <= clk;
+    counter9.clk <= clk;
+    counter10.clk <= clk;
+    counter11.clk <= clk;
+    counter12.clk <= clk;
+
+    counter1.reset <= reset;
+    counter2.reset <= reset;
+    counter3.resett <= reset;
+    counter4.resett <= reset;
+    counter5.resett <= reset;
+    counter6.resett <= reset;
+    counter7.resett
+================================================================
+example-13: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk) 
+    counter.q(decode(reset,12,q[3:0])+1);
+
+================================================================
+example-14: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+initial begin
+  counter.q<1> = 0;
+  // when a rising edge on clk occurs, output q[t1] if t1 is the first edge 
+  counter.q<2> = (clk==rst);
+  // everything else remain untouched by the library 
+  if(counter.q<>12) counter.q<+=1;
+  
+end 
+  
+// Counter 2, an alternating engine 
+module counter2( 
+    input clk,
+    input reset
+);
+ // initialize to 0, always on the falling edge of the clock, count from 0 to 12 
+  input [3:0] c2;
+  reg [3:0] q2; 
+ begin
+   counter2.c2<1> = 0;
+   // when a rising edge on clk occurs, output q[t2] if t2 is the
+================================================================

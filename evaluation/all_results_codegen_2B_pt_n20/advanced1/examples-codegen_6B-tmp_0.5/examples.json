@@ -1,0 +1,56 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// The output s is the sum of a and b, the output overflow is the one bit that tells you if a and b have a signed overflow occuring. \n\n// If a or b are negative and the most significant bit is high, then a signed overflow occurs if the sum of the two numbers is negative.\n// The sum of the two numbers, s, is the output of the adder. \n// If the sum of the two numbers is negative and the most significant bit is low, then a signed overflow occurs if the two numbers have a negative sum.\n\n\n//If the output s is a negative number, then a signed overflow occurs if the most significant bit of s is high.\n//If the output s is a positive number, then a signed overflow occurs if the most significant bit of s is low.\n\n//In other words, a signed overflow occurs if the sum of the two numbers is negative and the most significant bit of s"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = ((a[7] & b[7]) & ~s[7]) | ((~(a[7] | b[7])) & s[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign s = a + b; \n\n//The output s is sent to the output function which checks if the sum is a signed overflow. \nassign overflow = s[7] & ~a[7] & ~b[7]; \n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nwire signed [7:0] b_not; //stores the 2's complemented value of b\n\nassign b_not = ~b; //2's complemented value of b\n\nalways @(*) begin\n\tif(a[7] == b_not[7] && a[7] == s[7]) //check if the most significant bit of a is high and that the most significant bit of s is low\n\tbegin\n\toverflow = 0; //set the overflow to 0 if the numbers are within the signed range\n\tend\n\telse if(a[7] == b_not[7] && a[7] == ~s[7]) //check if the most significant bit of a is low and that the most significant bit of s is high\n\tbegin\n\toverflow = 1; //set the overflow to 1 if the numbers are outside the signed range\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nassign s = a + b;\nassign overflow = (a[7]&b[7]) | (a[7]&s[7]) | (b[7]&s[7]);\n\n"
+    }
+  ],
+  "created": 1663306676,
+  "id": "cmpl-Q2DwkaujPwVHUTCJH141sFiCNv2qv",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 563,
+    "prompt_tokens": 164,
+    "total_tokens": 727
+  }
+}

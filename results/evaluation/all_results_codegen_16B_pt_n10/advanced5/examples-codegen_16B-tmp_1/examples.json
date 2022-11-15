@@ -1,0 +1,93 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [1:0] z = 2'h0,state_out;\nreg [1:0] a = 1'b0,b = 1'b0;\nassign cur_state = state_out;\n// One cycle of the FSM\n@always_reset\nvoid resetState(){\n\tif (reset) cur_state = IDLE;\n}\n// Invariants:\n// cur_state either SAB or SA\n//\n// we do not handle vexing cases like this:    (SA)(SAAB), since\n// vexing the set of allowed values would make the alphabet very large.\n//            (SA)(a,b),        (SA) first clock is b, second is a;\n//            (SA)(a,b),        (SA) if first clock is a, second is b\n//            (SA)(a--b),       (SA) if clock is decre"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset) begin\n  case(cur_state)\n    case(IDLE)\n      if((a==b) and (a)) begin\n        cur_state <= SAB;\n      end else case(SA)\n        if( a ) begin\n          cur_state <= SAB;\n        end else case(SB)\n          if( b ) begin\n            cur_state <= SAB;\n          end else case(SAB)\n            begin\n              cur_state <= IDLE;\n            end\n        end \n      end\n    endcase\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n  if (\"0\" = reset) begin\n    cur_state = IDLE;\n  end else begin\n    switch (cur_state)\n    case IDLE:\n      if (a and b) begin\n        next_state = SAB;\n      end else if (a) begin\n        next_state = SA;\n      end else if (b) begin\n        next_state = SB;\n      end\n  end case\n  switch (next_state)\n    case IDLE:\n      z <= 0;\n    case SA:\n      if (b) begin\n        cur_state = SB;\n      end else begin\n        cur_state = SAB;\n      end\n      z <= 1;\n    case SB:\n      if (a) begin\n        cur_state = SAB;\n      end else begin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign cur_state = cur_state;\nevent e = a && b && posedge(clk);\n// state is guaranteed to be in IDLE\nalways @(posedge only once // multiple hit on next_state before z\n+ posedge clk) begin\n// cur_state is guaranteed to be only two bits (IDLE, SAB) since there are no\n// more events possible by defintion and no more simultaneous events possible\n// by src/always @(...) statement.\nswitch(cur_state) {\n   case IDLE:\n      if(a && b){  // Moves to SAB\n         cur_state = SAB;\n         next_state = IDLE;\n      } else next_state = IDLE;\n   break;\n   case SAB:\n      if(a && b){ // moves to are both high\n         next_state = SAB;\n         "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "reg[0] z;\nalways @(posedge clk or posedge reset) begin\n  if (reset) begin cur_state = IDLE; end\n  else if (a) begin cur_state = (a=1?SA:0); end\n  if(!a && b) begin\n    if(cur_state == IDLE) cur_state = (b=1?SB:0); else cur_state = SAB;\n  end\n  next_state = cur_state;\n  if(next_state != cur_state) begin\n    switch (next_state)\n    case IDLE     => next_state = IDLE;\n    case SA       => z = a;\n    case SB       => z = b;\n    case SAB      => $display(z);\n    end;\n  end\n  yield z;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "reg [3:0] sel_r_sa,sel_r_sb,sel_n_sa,sel_n_sb;\nreg [1:0] sa_clk,sb_clk,sa_seg,sb_seg,sa_bit,sb_bit;\nreg [1:0] sa_sel_red_o,sb_sel_red_o,sa_sel_cvt_red_o,sb_sel_cvt_red_o;\nreg [1:0] sa_pack,sb_pack;\nreg [7:0] adr,data,rdata,sel;\n\n\nassign sa_sel_red_o = {cur_state,sa_clk,sa_seg,sa_bit,sa_pack};\n\nassign t = {sel_r_sa,sa_clk,sa_seg"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "reg z;\ninitial begin\n\tcur_state = IDLE;\n\tnext_state = cur_state;\n\tz <= 0;\n\tprocess (clk,reset) begin\n\t\tif (reset) begin\n\t\t\tcur_state <= IDLE;\n\t\tend else begin\n\t\t\tnext_state <= cur_state;\n\t\t\tif (cur_state == SA && a) begin\n\t\t\t\tnext_state <= SB;\n\t\t\tend else begin\n\t\t\t\tif (b && next_state == SA) begin\n\t\t\t\t\tnext_state <= SAB;\n\t\t\t\tend\n\t\t\t\tif (a && next_state == SA) begin\n\t\t\t\t\tnext_state <= SAB;\n\t\t\t\tend\n\t\t\t\tif (cur_state == SA && b) begin\n\t\t\t\t\tnext_state <= SAB;\n\t\t\t\tend\n\t\t\t\tif (cur_state == SB && b) begin\n\t\t\t\t\tnext_state <= SAB;\n\t\t\t\tend\n\t\t\t\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways { clk = cur_state==0; }\n\nalways   @(posedge clk) begin\n    if(reset)\n    begin\n        // Set initial conditions\n        cur_state <= 0;\n        next_state <= 0;\n    end\n    else if (cur_state == IDLE)\n    begin\n      z <= 0;\n      next_state <= SAB;\n    end\n    else if ((cur_state == SAB) && (a == 1 && b == 1))\n    begin\n      cur_state <= SB;\n      next_state <= SA;\n      z <= 1;\n    end\n    else if ((cur_state == SAB) && (a == 1))\n    begin\n      z <= a;\n      cur_state <= SA;\n      next_state <= SB;\n    end\n    else if ((cur_state == SAB)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\n    if(reset) begin\n\tcur_state <= IDLE;\n    end\n    else begin\n\tcase(a)\n\t    case(b) begin\n\t\ti <= SB;\n\t\tcur_state <= SAB;\n\t\t'0' <= z;\n\t\tend\n\t    end\n\t    case(!a && !b) begin\n\t\ti <= SB;\n\t\tcur_state <= SAB;\n\t\t'1' <= z;\n\t    end\n\t    case(!b && a) begin\n\t\ti <= SAB;\n\t\tcur_state <= SAB;\n\t\t'1' <= z;\n\t    end\n\t    case(!b) begin\n\t\ti <= SB;\n\t\tcur_state <= SAB;\n\t\t'0' <= z;\n\t    end\n\t    case("
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @clk begin\nwith cur_state,next_state\n// Using FSM Framework\nif (clk.negedge && reset = '0' && SAB == cur_state) begin\nnext_state <= IDLE;\nend\nelse begin\nnext_state <= cur_state;\nend\nend\nendaction\n// This is intended to do the following for a FSM:\n// clock = 1,reset = 1 would reset the FSM and then reset again after clk.negedge.\n// clock = 1,reset = 0 would read in the input pins a and b and then send them to the next stage of the FSM or a stub.\n// clock = 0,reset = 1 would allow the FSM to read the inputs.\n// clock = 0,reset = 0 would not perform any action at all.\nalways @clk begin\nif (reset = 1) begin\nnext_"
+    }
+  ],
+  "created": 1663534619,
+  "id": "cmpl-i7vYXJT9NmATUnVqe9c8EZJmJaxNj",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1937,
+    "prompt_tokens": 218,
+    "total_tokens": 2155
+  }
+}

@@ -1,0 +1,112 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n\tout <= load & load | sample(data, 65535, 31);\nend\n// left shift operation\nmodule left_shift(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [4:0] data;\ninput load;\noutput reg [4:0] out;\nalways @(posedge clk or negedge reset) begin\n\tout <= load & load | sample(data, 224, 31) | sample(data, 128, 31) | sample(data, 64, 31) |\n\t\t\tsample(data, 32, 31) | sample(data, 16, 31) | sample(data, 8, 31);\nend\n\n/* 5 . 16bit - data to left shift and right shift operation\n // multiplexed for D-"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge load) out <= (data[3] ? data << (7-amount.offset) : out << amount);\n\n\nmodule main(input [7:0] data);\ninput [7:0] data;\noutput reg [7:0] out;\nalways @();\n\n//-------------------------------------------------------------------------------\n// sum1 module\n//-------------------------------------------------------------------------------\n// main saturating adder for tvm.ADC\n//@always-comb\ntweak interp(tvm.ISR);\n\nmodule sum1(clk,reset,data,load,out);\ninput clk,reset;\ninput [7:0] data;\ninput load;\noutput [6:0] out;\n// 'data' will contain the result of a saturated addition\nalways @(posedge load) out <= add1((data[3]?data[3]:0), (data[1]?data"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg out<2:0> ;\nregout INTLOGIC clk,reset;\nalways @(posedge clk)\n  if (load) OUTPUT (index) = load & data;\n  else out <<= amount;\nend\n\n// This specifies the number of registers of 'out' in the pipeline\n#define nr_registers 5\n\n// For comutation clusters\n#define combo(...) \\\n  out__'combo_T1Eout' <= out & load; // lnk high, shift out as they arrive\n\n// For grouping them at the delay line to reuse the dictionaries\n#define group(...) \\\n  out0 <= out & clk; // lnk low, shift out as they arrive\n\nmodule rx(clk,reset,amount,sw,din,rst,out);\n  reg out<7:0> out0;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always output reset;\nassign out = (load == 1? data << (amount - 1) | data >> amount : left_rotate(out,load,amount,data));\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "module load_l(clk,reset,load,out);\ninput clk,reset;\ninput load;\noutput reg load_out;\n/**********************************************************/\n// rotate the carries J1k++;\nmodule carry_rotate(clk,reset,carry,e,f,j1k_carry,c);\ninput clk,reset;\noutput carry;\ninput e,f,j1k_carry;\nreg [2:0] carryz;\n// short sum carry of J1k and add + j1k_carry + round up to 3 bits on binary carry\nreg carry2,carry2_add,carry_add;\nreg carry_align;\nalways @ (posedge clk or negedge reset)\n    carry_align <= j1k_carry();\nalways @ (posedge clk or negedge reset)\n    carry2 <= (carry"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always(clk or reset)\nbegin\n  if(load)\n  begin\n    if(data[0]) out = data;\n    else out = out << amount;\n    if(data[1]) out = out | data[1];\n    else out = out << 8;\n    if(data[2]) out = out | data[2];\n    else out = out << 8;\n    if(data[3]) out = out | data[3];\n    else out = out << 8;\n    if(data[4]) out = out | data[4];\n    else out = out << 8;\n    if(data[5]) out = out | data[5];\n    else out = out << 8;\n    if(data[6]) out = out | data[6];\n    else out = out << 8;\n  end\n  out = out << amount;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  out <= amount <<  (load == 1?data:((2 << (bitacc_tmp_out[bitacc_out_sel])) | out));\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n  if (load) out <= data; else out <<= amount;\nend\n\n// left shift operation with zero saturation for registers like RAM counters or roll-overs\n// this one uses data source accumulator (A) as input, generates a carry,\n// left shifts the input by one bit and returns the shifted register and accumulator.\nmodule lshift(clk,reset,out);\ninput clk,reset;\ninput accumulator;\ninput output [7:0] out;\noutput reg [7:0] reg_data;\n// outputs are generated in the EIF system - out sinks are input only\n// this three module instances are needed to ensure the signals are passed\nalways @(posedge clk or negedge reset) begin\n  if (accumulator) reg_data = out; else reg_data <<= 1;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "reg [7:0] out_reg = \"000000\";\nalways @(posedge clk or negedge reset)\n  out_reg = left_rotate(out_reg[6:0], load, out_reg[6:0] & amount[0] != 0, data[6:1] & load, out_reg[6:0] >>> amount[0]);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if(load)\n    out = data;\n  else\n    out = left_rotate(data,amount,out);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  out <= load ?\n\t  out << (data & 7) | (out >> amount)\n\t:\n\tout << amount << shift_left(out,amount) ;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nif (load) out = data;\nelse out = out << amount | load << (amount-1);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n\tout <= left_rotate(load,data[7:0],out >> amount[0],data[7:0] >> amount[1],data[7:0] >> amount[2],data[7:0] >> amount[3],data[7:0] >> amount[4],data[7:0] >> amount[5],data[7:0] >> amount[6]);\t\nend\n\n// ----------------------------------------------------------\n// Rotate in register right shift operation\n\nmodule right_shift(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput       int     out_odd;\noutput       int     out_even;\noutput       bool    out_carry;\n\n// when"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "begin\n    if (load == 1'b1) begin\n        out <= vreg(data,amount);    \n\tend\n\tif (reset == 1'b0) begin\n\t\tout <= vreg(0b0,0b11001'b1011); \n\tend\nend\n\n@states { in_load,  one,  two,  out_one, out_two, out_three};\n\nalways @(posedge clk or posedge reset) begin\n    if (reset == 1'b0) begin\n        in_load <= 1',load;\n    end\n    else if (load == 1'b1) begin\n        out_three <= in_load;\n    else if (one == 1'b1) begin\n        if (in_load != 1'b0) begin\n\t\t  out_two <= in_load;\n        // else timing"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "regout ISR(load_w) {\n\tif(load==HIGH) {\n\t\tout = data;\n\t}\n\telse {\n\t\tout <<= amount;\n\t\tout = out | (out >> subtract);\n\t}\n}\n// rotate the out register followed by right shift the out register by subtract from amount bits\nregout ISR(rotate_in) {\n\tout = out << subtract;\n\tout = out | (out >> amount);\n}\n// last else, result is stored in out register\n\n//************************************************************************\n// ******************************          Interface           ***************************\n//************************************************************************\n// Shift radix 2 LFSR Galois LFSR in with poly m. Addition of Galois LFSR is done\n// on falling edge of clock HI_LOW load. Poly is right-shifted by amount bits and\n// then shifted by subtract"
+    }
+  ],
+  "created": 1663520338,
+  "id": "cmpl-MC4cMAaZTcp7AHDlU7PftAWq2FCn0",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2119,
+    "prompt_tokens": 94,
+    "total_tokens": 2213
+  }
+}

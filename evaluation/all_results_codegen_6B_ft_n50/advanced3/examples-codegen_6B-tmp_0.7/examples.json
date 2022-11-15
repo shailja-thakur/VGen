@@ -1,0 +1,329 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(*) \nbegin \n\tif(~reset) \n\tbegin \n\tnext_state=IDLE; \n\tpresent_state=IDLE; \n\tend \n\telse \n\tpresent_state=next_state; \n\tcase(present_state) \n\tIDLE: \n\tbegin \n\tif(x) \n\tbegin \n\tnext_state=S1; \n\tend \n\telse \n\tbegin \n\tnext_state=IDLE; \n\tend \n\tend \n\tS1: \n\tbegin \n\tif(x) \n\tbegin \n\tnext_state=S10; \n\tend \n\telse \n\tbegin \n\tnext_state=S1; \n\tend \n\tend \n\tS10: \n\tbegin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk or posedge reset)\nbegin\nif(reset)\npresent_state <= IDLE;\nelse \npresent_state <= next_state;\nend\n\n//output logic \nalways@(present_state)\nbegin \ncase(present_state) \n IDLE: begin \n\tif(x) \n\tnext_state = S1;\n\telse \n\tnext_state = IDLE;\n\tend\n S1: begin \n\tif(x) \n\tnext_state = S10;\n\telse \n\tnext_state = S1;\n\tend\n S10: begin \n\tif(x) \n\tnext_state = S101;\n\telse \n\tnext_state = S10;\n\tend\n S101: begin \n\tif(x) \n\tnext_state ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nif(reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state; \n\n//next state\nalways @(present_state or x) \ncase(present_state) \nIDLE: if(x) next_state=S1; \nelse next_state=IDLE; \nS1: if(x) next_state=S10; \nelse next_state=IDLE; \nS10: if(x) next_state=S101; \nelse next_state=IDLE; \nS101: if(x) next_state=S1; \nelse next_state=IDLE; \ndefault: next_state=IDLE; \nendcase \n\n//output logic\nalways @(present_state) \ncase"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " always @(posedge clk)\nbegin \nif (reset) \npresent_state <= IDLE ; \nelse \npresent_state <= next_state ; \nend \n \nassign z = (present_state == S101 ) ? 1:0; \n\nalways @(*) \ncase(present_state) \nIDLE: \nnext_state = x?S1:IDLE ; \nS1: \nnext_state = x?S10:IDLE ; \nS10: \nnext_state = x?S1:S101 ; \nS101: \nnext_state = x?S1:IDLE ; \ndefault: \nnext_state = x?S1:IDLE ; \nendcase \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin \n \nif(reset) \npresent_state<=IDLE;\nelse \npresent_state<=next_state;\nend \n// output logic\nalways @(*)\nbegin \n \ncase(present_state) \nIDLE: if(x)next_state=S1;\n\telse next_state=IDLE;\nS1: if(x)next_state=S10;\n\telse next_state=S1;\nS10: if(x)next_state=S101;\n\telse next_state=S10;\nS101: if(x)next_state=S1;\n\telse next_state=S101;\ndefault: next_state=IDLE;\nendcase\nend \n// input logic\nalways @(*)\nbegin \n \ncase("
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\n \nalways @(*) \nbegin \nif (reset) \npresent_state=IDLE; \nelse \npresent_state=next_state; \nend \n \nalways @(x,present_state)\nbegin \ncase(present_state) \nIDLE: if (x) next_state=S1; \n\telse next_state=IDLE; \nS1: if (x) next_state=S10; \n\telse next_state=IDLE;\nS10: if (x) next_state=S101; \n\telse next_state=IDLE;\nS101: if (x) next_state=S1; \n\telse next_state=IDLE; \ndefault: next_state=IDLE;\nendcase \t\nend \n \nalways @(x,present_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin\nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nassign z = (present_state == S101) ? 1:0;\n\nalways @(present_state or x)\nbegin\ncase(present_state)\nIDLE: if(x)\nnext_state = S1;\nelse \nnext_state = IDLE;\nS1: if(x)\nnext_state = S10;\nelse \nnext_state = IDLE;\nS10: if(x)\nnext_state = S101;\nelse \nnext_state = IDLE;\nS101: if(x)\nnext_state = S1;\nelse \nnext_state = IDLE;\ndefault: next_state = IDLE;\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\n\tbegin\n\tif(reset)\n\tpresent_state = IDLE;\n\telse\n\tpresent_state = next_state;\n\tend\n\t\nalways @(present_state or x)\n\tcase(present_state)\n\tIDLE:\n\tif(x)\n\t next_state=S1;\n\telse\n\t next_state=IDLE;\n\tS1:\n\tif(x)\n\t next_state=S10;\n\telse\n\t next_state=IDLE;\n\tS10:\n\tif(x)\n\t next_state=S101;\n\telse\n\t next_state=IDLE;\n\tS101:\n\tif(x)\n\t next_state=S1;\n\telse\n\t next_state=IDLE;\n\tdefault:\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) \n\tbegin \n\tif (reset) \n\t present_state <= IDLE; \n\telse \n\t present_state <= next_state;\n\tend \n\t\n\tassign z = (present_state == S101) ? 1:0;\n\t\n\talways @(*) \n\tcase(present_state) \n\tIDLE: next_state = x?S1:IDLE; \n\tS1:next_state = x?S10:IDLE;\n\tS10:next_state = x?S101:IDLE;\n\tS101:next_state = x?IDLE:S1; \n\tdefault: next_state = IDLE ;\n\tendcase\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) //if posedge reset, then transition to state S1\nbegin\t\n\tif(reset) \n\tpresent_state<=IDLE;\n\telse\n\tpresent_state<=next_state;\nend\n\nalways @(posedge clk or posedge reset) //if posedge reset, then transition to state S1\nbegin\t\n\tif(reset) \n\tnext_state<=IDLE;\n\telse\n\tcase(present_state)\n\t\n\tIDLE: if(x) next_state<=S1; \n\tS1: if(x) next_state<=S10;\n\tS10: if(x) next_state<=S101; \n\tS101: if(x) next_state<=IDLE; \n\t\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n//if state is initial, output is set to 0\n\nalways @(*)\nbegin \n\tif(present_state==IDLE)\n\tz=0;\n\tif(present_state==S1)\n\tz=0;\n\tif(present_state==S10)\n\tz=0;\n\tif(present_state==S101)\n\tz=1;\n\tif(x==1 && present_state==S1)\n\tz=1;\n\tif(x==0 && present_state==S10)\n\tz=1;\n\tif(x==1 && present_state==S101)\n\tz=1;\n\tif(reset==1 && present_state==IDLE)\n\tz=0;\nend\n \nalways @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) \n\tbegin \n\tif(reset) \n\tpresent_state<= IDLE; \n\telse \n\tpresent_state<= next_state; \n\tend \n\t\n\t\n\tassign z=(present_state==S101); \n\t\n\talways @(*) \n\tcase(present_state) \n\tIDLE: next_state=(x)? S1:IDLE; \n\tS1: next_state=(x)? S10:IDLE; \n\tS10: next_state=(x)? S101:IDLE; \n\tS101: next_state=(x)? S1:IDLE; \n\tdefault: next_state=IDLE; \n\tendcase \n\t\n\t\n\t\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(*) begin \n\tcase(present_state)\n\tIDLE: \n\tif(x) next_state = S1;\n\telse next_state = IDLE;\n\tS1: \n\tif (x) next_state = S10;\n\telse next_state = IDLE;\n\tS10: \n\tif (x) next_state = S101;\n\telse next_state = IDLE;\n\tS101: \n\tif (x) next_state = S1;\n\telse next_state = IDLE;\n\tdefault: next_state = IDLE;\n\tendcase\n\tcase(present_state)\n\tIDLE:z=0;\n\tS1: z = 0;\n\tS10: z = 0;\n\tS101: if (x) z = 1;\n\telse z = 0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk) \nbegin \nif(reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state; \nend \n\nassign next_state = (present_state == S1) ? (x ? S10 : S1) : (present_state == S10) ? (x ? S101 : S1) : (x ? S10 : S101);\n\nassign z = (present_state == S101) ? 1:0;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk, posedge reset)\nbegin \nif (reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state; \nend \n\nalways @(present_state, x)\nbegin\ncase(present_state)\nIDLE: if (x) next_state = S1; \nelse next_state = IDLE; \n\nS1: if (x) next_state = S10; \nelse next_state = IDLE; \n\nS10: if (x) next_state = S101; \nelse next_state = IDLE; \n\nS101: if (x) next_state = S1; \nelse next_state = IDLE; \nendcase\nend\n\nalways @(posedge clk, posedge reset)\nbegin \nif (reset"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk, posedge reset) \nbegin \n if (reset) \n present_state <= IDLE; \n else \n present_state <= next_state; \nend \n\nalways @ (present_state, x) \n begin \ncase(present_state) \n IDLE: begin \n\tif (x) \n\tnext_state = S1; \n\telse \n\tnext_state = IDLE; \n\tend \n S1: begin \n\tif (x) \n\tnext_state = S10; \n\telse \n\tnext_state = IDLE; \n\tend \n S10: begin \n\tif (x) \n\tnext_state = S101; \n\telse \n\tnext_state = IDLE; \n\tend \n S101: begin "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) \n\tbegin \n\tif(reset) \n\tpresent_state = IDLE;\n\telse \n\tpresent_state = next_state;\n\tend\n\t\n\talways @(x,present_state)\n\tcase(present_state)\n\tIDLE: if(x) next_state = S1; else next_state = IDLE;\n\tS1: if(x) next_state = S10; else next_state = IDLE;\n\tS10: if(x) next_state = S101; else next_state = IDLE;\n\tS101: if(x) next_state = S1; else next_state = IDLE;\n\tendcase\n\t\n\t\nassign z = (present_state==S101);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": " \nalways @(present_state)\nbegin \ncase(present_state)\nIDLE: \nif(x) \nbegin \nnext_state = S1; \nend \nelse \nbegin \nnext_state= IDLE; \nend \nS1: \nif(x)\nbegin \nnext_state = S10; \nend \nelse \nbegin \nnext_state = S1; \nend \nS10: \nif(x) \nbegin \nnext_state = S101; \nend \nelse \nbegin \nnext_state = S1; \nend \nS101: \nif(x) \nbegin \nnext_state = S1; \nend \nelse \nbegin \nnext_state = S10; \nend \ndefault: \nnext"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @(*) \nbegin \n\tif(reset) \n\tbegin \n\tnext_state = IDLE; \n\tend \n\telse if (x) \n\tbegin \n\tcase(present_state) \n\tIDLE: next_state=S1; \n\tS1: next_state=S10; \n\tS10: next_state=S101; \n\tS101: next_state=IDLE; \n\tdefault: next_state=IDLE; \n\tendcase \tend \n\telse \n\tbegin \n\tcase(present_state) \n\tIDLE: next_state=S1; \n\tS1: next_state=S10; \n\tS10: next_state=S101; \n\tS101: next_state=IDLE; \n\tdefault:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or posedge reset) \nbegin \nif (reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state; \nend \n\nalways @ (present_state or x) \nbegin \ncase(present_state) \nIDLE: if (x) next_state <= S1; \n\telse next_state <= IDLE; \nS1: if (x) next_state <= S10; \n\telse next_state <= S1; \nS10: if (x) next_state <= S101; \n\telse next_state <= S1; \nS101: if (x) next_state <= S1; \n\telse next_state <= S10; \ndefault: next_state <= IDLE; \nendcase \nend \n\nalways"
+    },
+    {
+      "finish_reason": "length",
+      "index": 20,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\n\tif (reset)\n\t present_state <= IDLE; \n\telse \n\t present_state <= next_state;\n\nalways @(present_state or x)\n\tcase (present_state)\n\tIDLE: begin\n\tif (x)\n\t next_state = S1;\n\telse\n\t next_state = IDLE;\n\tend\n\tS1: begin\n\tif (x)\n\t next_state = S10;\n\telse\n\t next_state = IDLE;\n\tend\n\tS10: begin\n\tif (x)\n\t next_state = S101;\n\telse\n\t next_state = IDLE;\n\tend\n\tS101: begin\n\tif (x)\n\t next_state = S1;\n\telse\n\t next_state ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 21,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin \nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways @(present_state, x)\ncase(present_state)\nIDLE:\nbegin \nif(x)\nnext_state = S1;\nelse\nnext_state = IDLE;\nend\nS1:\nbegin \nif(x)\nnext_state = S1;\nelse\nnext_state = S10;\nend\nS10:\nbegin \nif(x)\nnext_state = S101;\nelse\nnext_state = S10;\nend\nS101:\nbegin \nif(x)\nnext_state = S1;\nelse\nnext_state = S10;\nend\ndefault:\nnext_state = IDLE;\nendcase\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 22,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin \n\tif(reset)\n\t present_state<=IDLE;\n\telse\n\t present_state<=next_state;\nend\n\nalways @(present_state or x)\nbegin \ncase(present_state)\nIDLE: \nbegin \n\tif(x) next_state<=S1;\n\telse next_state<=IDLE;\nend \nS1: \nbegin \n\tif(x) next_state<=S10;\n\telse next_state<=IDLE;\nend \nS10: \nbegin \n\tif(x) next_state<=S101; \n\telse next_state<=IDLE; \nend \nS101: \nbegin \n\tif(x) next_state<=S1"
+    },
+    {
+      "finish_reason": "length",
+      "index": 23,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) \nbegin \n \tif (reset) \n \tpresent_state <= IDLE; \n \telse \n \tpresent_state <= next_state; \n \t//State transitions\n \tcase (present_state) \n \tIDLE: \n \tbegin \n \tif (x) \n \tnext_state <= S1; \n \telse \n \tnext_state <= IDLE; \n \tend \n \tS1: \n \tbegin \n \tif (x) \n \tnext_state <= S10; \n \telse \n \tnext_state <= S1; \n \tend \n \tS10: \n \tbegin \n \tif (x) \n \tnext_state <="
+    },
+    {
+      "finish_reason": "length",
+      "index": 24,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk, posedge reset)\nbegin\nif(reset) \npresent_state <= IDLE;\nelse \npresent_state <= next_state;\nend\n \nalways @(x, present_state)\nbegin\ncase(present_state)\nIDLE: begin \nz=0;\nif(x) next_state = S1;\nelse next_state = IDLE;\nend\nS1: begin\nz=0;\nif(x) next_state = S1;\nelse next_state = S10;\nend\nS10: begin\nz=0;\nif(x) next_state = S101;\nelse next_state = S10;\nend\nS101: begin\nz=0;\nif(x) next_state = S1;\nelse next_state = S10;\nend\ndefault"
+    },
+    {
+      "finish_reason": "length",
+      "index": 25,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin \n\tif (reset) \n\tpresent_state=IDLE;\n\telse \n\tpresent_state=next_state;\nend \n\t\nalways @(present_state or x)\nbegin \n\tcase(present_state)\n\tIDLE: \n\tif (x) next_state=S1;\n\telse next_state=IDLE;\n\tS1: \n\tif (x) next_state=S10;\n\telse next_state=IDLE;\n\tS10: \n\tif (x) next_state=S101;\n\telse next_state=IDLE;\n\tS101: \n\tif (x) next_state=S1;\n\telse next_state=IDLE;\n\tdefault: next_state=IDLE;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 26,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk or posedge reset) \n\tbegin \n\tif(reset) \n\tpresent_state <= IDLE; \n\telse \n\tpresent_state <= next_state ; \n\tend \n\t\nalways @(x,present_state) \n\tcase(present_state) \n\tIDLE: \n\tbegin \n\tif(x) \n\tnext_state = S1; \n\telse \n\tnext_state = IDLE ; \n\tend \n\tS1: \n\tbegin \n\tif(x) \n\tnext_state = S10; \n\telse \n\tnext_state = IDLE ; \n\tend \n\tS10: \n\tbegin \n\tif(x) \n\tnext_state = S101; \n\telse \n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 27,
+      "logprobs": null,
+      "text": "\nalways @(present_state,x)\ncase(present_state)\nIDLE: \n\tbegin \n\tif (reset) \n\tnext_state=S1; \n\telse \n\tnext_state=IDLE; \n\tend \nS1: \n\tbegin \n\tif (x) \n\tnext_state=S10; \n\telse \n\tnext_state=IDLE; \n\tend \nS10: \n\tbegin \n\tif (x) \n\tnext_state=S101; \n\telse \n\tnext_state=IDLE; \n\tend \nS101: \n\tbegin \n\tif (x) \n\tnext_state=S101; \n\telse \n\tnext_state=IDLE; \n\tend \ndefault: \n\tnext"
+    },
+    {
+      "finish_reason": "length",
+      "index": 28,
+      "logprobs": null,
+      "text": " always @(posedge clk or negedge reset) \n\tif(~reset) //reset is active low\n\t present_state <= IDLE; \n\telse\n\t present_state <= next_state;\n\t \nalways @(present_state or x) //next state is computed based on the current state and inputs\nbegin\ncase(present_state)\nIDLE: if(~x) next_state <= S1;\n\t else next_state <= IDLE;\nS1: if(~x) next_state <= S1;\n\t else next_state <= S10;\nS10: if(~x) next_state <= S101;\n\t else next_state <= S10;\nS101: if(~x) next_state <= S1;\n\t else next_state <= S10;\ndefault: next_state <= IDLE;\nendcase"
+    },
+    {
+      "finish_reason": "length",
+      "index": 29,
+      "logprobs": null,
+      "text": " \n\n \nalways @(posedge clk or posedge reset)\nbegin\n \nif(reset)\npresent_state<=IDLE;\nelse\npresent_state<=next_state;\nend\n \n \nalways @(present_state or x)\ncase(present_state)\nIDLE:\nbegin \nif(x)\nnext_state=S1;\nelse \nnext_state=IDLE;\nend\nS1:\nbegin \nif(x)\nnext_state=S1;\nelse \nnext_state=S10;\nend\nS10:\nbegin \nif(x)\nnext_state=S101;\nelse \nnext_state=IDLE;\nend\nS101:\nbegin \nif(x)\nnext_state=S1;\nelse \nnext_state=S10;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 30,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk, posedge reset) \n\tif (reset) \n\tpresent_state <= IDLE; \n\telse \n\tpresent_state <= next_state;\n\t\n\t\nalways @(present_state,x)\ncase(present_state)\n\tIDLE: \n\tif (x) \n\tnext_state = S1; \n\telse \n\tnext_state = IDLE;\n\tS1: \n\tif (x) \n\tnext_state = S10; \n\telse \n\tnext_state = IDLE;\n\tS10: \n\tif (x) \n\tnext_state = S101; \n\telse \n\tnext_state = IDLE;\n\tS101: \n\tif (x) \n\tnext_state = S1; \n\telse"
+    },
+    {
+      "finish_reason": "length",
+      "index": 31,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin \nif(reset) \npresent_state <= IDLE;\nelse \npresent_state <= next_state;\nend \n\nalways @(x,present_state)\ncase(present_state)\nIDLE:begin \n\tif(x) next_state=S1;\n\telse next_state=IDLE;\n\tend\nS1:begin \n\tif(x) next_state=S10;\n\telse next_state=IDLE;\n\tend\nS10:begin \n\tif(x) next_state=S101;\n\telse next_state=IDLE;\n\tend\nS101:begin \n\tif(x) next_state=S1;\n\telse next_state=IDLE;\n\tend\ndefault:next_state=IDLE;\nendcase"
+    },
+    {
+      "finish_reason": "length",
+      "index": 32,
+      "logprobs": null,
+      "text": "\talways @(posedge clk or posedge reset)\n\tbegin\n\tif(reset)\n\tpresent_state<=IDLE;\n\telse\n\tpresent_state<=next_state;\n\tend\n\talways @(x or present_state)\n\tcase(present_state)\n\tIDLE: \n\tbegin \n\tif(x) \n\tnext_state<=S1; \n\telse \n\tnext_state<=IDLE; \n\tend \n\tS1: \n\tbegin \n\tif(x) \n\tnext_state<=S10; \n\telse \n\tnext_state<=IDLE; \n\tend \n\tS10: \n\tbegin \n\tif(x) \n\tnext_state<=S101; \n\telse \n\tnext_state<"
+    },
+    {
+      "finish_reason": "length",
+      "index": 33,
+      "logprobs": null,
+      "text": "\nalways @(*) begin \n\tif (reset) \n\tpresent_state = IDLE; \n\telse \n\tpresent_state = next_state; \nend \n\nalways @(x, present_state) begin \n\tcase(present_state) \n\tIDLE: \n\tcase(x) \n\t0: next_state = S1; \n\t1: next_state = S10; \n\tendcase \n\tS1: \n\tcase(x) \n\t0: next_state = S1; \n\t1: next_state = S10; \n\tendcase \n\tS10: \n\tcase(x) \n\t0: next_state = S1; \n\t1: next_state = S10; \n\tendcase \n\tS101: \n\tcase("
+    },
+    {
+      "finish_reason": "length",
+      "index": 34,
+      "logprobs": null,
+      "text": " \nalways@(posedge clk, posedge reset)\nbegin \n if(reset) \n present_state<=IDLE;\nelse \n present_state<=next_state;\nend \n \nalways@(present_state,x)\nbegin\ncase(present_state) \nIDLE: if(x) next_state<=S1;\n\telse next_state<=IDLE;\n\t \nS1: if(x) next_state<=S10;\n\telse next_state<=IDLE;\n\t\nS10: if(x) next_state<=S101;\n\telse next_state<=IDLE;\n\t\nS101: if(x) next_state<=S1;\n\telse next_state<=IDLE;\n\t\ndefault next_state<=IDLE;\nendcase"
+    },
+    {
+      "finish_reason": "length",
+      "index": 35,
+      "logprobs": null,
+      "text": "\nalways @( x, present_state )\nbegin \n\tcase( present_state )\n\tIDLE: if(x)next_state=S1; \n\telse next_state=IDLE;\n\tS1: if(x)next_state=S10; \n\telse next_state=IDLE;\n\tS10: if(x)next_state=S101; \n\telse next_state=IDLE;\n\tS101: if(x)next_state=S1; \n\telse next_state=IDLE;\n\tdefault: next_state=IDLE;\n\tendcase\nend\n// combinational logic to convert from anode to z\nalways @(present_state)\nbegin \n\tcase(present_state)\n\tIDLE:z=0; \n\tS101:z=1; \n\tend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 36,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) \nbegin \n\tif (reset) \n\tpresent_state <= IDLE; \n\telse \n\tpresent_state <= next_state; \nend \n\t\nalways @(*) \nbegin \n\tcase(present_state) \n\tIDLE: \n\t{z,next_state} = {1'b0, S1}; \n\tS1: \n\t{z,next_state} = {1'b1, S10}; \n\tS10: \n\t{z,next_state} = {1'b1, S101}; \n\tS101: \n\t{z,next_state} = {1'b1, S1}; \n\tdefault: \n\t{z,next_state} = {1'b0, IDLE};"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 37,
+      "logprobs": null,
+      "text": "\nalways @ ( x, present_state ) begin\ncase(present_state)\n\tIDLE: if(x) next_state = S1; else next_state = IDLE;\n\tS1: if(x) next_state = S10; else next_state = IDLE;\n\tS10: if(x) next_state = S101; else next_state = IDLE;\n\tS101: if(x) next_state = S1; else next_state = IDLE;\n\tdefault: next_state = IDLE;\nendcase\nend\n\nalways @ (posedge clk) begin \n\tif(reset) present_state = IDLE; \n\telse present_state = next_state;\nend\n\nassign z = (present_state == S101);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 38,
+      "logprobs": null,
+      "text": "\n\nalways @(*) \nbegin\n\tif (reset) \n\tbegin\n\tnext_state = IDLE;\n\tend \n\telse \n\tbegin\n\tcase(present_state)\n\tIDLE: \n\tbegin \n\tif (x) \n\tbegin \n\tnext_state = S1; \n\tend \n\telse \n\tbegin \n\tnext_state = IDLE; \n\tend \n\tend\n\tS1: \n\tbegin \n\tif (x) \n\tbegin \n\tnext_state = S1; \n\tend \n\telse \n\tbegin \n\tnext_state = S10; \n\tend \n\tend\n\tS10: \n\tbegin \n\tif (x) \n\tbegin \n\tnext_state = S101; \n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 39,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin \nif (reset) \npresent_state=IDLE; \nelse \npresent_state=next_state; \nend \n \n//always @ (posedge clk)\n//if (present_state == S1)\n//z = x; \n//else if (present_state == S10)\n//z=!x;\n//else if (present_state== S101)\n//z=x;\n\nalways @ (present_state)\ncase(present_state) \nIDLE: if(x) \nnext_state=S1; \nelse \nnext_state=IDLE; \nS1: if(x) \nnext_state=S10; \nelse \nnext_state=IDLE; \nS10: if(x) \nnext_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 40,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin \nif (reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state; \nend \n\nalways @ (present_state) \nbegin \ncase(present_state) \nIDLE: if (x) next_state = S1; \nelse next_state = IDLE; \nS1: if (x) next_state = S101; \nelse next_state = S10; \nS10: if (x) next_state = S1; \nelse next_state = S10; \nS101: if (x) next_state = S1; \nelse next_state = S10; \ndefault: next_state = IDLE; \nendcase \nend \n\nassign z = (present_state == S101);"
+    },
+    {
+      "finish_reason": "length",
+      "index": 41,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk) \nbegin\nif(reset) \npresent_state <= IDLE; \nelse if(present_state == S101)\npresent_state <= IDLE; \nelse \npresent_state <= next_state; \nend \n \n\nalways @(posedge clk) \nbegin \ncase(present_state) \nIDLE: begin \nz = 0; \nif(x) \nnext_state = S1; \nelse \nnext_state = IDLE; \nend \nS1: begin \nz = 0; \nif(x) \nnext_state = S1; \nelse \nnext_state = S10; \nend \nS10: begin \nz = 0; \nif(x) \nnext_state = S101; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": " \nassign z = (present_state==S101 && x==1) ? 1:1; \nalways @(posedge clk or posedge reset)\nif(reset) \npresent_state<=IDLE;\nelse \npresent_state<=next_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 43,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk, posedge reset) \nbegin\nif(reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state; \nend \n\n//next state logic and output logic\nalways@(present_state) \nbegin \ncase(present_state) \nIDLE: if(x) next_state = S1; \nelse next_state = IDLE; \nS1: if(x) next_state = S10; \nelse next_state = IDLE;\n\nS10: if(x) next_state = S101; \nelse next_state = IDLE;\nS101: if(x) next_state = S1; \nelse next_state = IDLE; \ndefault: next_state = IDLE; \nendcase\nend \n\n//output"
+    },
+    {
+      "finish_reason": "length",
+      "index": 44,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin \nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways @(x,present_state)\ncase(present_state)\nIDLE: begin \nif(x)\nnext_state = S1;\nelse \nnext_state = IDLE;\nend \n\nS1: begin \nif(x)\nnext_state = S10;\nelse \nnext_state = S1;\nend \n\nS10: begin \nif(x)\nnext_state = S101;\nelse \nnext_state = S1;\nend \n\nS101: begin \nif(x)\nnext_state = S1;\nelse \nnext_state = S10;\nend \n\ndefault: next_state = ID"
+    },
+    {
+      "finish_reason": "length",
+      "index": 45,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin \nif(reset)\npresent_state <= IDLE;\nelse \npresent_state <= next_state;\nend\n\nalways @(present_state, x)\ncase(present_state)\nIDLE: begin \nif(x) next_state=S1;\nelse next_state=IDLE;\nend\nS1: begin \nif(x) next_state=S10;\nelse next_state=IDLE;\nend\nS10: begin \nif(x) next_state=S101;\nelse next_state=IDLE;\nend\nS101: begin \nif(x) next_state=S1;\nelse next_state=IDLE;\nend\ndefault: next_state=IDLE;\nendcase\n\nassign z = (present_state==S101);"
+    },
+    {
+      "finish_reason": "length",
+      "index": 46,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n if (reset) \npresent_state <= IDLE; \nelse \t\npresent_state <= next_state ; \n\n//present_state = IDLE;\n\nassign z = (present_state == S101) ? 1 : 0; \n\nalways @(present_state or x)\ncase(present_state)\nIDLE: if(x) next_state = S1; \n\telse next_state = IDLE;\n\nS1: if(x) next_state = S10;\n\telse next_state = IDLE;\n\nS10: if(x) next_state = S1;\n\telse next_state = S10;\n\nS101: if(x) next_state = S1;\n\telse next_state = S101;\n\ndefault: next_state = IDLE"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) \nbegin\nif(reset) \npresent_state<=IDLE;\nelse \npresent_state<=next_state;\nend\n\nassign next_state=present_state;\nassign z=(present_state==S101);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 48,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nif (reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state;\n// this always block is a sequential state machine\nalways @(present_state)\ncase(present_state)\nIDLE: if (x == 1) next_state = S1;\nelse next_state = IDLE;\nS1: if (x == 0) next_state = S10;\nelse next_state = S1;\nS10: if (x == 1) next_state = S101;\nelse next_state = S10;\nS101: if (x == 1) next_state = S1;\nelse next_state = S101;\ndefault: next_state = IDLE;\nendcase \nassign z = (present_state == S101);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 49,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin \n\tif (reset)\n\tpresent_state<=IDLE;\n\telse\n\tpresent_state<=next_state;\nend \n\nalways @(present_state or x)\nbegin \n\tcase(present_state)\n\tIDLE: \n\tbegin \n\tif (x)\n\tbegin \n\tnext_state = S1;\n\tend \n\telse \n\tbegin \n\tnext_state = IDLE;\n\tend \n\tend \n\tS1: \n\tbegin \n\tif (x)\n\tbegin \n\tnext_state = S1;\n\tend \n\telse \n\tbegin \n\tnext_state = S10;\n\tend \n\tend \n\tS10: \n\tbegin \n\tif"
+    }
+  ],
+  "created": 1663600557,
+  "id": "cmpl-2JX5oSf8Ph91QH6hIYbxnCc5g40hI",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 9576,
+    "prompt_tokens": 232,
+    "total_tokens": 9808
+  }
+}

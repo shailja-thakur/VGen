@@ -1,0 +1,40 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\n\tif (reset == 1'b1) begin\n\tout <= 0;\n\tend\n\telse if (load == 1'b1) begin\n\tout <= data;\n\tend\n\telse begin\n\tout <= out<<amount;\n\tend\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset)\nif(reset)\nout<=0;\nelse\nbegin\nif(load)\nout<=data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk,posedge reset)\nbegin\nif(reset) out<=0;\nelse if(load) out<=data;\nelse begin\nout[7:0]=data<<amount;\n// rotate the data left by amount bits\nend\nend\n"
+    }
+  ],
+  "created": 1663304520,
+  "id": "cmpl-F2dSWhat7sYeUOWUxBycVfRgPI4U3",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 182,
+    "prompt_tokens": 93,
+    "total_tokens": 275
+  }
+}

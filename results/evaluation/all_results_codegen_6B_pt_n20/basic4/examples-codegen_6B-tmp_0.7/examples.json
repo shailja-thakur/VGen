@@ -1,0 +1,139 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst)\n  out <= (sel == 0 ? a : b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if(sel)\n    out = a;\n  else\n    out = b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= sel ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out[sel] <= a[sel];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk)\n  out <= (sel == 0)? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk)\n  out = select(sel == 0, a, b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": " \nalways @(*) begin\n  out <= a;\n  if (sel == 0) out <= a;\n  else out <= b;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= sel ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= sel ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk_i)\n  out <= sel ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk) begin\n  out[sel] <= a[sel];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\n  out <= sel ? a : b;\n\n// A 4-to-1 multiplexer\nmodule mux4(\ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n// When sel=2, assign c to out.\n// When sel=3, assign d to out.\nalways@(posedge clk)\n  out <= sel ? a : (sel == 3 ? d : (sel == 2 ? c : b));\n\n// A 2-to-1 multiplexer\nmodule mux2(\ninput [2:0] a, b,\ninput sel,\noutput [2:0] out );\n// When"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\n  out <= a[sel];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": " \nalways@(posedge clk) begin\n  out <= a(sel);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= select(sel, a, b);\n`\n\nconst kMuxMultiplexerTest = `\n// Design a 2-to-1 multiplexer.\nmodule mux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\nalways @(posedge clk)\n  out <= select(sel, a, b);\n`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst) begin\n   if (rst) begin\n      out <= 0;\n   end\n   else begin\n      out <= sel ? a : b;\n   end\nend\n`;\n\nconst multiplex = `\nmodule mux( \noutput [4:0] in,\ninput sel,\ninput [4:0] a,\ninput [4:0] b );\n// When sel=0, assign a to in. \n// When sel=1, assign b to in.\nalways @(posedge clk or negedge rst) begin\n   if (rst) begin\n      in <= 0;\n   end\n   else begin\n      in <= sel ? a : b;\n   end\nend\n`;\n\nconst multiplex_2to1 = `\nmodule mux("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk)\n  out[sel] <= a[sel];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst) begin\n  if (rst) begin\n    out <= 0;\n  end\n  else begin\n    switch (sel) begin\n      case 0: out <= a; break;\n      case 1: out <= b; break;\n      default: out <= 0;\n    end\n  end\nend\n\nmodule mux2( \ninput [4:0] a, b,\ninput sel,\noutput sel_out,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\nalways @(posedge clk or negedge rst) begin\n  if (rst) begin\n    sel_out <= 0;\n  end\n  else begin\n    switch (sel) begin\n      case 0:"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or negedge rst)\n  out <= a[sel];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst)\n  out <= a[sel];\n"
+    }
+  ],
+  "created": 1663520751,
+  "id": "cmpl-PF4VhhthAgolCNg1pjRRsEJlvudWG",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1148,
+    "prompt_tokens": 70,
+    "total_tokens": 1218
+  }
+}

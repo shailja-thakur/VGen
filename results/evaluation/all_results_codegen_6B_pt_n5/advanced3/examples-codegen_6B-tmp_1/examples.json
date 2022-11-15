@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nbegin\n    present_state <= IDLE; next_state <= IDLE; \nend\n\n\n\nbegin\n    present_state <= IDLE;\n    present_state == S1? next_state := S10:next_state := IDLE;\n    present_state == S10? next_state <= S1: next_state := IDLE;\n    present_state == S101? next_state := S1: next_state <= S10;\nend\n\n\nvoid main()\nbegin\n    wait (10);\n    z <= x;\n    wait (1);\nend"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "  always @(posedge clk)\n  begin\n    next_state <= IDLE + x[1];\n  end\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset) begin\n  if (!x) next_state = IDLE, z=1;\n  else if (present_state != IDLE) {\n        next_state = present_state[next_state];     \n}\n    else {  \n      next_state = next_state[x(1)];        \n}        \n  present_state = next_state; \n        \nend  \n\n// the above always ts works, but the following code is much more clear.\n// there are both the labels falling off the left side of the THEN scopes.\nmodule Jchebyshev( input clk, input pin1, input pin2, output share0, output share1 );\n  // the scopes of the THENs are in descending order. \n  scalar input1 ;\n  scalar input2 ;\n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// Declare 3 parameters, \"z\", \"y\", \"x\"\nparameter int z=1, y=1, x=0;\n\n// z=1\nassign z=1;\n\n\n// y=1\nreg [1:0] y;\nassign y=1;\n\n\n// x=1\nreg [1:0] x;\nassign x=1;\n\n\n// Process equations in behavioral specifications as appropriate\nalways @(posedge clk or (!rst) and reset) begin\n        // current state is IDLE\n        if (next_state = IDLE) begin\n        \tif(x = 1) then\n        \t\tz = 1;\n        \telse\n        \t\tz = 0;\n        \tnext_state = S1;\n        end\n        // current state is S1\n        else if (next_state = S1) begin\n        "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "    begin\n        present_state <- IDLE;\n        next_state <- IDLE;\n    end\n\n    begin\n        if (reset='1') then\n            next_state <- IDLE;\n            present_state <- IDLE;\n        end\n\n        if (x='1') then\n            if (present_state='IDLE') then\n\t\t\t\tnext_state <- S1;\n\t\t\tend\n        else if (present_state='S1') then\n            if (x='0') then\n\t\t\t\tnext_state <- S10;\n\t\t\tend\n        else if (present_state='S10') then\n            if (x='1') then\n\t\t\t\tnext_state <- S101;\n\t\t\tend\n        else if (present_state='S101') then\n\t\t\t\tnext_state <- IDLE;\n\t\t\tend\n        end\n\tend"
+    }
+  ],
+  "created": 1663519524,
+  "id": "cmpl-myVt81VjTDQd36GtAitygIaHFOc9u",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 754,
+    "prompt_tokens": 232,
+    "total_tokens": 986
+  }
+}

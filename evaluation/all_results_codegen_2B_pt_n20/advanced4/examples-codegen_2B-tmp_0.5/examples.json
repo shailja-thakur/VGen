@@ -1,0 +1,149 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// Design a 64-bit arithmetic shift register, with asynchronous load.\n// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.\nmodule advshift_async(input clk,\ninput [63:0] data,\ninput ena,\ninput [1:0] amount,\noutput reg [63:0] q); \n// when ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\n// Design a 64-bit arithmetic shift register, with asynchronous load.\n// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// ----------------------\n// design the a synchronous shift register\n// ----------------------\n\n// A synchronous shift register consists of a register and a clock.\n// The shift register can shift both left and right, and by 1 or 8 bit positions, selected by amount.\n// The shift register can be set to either high or low.\n// The clock is a clock input.\n// The clock input is set to low and the shift register is set to high.\n// The clock is pulsed when the shift register is set to high.\n// The clock is pulsed when the shift register is set to low.\n// The clock is pulsed when the shift register is set to high.\n// The clock is pulsed when the shift register is set to low.\n// The clock is pulsed when the shift register is set to high.\n// The clock is pulsed when the shift register is set to low.\n// The clock is puls"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(*)\nbegin\n  if (ena)\n  {\n    if (load)\n      q = data;\n    else\n      q = 0;\n  }\n  else\n  {\n    if (load)\n      q = 0;\n    else\n      q = data;\n  }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\nreg [63:0] reg_data;\n\nalways @(posedge clk) begin\n  if (ena)\n  {\n    if (load)\n    {\n      reg_data = data;\n      q = reg_data;\n    }\n    else\n    {\n      q = 0;\n    }\n  }\n  else\n  {\n    q = 0;\n  }\nend\n);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\nreg [63:0] data;\nreg [63:0] shift_reg;\nreg [63:0] shift_reg_out;\n\nalways @(posedge clk)\n  if (ena)\n    q = data[63:0]\n  else\n    q = 0\n  if (load)\n    shift_reg = data[63:0]\n  else\n    shift_reg = 0\n  if (ena)\n    shift_reg_out = shift_reg\nelse\n    shift_reg_out = 0\n\nalways @(posedge clk)\n  if (ena)\n    q = q + shift_reg_out\n  else\n    q = 0\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (ena)\n        q <= data[amount];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// SYNOPSIS:\n// Inputs:\n//   clk: Clock\n//   load: Load\n//   ena: Enable\n//   amount: Shift amount\n//   data: Data to shift\n//   q: Shift register\n// Outputs:\n//   q: Shift register\n// RESULT:\n//   q: Shift register\n\n// ATTRIBUTES:\n//   readonly\n//   writeonly\n\n// INTERNAL VARIABLES:\n//   reg [63:0] q\n//   reg [63:0] q_old\n\n// INTERNAL FUNCTIONS:\n//   void shift()\n//   void shift_reg()\n//   void load_reg()\n//   void write_reg()\n//   void load_reg()\n//   void write_reg()\n//   void write_reg()\n//   void write_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign q = data[63:0];\n\nreg [63:0] q_out;\n\nalways @(posedge clk)\nbegin\n  if (ena) q_out = q;\n  if (load) q_out = data[63:0];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// shift left by 1 bit, and set the shift register to the result.\nwire [63:0] tmp;\nalways @(posedge clk)\nbegin\n    if (ena) {\n        // shift left by 1 bit.\n        tmp[63:0] = data[63:0] << 1;\n        q = tmp;\n    }\nend\n\n// shift left by 8 bits, and set the shift register to the result.\nwire [63:0] tmp2;\nalways @(posedge clk)\nbegin\n    if (ena) {\n        // shift left by 8 bits.\n        tmp2[63:0] = data[63:0] << 8;\n        q = tmp2;\n    }\nend\n\n\n// shift right by 1 bit, and set the shift register to the result.\nwire [63:0] tmp3;\nalways @("
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$\n// $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$\n// $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$\n// $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$ $$$$"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// This is the data register.\n// It is clocked by the clock.\nreg [64:0] data;\n\n// This is the shifter.\n// It is clocked by the clock.\nreg [63:0] q;\n\nalways @(posedge clk)\n{\n  if (ena)\n  {\n    if (load)\n      data = data[amount];\n    q = data;\n  }\n}\n\nalways @(posedge clk)\n{\n  if (ena)\n  {\n    // Shift the data register.\n    q = q[63:0] << amount;\n  }\n}\n\n// This is the output.\n// It is clocked by the clock.\nreg [63:0] out;\n\n// This is the clock.\n// It is clocked by the clock.\nreg clk;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nreg [63:0] data;\nreg [63:0] q;\n\nassign data[63:0] = data[63:0] << amount;\n\nalways @(posedge clk)\n    if (ena)\n    {\n        if (load)\n        {\n            q = data;\n        }\n    }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (ena)\n  {\n    if (load)\n    {\n      q = (data[63:0] << amount);\n    }\n    else\n    {\n      q = data[63:0] >> amount;\n    }\n  }\n  else\n  {\n    q = 0;\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\nreg [63:0] r;\n\nalways @(posedge clk)\n  if (ena)\n  {\n    r = data[63:0];\n    if (amount == 2'b00)\n      q = r << 1;\n    else if (amount == 2'b01)\n      q = r << 8;\n    else if (amount == 2'b10)\n      q = r >> 1;\n    else if (amount == 2'b11)\n      q = r >> 8;\n  }\n  else\n  {\n    if (load)\n      q = r;\n  }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n//#include <avr/io.h>\n//#include <util/delay.h>\n#include <avr/interrupt.h>\n\n#define shift_left 1\n#define shift_right 0\n\n//#define shift_left_1 1\n//#define shift_left_8 1\n//#define shift_right_1 1\n//#define shift_right_8 1\n\nvoid init_shift_register(void){\n\t// Set up shift register\n\t//q = 0x00000000;\n\t//q = 0x00000000;\n\tq = 0x00000000;\n\n\t// Enable shift register\n\tena = 1;\n\t//ena = 1;\n\t//ena = 1;\n\n\t// Enable shift register interrupt\n\t//sei();\n\n\t// Set up shift register interrupt\n\t//attachInterrupt(1, shift_register_interrupt, CHANGE);"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (load)\n    q <= data[63:0];\n  else\n    ena <= 1;\n  if (ena && (amount == 2'b00 || amount == 2'b01))\n    ena <= 0;\n  if (ena && (amount == 2'b10 || amount == 2'b11))\n    ena <= 1;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n// I/O Ports\n\n// Clock\nreg clk;\n\n// Master clock\nreg clk_master;\n\n// Load\nreg load;\n\n// Shift register\nreg q;\n\n// Shift register\nreg q_s;\n\n// Shift register\nreg q_s_s;\n\n// Shift register\nreg q_s_s_s;\n\n// Shift register\nreg q_s_s_s_s;\n\n// Shift register\nreg q_s_s_s_s_s;\n\n// Shift register\nreg q_s_s_s_s_s_s;\n\n// Shift register\nreg q_s_s_s_s_s_s_s;\n\n// Shift register\nreg q_s_s_s_s_s_s_s_s;\n\n// Shift register\nreg q_s_s"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n// BEGIN AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=PARAMETERS\n\n// END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=PARAMETERS\n\n// BEGIN AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=VARIABLE_SETTING\n\n    // END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=VARIABLE_SETTING\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (load)\n        q <= data;\n    else\n        ena <= 0;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nreg [1:0] shiftmode;\nreg [63:0] shifter;\n\nalways @(posedge clk)\n{\n  if (ena)\n  {\n    // Shift register is only loaded if ena is high.\n    if (load)\n    {\n      // Shift register is loaded.\n      // Shift is either left or right, depending on amount.\n      if (amount == 0)\n        q = data[63:0];\n      else if (amount == 1)\n        q = data[63:32];\n      else if (amount == 2)\n        q = data[63:32] << 8;\n      else if (amount == 3)\n        q = data[63:32] >> 8;\n      else if (amount == 4)\n        q = data[63:32] << 16;\n      else if (amount == 5)\n        "
+    }
+  ],
+  "created": 1663537937,
+  "id": "cmpl-jT9JSRHyqpvMbzDkwx2gyui3u7uIH",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2891,
+    "prompt_tokens": 184,
+    "total_tokens": 3075
+  }
+}

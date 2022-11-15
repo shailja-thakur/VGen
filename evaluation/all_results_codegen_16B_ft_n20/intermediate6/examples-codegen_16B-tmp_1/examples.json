@@ -1,0 +1,144 @@
+// This is a ram module
+module ram
+(
+input [7:0] data,
+input [5:0] addr,
+input we, clk,
+output [7:0] q
+);
+reg [7:0] ram[63:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (we)\nram[addr]<=data;\nend\n// generate ram values and send them to q\nalways @ (addr)\nbegin\nq<=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign q = (we) ? ram[addr] : 8'bzzzz_zzzz; \n// Write enable signal. When high for more than 1 clock\n// period, the ram value is written to the ram address\n// given by the Write Address (addr).\nalways @(posedge clk)\nbegin\n//write the data when the \"we\" is 1\n\tif (we) begin\n\tram[addr] <= data;\t// when \"we\" is 1, write the input data to the ram\n\tend\n\t// else maintain the content of ram[addr].\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign q = (we & addr[0]) ? data : ram[addr];\ninitial\nbegin\n//write data at address 0..7, 9-15\n`ifdef BS\nassign ram[6'h0] = 8'd0;\nassign ram[6'h1] = 8'd1;\nassign ram[6'h2] = 8'd2;\nassign ram[6'h2] = 8'd3;\nassign ram[6'h3] = 8'd4;\nassign ram[6'h4] = 8'd5;\nassign ram[6'h5] = 8'd6;\nassign ram[6'h5] = 8'd7;\nassign ram[6'h6] = 8'd8;\nassign ram[6'h7] = 8'd9;\nassign ram[6'h8]"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n\tif(we)\n\tram[addr] <= data;\n\tq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @ (negedge clk)\nbegin\ncase(we)\n1'b0:\nbegin\nq[7:0] = data[7:0];\nend\n// Write Operation ($display)\n1'b1:\nbegin\nram[addr] = data[7:0];\n\t$display(\"Memory[%b]=%b\",addr, ram[addr]);\nend\nendcase\nend\nassign q[7:0] = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "initial \nbegin\nend\nalways @(posedge clk)\nbegin\n\tif (we)\n\tbegin\n\tram[addr] = data;\n\tend\n\telse\n\tbegin\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nif (we)\nram[addr] <= data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk) \n\tbegin\n\t\n\tif (we) begin\n\tram[addr] <= data;\n\tq <= data;\n\tend\n\telse\n\tq <= ram[addr];\n\tend\n// initial block to load initial data to ram\ninitial\nbegin\nclk = 0;\nwe = 1'b0;\naddr = 6'h76;\ndata = 8'h69;\n#9;\nwe = 1'b1;\naddr = 6'h76;\ndata = 8'h123;\n#9;\nwe = 1'b0;\naddr = 6'h76;\nend\n// rising edge of clock to write other data of addr+1 to ram\nalways @(posedge clk)\nbegin\nif (addr <= 7D)\nbegin\n\nwe <= 1;\naddr <= (addr + 1);\nend"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n if (we)\n ram[addr] <= data;\n // assign the data at address zero to zero\n // this is necessary to make the assign statemetns of\n // always blocks synchronous\n q <= ram[addr];\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk) \nbegin\n if(we) \n begin\n// $display(\"%d: ram[%d] = %b\", $time, addr, data);\n ram[addr] = data;\n end\n end\n assign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (we)\nram[addr] = data;\nq = ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nend\n// get ram at address addr to q\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n\tif (we)\n\tbegin\n\tram[addr] = data;\n\tend\n\tq = ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "// on clock, q=ram(addr)\nalways@(posedge clk)\nbegin\nif(we)\nbegin\nram[addr]=data;\nq=ram[addr];\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\n\n\tif (we)\n\tram[addr] <= data;\n\t\n\tq <= ram[addr];\n\nend \n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nif (we)\nram[addr] <= data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (we)\nbegin\nram[addr] <= data;\nend\nelse\nq <= ram[addr];\nend\n//assign ram[5'd0] = 64'd0; -- for gtk wave\n//assign ram[5'd0] = 64'd123456; -- for Verilog\n//assign ram[5'd0] = 8'd65; -- for Modelsim\n//this will never run...\n/*\nalways @ (addr)\nbegin\nram[addr] <= data;\nend\n*/\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\n\tif (we)\n\tbegin\n\tram[addr] = data;\n\tend\n\tq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always@(posedge clk)\n\tbegin\n\tif(we)\n\tram[addr] = data;\n\tq = ram[addr];\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (~we)\nram[addr] <= data;\nend\nassign q = ram[addr];\n"
+    }
+  ],
+  "created": 1663335045,
+  "id": "cmpl-yBzINTfoAK8gvKuX2sTMc9GXXCJto",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1455,
+    "prompt_tokens": 85,
+    "total_tokens": 1540
+  }
+}

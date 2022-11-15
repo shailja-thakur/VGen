@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nvar reset = 1;\nvar ena = 1;\n\nalways @(posedge clk) begin \n    if (reset) begin\n        dout <= 0;\n    end\n    else begin\n        q <= (ena && dout == 0);\n    end\nend\n\n// On the negative edge of the clock:\n// Write to output q the input dout and flip the output bit.\n\nalways @(negedge clk) begin\n    dout <= dout_star;\nend\n\n// If the ena input is high and q is not 9, increment q.\n\nalways @(posedge slow) begin\n    if (ena && q != 9) begin\n        q <= q + 1;\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// The high dependency on slowena from this implementation prevents\n// parallelization.\nreg [3:0] q = 0;  // stage 1\n\nalways @(posedge clk or negedge slowena) begin\n        q <= q + ((slowena==1)?0:1);\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge slowena) begin\n    if (slowena) begin\n        if (reset) begin\n            reg <= 0;\n        end else begin\n            if (q != 9) begin\n                reg[1] <= q + 1;\n            end else begin\n                reg <= 1;\n            end else begin\n                if (q == 9) begin\n                    reg <= 1;\n                end else begin\n                    reg[2] <= q + 1;\n                end else\n\t\t\t\t\t// Ooah. Dummy counter. Do nothing.\n\t\t\t\t\tq <= 0;\n\t\t\t\tend\n            end\n        end\n    end\nend\n`\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways clk'posedge clk\nbegin\n    if (reset')q <= 0;\nelse if (slowena)\n    if (q < 10) q <= q + 1;\n    else q <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (rlst1) {\n    if (reset) q <= 0;\n\t\tif ((slowena) && (q != 9)) q++;\n  } else {\n    reg => q;\n  }\n\npackage sch_clock_retimer;\n\nclock_sss clock_fast;\nreg clk_fast;\nreg node_fast;\nreg emu_nodes_fast;\nreg q_fast;\n\n// The clock module counts clock cycles repeatedly. For fast capture\n// we need mark a cycle after each falling edge of clock.\nalways @(posedge clk_fast)\n  if (1'b0) {\n    q_fast = q;\n  }\n\nalways @(posedge clk) // We need 2 clock cycles of delay here to synchronize between fast and slow nodes\n  if (rlst1)"
+    }
+  ],
+  "created": 1663519536,
+  "id": "cmpl-cvtBLldzZbRvhRajZjg5t0lyixIWB",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 645,
+    "prompt_tokens": 98,
+    "total_tokens": 743
+  }
+}

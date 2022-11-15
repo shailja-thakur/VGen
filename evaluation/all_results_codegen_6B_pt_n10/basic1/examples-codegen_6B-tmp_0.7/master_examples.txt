@@ -1,0 +1,245 @@
+example-0: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module output_init( output out );
+// assign out to input
+module input_init( input in );
+
+input in;
+output out;
+
+// module id() {}
+
+// module input_assign( input in );
+// module output_assign( output out );
+
+// assign out to in
+wire_assign( in, out );
+
+output_init(out);
+input_init(in);
+
+
+/*
+ * INPUTS: in
+ * OUTPUTS: out
+ */
+
+module wire_assign( input in, output out )
+{
+	always @(posedge clk)
+	out <= in;
+}
+
+module output_init( output out )
+{
+	initial begin
+	out <= 0;
+	end
+}
+
+module input_init( input in )
+{
+	initial begin
+	in <= 0;
+	end
+
+================================================================
+example-1: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+// Wire the modules together
+wire_assign( in, out );
+// Execute the module
+out = out;
+// Conclusion
+// ------------------
+
+// Remember that the constructors of the modules are called before the
+// initialization in the order they are listed here.
+
+// The module: wire_assign
+// ------------------------------
+//
+// A module is an object that consists of a set of ports and a set of
+// methods. The ports are connected to each other, while the methods
+// are used to perform the processing of the ports. This module can be
+// treated as a single-port module where the source port is the input
+// port and the output port is the output port.
+//
+// This module is the assignment module. It assigns the output to the
+// input.
+//
+// It has one port: input
+//
+// Output: output
+//
+// Methods
+================================================================
+example-2: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+in = out;
+
+================================================================
+example-3: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module assign( input in, output out ) {
+    out <= in;
+}
+
+module mux1( input a, input b, input c ) {
+    assign( a, in0 )
+    assign( b, in1 )
+    assign( c, in2 )
+    assign( out, in0 | in1 | in2 )
+}
+
+module mux2( input a, input b, input c ) {
+    assign( a, in0 )
+    assign( b, in1 )
+    assign( c, in2 )
+    assign( out, in0 & in1 & in2 )
+}
+
+module mux3( input a, input b, input c ) {
+    assign( a, in0 )
+    assign( b, in1 )
+    assign( c, in2 )
+    assign(
+================================================================
+example-4: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign( input in, output out ) {
+    assign( out_bus, in );
+}
+// wire up the modules
+wire_assign( a, i_a, o_a );
+wire_assign( b, i_b, o_b );
+wire_assign( c, i_c, o_c );
+wire_assign( d, i_d, o_d );
+// connect the modules together
+a <= i_a;
+b <= i_b;
+c <= i_c;
+d <= i_d;
+// end module
+
+================================================================
+example-5: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign_to( input in, output out );
+
+module wire_assign_and_load( input in, output out );
+
+/*
+ * The built-in wire_assign_and_load functions have a similar signature.
+ * The difference is that they can load the value of the output as well.
+ */
+
+// load the value of the output as well as the input
+module wire_assign_and_load2( input in, output out );
+
+// load the value of the output as well as the input
+module wire_assign_and_load_to( input in, output out );
+
+// load the value of the output as well as the input
+module wire_assign_and_load_from( input in, output out );
+
+/*
+ * The built-in wire_assign_and_load_from functions have a similar signature.
+ * The
+================================================================
+example-6: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+void wire_assign( output out, input in );
+
+// Design a module that converts the input to the output
+module wire_convert( input in, output out );
+// convert out to in
+void wire_convert( output out, input in );
+
+// Design a module that assigns the output to the input
+module wire_assign_with_out( input in, output out );
+// assign out to in
+void wire_assign_with_out( output out, input in );
+
+// Design a module that converts the input to the output
+module wire_convert_with_out( input in, output out );
+// convert out to in
+void wire_convert_with_out( output out, input in );
+
+// Design a module that assigns the output to the input
+module wire_assign_with_in( output out, input in );
+// assign out to in
+
+================================================================
+example-7: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign_reverse( input in, output out );
+
+// =============================================================================
+// Implementation
+// =============================================================================
+
+class wire_assign_test
+{
+	public:
+		void run()
+		{
+			// test assignment
+			wire_assign wire_assign_obj = wire_assign( in, out );
+			wire_assign_reverse wire_assign_reverse_obj =
+				wire_assign_reverse( in, out );
+
+			// test the assignment
+			if (wire_assign_obj.wire_assign_forward() != out)
+			{
+				std::cout << "Error: wire_assign.wire_assign_forward" << std::endl;
+				return;
+			}
+			if (wire_assign_reverse_obj.wire_assign_reverse() != in)
+			{
+				std
+================================================================
+example-8: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+
+================================================================
+example-9: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign( output out, input in );
+
+// The test harness will be able to extract the output of wire_assign
+// as the input to wire_assign_2.
+//
+// The test harness will be able to extract the output of wire_assign_2
+// as the input to wire_assign_3.
+//
+// The test harness will be able to extract the output of wire_assign_3
+// as the input to wire_assign_4.
+
+// wire_assign_2( input i, output o ) input( i ); output( o );
+// wire_assign_3( input i, output o ) input( i ); output( o );
+// wire_assign_4( input i, output o ) input( i ); output( o );
+module wire_assign_2( input i, output o ) input( i );
+================================================================

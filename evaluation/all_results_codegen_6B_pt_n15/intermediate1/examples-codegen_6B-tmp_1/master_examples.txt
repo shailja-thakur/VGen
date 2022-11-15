@@ -1,0 +1,410 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+typedef halfadder2 half_adder_type;
+
+struct half_adder_info;
+struct half_adder_info {
+    half_adder_type &regs;
+    half_adder_info( half_adder_type &r );
+            void clear();
+            enable_function(bool);
+            half_adder_type aux() const;
+};
+internal(*helper) half_adder_info(half_adder_t &r);
+task half_adder_task = [&]{
+    auto info = half_adder_info(half_adder);
+    bool lanc = false;
+    while(true) {
+        bool au;
+        (void) aux().regs;
+        mid(aux());
+        mid(lanc);
+        :lanc = (aux().regs.mux.q != 0.5);
+        :au   = l
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// output <= sum + carry-out
+always @(posedge clk) begin
+    if ( fetch_idx < 32 ) begin
+        #7 <= sum <= Sum(7,15) + CarryOut
+        #15 <= cout << CarryOut
+    end
+    carry_out <= #0
+;
+end
+
+// Addition. Result <= high order parity of sum.
+always @(posedge clk) begin
+    #0 <= sum <= Sum(8,0) + CarryOut
+    #7 <= sum + CarryOut 
+    carry_out <= #0
+    carry_out_hd == sum_hl(#0, #7, #0)
+end
+
+// Sums. Result <= Sum(0,16) + CarryOut
+always @(posedge clk) begin
+    #0 <= sum <= Sum(0,16) + CarryOut
+    #16
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+ function sum1 = half_adder(in a, in b, hcsr);
+  wire hcsr;
+        sum(a, b);
+  begin :
+        label .fin1;
+        enable hcsr;
+        default;
+        if( a == b  );
+          hcsr = 1;
+        else
+        hcsr = 0;
+ end
+    else
+          enable (1'b0 - sumn1);
+                             sumn1 = b;
+        else
+          enable(1'b0 - sumn2);
+                              sumn2 = a;
+        else
+          enable (0'b0 + sumn3);
+            sumn3 = (sumn2 ^ sumn1);
+        else
+          enable (1'b0 - sumn4);
+                              sumn4 = (b | ((~a) & sumn3));
+
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// And a half subtractor with a carry-out. An subtractor subtracts two values and
+// produces a sum and carries-out.
+module half_subtractor( 
+input a, b,
+output cout, sum );
+
+module make_adder( source src1=arbitrary_ext_reg(4), src2=arbitrary_ext_reg(4) );
+	func make_adder();
+
+module make_half_adder( source src1=arbitrary_ext_reg(4), src2=arbitrary_ext_reg(4) );
+	func make_half_adder();
+
+module make_subtractor( source src1=arbitrary_ext_reg(4), src2=arbitrary_ext_reg(4) );
+	func make_subtractor();
+
+ends = make_half_adder( );
+
+
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+begin :
+  while ( input_pending( cout ) ) {
+    output_buffer( cout, output_port( cout ) );
+
+    step( cout, a );
+    step( cout, b );
+  }
+  cout << "\n";
+end
+;
+
+begin :
+  while ( input_pending( cout ) ) {
+    output_buffer( cout, output_port( cout ) );
+
+    step( cout, a );
+    step( cout, b );
+  }
+  cout << " " << a << " " << b << "\n";
+end
+;
+
+execute {
+};
+
+
+================================================================
+example-5: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+//-- this module adds two bits
+function half_adder( a, b, cout, sum ) { 
+
+    int f = a + b;
+    bool cc = a ^ b ^ f;
+
+    // This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+    //
+    // Case clock 24+4.
+    // Case carry 1 set to ...
+    // 
+    // Case 0xff carry move to one.
+    // Case vvv Carry move to one.
+    //
+    // High carry set to true.
+    // Low carry set to true.
+    // ----------------------------------------------------------------------
+    // Case sum set to 12.
+    cout <= f;
+    sum   <= (f << 1) + cc;
+
+}
+
+
+//-- This module adds eight bits
+function adder( a, b, cout, sum )
+================================================================
+example-6: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// A half adder will overflow if it receives more than 7.1 bits
+wire overflow;
+
+half_adder #( .output_valid() ) hasmask (@()
+      sum
+      {
+         a <= 7.1 && b <= 7.1;
+         0 <= sum && sum <= 15;                
+      }
+);
+
+// Assign 9 targets to find the bloated by generation.
+#( .hw_enable() ) partition_in ;
+#( .hw_fx() ) delay_slots( .reset() );
+
+// Commit - now the summation circuit which computes the bits p1 + p2
+// will produce the 8-bit result which can be Result B in the given states
+//         A, B, C, D, E, F, G, H.
+#( .dedicated("CLK") ) delay_slots( .norm() );
+
+
+================================================================
+example-7: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum ); 
+
+// Lower 2 bits of the sum, Host <---> Device
+always_comb begin: {	
+  cout = sum & 0b111011; // concat the two bits
+  sum = sum>>2; // rotate right by 2 bits - Host<--->Device
+}
+
+
+================================================================
+example-8: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+half_adder( 0, 0 );
+
+// This module adds three bits and produces a sum of seven bits with the carry
+// in bit 60 according to a given set of parity bits.
+module adds_parity_bits( 
+input a_r, a_n, carry_in,
+input b_r, b_n, carry_in,
+output cout, sum );
+
+adds_parity_bits( 56, 56, 56, 64, 64, 56, 0, adds_parity_bits.PARITY;
+
+half_adder( adds_parity_bits.PARITY, adds_parity_bits.PARITY );
+
+// Observe that a call to the carry out port has eight parameters. Each one is a register value
+// & the bit in the register, given by bit in register[ 1...7].
+// Note that takes register[0] as the parameter
+================================================================
+example-9: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum ); // cout is the output channel
+
+
+function half_adder( 
+input a, b,
+output cout, sum )
+
+    local carry = b + a + 0;
+    produce cout:
+    pass ~carry;
+ 
+    sum := sum + carry;
+
+end half_adder
+================================================================
+example-10: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+function bin(n)
+output bin;
+  bin <= "" & n.
+for (1 <= i <= n. #terms() == n.
+  if (b(i).=mod(2).
+  and(a(i)=2.
+  then (carryout="1") else & half_adder(
+      a(i + 1), b(i - 1),
+      (cout(i + 1), sum(i - 2, i, i - 1))
+  )
+)
+);
+
+================================================================
+example-11: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+input clk;
+input enforceclk;
+
+input clk_driver;
+
+protected
+input clock;
+protected
+output clock_driver;
+
+// The input clock is zero to start:
+error reset_nclk();
+
+precision int2 int2_3(a,b);
+
+// SPI to do add
+// pre adder_out = sum + a + b + carryOut,
+// a is state register, b is data register.
+pre int2 error_adder_out = soap(clk, enforceclk, 0)(~a, b);
+// a and b are data registers.
+
+// FHAdder.
+error_adder_out <= int2_3( a(clkout), b(clkout), cout );
+
+    always@(posedge clk) { clock_driver <= 1; }
+    always@(negedge
+================================================================
+example-12: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+require mux.all()
+#define value_1 mux((a ) , (b ))
+#define value_2 mux((a ) , (b ) , 1)
+#define half_adder(in_a, in_b, cin_cout, sum_out) { \
+        int b1 = cin_cout; \
+        int b2 = cin_cout + 1; \
+        if (b1 < 0) { \
+                b1 += oct_power; \
+        } \
+        if (b2 < 0) { \
+                b2 += oct_power; \
+        } \
+        int a = in_a; \
+        int b = in_b; \
+        cout( b1 + a + b); \
+        sum_out(a, b); \
+}
+
+// ---------------------------------------------------------------------
+//
+
+================================================================
+example-13: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+function half_adder_create( cout, sum )
+
+    cout |= a;
+    cout |= b;
+    sum   |= (cout>>32);
+};
+
+
+//===== fully_adder =====//
+//Full adder
+
+function fully_adder( 
+input a, b,
+output cout, sum )
+
+    half_adder( a, b, cout, sum );
+    if( cout["1"] == "1" ) {
+        half_adder( a, zero_bit, cout, sum ); 
+    }
+    half_adder( b, zero_bit, cout, sum ); 
+
+function fully_adder_create( cout, sum )
+
+    half_adder_create( cout, sum );
+    if( cout["1"] == "1" ) {
+        half_adder_create( a, sum ); 
+    }
+    
+================================================================
+example-14: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+always @( posedge clk ) 
+{
+  sum <= (unsigned char)(a+b+cout);
+}
+endfunction
+
+// this module represents a shift register.
+//
+// A shift register is a variable that retieves bit 23, 24, 25.
+// After that bit 24 goes to bit 0 and the feedback circuit inverts the 
+// existing state, then adds in the correct kind of 0 its subtracts all the
+// bits from position 1.
+
+// this is the next line after the definition of main():
+// the implementation of TEST() we wrote on line 11
+
+#define TEST // UN-comment this line to see testing
+#include "test.h"
+
+module test_shift_register( 
+input clk, input a, input b, 
+output c, output d_out, output inited );
+int i;
+
+always @( posedge
+================================================================

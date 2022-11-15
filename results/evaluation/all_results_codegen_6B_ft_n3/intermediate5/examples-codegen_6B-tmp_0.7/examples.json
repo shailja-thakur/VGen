@@ -1,0 +1,40 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n\tbegin\n\tif(reset)\n\tbegin\n\tout = 0;\n\tend\n\telse if(load)\n\tbegin\n\tout = data;\n\tend\n\telse if(amount == 3'd0)\n\tbegin\n\tout = out;\n\tend\n\telse if(amount == 3'd1)\n\tbegin\n\tout = {out[6:0],out[7]};\n\tend\n\telse if(amount == 3'd2)\n\tbegin\n\tout = {out[5:0],out[6],out[7]};\n\tend\n\telse if(amount == 3'd3)\n\tbegin\n\tout = {out[4:0],out[5],out[6],out[7]};\n\tend\n\telse if(amount == 3'd4)\n\tbegin\n\tout ="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n\tbegin\n\tif(reset==1'b0)\t//reset is active low\n\tout<=0;\n\telse if(load==1'b1)\n\tout<=data;\n\telse \n\tbegin\n\tcase(amount)\n\t3'b000: out<=out;\n\t3'b001: out<=out>>1;\n\t3'b010: out<=out>>2;\n\t3'b011: out<=out>>3;\n\t3'b100: out<=out>>4;\n\t3'b101: out<=out>>5;\n\t3'b110: out<=out>>6;\n\t3'b111: out<=out>>7;\n\tendcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout <= 0;\n\telse if (load)\n\tout <= data;\n\telse begin\n\t// the shift is accomplished by placing the most significant bits in the leftmost spot\n\tout = {out[6:0],out[7]};\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663306633,
+  "id": "cmpl-PJNGoMPL10EvUvrvHC0l6Aa39XWjb",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 482,
+    "prompt_tokens": 93,
+    "total_tokens": 575
+  }
+}

@@ -1,0 +1,145 @@
+example-0: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk, slowena, reset) begin
+    if (slowena)
+        q <= 0;
+end
+
+// On the positive edge of the clock:
+// if reset is high, and q is high, then q is decremented and reset.
+// If reset is high, and q is low, q cannot be decrememnted; // 1-1 will flow here!
+always @(posedge clk, slowena, reset) begin
+    if ((~reset) && q[1] == 9) // reset process should be initiated with 0 value.
+        q <= 0;				// so that it can't ever be decrememnted.
+    if (slowena && (~reset) && (q==0) && (--q != 0))
+        q <= 0;					// if q not reset and 0 decrememnts q post-adderl
+end
+
+================================================================
+example-1: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk) begin
+    if (!(slowena) && reset) q[0] = 0;
+    if (slowena & (memory_2[0] << 6 & 0x6) ) q[0] = (q[0] + 1) & 0xf;
+    if (slowena & (memory_2[0] << 5 & 0x1) ) q[1] = (q[1] + 1) & 0xf;
+    if (slowena & (memory_2[0] << 4 & 0x2) ) q[2] = (q[2] + 1) & 0xf;
+    if (slowena & (memory_2[0] << 3 & 0x8) ) q[3] = (q[3] + 1) & 0xf;
+end
+
+// On the negative edge of the clock:
+// if en
+================================================================
+example-2: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk) begin
+    if ((reset == 1) && (slowena == 1)) q <= 0;
+    if ((reset == 1) && (slowena == 0)) q <= 9;
+    if ((reset == 0) && (slowena == 1)) q <= 0;
+done
+
+always @(posedge clk) begin
+    if (slowena == 1) {
+        q <= q + 1;
+    }
+end
+);
+
+
+// Design something more useful if the clock is used to count something other
+// than numbers. Let the user define the function that lets the fractional component
+// of the number be sent.
+
+//function writea(in In);
+//int a  rack        = write(In);    // mono out channel a
+//      b  jack       = write(~In);   // jacks out channel b
+//      c  fly       
+================================================================
+example-3: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+
+sc_clock c; clk = c;
+smpl counter0(clk, slowena);
+
+sc_clock_pipe<sc_ncycles> p1;
+output_reg<1> out;
+for (q = 0; q < 3; ++q) counter0.out(wr(out, q));
+
+sc_clock_pipe<sc_max_cycles> p2;
+bus_in<wc> pad;
+for (q = 0; q < 3; ++q) pad->in(wr(p1.dequeue_rev()));
+for (integrator::gcd(p1, p2, integrator::finite); true;) {
+    const bool newpad = !pad->read();
+    if (newpad) continue;
+    if (!newpad) { padded++; }
+    const sc_signed_t const_0 = (integ
+================================================================
+example-4: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+// Otherwise, return the output q to the caller.
+
+input clk_pll, clk_b6862: in [3:0];
+input slowena_b6862, slowena_pll, reset_b6862, reset_pll;  
+
+variable count_b6862: in [1:0];
+variable Detecto_init, Count_init;
+
+initial count_b6862 = 0;
+initial Detecto_init = clk;  // PLL
+initial Count_init = 0;  // initialize out interface
+
+always @ (pll_3820_pllout,slowena_b6862,reset_b6862)
+// read the pll3948_b6861
+$var_pll;
+    if (slowena_b6862 == 1) $var_pll = $var_b6862[3];
+
+================================================================

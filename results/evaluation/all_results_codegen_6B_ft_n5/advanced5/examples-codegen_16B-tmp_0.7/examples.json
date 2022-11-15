@@ -1,0 +1,333 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign z = (cur_state == SAB);\nalways @(posedge clk,posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(a,b,cur_state)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1 && b == 1)\nnext_state = IDLE;\nelse\nnext_state = SA;\nend\nSA:\nbegin\nif(b == 1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSB:\nbegin\nif(a == 1)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nend\nSAB:\nbegin\nnext_state = IDLE;\nend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset) begin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state,a,b) begin\ncase(cur_state)\nIDLE: begin\nz = 0;\nif(a & b) next_state = SAB;\nelse next_state = IDLE;\nend\nSA: begin\nz = 0;\nif(a) next_state = SA;\nelse next_state = IDLE;\nend\nSB: begin\nz = 0;\nif(b) next_state = SB;\nelse next_state = IDLE;\nend\nSAB: begin\nz = 1;\nnext_state = IDLE;\nend\ndefault: next_state = IDLE;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk) begin\n\tif(reset) begin\n\tcur_state <= IDLE;\n\tz <= 0;\n\tend\n\telse begin\n\tcur_state <= next_state;\n\tz <= 0;\n\tend\nend\n\nalways @ (a,b,cur_state) begin\n\tcase(cur_state)\n\tIDLE: begin\n\tif(a && b) next_state = SAB;\n\telse next_state = IDLE;\n\tend\n\tSA: begin\n\tif(b) next_state = SB;\n\telse next_state = SA;\n\tend\n\tSB: begin\n\tif(a) next_state = SAB;\n\telse next_state = SB;\n\tend\n\tSAB: begin\n\tnext_state = IDLE;\n\tend\n\tendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif (reset) cur_state <= IDLE;\n\telse cur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\n\tcase (cur_state)\n\tIDLE : \n\tbegin\n\tz = 0;\n\tif (a == 1'b1 && b == 1'b1) next_state = SA;\n\telse if (a == 1'b1 && b == 1'b0) next_state = SB;\n\telse if (a == 1'b0 && b == 1'b1) next_state = SA;\n\telse next_state = IDLE;\n\tend\n\tSA : \n\tbegin\n\tz = 0;\n\tif (a == 1'b1 && b == 1'b1) next_state = SAB;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @ (cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE: begin\nz = 1'bz;\nif(a==1'b1 && b==1'b1)\nnext_state = SAB;\nelse if(a==1'b1)\nnext_state = SA;\nelse if(b==1'b1)\nnext_state = SB;\nend\nSA: begin\nz = 1'bz;\nif(b==1'b1)\nnext_state = SAB;\nelse\nnext_state = SA;\nend\nSB: begin\nz = 1'bz;\nif(a==1'b1)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk )\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE :\nbegin\nif(a == 1'b1 && b == 1'b1)\nnext_state = SAB;\nelse if(a == 1'b1 && b == 1'b0)\nnext_state = SA;\nelse if(a == 1'b0 && b == 1'b1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA :\nbegin\nif(a == 1'b1 && b == 1'b0)\nnext_state = SAB;\nelse\nnext_state = SA;\nend\nSB :\nbegin\nif(a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nreg z;\nalways @(posedge clk, posedge reset)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse begin\ncur_state <= next_state;\nz <= 0;\nend\nend\nalways @(*)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif (a && b)\nbegin\nnext_state = SAB;\nz = 1;\nend\nelse if (a && !b)\nbegin\nnext_state = SA;\nz = 0;\nend\nelse if (!a && b)\nbegin\nnext_state = SB;\nz = 0;\nend\nelse\nbegin\nnext_state = IDLE;\nz = 0;\nend\nend\nSA:\nbegin\nif (b)\nbegin\nnext_state = SAB;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "// Otherwise, z is assigned zero.\nalways @(posedge clk or posedge reset)\n\tif (reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\n// This is a Moore state machine, since it does not have\n// a reset. However, a reset signal is still included\n// to for the completeness of the problem statement.\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\n\tif(a==1 && b==1)\n\tnext_state = SAB;\n\telse\n\tnext_state = IDLE;\nSA:\n\tif(a==1 && b==0)\n\tnext_state = SB;\n\telse\n\tnext_state = IDLE;\nSB:\n\tif(a==0 && b==1)\n\tnext_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif (a == 1'b1 && b == 1'b1)\nnext_state = SA;\nelse if (a == 1'b1 && b == 1'b0)\nnext_state = SB;\nelse if (a == 1'b0 && b == 1'b1)\nnext_state = SA;\nelse next_state = IDLE;\nend\nSA:\nbegin\nif (b == 1'b1)\nnext_state = SAB;\nelse\nnext_state = SA;\nend\nSB:\nbegin\nif (a == 1'b1)\nnext_state = SAB"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "// z is assigned three when cur_state is SA\n// z is assigned two when cur_state is SB\n// z is assigned zero when cur_state is IDLE\nalways @(cur_state)\nbegin\ncase(cur_state)\nIDLE: if (a)\n\tbegin\n\tnext_state = SA;\n\tz = 3;\n\tend\n\telse if (b)\n\tbegin\n\tnext_state = SB;\n\tz = 2;\n\tend\n\telse\n\tbegin\n\tnext_state = IDLE;\n\tz = 0;\n\tend\nSA: if (b)\n\tbegin\n\tnext_state = SAB;\n\tz = 3;\n\tend\n\telse\n\tbegin\n\tnext_state = SA;\n\tz = 2;\n\tend\nSB: if (a)\n\tbegin\n\tnext_state = S"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\ncur_state <=IDLE;\nelse\ncur_state <=next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:if(a && b)\nbegin next_state=SA;\nz=1;\nend\nelse\nbegin next_state=IDLE;\nz=0;\nend\nSA:if(b)\nbegin next_state=SB;\nz=1;\nend\nelse\nbegin next_state=SA;\nz=0;\nend\nSB:if(a)\nbegin next_state=SAB;\nz=1;\nend\nelse\nbegin next_state=SB;\nz=0;\nend\nSAB:begin next_state=IDLE;\nz=1;\nend\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways@(posedge clk, posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(*)\nbegin\ncase(cur_state)\nIDLE : begin\nif(a==1 && b==1) \nbegin\nnext_state = SAB;\nz = 1;\nend\nelse\nbegin\nnext_state = IDLE;\nz = 0;\nend\nend\nSA : begin\nif(b==1)\nbegin\nnext_state = SB;\nz = 0;\nend\nelse\nbegin\nnext_state = SA;\nz = 0;\nend\nend\nSB : begin\nif(a==1)\nbegin\nnext_state = SAB;\nz = 0;\nend\nelse\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "// z is assigned zero otherwise\n// The state is IDLE when both a and b are low\nalways @ (cur_state or a or b)\nbegin\ncase (cur_state)\nIDLE : begin\nz = 0;\nif (~a & ~b)\nnext_state = IDLE;\nelse if (a & ~b)\nnext_state = SA;\nelse if (~a & b)\nnext_state = SB;\nelse\nnext_state = SAB;\nend\nSA : begin\nz = 0;\nif (~a & b)\nnext_state = SAB;\nelse if (a & ~b)\nnext_state = IDLE;\nelse\nnext_state = SA;\nend\nSB : begin\nz = 0;\nif (~a & b)\nnext_state = SAB;\nelse if (a & ~b)\nnext_state ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or b or a)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a==1 && b==1)\nbegin\nnext_state <= SAB;\nz <= 1;\nend\nelse\nbegin\nnext_state <= IDLE;\nz <= 0;\nend\nend\nSA:\nbegin\nif(b==1)\nbegin\nnext_state <= SAB;\nend\nelse\nbegin\nnext_state <= SB;\nend\nend\nSB:\nbegin\nif(a==1)\nbegin\nnext_state <= SAB;\nend\nelse\nbegin\nnext_state <= IDLE;\nend\nend\nSAB:\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\n// If there are errors such that cur_state is undefined, z is assigned one.\n// If cur_state is IDLE and a and b are both zero, z is assigned zero.\nalways @(posedge clk, posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE: begin\nz = 1'b0;\nif(a == 1'b1 && b == 1'b1)\nnext_state = SA;\nelse if(a == 1'b1 && b == 1'b0)\nnext_state = SB;\nelse if(a == 1'b0 && b == 1'b1)\nnext_state ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @(posedge clk,posedge reset)\nif (reset)\nbegin\ncur_state <= IDLE;\nz <= 0;\nend\nelse\ncur_state <= next_state;\nalways @(cur_state)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif (a == 1 && b == 1)\nbegin\nnext_state = SAB;\nz <= 0;\nend\nelse if (a == 1 && b == 0)\nbegin\nnext_state = SA;\nz <= 0;\nend\nelse if (a == 0 && b == 1)\nbegin\nnext_state = SB;\nz <= 0;\nend\nelse\nbegin\nnext_state = IDLE;\nz <= 0;\nend\nend\nSA:\nbegin\nif (b == 1)\nbegin\nnext_state = SAB;\nz <= 0;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk, posedge reset)\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways @(cur_state,a,b)\ncase(cur_state)\nIDLE: if(a && b)\nnext_state = SAB;\nelse if(a)\nnext_state = SA;\nelse if(b)\nnext_state = SB;\nSAB: if(a && b)\nnext_state = IDLE;\nelse // a and b are both high\nnext_state = SAB;\nSA: if(!a && b)\nnext_state = SB;\nelse if(a && !b)\nnext_state = IDLE;\nelse // a is high but b is low\nnext_state = SA;\nSB"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always@(posedge clk,posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a && b)\nnext_state = SA;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif(b)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSB:\nbegin\nif(a)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nend\nSAB:\nbegin\nnext_state = IDLE;\nend\nendcase\nend\n// FSM outputs\nassign z = ((cur_state == SAB) && a && b);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "// z is assigned zero otherwise\nreg z;\n// Set the value of the output signal z based on the current state\nalways @(posedge clk, posedge reset)\nbegin: FSM\ncase(cur_state)\nIDLE: begin\nz = 0;\nif (a==1 && b==1)\nnext_state <= SA;\nelse if (a==1)\nnext_state <= SA;\nelse if (b==1)\nnext_state <= SB;\nend\nSA: begin\nz = 0;\nif (b==1)\nnext_state <= SAB;\nelse if (a==1)\nnext_state <= IDLE;\nend\nSB: begin\nz = 0;\nif (a==1)\nnext_state <= SAB;\nelse if (b==1)\nnext_state <= IDLE;\nend\nSAB: begin\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE: begin\nif(a && b)\nnext_state = SAB;\nelse if(a)\nnext_state = SA;\nelse if(b)\nnext_state = SB;\nend\nSA: begin\nif(b)\nnext_state = SAB;\nelse\nnext_state = SA;\nend\nSB: begin\nif(a)\nnext_state = SAB;\nelse\nnext_state = SB;\nend\nSAB: begin\nnext_state = IDLE;\nend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 20,
+      "logprobs": null,
+      "text": "reg z;\nalways @(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1 & b == 1)\nnext_state = SA;\nelse if(a == 1)\nnext_state = SB;\nelse if(b == 1)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nz = 0;\nend\nSA:\nbegin\nif(b == 1)\nnext_state = SAB;\nelse\nnext_state = SA;\nz = 0;\nend\nSB:\nbegin\nif(a == 1)\nnext_state = SAB;\nelse\nnext_state = SB;\nz"
+    },
+    {
+      "finish_reason": "length",
+      "index": 21,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1 && b == 1) next_state = SAB;\nelse next_state = IDLE;\nend\nSA:\nbegin\nif(a == 1) next_state = SA;\nelse next_state = IDLE;\nend\nSB:\nbegin\nif(b == 1) next_state = SB;\nelse next_state = IDLE;\nend\nSAB:\nbegin\nnext_state = IDLE;\nend\ndefault:\nbegin\nnext_state = IDLE;\nend\nendcase\nend\n// if a and b are both high, z is assigned to"
+    },
+    {
+      "finish_reason": "length",
+      "index": 22,
+      "logprobs": null,
+      "text": "assign z = (cur_state==SAB);\nalways @(posedge clk,negedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\nbegin\ncur_state <= next_state;\nend\nend\nalways @(a,b,cur_state)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(b==1 && a==1)\nnext_state = SA;\nelse if(a==1)\nnext_state = IDLE;\nelse if(b==1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif(b==1)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nend\nSB:\nbegin\nif(a==1)\nnext_state = SAB;\nelse"
+    },
+    {
+      "finish_reason": "length",
+      "index": 23,
+      "logprobs": null,
+      "text": "// z is assigned zero otherwise.\nalways @(posedge clk) begin\n\tif (reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @(cur_state or a or b) begin\n\tcase (cur_state)\n\tIDLE: begin\n\tif (a == 1'b1 && b == 1'b1)\n\tnext_state = SAB;\n\telse if (a == 1'b1)\n\tnext_state = SA;\n\telse if (b == 1'b1)\n\tnext_state = SB;\n\telse \n\tnext_state = IDLE;\n\tend\n\tSA: begin\n\tif (a == 1'b1 && b == 1'b1)\n\tnext_state = SAB;\n\telse if (a == 1'b1"
+    },
+    {
+      "finish_reason": "length",
+      "index": 24,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk, posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tcur_state <= IDLE;\n\tend\n\telse\n\tbegin\n\tcur_state <= next_state;\n\tend\nend\nalways @(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\n\tif(a==1 && b==1)\n\tbegin\n\tnext_state = SAB;\n\tend\n\telse\n\tbegin\n\tnext_state = IDLE;\n\tend\nend\nSA:\nbegin\n\tif(a==1 && b==0)\n\tbegin\n\tnext_state = SB;\n\tend\n\telse\n\tbegin\n\tnext_state = IDLE;\n\tend\nend\nSB:\nbegin\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 25,
+      "logprobs": null,
+      "text": "reg z;\nalways @(posedge clk,posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nz = 0;\nif(a==1 && b==1)\nnext_state = SAB;\nelse if(a==1 && b==0)\nnext_state = SA;\nelse if(a==0 && b==1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nz = 0;\nif(a==1 && b==0)\nnext_state = SAB;\nelse if(a==1 && b==1)\nnext_state = IDLE;\nelse if(a==0 && b=="
+    },
+    {
+      "finish_reason": "length",
+      "index": 26,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\n// If state changes to SB, then output a is assigned the value of b\n// If state changes to SA, then output b is assigned the value of a\n// If state changes to SAB, then both output a and b are assigned the value of the other\nalways @(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b )\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1 && b == 1)\nbegin\nnext_state <= SA;\nend\nelse if (a == 1)\nbegin\nnext_state <= SB;\nend\nelse if (b == 1)\nbegin\nnext_state <= SAB;\nend\nelse\nbegin\nnext_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 27,
+      "logprobs": null,
+      "text": "assign z = (cur_state == SAB);\nalways @(*)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif (a == 1'b1 && b == 1'b1)\nnext_state <= SAB;\nelse if (a == 1'b1)\nnext_state <= SA;\nelse if (b == 1'b1)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif (b == 1'b1)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSB:\nbegin\nif (a == 1'b1)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSAB:\nbegin\nnext_state <= IDLE;\nend\ndefault:\nnext_state <= ID"
+    },
+    {
+      "finish_reason": "length",
+      "index": 28,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways@(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a==1 && b==1)\nbegin\nnext_state = SA;\nz = 1'b0;\nend\nelse if(a==1 && b==0)\nbegin\nnext_state = SB;\nz = 1'b0;\nend\nelse if(a==0 && b==1)\nbegin\nnext_state = SB;\nz = 1'b0;\nend\nelse\nbegin\nnext_state = IDLE;\nz = 1'b0;\nend\nend\nSA:\nbegin\nif("
+    },
+    {
+      "finish_reason": "length",
+      "index": 29,
+      "logprobs": null,
+      "text": "always @(posedge clk )\nbegin\n\tif (reset == 1'b1)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\n\tcase (cur_state)\n\tIDLE : begin\n\tz = 1'b0;\n\tif (a == 1'b1 && b == 1'b1)\n\tnext_state = SAB;\n\telse if (a == 1'b1)\n\tnext_state = SA;\n\telse if (b == 1'b1)\n\tnext_state = SB;\n\telse\n\tnext_state = IDLE;\n\tend\n\tSA : begin\n\tz = 1'b0;\n\tif (a == 1'b1 && b == 1'b1)\n\tnext_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 30,
+      "logprobs": null,
+      "text": "always @ (posedge clk )\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @ ( cur_state or a or b )\nbegin\ncase(cur_state)\nIDLE : begin\nif(a && b)\nnext_state = SAB;\nelse if(a)\nnext_state = SA;\nelse if(b)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA : begin\nif(b)\nnext_state = SAB;\nelse\nnext_state = SA;\nend\nSB : begin\nif(a)\nnext_state = SAB;\nelse\nnext_state = SB;\nend\nSAB : begin\nnext_state = IDLE;\nend\nendcase\nend\n// FSM output logic\nassign"
+    },
+    {
+      "finish_reason": "length",
+      "index": 31,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\n// z is assigned zero when cur_state is SB \nalways @(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1 && b == 1)\nnext_state <= SAB;\nelse if(a == 1)\nnext_state <= SA;\nelse if(b == 1)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif(b == 1)\nnext_state <= SAB;\nelse\nnext_state <= SA;\nend\nSB:\nbegin\nif(a == 1)\nnext_state <= SAB;\nelse\nnext_state <= SB;\nend\nSAB:\nbegin\nnext_state <= IDLE;\nend\ndefault:\nbegin\nnext_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 32,
+      "logprobs": null,
+      "text": "reg z;\nalways@(posedge clk,posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE: begin\nif(b)\nnext_state = IDLE;\nelse if(a)\nnext_state = SA;\nend\nSA: begin\nif(b)\nnext_state = SA;\nelse if(a)\nnext_state = SB;\nend\nSB: begin\nif(b)\nnext_state = SAB;\nelse if(a)\nnext_state = IDLE;\nend\nSAB: begin\nif(a)\nnext_state = SAB;\nelse if(b)\nnext_state = IDLE;\nend\nendcase\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 33,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk)\nbegin\n if(reset == 1)\n cur_state <= IDLE;\n else\n cur_state <= next_state;\nend\nalways @(a or b or cur_state)\nbegin\n case (cur_state)\n IDLE:\n begin\n next_state = IDLE;\n if (a == 1 && b == 1) \n begin\n next_state = SAB;\n end\n else if (a == 1 && b == 0)\n begin\n next_state = SA;\n end\n else if (a == 0 && b == 1)\n begin\n next_state = SB;\n end\n else\n begin\n next_state = IDLE;\n end\n end\n SA:\n begin\n next_state = IDLE;\n if (b == 1)\n begin\n next_state = S"
+    },
+    {
+      "finish_reason": "length",
+      "index": 34,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk) begin\nif(reset) begin\ncur_state <= IDLE;\nend\nelse begin\ncur_state <= next_state;\nend\nend\nalways @(cur_state,a,b) begin\ncase(cur_state)\nIDLE: begin\nif(a && b) next_state = SAB;\nelse next_state = IDLE;\nend\nSA: begin\nif(b) next_state = SAB;\nelse next_state = IDLE;\nend\nSB: begin\nif(a) next_state = SAB;\nelse next_state = IDLE;\nend\nSAB: begin\nnext_state = IDLE;\nend\ndefault: next_state = IDLE;\nendcase\nend\nassign z = (cur_state == SAB"
+    },
+    {
+      "finish_reason": "length",
+      "index": 35,
+      "logprobs": null,
+      "text": "always @(cur_state,a,b) begin\ncase(cur_state)\nIDLE : begin\n if(a == 1 & b == 1) begin\n\tnext_state <= SA;\n end\n else if (a == 0 & b == 1) begin\n\tnext_state <= SB;\n end\n else begin\n\tnext_state <= IDLE;\n end\n end\n SA : begin\n\tif(a == 0 & b == 0) begin\n\tnext_state <= SAB;\n\tend\n\telse if (a == 1 & b == 0) begin\n\tnext_state <= SAB;\n\tend\n\telse begin\n\tnext_state <= IDLE;\n\tend\n end\n SB : begin\n\tif(a == 1 & b == 0) begin\n\tnext_state <= SAB;\n\tend\n\telse if (a == 0 & b == 1)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 36,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways@(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a==1 && b==1)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif(b==1)\nnext_state = SAB;\nelse\nnext_state = SA;\nend\nSB:\nbegin\nif(a==1)\nnext_state = SAB;\nelse\nnext_state = SB;\nend\nSAB:\nbegin\nnext_state = IDLE;\nend\ndefault:\nbegin\nnext_state = IDLE;\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 37,
+      "logprobs": null,
+      "text": "// z is assigned zero otherwise \nalways @(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse \ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE: begin\nif(a && b) begin\nnext_state <= SAB;\nend\nelse begin\nnext_state <= IDLE;\nend\nend\nSA: begin\nif(a) begin\nnext_state <= SA;\nend\nelse if(b) begin\nnext_state <= SAB;\nend\nelse if(a && b) begin\nnext_state <= SAB;\nend\nelse begin\nnext_state <= IDLE;\nend\nend\nSB: begin\nif(b) begin\nnext_state <= SB;\nend\nelse if(a) begin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 38,
+      "logprobs": null,
+      "text": "always @ (posedge clk )\nbegin\n\tif (reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @ (cur_state or a or b)\nbegin\nnext_state = cur_state;\ncase (cur_state)\nIDLE:\n\tif (a && b)\n\tnext_state = SAB;\n\telse if (a && !b)\n\tnext_state = SA;\n\telse if (!a && b)\n\tnext_state = SB;\nSA:\n\tif (!b)\n\tnext_state = IDLE;\n\telse\n\tnext_state = SAB;\nSB:\n\tif (!a)\n\tnext_state = IDLE;\n\telse\n\tnext_state = SAB;\nSAB:\n\tif (a && b)\n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 39,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif (a & b)\nnext_state <= SAB;\nelse if (a)\nnext_state <= SA;\nelse if (b)\nnext_state <= SB;\nend\nSA:\nbegin\nif (b)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSB:\nbegin\nif (a)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSAB:\nbegin\nnext_state <= IDLE;\nend\ndefault:\nnext_state <= IDLE;\nendcase\nend\nalways @(posedge clk)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nz <= 0;\nend\nSA:\nbegin\nz <= 0;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 40,
+      "logprobs": null,
+      "text": "always @(cur_state or a or b)\nbegin\ncase (cur_state)\nIDLE: begin\n\tif(a==1&&b==1) begin\n\tnext_state = SAB;\n\tend\n\telse if(a==1) begin\n\tnext_state = SA;\n\tend\n\telse if(b==1) begin\n\tnext_state = SB;\n\tend\n\telse begin\n\tnext_state = IDLE;\n\tend\n\tend\nSA: begin\n\tif(b==1) begin\n\tnext_state = SAB;\n\tend\n\telse if(a==1) begin\n\tnext_state = SA;\n\tend\n\telse begin\n\tnext_state = SA;\n\tend\n\tend\nSB: begin\n\tif(a==1) begin\n\tnext_state = SAB;\n\tend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 41,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @ (posedge clk or negedge reset)\nbegin\nif(reset==1'b0)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @ (a or b or cur_state)\nbegin\ncase(cur_state)\nIDLE : begin\na_and_b = a & b;\na_not_b = ~a;\nnext_state = IDLE;\nif(a_and_b)\nnext_state = SAB;\nif(a_not_b)\nnext_state = SA;\nif(b_not)\nnext_state = SB;\nend\nSA : begin\na_and_b = a & b;\na_not_b = ~a;\nnext_state = SA;\nif(a_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 42,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk or posedge reset)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif (a)\nbegin\nnext_state <= IDLE;\nz <= 0;\nend\nelse\nbegin\nnext_state <= SA;\nz <= 0;\nend\nend\nSA:\nbegin\nif (~b)\nbegin\nnext_state <= SB;\nz <= 0;\nend\nelse\nbegin\nnext_state <= SAB;\nz <= 1;\nend\nend\nSB:\nbegin\nif (~a)\nbegin\nnext_state <= IDLE;\nz <= 1;\nend\nelse\nbegin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 43,
+      "logprobs": null,
+      "text": "// z is assigned one when cur_state is SB\n// z is assigned one when cur_state is SA\n// z is assigned one when cur_state is IDLE and a and b are high\nreg z;\nalways @(posedge clk) begin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b) begin\ncase (cur_state)\nIDLE : begin\nif(a == 1 && b == 1)\nbegin\nnext_state <= SA;\nz <= 0;\nend\nelse\nbegin\nnext_state <= IDLE;\nz <=0;\nend\nend\nSA : begin\nif(a == 1)\nbegin\nnext_state <= SB;\nz <= 0;\nend\nelse\nbegin\nnext_state <= SA;\nz <= 0;\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 44,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk or negedge reset)\nbegin\nif(~reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state or a or b or reset)\nbegin\ncase(cur_state)\nIDLE: begin\nif(~reset)\nnext_state <= IDLE;\nelse if(a == 1 && b == 1)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSA: begin\nnext_state <= SB;\nend\nSB: begin\nnext_state <= SA;\nend\nSAB: begin\nnext_state <= IDLE;\nend\ndefault: begin\nnext_state <= IDLE;\nend\nendcase\nend\nalways@(a or b or cur_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 45,
+      "logprobs": null,
+      "text": "// z is assigned zero otherwise\nalways @ (cur_state or a or b)\nbegin\ncase (cur_state)\nIDLE: begin\n\tif (a == 1 && b == 1) begin\n\tnext_state = SAB;\n\tend\n\telse if (a == 1 && b == 0) begin\n\tnext_state = SA;\n\tend\n\telse if (a == 0 && b == 1) begin\n\tnext_state = SB;\n\tend\n\telse begin\n\tnext_state = IDLE;\n\tend\n\tend\nSA: begin\n\tif (b == 1)\n\tnext_state = SAB;\n\telse\n\tnext_state = SA;\n\tend\nSB: begin\n\tif (a == 1)\n\tnext_state = SAB;\n\telse\n\tnext_state = SB;\n\tend\nSAB:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 46,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE \nalways @(posedge clk)\nbegin\n if(reset)\n cur_state <= IDLE;\n else\n cur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\n case(cur_state)\n IDLE: begin\n if(a==1 && b==1)\n next_state <= SAB;\n else if(a == 1)\n next_state <= SA;\n else if(b == 1)\n next_state <= SB;\n end\n SA: begin\n if(b == 1)\n next_state <= SAB;\n else\n next_state <= IDLE;\n end\n SB: begin\n if(a == 1)\n next_state <= SAB;\n else\n next_state <= IDLE;\n end\n SAB: begin\n next_state <= ID"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "// z is assigned zero otherwise\nalways @(cur_state)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nz = 0;\nnext_state = a + b ? SAB : IDLE;\nend\nSA:\nbegin\nz = 0;\nnext_state = b ? SAB : SA;\nend\nSB:\nbegin\nz = 0;\nnext_state = a ? SAB : SB;\nend\nSAB:\nbegin\nz = 1;\nnext_state = IDLE;\nend\ndefault:\nbegin\nz = 0;\nnext_state = IDLE;\nend\nendcase\nend\nalways @(posedge clk,reset)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 48,
+      "logprobs": null,
+      "text": "reg a_val, b_val;\nalways @(posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(*)\nbegin\ncase(cur_state)\nIDLE:\nbegin\na_val <= a;\nb_val <= b;\nif(a_val && b_val)\nnext_state = SAB;\nelse if(a_val && ~b_val)\nnext_state = SA;\nelse if(~a_val && b_val)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\na_val <= a;\nb_val <= b;\nif(a_val && b_val)\nnext_state = SAB;\nelse if(a_val && ~b_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 49,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE: begin\nz = 0;\nif(a)\nnext_state = IDLE;\nelse\nnext_state = IDLE;\nend\nSA: begin\nz = 0;\nif(a)\nnext_state = SA;\nelse\nnext_state = SB;\nend\nSB: begin\nz = 0;\nif(a)\nnext_state = SAB;\nelse\nnext_state = SB;\nend\nSAB: begin\nz = 1;\nnext_state = IDLE;\nend\nendcase\nend\n"
+    }
+  ],
+  "created": 1663550376,
+  "id": "cmpl-LrfMWoJDQSeWODRNndwsJNxpefhB7",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 9950,
+    "prompt_tokens": 218,
+    "total_tokens": 10168
+  }
+}

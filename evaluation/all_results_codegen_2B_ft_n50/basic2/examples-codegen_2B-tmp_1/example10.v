@@ -1,0 +1,17 @@
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+always@(*)
+begin
+	out <= a & b;
+end
+
+// assign the same as shown
+//design an AND gate
+endmodule

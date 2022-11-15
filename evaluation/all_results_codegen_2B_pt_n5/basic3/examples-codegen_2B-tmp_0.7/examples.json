@@ -1,0 +1,48 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "begin \npos[1:0] = ~in[1:0] & in[0:2];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "wire [3:0] b, \n        bit;\n\nalways @(posedge in)\n  if (pos[pos<0:2]) \n   pos[pos<0:2] = in[pos<0:2]|pos[pos<0:2];\n\nalways @(posedge in)\n  if (not pos[pos<0:2])\n   pos[pos<0:2] = pos[pos<0:2]|in[pos<0:2];\n\nalways @(posedge in)\n  if (not pos[pos<0:2])\n   pos[pos<0:2] = pos[pos<0:2]|in[pos<0:2];\n\nalways @(posedge in)\n  if ((in[2] and in[3]) or (in[2] and in[3]) and (in["
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg [3:0] b;\n// When sel=0, assign b to out\nreg [3:0] pos;\n\nvoid main()\n{   \n    // When the two input bits are high, set pos to 0x1.\n    if ( ( in[0] | in[1] ) == 0x3 ) {\n        pos = 0b1;\n    }\n    // When the two input bits are low, set pos to 0x0.\n    else {\n        pos = 0b0;\n    }\n    // If the two input bits are high, assign b to 1.\n    if ( ( in[0] | in[1] ) == 0x3 ) {\n        b = 1;\n    }\n    // If the two input bits are low, assign b to 0.\n    else {\n        b = 0;\n    }\n    // Output the"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign pos = in[1];\n\nalways @(*)\nbegin\npos_w = pos & 3;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk) \n  begin\n    out <= (\n      (in[0] == 0) ? 0b0000 :\n      (in[0] == 1) ? 0b0001 :\n      (in[0] == 2) ? 0b0010 :\n      (in[0] == 3) ? 0b0011 :\n      (in[0] == 4) ? 0b0100 :\n      (in[0] == 5) ? 0b0101 :\n      (in[0] == 6) ? 0b0110 :\n      (in[0] == 7) ? 0b0111 :\n      (in[0] == 8) ? 0b1000 :\n      (in[0] == 9) ? 0b1001 :\n      (in[0] == 10) ? 0b1010 :\n      (in[0] == 11) ? 0b"
+    }
+  ],
+  "created": 1663540035,
+  "id": "cmpl-skrlodDQqXwzBcailZDphIhzG42cB",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 658,
+    "prompt_tokens": 65,
+    "total_tokens": 723
+  }
+}

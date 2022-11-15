@@ -1,0 +1,55 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": ",\n// and hold q low for 1 clock cycle for each row with data\nalways @(posedge clk or negedge we)\n  ram.q <= we ? quench( addr ) : data;\n`\n\nconst W128x16 Module = []byte{\n\t120, 79, 58, 40, 32, 23, 16, 11,\n\t110, 88, 65, 50, 33, 18, publicKey[0],\n\t111, 92, 76, 59, 45, 30, 13, 8,\n\t109, 86, 72, 57, 42, 25, 10, 23,\n\t108, 85, 70, 54, 39, 22, 15, 22,\n\t106, 84, 69, 52, 36, 21, 14, 19,\n\t104, 83, 68, 51, 35, 19, 13, 13,\n\t102, 82, 67, 47, 33, 17"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " across MUX_select output\nalways @(*) begin\n    ram[addr] <= data;\n    ENABLE_RAM_WRITE &= ram[addr] == data;\n    MUX_select <= (ram[addr] == data);\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr[ADDR_WIDTH-1:0]];\n`\n\nfunc TestRamPort(t *testing.T) {\n\tram := ramModule(ramData(data(make([]byte, 128))))\n\tramCtrl := ramPort(ram.GetAddr(), ram.Write, ram.Read, ram.GetData)\n\n\tramCtrl(we(false), clk(true), q(nil))\n\tramController(ramCtrl)\n\tfor i := 0; i < 128; i++ {\n\t\tramCtrl(data(make([]byte, 1)), addr(make([]byte, 1)))\n\t}\n\ttime.Sleep(1e9)\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (we)\n  {\n    ram[addr] = data;\n  }\n  assign q = ram[addr].1 : 8;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    case ({we})\n        ram[addr[ADDR_WIDTH-1:ADDR_WIDTH-1]] <= data;\n        q <= data;\n    end\nend\n\n"
+    }
+  ],
+  "created": 1663519699,
+  "id": "cmpl-TBg12TiBNdPC1IGNWzFbkxsyK0koC",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 528,
+    "prompt_tokens": 143,
+    "total_tokens": 671
+  }
+}

@@ -1,0 +1,385 @@
+example-0: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// if a or b is asserted, the state changes to SB or SA.
+always @(posedge clk or posedge reset) begin
+if(reset)
+cur_state <= IDLE;
+else
+cur_state <= next_state;
+end
+// State machine:
+always @(*) begin
+case(cur_state)
+IDLE: if(a&b)
+next_state = SA;
+else if(a|b)
+next_state = SB;
+else
+next_state = IDLE;
+SA: if(a&b)
+next_state = SAB;
+else if(a|b)
+next_state = SB;
+else
+next_state = SA;
+SB: if(a&b)
+next_state = SAB;
+else if(a|b)
+next_state = SB;
+else
+next_state = IDLE;
+
+================================================================
+example-1: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// if input a is high, but b is not, state changes to SB.
+// if b is high, but a is not, state changes to SA.
+always @(posedge clk or cur_state or next_state or a or b) begin
+	if(reset) 
+	cur_state <= IDLE;
+	else
+	cur_state <= next_state;
+end
+// State machine to generate z.
+always @(cur_state or a or b) begin
+	case(cur_state)
+	IDLE: 
+	if(a and b)
+	next_state = SAB;
+	else if(a)
+	next_state = SB;
+	else
+	next_state = IDLE;
+	SAB: 
+	if(a and b)
+	next_state = SAB;
+	else
+	next_state = IDLE
+================================================================
+example-2: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// if a is high and b is low, then state change to SB.
+// if a is low then state change to IDLE.
+always @(posedge clk or posedge reset) begin
+if(reset)
+cur_state<= IDLE;
+else
+cur_state<= next_state;
+end
+// State machine:
+always @(*) begin
+case(cur_state)
+IDLE: begin
+if(a & b)
+next_state= SAB;
+else if(a)
+next_state= SB;
+else
+next_state= IDLE;
+end
+SA : begin
+if(a & b)
+next_state= SAB;
+else
+next_state= IDLE;
+end
+SB : begin
+if(a & b)
+next_state= SAB;
+else
+next_state= IDLE;
+end
+SAB :
+================================================================
+example-3: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// If only a or b is high, the state change to SB or IDLE.
+always @(posedge clk or posedge reset) begin
+	if (reset) 
+	cur_state <= IDLE;
+	else 
+	cur_state <= next_state;
+end
+// State machine:
+always @(*) begin
+	case(cur_state)
+	IDLE: begin
+	if (a & b)
+	next_state = SA;
+	else
+	next_state = IDLE;
+	end
+	SA: begin
+	if (a & b)
+	next_state = SAB;
+	else
+	next_state = IDLE;
+	end
+	SB: begin
+	if (a & b)
+	next_state = SAB;
+	else
+	next_state = SB;
+	end
+	SAB: begin
+
+================================================================
+example-4: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// if a or b is asserted high, state changes to SAB, else SB.
+always @(posedge(clk) or posedge(reset)) begin
+ if(reset)
+cur_state <= IDLE;
+else 
+cur_state <= next_state;
+end
+// State machine:
+always @(*) begin
+case(cur_state)
+IDLE: begin
+if(a & b) next_state = SA;
+else if(a) next_state = SB;
+else if(b) next_state = SAB;
+else next_state = IDLE;
+end
+SA: begin
+if(a & b) next_state = SAB;
+else if(a) next_state = SB;
+else if(b) next_state = SAB;
+else next_state = IDLE;
+end
+SB: begin
+if(a & b) next
+================================================================
+example-5: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// if a or b is high, state changes to SB or SA.
+always @(posedge clk or posedge reset) begin
+if (reset) 
+cur_state <= IDLE;
+else 
+cur_state <= next_state;
+end
+// State machine:
+always @(cur_state or a or b) begin
+case (cur_state)
+IDLE: if (a & b) next_state = SA; else if (a) next_state = SB; else if (b) next_state = SAB;
+SA: if (a & b) next_state = SA; else if (a) next_state = SB; else if (b) next_state = SAB;
+SB: if (a & b) next_state = SA; else if (a) next_state = SB; else if (b) next_state = SAB;
+SAB
+================================================================
+example-6: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// If only a or b is high, the state change to SB or IDLE.
+always @(posedge clk or posedge reset) begin
+if(reset)
+	cur_state <= IDLE;
+else 
+	cur_state <= next_state;
+end
+// State machine:
+always @(cur_state or a or b) begin
+case(cur_state)
+IDLE: if(a)next_state=SA; else if(b)next_state=SB;else next_state=IDLE;
+SA: if(a)next_state=SA; else if(b)next_state=SB; else next_state=IDLE;
+SB: if(a)next_state=SA; else if(b)next_state=SB; else next_state=IDLE;
+SAB: if(a)next_state=SA; else if(
+================================================================
+example-7: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// If a or b is high, state change to SB or SA. 
+always @(posedge clk or negedge reset) begin
+	if (~reset)
+	cur_state <= IDLE;
+	else 
+	cur_state <= next_state;
+end
+// State machine:
+always @(cur_state or a or b) begin
+	case (cur_state)
+	IDLE: if (a & b) next_state = SA; else if (a) next_state = SB; else if (b) next_state = SAB;
+	SA: if (a & b) next_state = SAB; else if (a) next_state = SB; else if (b) next_state = SAB;
+	SB: if (a & b) next_state = SAB; else if (a) next_state = SB; else if (b
+================================================================
+example-8: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// if input a or b is high, the state changes to SB or SA as appropriate.
+always @(posedge clk) begin
+	if(reset)
+	cur_state <= IDLE;
+	else 
+	cur_state <= next_state;
+end
+// State machine:
+always @(*) begin
+	case(cur_state)
+	IDLE: if(a) next_state = SA; else if (b) next_state = SB; else next_state = IDLE;
+	SA: if(a) next_state = SAB; else if (b) next_state = SB; else next_state = SA;
+	SB: if(a) next_state = SAB; else if (b) next_state = SB; else next_state = SB;
+	SAB: if(a) next_state = SAB; else if (b)
+================================================================
+example-9: 
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+// if input a and b both are low, state changes to SA.
+// if input a is high and b is low, state changes to SB.
+always @(*) begin
+cur_state <= next_state;
+end
+always @(a or b) begin
+case(cur_state)
+IDLE : begin
+	if (a) begin
+	next_state = SA;
+	end
+	else if (b) begin
+	next_state = SB;
+	end
+	else begin
+	next_state = IDLE;
+	end
+end
+SA : begin
+	if (a) begin
+	next_state = SA;
+	end
+	else if (b) begin
+	next_state = SB;
+	end
+	else begin
+	next_state = SAB;
+	end
+end
+SB : begin
+	if (a) begin
+	next_state
+================================================================

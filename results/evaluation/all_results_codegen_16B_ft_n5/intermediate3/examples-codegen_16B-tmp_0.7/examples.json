@@ -1,0 +1,57 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign feedback_value = q[2] ^ q[4];\nassign r_next = r_reg\n// The feedback_value can be determined by the following truth table\n// (expressed as a truth table):\n//\tfeedback_value\n//\t1 0\n//\t0 1\n//\t0 0\n//\t1 1\nalways @ (posedge clk or posedge reset)\nif(reset)\nbegin\nr_reg <= 5'b1;\nend\nelse\nbegin\nr_reg <= r_next;\nend\nassign q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign feedback_value = r_reg[2] ^ r_reg[4];\nassign r_next = r_reg ^ {r_reg[0],feedback_value};\n// define the initial state as all 1's\ninitial begin\nr_reg <= 5'b11111;\nend\n// define the output state\nassign q = r_reg;\n// define the clock\nalways @ (posedge clk)\nbegin\nif (reset)\nbegin\n// upon reset set the output back to all 1's\nr_reg <= 5'b11111;\n// upon reset set the counter to all 1's\nend\nelse\nbegin\n// otherwise assign the next state\nr_reg <= r_next;\n// alternatively, assign the current state to the next state\n// r_reg <= r_next;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign feedback_value = r_reg[2] ^ r_reg[4];\n// define the next state of the FSM\nassign r_next = r_reg ^ ((r_reg & 7'b0110000) >> 3);\n// define the output of the FSM\nassign q = r_reg;\n// register r_reg\nalways @(posedge clk or negedge reset)\nbegin\nif ~reset // if not reset\n\tbegin\n\tr_reg <= 5'b0; // set register to 0\n\tend\nelse // if reset\n\tbegin\n\tr_reg <= r_next; // assign next value to register\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\nif (reset) begin\nq <= 5'b00000;\nr_reg <= 5'b00000;\nend\nelse begin\nq <= r_next;\nr_reg <= r_next;\nend\nend\n// define the feedback operation\nassign feedback_value = ^(r_reg[4:2]);\n// define the feedback\nassign r_next = r_reg ^ {r_reg[4], r_reg[4:1] ^ feedback_value};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign feedback_value = (r_reg[2] & r_reg[4]) | (r_reg[2] & r_reg[3]) | (r_reg[4] & r_reg[5]);\nassign r_next = {r_reg[4], r_reg[3], r_reg[2], r_reg[1], r_reg[0], feedback_value};\nalways @ (posedge clk) \nbegin\n\tif(reset) r_reg <= 5'b01101;\n\telse r_reg <= r_next;\nend\nassign q = r_reg;\n"
+    }
+  ],
+  "created": 1663543732,
+  "id": "cmpl-nwCAVrIOhJh6l4dvHxzUQyWaIAMc7",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 747,
+    "prompt_tokens": 155,
+    "total_tokens": 902
+  }
+}

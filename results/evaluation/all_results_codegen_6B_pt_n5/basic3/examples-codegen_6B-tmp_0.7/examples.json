@@ -1,0 +1,48 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\n  if(rst)\n  begin\n    pos <= 0;\n  end\n  else if(in[1] == '1')\n  begin\n    pos <= 1;\n  end\n  else \n    pos <= 0;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @ (posedge clk or ~sel)\n  out <= a;\n\nmodule priority_encoder_sel( \ninput [1:0] sel,\noutput reg [1:0] out );\n// When sel=1, assign b to out\nalways @ (posedge clk or ~sel)\n  out <= a;\n\nmodule priority_encoder_sle( \ninput [1:0] sel,\noutput reg [1:0] out );\n// When sel=1, assign b to out\nalways @ (posedge clk_enable or ~sel)\n  out <= a;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  priority_encoder(in,pos);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @ (posedge i) \n  priority_encoder_sel <= in[1] & in[0];\nalways @ (posedge i) \n  priority_encoder_sel <= in[1];\nalways @ (posedge i) \n  priority_encoder_sel <= in[0];\nalways @ (posedge i) \n  priority_encoder_sel <= 1;\n\n// This is a 3-bit priority decoder. If none of the input bits are high, output is zero.\nmodule priority_decoder( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nalways @ (posedge i) \n  priority_decoder_sel <= in[1] & in[0];\nalways @ (posedge i) \n  priority_decoder_sel"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @( posedge clk )\n  if ( in[0] ) pos = 1;\n  else pos = 0;\n"
+    }
+  ],
+  "created": 1663519665,
+  "id": "cmpl-S5PadR9oLOBNAmS3XIJRuQtjbqABA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 473,
+    "prompt_tokens": 65,
+    "total_tokens": 538
+  }
+}

@@ -1,0 +1,54 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// Set next state to 0.\nreg [1:0] next_state;\n// State machine for in 0 to 1.\nalways@(state)\n\tcase(state)\n\t\t0:\n\t\tbegin\n\t\t\tif(in) begin\n\t\t\t\tnext_state = 1;\n\t\t\t\tpresent_state = 0;\n\t\t\tend else if(present_state == 0) begin\n\t\t\t\tnext_state = 2;\n\t\t\t\tpresent_state = 0;\n\t\t\tend else begin\n\t\t\t\tnext_state = 0;\n\t\t\t\tpresent_state = 0;\n\t\t\tend\n\t\tend\n\t\t1:\n\t\tbegin\n\t\t\tif(in) begin\n\t\t\t\tnext_state = 2;\n\t\t\t\tpresent_state = 0;\n\t\t\tend"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// Set at transition 2 in state 1 and turn on transition 2 in state 0\n\nalways @(STATE)\n    begin\n    {next_state, in} = {in, ~present_state};\n    {copy_state, out} = {next_state, in};\n    {next_state} = {in, ~present_state};\n    {case_state, in} = {in, ~present_state};\n    {~present_state, in} = {in, ~present_state};\n    {next_state, in} = next_state;\n    {overflow, next_state} = {in, in} ^ (~present_state);\n    {out, out} = next_state;\n    end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// Set next state to 0 in state 1.\nalways@(posedge clk)\nbegin\n  if(reset)\n    present_state <= 0;\n  else\n    present_state <= next_state;\nend\n\nassign out = present_state == 0 ||\n                         (present_state == 1 && !present_state);\n\n// The next state should only be 0.\nalways@(*)\nbegin\n  case(present_state)\n    1 :\n      begin\n        if(in)\n          next_state = 1;\n        else if(present_state == 1 && !present_state[0] && !present_state["
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// Set up input in that cycle.\nalways@(posedge clk)\nbegin\n  next_state = 0;\n  case(present_state)\n    1'b0: if(in) begin\n         next_state = 1'b1;\n      end else begin\n         next_state = 1'b0;\n      end\n    1'b1: if(in) begin\n         next_state = 1'b0;\n      end\n  endcase\nend\n// If state changes, then report ack state to 0.\nalways@(posedge clk)\nbegin\n  if(reset)\n    state <= 1'b0;\n  else\n    state <= next_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// Set to 1 if input in=1, then state 0 in=0\n\ninitial begin\n  state1 = state1;\n  state0 = 0;\n  next_state = 0;\n  next_state = 0;\n  next_state = 0;\n  in = 0;\n  out = 0;\n  found_state = 0;\nend\n\nalways @(posedge clk) begin\n  if(reset) begin\n    state1 = 0;\n    state0 = 0;\n    next_state = 0;\n    in = 0;\n    found_state = 0;\n  end\n  else begin\n    case(state1)\n      state0: begin\n        // If in = 1, then next state is 1.\n        if"
+    }
+  ],
+  "created": 1663299274,
+  "id": "cmpl-BTGqwlsiDu4m3I6YcfSl0KUynnrOL",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 988,
+    "prompt_tokens": 148,
+    "total_tokens": 1136
+  }
+}

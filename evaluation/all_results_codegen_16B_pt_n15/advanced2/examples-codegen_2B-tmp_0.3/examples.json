@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nif(reset)\nq<=0;\nelse if(slowena)\nif(q<9)\nq<=q+1;\nelse\nq<=0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n if (reset)\n q <= 0;\n else if (slowena)\n if (q < 9)\n q <= q + 1;\n else\n q <= 0;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// If the ena input is low, and the q is 9, then do nothing.\n\nalways @(posedge clk)\nbegin\n if (reset)\n q <= 0;\n else if (slowena)\n if (q != 9)\n q <= q + 1;\n else;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// If the ena input is low, do nothing.\nalways @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tq <= 0;\n\tend\n\telse if (slowena)\n\tbegin\n\tif (q != 9)\n\tq <= q + 1;\n\tend\n\telse\n\tq <= q;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// If the ena input is low, q is left unchanged.\n\nalways @(posedge clk)\nbegin\n if (reset)\n q <= 0;\n else if (slowena)\n if (q < 9)\n q <= q + 1;\n else\n q <= 0;\n end\n"
+    }
+  ],
+  "created": 1663304566,
+  "id": "cmpl-ENZL4uXXlAg5JbV57YsJhqZquf197",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 333,
+    "prompt_tokens": 98,
+    "total_tokens": 431
+  }
+}

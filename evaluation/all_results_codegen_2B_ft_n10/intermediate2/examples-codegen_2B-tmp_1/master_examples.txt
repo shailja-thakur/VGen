@@ -1,0 +1,268 @@
+example-0: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+//--------------------------------------------------------------------------------
+// I/O port list
+//--------------------------------------------------------------------------------
+// Inputs from higher level module(s)
+//--------------------------------------------------------------------------------
+always@(posedge clk) 
+begin
+case(reset)
+1'b0: q <= 4'b0110; // on the reset cases, assign first upper-case letter to q
+1'b1: q <= 4'b0;
+1'bx: q <= 4'bxxxx; // any reset cases that are not explicitly handled above
+endcase
+end
+
+================================================================
+example-1: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+reg [3:0] logical_and12;
+always @(posedge clk)
+begin
+if (reset)
+	q <= 4'b1111;
+
+	 // assigning 1 to the second positive edge of each(clock) dual-edge falling triggered & rising ,component only use one edge of the dual-edge
+	else if (q == 4'b1111)
+	// if the counter is at 12, toggle the reset based on the input truth table 
+	// then serial trigger the output
+	
+	q <= (logical_and12 == 4'b1000) ? 4'b1000 : 4'b1111;
+	
+	else 
+	// if the counter is not at 12 yet, increment the counter based on the clock edge
+	q <= q + 4'b0001;	
+	
+game1 mu = 0;
+	output[3:0] out
+	section out = 4
+================================================================
+example-2: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+	always @(posedge clk) 
+begin
+ if (reset == 1'b1) begin q=4'b1; end
+ else if (q == 4'b12) begin q=4'b1; end
+ else begin q=q+4'b1; end
+end
+
+================================================================
+example-3: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or posedge reset)
+begin: UPDATED
+	if(reset)
+	begin
+	q<=1;
+	end
+	else if (q==12)
+	begin
+	q<=1;
+	end
+	else
+	begin
+	q<=q+1'b1;
+	end
+end
+
+================================================================
+example-4: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+// whenever a posedge is detected on the input `clk' then reset will hold the current value of q
+//and then incremented on the next positive edges of `clk'.
+/*always @(posedge clk or negedge reset)
+begin
+	if( reset == 0)
+	begin
+	q<= 4'b1; 
+	end
+	else
+	begin
+	if(q== 4'b12)
+	q<= 4'b1;
+	end	
+end*/
+/*always @(negedge clk or posedge reset)
+begin
+if(reset == 0)
+q<= 4'b1;
+else
+if(q == 4'b12)
+q<= 4'b1;
+end
+end*/
+//useful blocking assignments
+always @(posedge clk or negedge reset)
+begin
+	if(
+================================================================
+example-5: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk)
+ begin
+case (reset) 
+ binOn:
+ q <= 1;
+ 
+ endcase
+ end
+
+================================================================
+example-6: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or posedge reset)
+if (reset)
+	q<=0;
+
+else if (q==4'b1110)
+	q<=1;
+// else if (q<=4'b0101&& q>=4'b1111)	//System code
+//	q<=0;	
+else
+	q<=q+1;
+
+
+================================================================
+example-7: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+// update q on the negative edge of the clock according to the following cases:
+// on button press, if q is less than 12, increment q by 1
+// if it is equal to 12, assign q to 1
+// if q is equal to 12, assign q to 4
+// if q is 14 then reset to 1
+always @ (posedge clk or posedge reset)
+if(reset)
+q <= 0;
+else if(quset)
+q <= {q[2], q[1], q[0]};
+else
+q <= q >> 1;
+always @ (posedge clk or posedge reset)
+if(reset)
+q <= 0;
+else if(q == 12)
+q <= 1;
+else
+q <= q + 1;
+
+================================================================
+example-8: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge (clk))
+if(reset)
+q=4'b1111;
+else
+begin
+ if (q==4'b1111)
+q=1;
+else
+q=q+1'b1;
+end
+
+================================================================
+example-9: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk) begin
+ if (reset) || (q == 12) begin
+ q = 1;
+ end
+ else if (q == 12) begin
+ q = 1;
+ end
+ else begin
+ q = q +1'b1; 
+ end
+end
+
+================================================================

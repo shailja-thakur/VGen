@@ -1,0 +1,72 @@
+example-0: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+wire [2:0] b;
+
+always @(posedge in) case (b)
+begin
+  if (pos==0)
+    b = in;
+end
+
+always @(posedge pos)
+case (pos)
+begin
+  if (b == 1)
+    pos = 1;
+end
+
+================================================================
+example-1: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @ (not in[0])
+begin
+  pos = pos | (in[1] & 3) << 1;
+  pos = (pos & 0xFF) | (in[0] & 1);
+  if (pos == 0xFF) pos = 0;
+  out <= pos;
+end;
+
+================================================================
+example-2: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+
+always @(*)
+void
+module p_in_assign( 
+input [2:0] in, 
+output reg [1:0] out ); 
+//When sel=1, assign out to b
+
+always @(*)
+void
+module p_out_assign( 
+output reg [1:0] out, 
+input reg [1:0] in ); 
+//When sel=1, assign out to b
+
+always @(*)
+void 
+p_init( 
+input [2:0] in, 
+output reg [1:0] out ); 
+//When sel=1, assign out to b
+
+always @(*)
+void 
+p_init_no_init_output( 
+input [2:0] in, 
+output reg [1:0] out ); 
+//When sel=1,
+================================================================

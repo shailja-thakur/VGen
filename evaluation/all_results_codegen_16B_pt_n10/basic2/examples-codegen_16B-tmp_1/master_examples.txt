@@ -1,0 +1,236 @@
+example-0: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+// Called by root node modules to intialize each module
+function init_and()
+
+    out <= ( b and a );
+
+// Called by root node module after a process is activated
+function finish_and() {}
+
+"""
+
+
+# Write out the coroutine
+def write_out_module( root_node_module, out ):
+
+    root_node_module.parameters( r"""
+a <-               sig.in
+b <-               sig.in
+out <-           module ( "out" ) 
+           accept a and b         :
+                out <= ( b and a) :
+           
+================================================================
+example-1: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign[out]( 
+        (and[a,b]), 
+        0);
+
+
+================================================================
+example-2: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign  ( out,  and_gate( a, b) ) += 2;
+
+    // care of simulation
+    always @ (posedge clk )  // check rising edge
+        if (a = 1 && b = 1)  // rising edge means a and b are 1
+            out <="out";        // output 1
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                           MAIN
+////////////////////////////////////////////////////////////////////////////////
+
+int main() 
+{
+    input       a ( "a" ),
+                b ( "b" );
+    output      out ( "out" );
+
+    and_gate   ag ( a, b, out );
+    
+    // Starting configuration for this example
+    a = 0, b = 0, out = 0;
+    clk = 0; 
+
+    wait( 10 );
+
+    // Block profiling
+    simulate( 1000 );
+    report( "Number of cycles occuring"
+================================================================
+example-3: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign m = or_gate( a, not(b), out );
+
+
+================================================================
+example-4: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+// Implementation
+
+// The implementation of the and_gate needs to return a valid instance of the
+// module:"
+//
+//  and_gate::and_gate() : out( NULL ), a( false ), b( false ) { }
+//  and_gate::~and_gate() { }
+//
+// The class, module and instance of this component are instantiated within the
+// ComponentCreator (CC)
+
+// Instantiate the class. This defines the object of type^ and_gate, member
+// variables and return values match the specifications
+
+// Create an instance of the module
+and_gate nand_gate;
+
+================================================================
+example-5: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign( out, $and( a, b ) );
+        
+ignore_gate( 
+    input destroy_a, 
+    input destroy_b, 
+    line_assignments line_assignments, // the top object in the module graph
+    input push_a, 
+    input push_b;   
+    );
+
+    // apply either exit_gate or ignore_gate, whichever occurs.
+    out -> exit_gate( destroy_a, destroy_b );
+
+exit_gate ( 
+    input destroy_a, 
+    input destroy_b, 
+    line_assignments line_assignments, // the top object in the module graph
+    input push_a, 
+    input push_b;   
+    ) { 
+        // exit gate
+        if ( a or b ) {
+            // Note: you cannot simply destroy this
+================================================================
+example-6: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign( out, and_gate( a, b ) );
+
+
+================================================================
+example-7: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+
+================================================================
+example-8: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign ( $out , 45.0 ) + ( $a , 65.0 ) + ( $b , 55.0 );  
+
+    // report logic levels
+    report $a;
+    report $b;
+    report $out;
+"""
+
+
+# Parse the Verilog code
+ast, error = parser.parse_expr( andgate_vlog )
+if error:
+    print(error)
+    exit(1)
+
+# Create a CDR pipeline
+mem = DDR3_CDR()
+module = and_gate(
+                ast.get_symbols(), 
+                ast,
+                opt.outdir + 'and0.v',
+                CE = 8,
+                BBAOO=iter([BBAOOF, BBAOOF_in, BBAOOF_out, BBAOOF_dout]),
+                width = 36 )
+
+================================================================
+example-9: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign( out, and_gate, a, b );
+
+    // The equation of the AND gate
+    equation( and_gate, and_gate.out_value( ) == true ); 
+    
+
+================================================================

@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nwire xorin1, xorin2;\nxor XOR1(xorin1, a, b);\nxor XOR2(xorin2, a, xorin1);\n\nassign cout = xorin1 ^ xorin2;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nwire[3:0] g, p;\n\nassign {cout,sum} = ({a, b}&{4'b0000});\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n   // This module contains all AND gate module for the arithmeticasion\n   // and an AND gate whose inputs are propagating for inputs.\n   //\n   // This module does NOT merge the two numbers together Subtract exponents\n   //\n\n   wire   A_;\n   wire   B_;\n   wire   C_;\n   wire   D_;\n   wire   E_;\n   wire   F_;\n   wire   G_;\n   wire   H_;\n   wire   I_;\n   wire   J_;\n   wire   K_;\n\n   // This block computes the ADD/SUBTRACT SELECTOR\n   full_adder op1 (A_, A, B_, C_, D_, F_, G"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nwire c1, c2;\nxor (c1, a, b);\nxor (c2, a, b);\nand (c, a, c1);\nand (c3, a, c2);\nor (c4, in1[3], c3); \nand (cin, sum[3], cout);\nxor (c5, in1[4], carry_out);\nand (c6, in1[5], sum[4]);\nand (c7, in1[6], sum[5]);\nand (c8, in1[7], sum[6]);\nor (c9, in1[8], cout_out);\nand (c10, in2[9], carry_out);\nand (out, sum[9], cout_out);\nor (c11, out[10], c4); \nand (out,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nwire int0, int1;\n\nxor (sum0, aa, b);\nand (int1, sum0[0], int0);\nor (cout, sum1[0], int1);\n\n"
+    }
+  ],
+  "created": 1663299315,
+  "id": "cmpl-rGgX7KE8WLsgEDxulhnod3nPk7CjA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 559,
+    "prompt_tokens": 43,
+    "total_tokens": 602
+  }
+}

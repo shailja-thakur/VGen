@@ -1,0 +1,63 @@
+example-0: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+// Generate a random number from [0,255)
+random_number random_number;
+
+// The random_number module uses the random base class in random.h.
+module random_mod ( 
+input [5:0] n,
+output [1:0] out ); // n is one less than the number of inputs
+clock mod_clk;
+
+begin top:
+    random_number :: output [i/wCn - ((n / wCin - 1) to 1)- wCn + i/wCn - 1]
+    out <= random[n[wCin - 1] to mod_clk](14)[i/wCn - ((n / wCin - 1) to 1) - 1];
+    wait;
+    select out <= a[wCin - 1]; 
+    out <= 0 x 10 in[wCin - 1
+================================================================
+example-1: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When sel=2, assign nothing (a = b).
+
+wire [4:0] in[3:0];
+
+// Define the registers as inputs. Some may be outputs (later) along with mux temp registers.
+wire ch_a [18:0];
+wire ch_b [18:0];
+register ch_a[18:0]=0;
+register ch_b[18:0]=0;
+
+reg [3:0] r_A[4:0] = 0;
+reg [3:0] r_B[4:0] = 0;
+
+reg out[4:0] = { 0, 0, 0, 0 };
+mux mux_a, mux_b;
+
+always@*
+begin
+    mux_a <= (a == 5) ? (5'b0) : (in[5:4]
+================================================================
+example-2: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+================================================================

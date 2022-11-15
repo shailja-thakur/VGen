@@ -1,0 +1,1269 @@
+example-0: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+reg of1, of2, of3;
+
+always @ (*) begin
+of1 = (a[7] == 1'b0 && b[7] == 1'b0 && s[7] == 1'b1)
+|| (a[7] == 1'b1 && b[7] == 1'b1 && s[7] == 1'b0);
+of2 = (a[6] == 1'b0 && b[6] == 1'b0 && s[6] == 1'b1)
+|| (a[6] == 1'b1 && b[6] == 1'b1 && s[6] == 1'b0);
+of3 = (a[5] == 1'b0 && b[5] == 1'b0 && s[5] == 1'b1)
+|| (a[5] == 1'b
+================================================================
+example-1: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign overflow = (a[7] == 1'b1) && (a[7] == 1'b1) && (b[7] == 1'b0) && (b[7] == 1'b0) && (s[7] == 1'b0);
+
+// loop to add a and b to s. for each iteration of the loop, the value of s is assigned to a. the value of a is then assigned to s.
+
+always @ (a, b, s)
+begin
+
+assign s = a + b;
+
+assign a = s;
+
+end
+
+
+================================================================
+example-2: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+always @(*)
+
+begin 
+
+//shifting a and b to left side and storing them in temp1 and temp2
+	temp1=a<<1;
+	temp2=b<<1;
+	
+//shifting s to right side and storing it in temp3
+	temp3=s>>1;
+
+//checking if a is negative
+	if(a[7]==1'b1)
+	begin
+	//shifting 1 to the left side of the number a
+	temp4=1<<a[6:0];
+	//subtracting temp4 from a to make a positive
+	temp1=temp1-temp4;
+end
+
+//checking if b is negative
+	if(b[7]==1'b1)
+	begin
+	//shifting 1 to the left side of the number b
+	temp5=1<<b[
+================================================================
+example-3: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (a[7] == b[7] && a[7] != s[7]) || (a[7] != b[7] && s[7] == 1);
+
+
+================================================================
+example-4: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b; 
+assign overflow = ((a[7] == 0) && (b[7] == 0) && (s[7] == 1)) || ((a[7] == 1) && (b[7] == 1) && (s[7] == 0));
+
+
+================================================================
+example-5: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	assign s = a + b;
+	assign overflow = (a[7] == b[7] && a[7] == s[7]) ? (a[7] ? 1:0) : (s[8] ? 1 : 0);
+
+
+================================================================
+example-6: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s[0] = a[0] ^ b[0]; //assign the output s to the sum of the two numbers
+
+// assign the sum to the carry variable
+assign s[1] = (a[0] & b[1]) ^ (a[1] & b[0]);
+assign s[2] = (a[1] & b[1]) ^ (a[2] & b[0]);
+assign s[3] = (a[2] & b[1]) ^ (a[3] & b[0]);
+assign s[4] = (a[3] & b[1]) ^ (a[4] & b[0]);
+assign s[5] = (a[4] & b[1]) ^ (a[5] & b[0]);
+assign s[6] = (a[5] & b
+================================================================
+example-7: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+
+assign s = a + b;
+assign overflow = ((~a[7] & ~b[7] & s[7]) | (~a[7] & b[7] & ~s[7]) | (a[7] & ~b[7] & ~s[7]) | (a[7] & b[7] & s[7])) ? 1'b1 : 1'b0;
+
+
+================================================================
+example-8: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (a[7] == 1 && b[7] == 0 && s[7] == 0)||(a[7] == 0 && b[7] == 1 && s[7] == 1);
+
+
+================================================================
+example-9: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	assign s[0] = a[0] ^ b[0] ^ 1'b0;
+	assign s[1] = a[1] ^ b[1] ^ (a[0] & b[0]);
+	assign s[2] = a[2] ^ b[2] ^ ((a[1] & b[1]) | (a[0] & b[0]) & (a[1] ^ b[1]));
+	assign s[3] = a[3] ^ b[3] ^ ((a[2] & b[2]) | (a[1] & b[1]) & (a[2] ^ b[2]) | (a[0] & b[0]) & (a[1] ^ b[1]) & (a[2] ^ b[2]));
+	assign s[4] = a[
+================================================================
+example-10: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s[0] = a[0] ^ b[0]; // If a or b are zero, then a - b will be zero so we want to leave the output as zero
+
+reg signed [7:0] s_temp = 0; // Declare a temporary for storing the sum of a and b
+reg overflow = 0; // Declare a temporary for storing the overflow of a and b
+reg [7:0] a_high, b_high; // Declare three regs for high and low order bits of a and b
+reg [7:0] a_low, b_low; // Declare two regs for low order bits of a and b
+
+
+always @ *
+begin
+
+a_high = a[7]; // Assign high order bits of a to high order bits of a_high
+a_low = a[6:0]; // Assign low order bits of a
+================================================================
+example-11: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (~a[7] & b[7] & ~s[7]) | (~a[7] & ~b[7] & s[7]) | (a[7] & ~b[7] & s[7]);
+
+//assign overflow = a[7] ^ b[7] ^ s[7];
+
+
+================================================================
+example-12: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	reg signed [8:0] sum = 0;
+	reg signed [8:0] sum2 = 0;
+	reg of1,of2;
+	
+	always @ (a,b)
+	begin
+	
+	// sum1 is the sum of a and b
+	 sum1 = a + b; 
+	
+	// sum2 is the sum of the absolute values of a and b (a+b)
+	sum2 = (a+b);
+	 
+	// if the most significant bit of sum1 is 1 then that constitutes an overflow
+	// assume that the carry out is always the most significant bit
+	if (sum1[8]) 
+	begin
+	sum = sum2[8];
+	of1 = 1'b1;
+	end
+	// else if the most significant bit of sum1 is 0 then no overflow has occured
+	else 
+================================================================
+example-13: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (a[7] == b[7] && a[7] != s[7]) || (a[7] != b[7] && s[7] == 1'b0);
+
+
+
+================================================================
+example-14: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b; // the output is a sum
+assign overflow = ((a[7] == 0) & (b[7] == 0) & (s[7] == 1)) | ((a[7] == 1) & (b[7] == 1) & (s[7] == 0)); // or if the output overflows, overflow is 1
+
+
+================================================================
+example-15: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign overflow = (a[7] == 1'b0) & (b[7] == 1'b0) & (s[7] == 1'b1); // check for overflow
+
+// define the negative bit of the output to be the xor of the most significant bits
+assign s[7] = a[7] ^ b[7];
+
+// define the bits of the output that are to the right of the negative bit (the most significant bits) to be the sum of the two most significant bits (a + b)
+assign s[6:0] = a[6:0] + b[6:0];
+
+
+================================================================
+example-16: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+
+
+
+assign s = (a & b) | (~a & b);
+assign overflow = (~a[7] & ~b[7] & s[7]) + (a[7] & b[7] & ~s[7]);
+
+
+================================================================
+example-17: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+wire [7:0] s_tmp;
+wire [7:0] a_tmp;
+wire [7:0] b_tmp;
+wire overflow_tmp;
+
+assign overflow = overflow_tmp;
+
+assign s = s_tmp;
+assign a = a_tmp;
+assign b = b_tmp;
+
+assign s_tmp = a + b;
+assign a_tmp = a << 1;
+assign b_tmp = b << 1;
+
+assign overflow_tmp = (a[7] == 1'b0 && b[7] == 1'b0) && (s_tmp[7] != s[7] || s_tmp[6] != s[6]);
+
+
+================================================================
+example-18: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+wire cin = 1'b0;
+assign s = cin ^ (b ^ a); // s = b XOR a XOR cin
+wire t; // temporary wire
+
+assign t = a[7] ^ b[7]; // t = a MSB ^ b MSB
+assign overflow = cin | t; // overflow = cin OR t
+// overflow is HIGH only if the two most significant bits of both numbers are HIGH and the sign bit of s is also HIGH
+
+
+
+================================================================
+example-19: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	// assign the first bit of each input to the output overflow
+	assign overflow = a[0] ^ b[0];
+	
+	// instantiate the adder
+	adder_8bit u0 (
+	// a and b are added to s
+	.a(a),
+	.b(b),
+	.s(s),
+	// s is assigned to s
+	.cout(overflow)
+	);
+
+
+================================================================
+example-20: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s[7] = (a[7] == 1'b0 && b[7] == 1'b0 && s[7] == 1'b1) || (a[7] == 1'b1 && b[7] == 1'b1 && s[7] == 1'b0);
+assign s[6] = (a[6] == 1'b0 && b[6] == 1'b0 && s[7] == 1'b1) || (a[6] == 1'b1 && b[6] == 1'b1 && s[7] == 1'b0);
+assign s[5] = (a[5] == 1'b0 && b[5] == 1'b0 && s[6] == 1'b1) || (a[5] == 1'b1 && b[5] == 1'
+================================================================
+example-21: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = (a[7] == b[7] ? {a[7], a[7:0] + b[7:0]} : {a[7], a[7:0] - b[7:0]});
+assign overflow = (((a[7] == 0 & b[7] == 1 & s[7] == 1) | 
+(a[7] == 1 & b[7] == 0 & s[7] == 0)) & a[7] != s[7]) |
+((a[7] == 1 & b[7] == 1 & s[7] == 0) & a[7] != s[7]) |
+((a[7] == 0 & b[7] == 0 & s[7] == 1) & a[7] != s[7]);
+
+
+================================================================
+example-22: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (~a[7] & b[7] & s[7]) | (a[7] & ~b[7] & ~s[7]) | (a[7] & b[7] & ~s[7]) | (a[7] & b[7] & s[7]);
+
+
+================================================================
+example-23: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s[0] = a[0] ^ b[0] ^ (a[0]&b[0]);
+
+assign s[1] = a[1] ^ b[1] ^ (a[1]&b[1]) & (a[0]&b[0]);
+assign s[2] = a[2] ^ b[2] ^ (a[2]&b[2]) & (a[1]&b[1]) & (a[0]&b[0]);
+assign s[3] = a[3] ^ b[3] ^ (a[3]&b[3]) & (a[2]&b[2]) & (a[1]&b[1]) & (a[0]&b[0]);
+assign s[4] = a[4] ^ b[4] ^ (a[
+================================================================
+example-24: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	reg [8:0] s;
+
+	reg of;
+
+	always @ (a, b, s)
+	begin
+	
+	if ({a[7], b[7]} == 1'b0 && {s[7], s[9], s[10]} == 1'b0)
+	begin
+	of = 1'b1;
+	end
+
+	else if ({a[7], b[7]} == 1'b1 && {s[7], s[9], s[10]} == 1'b1)
+	begin
+	of = 1'b1;
+	end
+
+	else if ({a[7], b[7]} == 1'b1 && {s[7], s[9], s[10]} == 1'b0)
+	begin
+	of = 1'b1;
+	end
+
+	else if ({a[7], b[7
+================================================================
+example-25: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+//assign high if negative AND positive
+assign s[0] = a[0] ^ b[0];
+assign s[7:1] = a[7:1] + b[7:1] + (a[0] & b[0]);
+assign overflow = a[7] + b[7] + (a[0] & b[0]); 
+
+
+================================================================
+example-26: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = ((~a[7]&&b[7])&&(~b[7]&&s[7])) || ((~a[7]&&~b[7])&&(a[7]&&s[7]));
+
+
+================================================================
+example-27: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+always@(a,b,s)
+begin
+	// if a,b and s are all low initially then the sum s is equal to the concatenation of a and b using the '+' operator
+	// So assign the output s to the concatenation of a and b
+	s = a+b;
+
+	// if only a or b are high or both a and b are high then the sum s will be high no matter what the value of the other input variable
+	// so the output overflow will be high no matter what the values a and b are
+	// assign the output overflow to 1
+	overflow = 1'b1;
+	
+	// if only the most significant bit of a or b is high then the sum s may be high or low 
+	// assign the output overflow to 0
+	overflow = 1'b0;
+end
+
+
+================================================================
+example-28: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign overflow = (a[7]==b[7] && a[7] != s[7]) || (a[7] != b[7] && s[7]);
+
+// always block to assign the output overflow 
+always @(s, a, b)
+begin
+	if(a[7] == b[7])
+	begin
+	// if two numbers have the same sign then assign the output to the sum
+	// else the output is assigned to the negative of the sum
+	s[7:0] = a[7:0] + b[7:0];
+	end
+	else if(a[7] == 0 && b[7] == 0) 
+	begin
+	// check to see if two numbers have opposite signs or one has a minus sign and the other is positive
+	// assign the output to the negative of the sum
+	s[7:
+================================================================
+example-29: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	// add the two most significant bits of a and b
+	assign s[7] = a[6] ^ b[6] ^ s[6]; 
+	assign s[6] = a[5] ^ b[5] ^ s[6]; 
+	assign s[5] = a[4] ^ b[4] ^ s[6]; 
+	assign s[4] = a[3] ^ b[3] ^ s[6]; 
+	assign s[3] = a[2] ^ b[2] ^ s[6]; 
+	assign s[2] = a[1] ^ b[1] ^ s[6]; 
+	assign s[1] = a[0] ^ b[0] ^ s[6]; 
+	assign s[0] = a[0] ^ b[0] ^ s
+================================================================
+example-30: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+
+
+// Design a 4-bit adder
+module adder_1bit(input a,
+ maj,
+ input b,
+ min,
+ output s,
+ output v
+);
+
+// The 4-bit adder is implemented as the 2-bit adders in a MUX.
+// The 2-bit adders are implemented as the 1-bit adders twice.
+
+// Implement the 1-bit adders
+module adder_1bit_0(input a,
+ maj,
+ input b,
+ min,
+ output s,
+ output v);
+
+// If any of the bits is 1 in the input a or b, the sum is equal to the higher of the 2 bits.
+// If the two bits are equal, then the sum is equal to the lesser of the 2 bits.
+assign s = (a & b & maj) | (a & ~b & ~min) | (~a &
+================================================================
+example-31: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+always @ (*) begin
+	
+	if ( (a[7] == 1'b0) && (b[7] == 1'b0) && (s[7] == 1'b1) ) begin 
+	
+	// case of when the sign bit of a, b and s are all 0
+	
+	overflow = 1'b1;
+	
+	end
+	
+	else if ( (a[7] == 1'b0) && (b[7] == 1'b0) && (s[7] == 1'b0) ) begin 
+
+	// case of when the sign bit of a, b and s are all 1
+	
+	overflow = 1'b0;
+	
+	end
+	
+	else if ( (a[7] == 1'b0) && (b[7] == 1'b1) && (s
+================================================================
+example-32: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+// add the two numbers, sum the carry bits, and store the overflow bit as the msb of the sum
+assign s = a + b;
+assign overflow = a[7] & b[7] & ~s[7];
+
+
+================================================================
+example-33: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+
+// The first bit of a and b is added to the most significant bit of s. 
+
+// The second bit of a is added to the second most significant bit of s. 
+
+// The third bit of a is added to the third most significant bit of s. 
+
+// The fourth bit of a is added to the fourth most significant bit of s. 
+ 
+// The fifth bit of a is added to the fifth most significant bit of s. 
+
+// The sixth bit of a is added to the sixth most significant bit of s. 
+
+// The seventh bit of a is added to the seventh most significant bit of s. 
+
+// The eight bit of a is added to the eighth most significant bit of s. 
+
+// The first bit of s is added to the first bit of s. 
+
+// The second bit of s is added to the second bit of s. 
+
+
+================================================================
+example-34: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	// implement the adder as a 16 bit adder with a 8 bit carry-out
+	// instantiate a 4-bit adder
+	// instantiate a 16-bit adder
+	// instantiate a mux to connect the outputs of both adders to the 8-bit carry-out output
+	// instantiate a carry-out counter
+
+
+================================================================
+example-35: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+// The bits of the two inputs are treated as signed bits and are added
+
+assign s = a + b;
+
+assign overflow = (a[7]==1 && b[7]==0 && s[7]==0) || (a[7]==0 && b[7]==1 && s[7]==1);
+
+
+
+================================================================
+example-36: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	// Determine if there is an overflow.
+	// Set the overflow output to 1 if there is a signed overflow.
+	// Set the overflow output to 0 if no overflow occurs.
+	assign overflow = ( (a[7] == 1'b0) && (b[7] == 1'b1) && (s[7] == 1'b1) ) || ( (a[7] == 1'b1) && (b[7] == 1'b0) && (s[7] == 1'b0) );
+
+	assign s = (a[7] == b[7]) ? 	// if signs are equal, then add them to get a valid sum
+	a + b : 
+	a - (b + {8{a[7]}});
+
+
+================================================================
+example-37: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	assign s = a + b;
+	assign overflow = (a[7] == b[7] && a[7] != s[7]) ? 1'b1 : 1'b0;	
+
+
+================================================================
+example-38: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+
+
+
+
+
+================================================================
+example-39: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (a[7] == b[7]) && (a[7] != s[7]) ? (a[7] ? 1'b1:1'b0):(b[7] ? 1'b1:1'b0);
+
+
+
+
+================================================================
+example-40: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	assign overflow = (a[7] == b[7] && a[7] != s[7]) ? 1'b1 : 1'b0;
+	assign s[7] = a[7] ^ b[7] ^ overflow;
+	assign s[6] = a[6] ^ b[6];
+	assign s[5] = a[5] ^ b[5];
+	assign s[4] = a[4] ^ b[4];
+	assign s[3] = a[3] ^ b[3];
+	assign s[2] = a[2] ^ b[2];
+	assign s[1] = a[1] ^ b[1];
+	assign s[0] = a[0] ^ b[0];
+
+
+================================================================
+example-41: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s[7] = (a[7]^b[7]) | (a[7]&b[7]) & (a[6]^b[6]) & (a[6]&b[6]);
+assign s[6] = (a[6]^b[6]) | (a[6]&b[6]) & (a[5]^b[5]) & (a[5]&b[5]);
+assign s[5] = (a[5]^b[5]) | (a[5]&b[5]) & (a[4]^b[4]) & (a[4]&b[4]);
+assign s[4] = (a[4]^b[4]) | (a[4]&b[4]) & (a[3]^b[3]) & (a[3]&
+================================================================
+example-42: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	assign s[0] = a[0] ^ b[0];
+	assign s[1] = a[1] ^ b[1] ^ (a[0] & b[0]);
+	assign s[2] = a[2] ^ b[2] ^ (a[1] & b[1]) ^ (a[0] & b[0]);
+	assign s[3] = a[3] ^ b[3] ^ (a[2] & b[2]) ^ (a[1] & b[1]) ^ (a[0] & b[0]);
+	assign s[4] = a[4] ^ b[4] ^ (a[3] & b[3]) ^ (a[2] & b[2]) ^ (a[1] & b[1]) ^ (a[0] & b[0]);
+
+================================================================
+example-43: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (a[7] == b[7] && a[7] != s[7])?1:0;
+
+
+================================================================
+example-44: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	assign s = a + b;
+	assign overflow = ((~a[7])&(~b[7])&(s[7])|(a[7])&(b[7])&(~s[7]));
+	
+
+================================================================
+example-45: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+reg of1;
+reg of2;
+wire [7:0] tempA;
+wire [7:0] tempB;
+wire [7:0] tempS;
+assign tempA = a ^ b;
+assign tempB = a & b;
+assign tempS = tempA + tempB;
+assign overflow = tempS[7] ^ tempS[6] ^ tempS[5] ^ tempS[4] ^ tempS[3] ^ tempS[2] ^ tempS[1] ^ tempS[0]; // check this out
+assign s = tempS;
+
+
+================================================================
+example-46: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+	assign s = a + b;
+	assign overflow = (a[7]==0) && (b[7]==0) && (s[7]==1);	 
+	
+
+================================================================
+example-47: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+assign s = a + b;
+assign overflow = (~a[7] & b[7] & s[7]) | (a[7] & ~b[7] & ~s[7]) | (~a[7] & ~b[7] & s[7]);
+
+
+================================================================
+example-48: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+// always @ (a or b) begin
+// 	if ({a,b} > 0) begin
+// 	 s <= a + b;
+// 	 end
+// 	else if ({a,b} < 0) begin
+// 	 s <= a - b;
+// 	end
+// 	else begin
+// 	 s <= a;
+// 	end
+// end
+
+assign s = a + b ;
+
+always @ (a or b) begin
+	if ({a, b} > 0) begin
+	 overflow = 1'b1;
+	 end
+	else begin
+	 overflow = 1'b0;
+	 end
+end 
+
+
+
+================================================================
+example-49: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+
+
+always @(a or b or s)
+begin
+// add the two numbers
+assign s = a + b;
+// check for a signed overflow
+assign overflow = ((a[7] == 0) && (b[7] == 0) && (s[7] == 1)) || ((a[7] == 1) && (b[7] == 1) && (s[7] == 0));
+end
+
+
+================================================================

@@ -1,0 +1,435 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+	always( cout ) & half_adder( a, b, cz_carry, sum );
+
+	always_comb
+		input a,b,cout;
+		iassign( (sum >> 16), a, output );
+		iassign( (sum >> 8), b, output );
+		iassign( (sum), c, output );
+		iassign( (cz_carry), (carry) );
+
+
+source dirun is 16 bits wide;
+
+SYNC_FNS =
+"// Gen is the functional core generation module.\r\n"
+"\t//\r\n\r\n"
+"// <<< terminals >>>\r\n"
+"\t// You can connect any terminal to this syntactic block here.\r\r\n"
+"\t// (Note '>>>' means we are in non-default mode of 'range'.
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// This is the half adder. The input is the sum (output of half adder) and
+// two bits are added together. The result yields a sum (again an output
+// of half adder) and the carry-out is set to the added bits.
+module half_adder2( 
+input sum, b1, b2,
+output b, cout );
+
+// This module contains the main program. Label f counts quickly.
+module xor_linker;
+{
+    input a, b;
+
+    input a, b;
+    input b1, b2;
+
+    input sum, watchdog;
+    output b, cout;
+    output carry_in, carry_out, carry_sum, b1_output;
+    output b2_output;
+    output carry_sum_out;
+    input watchdog_value;
+
+    half_adder2( sum, b1
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+(* decode(sum)
+assign cout = sum(16, 7);
+
+// signal : { 1, 2, 3 }   carry out : { 7, 1, 4 }
+
+parameter { 1, 2, 3 } test;
+
+(* extract_lsb(val)
+assign val(1) = (val(16) & 0x1);
+assign val(2) = ((val(16) & 0x2) >> 1);
+assign val(3) = ((val(16) & 0x4) >> 2);
+
+//signal : 1 2 3   carry out : 4 3 2 1
+
+parameter { 1,2,3 } a;
+parameter { 4,3,2,1 } b;
+
+assign {  4 - ((d7.eq(0)*2 + d6.eq(0)*3 + d5.eq(
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+#include "half_adder.ght"
+
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+function half_adder( a, b, cout, sum ){
+	// Euclidean Number System module contains 2º bit -> 1.Bit multiplication 
+	// whereas Turbo module employs multi-word multiplication which utilizes
+	//  bits per word multiplier.
+	if( get( a ) > get( b ) ){
+		set(b, (a << 1) + 1);
+		set( a, get( b ) - 1 );
+	}
+	else{
+		set( a, (b << 1) + 1);
+		set( b, get( a ) - 1 );
+	}
+	set( sum, get( a ) + get( b ) );
+	assert( get(sum) <= 9 );
+	assert( get(sum) >= 0 );
+	cout = get(sum);
+	// 8¹² + 7´ + 0 = (ABC + C
+================================================================
+example-5: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+
+// Register state that this module uses.
+module output(
+ready_out, cout, tmp );
+
+
+(*Msg("\n");)
+
+int sum = 0;
+for (int i = 0; i < 36; i++) {
+	for (int j = 0; j < 3; j++) {
+		cout << tmp << " ";
+		cout << hex << j << " ";
+	}
+	cout << " ";
+	cout << hex << i << " ";
+	cout << dec << " \n";
+	for (int j = 0; j < 3; j++) {
+		cout << "0x";
+		cout << hex << a.written[i] << " ";
+	}
+	cout << " ";
+	for (int j = 0; j < 3; j++) {
+		cout <<
+================================================================
+example-6: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+function halfadder();
+
+
+================================================================
+example-7: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+    if ( a == b ) {
+        cout = a;
+    } else {
+        sum = a | b;
+    }
+
+    if ( b >= 16 ) {
+        cout = ( ~a ) | b;
+    }
+    
+
+================================================================
+example-8: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+DEF_HALF_ADDER_BODY( half_adder_add, a, b );
+
+// Creates a 64 bit result of an add.
+inline
+result add( a:c_int64 bit0, b:c_int64 bit1, c_int64 bit2, c_int64 bit3 ):
+result = add_mod_32( add_mod_32( bit0, bit1 ), add_mod_32( bit2, bit3 ) );
+
+// Rule: result is no smaller than either a or b
+#define RULE_RESULT_SMALLER_THAN( bit0, bit1, bit2, bit3 ) \
+  ( bit_is_zero( %c_int64.range( 0, 32 ), bit0 ) || \
+    ( bit_is_zero( %c_int64.range( 32, 64 ), bit
+================================================================
+example-9: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+output r<8>();
+
+imm<2> ia = concat( a, b );
+r = select( ia [(bits(32)-1)] = 0, ia, ia | 1 < b);
+select( ia [(bits(32)-1) + 1] = 1,
+ia | concat( (a | ia), (b | ia) ),
+concat( ia | b, ia | concat( (a | ia) , (b | ia) ) ) );
+output carry;
+
+
+// This is an shift register.
+module shift_register( 
+input o;
+output o1, o2, o3, o4 );
+
+input ia < 8 > s1;
+input ia < 8 > s2;
+input ia < 8 > s3;
+input ia < 8 > s4;
+
+o
+================================================================
+example-10: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+(*output cout = (( a << 6 ) + ( b << 2 )) & 0x3F; *//* Each output bit was OR-ed by "a << 6" */
+ 
+bit [6] sum = 325 ^ ( a xor b ) | (( sum xor call 24)( & a, & b ));
+
+/* A full adder is just a half adder, plus the carry.. */
+    
+half_adder ( a + b, b, r1, r0 ); 
+(*output r7 = (sum + r1 ), *r8 = (sum + r0 ) xor 0x3F; print 18, *r64 |* r64 = (a xor r1 ) & 0x3F; *//* Variable active_r7 modifies being subtracted by carry, r2 */
+
+half_adder( a & b, ( sum << 2 ), r7, r
+================================================================
+example-11: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+  always @(posedge clk)
+  begin
+    if(clk)
+    begin
+      sum <- #sum{ nrange(15, 0) } + ((a[45+#sum{ nrange(15, 45+#sum{ 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 })}] & b[45+#sum{ nrange(15, 45+#sum{ 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 })}]) << 15} + 15;
+    end // "delays" the closing
+================================================================
+example-12: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+
+combine(
+carry_out( parent.sum[0].a (i/2, i%2), b[i/2], i/2 ),
+carry_out( c0, sum[0], i/2 ) ,
+carry_out( cout, sum[1], i/2 ),
+carry_out( c1, sum[1], i/2 ) );
+*/
+    
+    package myhadderexample;
+
+    import modint.*;
+    
+    class halfadder {
+    /*
+    require( modint::inint(8), "bld_inint: modint::8");
+
+    private R_0^ sum = { R_0 == 0, KeyOwner("bld"), R_0 == (R_0^)0, KeyOwner("add")};
+    private R_1^ cin = { KeyOwner("bld"), sum[
+================================================================
+example-13: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+begin();
+    sum <= a + b;
+    cout <= sum;
+end(); 
+
+
+
+================================================================
+example-14: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+
+require_hw_abstraction("half_adder");
+
+
+
+
+/* dleaf over-clocked clock timing */
+.ports    (
+ cin, cout, stb, sum, carry )            & input_port_req()
+          ("carry", 2),
+.need_dleaf_v1(true)
+.post_synchronize()
+.encode_params( arbiter<dleaf>() ) {
+ <> rec(cin, carry) : divider<>(),
+        ain   : a,
+        bout  : (carry b + carry b);
+}
+.synchronise_before_command()
+.assign(sum, dstin arg << (p._value, 8 + (carry.tff << 8), carry.tff));
+.flow( cout, sum, arbin, carry );
+dleaf dy;
+
+< daisy.input
+================================================================
+example-15: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+half_adder( 1, 1, cout, sum ) 
+end
+
+module half_adder_atomic(
+	inputs( a, b ),
+	outputs( cout, sum ),
+
+	half_adder,
+	carry - 2 | carry, 
+	carry-1 | carry,
+	carry,
+);
+"""
+                          )
+
+def append_wrap(lines):
+	if not lines:
+		return []
+	pre = lines[-1]
+	if inspect.iskeyword(pre):
+		return lines
+	last_line = pre.split('\n')[-1]
+	if '=' not in last_line:
+		return lines + ['wrap({})'.format(pre)]
+	values = last_line.split('=')
+	pre = "{} = {}{}".format(values[0], re.sub(r'([^)).
+================================================================
+example-16: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+VARIABLE clk, reset;
+
+( clk, reset ) in 0, 1;
+( cout, sum ) out 0; 
+
+always @(posedge clk, negedge reset)
+  if (reset)
+    sum <= 0;
+  else
+    sum <= a ^ b;
+
+
+================================================================
+example-17: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+#include "regimes/open_status_mask.h"
+
+always @(*) {
+    if (cout) sum <= a;
+    else           cout <= b;
+}
+
+module open_adder(
+    input a, b,
+    output cout, sum );
+
+#include "regimes/open_status_mask.h"
+
+always @(*) {
+    if (cout) sum <= a + b;
+}
+
+module closed_adder(
+    input a, b,
+    output cout, sum );
+
+#include "regimes/closed_status_mask.h"
+
+always @(*) {
+    if (cout) sum <= a + b;
+}
+`
+
+//expected output data for given input data
+const expected_output_data = map[string](string) {
+	//one wires into dualuction, change
+================================================================
+example-18: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+always @ (posedge clk) {
+  sum <= a + b + cout;
+}
+
+
+================================================================
+example-19: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+unsigned carry,
+cas;
+
+always @(posedge clk)
+  begin
+  cout <= modlog2( a[branch(clk)] + b[branch(clk)] + cas )[branch(clk)];
+  cas <= ({
+    cout;
+    a <= i_1 & b <= i_1 & i_1 <= sum;
+  });
+end
+
+
+================================================================

@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n\ndefault IP=> 6. 192-BYTES IP! \n\n,'  ************* Addresses ************** '\n,' Polym Lcm Delegate to: \n,' ------------------------------------- '\n;address ad0 = Read(\"A:0\");/^\\(  ad0 & host c(111) )->ad;/\n,'  ************* Instruction flow ************** '\n,' ------------------------------------- '\n;MCI_IH_R ? Instruction[ad0] handle Read(ad0,z0:host(111))>Host(z0);/^\\(  Instruction[z0] & (0x40 for all pop ...Host(z0)) )->z;/\n,' ------------------------------------- '\n[8:0] MCI_to_host_R <= host(V_ip) invert(load);'False;[8:0] z0_%_MCI_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\ntype advshift_ports struct {\n\tclk cst.Bits   // Clock\n\tena cst.Bits   // Enable\n\tload cst.Bits // Clock or Data counter\n\tamount cst.Bits // Amount\n\tdata  cst.Bits // Input and output data\n\tq    cst.Bits // Shifted data\n}\n\n\nfunc (p advshift_ports) clock()   { cst.DigitalWrite(p.clk, cst.LOW)   }\nfunc (p advshift_ports) load_hi() { cst.DigitalWrite(p.load, cst.HIGH) }\n\nfunc (p advshift_ports) shift(enum cst.Bit)       {\n\tvar rate = 1\n\tif enum.At(1) {\n\t\trate = 8\n\t}\n\tcst.DigitalWrite(p"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nreg [63:0] data = 8'd299798;\nreg q = 0;\nalways @(posedge clk or (load))\n        if (ena)\n        {\n            if (amount==0)\n            {\n                data = data(63:0);\n            }\n            else if (amount==1)\n            {\n                data = data(131:64);\n            }\n            else\n            {\n                data = data(131:0) | data(63:31) >> (amount-1);\n            }\n            q=q | data;\n        }\n\n"
+    }
+  ],
+  "created": 1663519417,
+  "id": "cmpl-j9bSo4tbZiZRDAJJOtjjCn32UNimt",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 537,
+    "prompt_tokens": 184,
+    "total_tokens": 721
+  }
+}

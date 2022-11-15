@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": " always @ (present_state, x) begin\n   case (present_state)\n     IDLE:\n       if (x==0 && x==0)                               next_state = S1; // start of start of start of start of start\n       else if (x==0 && x==1)                            next_state = S2; // start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start of start\n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or posedge reset)\nbegin : FSM_SEQ\n  if (reset) begin\n    state <= IDLE;\n    sm_state <= S0;\n    sm_count <= 0;\n    sm_count_running <= 0;\n    sm_count_running_q <= 0;\n    sm_count_running_q_q <= 0;\n    sm_count_running_q_q <= 0;\n    sm_count_running_q_q <= 0;\n    sm_count_running_q_q <= 0;\n    sm_count_running_q_q <= 0;\n    sm_count_running_q_q <= 0;\n    sm_count_running_q_q <= 0;\n   "
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign z = (present_state == S1 ||present_state == S10) && !present_state[0] && !present_state[1] && !present_state[2] && !present_state[3] && !present_state[4] && !present_state[5] && !present_state[6] );\n\n// output logic\nalways@(posedge clk)\nbegin\n  if (reset) begin\n    state <=  IDLE;\n    update_state <=  1'b0;\n    state <=  IDLE;\n    next_state <=  IDLE;\n    \n  end else begin\n    case(state)\n      IDLE: begin\n        if (x) begin\n          state <= "
+    }
+  ],
+  "created": 1663299198,
+  "id": "cmpl-YyGMgdLz8b2HkczW1rasUJBcj98U5",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 232,
+    "total_tokens": 832
+  }
+}

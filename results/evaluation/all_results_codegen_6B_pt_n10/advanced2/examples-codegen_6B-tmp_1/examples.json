@@ -1,0 +1,84 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always (clk = 1) slow [if(reset='1') q=0];\nalways (clk = 1 ea = 1) slow [if(slowena='1') q=15][if(q > 9 u = true) q=0];\n\nmodule count(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// On the positive edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\nalways (clk = 1) slow [if(reset='1') q=0];\nalways (clk = 1 ea = 1) slow [if(slowena='1') q=15][if(q>9 u=true) q=0];\nself.Q"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\n  if (or slowena or (not reset)==1) begin\n    q <= (mod b of (slowena));\n  end\n\nend\n\n\nmodule count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0] q);\n\n// On the positive edge of the clock:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high.\nalways @(posedge clk) begin\n\n  if (slowena or (not reset)==1) begin\n    if (slowena) q <= (mod b of (slowena));\n  end\n\nend\n\n\nmodule rf(\n    input clk,\n    input slowena,\n    input reset,\n    output reg [3:0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "  always @(posedge clk)\n  begin\n  \tif (reset)\n  \tq <= 0;\n  \telse if (slowena)\n  \t\tif (q < 9) {\n  \t\t  q <= q + 1;\n  \t\t}\n  end\n\n// Always-driven pin instantiations for the LEDs:\n// indices under 'slowena' are high, others low.\n\t// a = 1, b = 2, c = 3, d = 4, e = 5, f = 6, g = 7, h = 9\n\tassign slowena = { b, c, d, e, f, g, h };\n\t\n\t// h is the header signal enumeration, so this indicates which signal is \n\t// changing when the header changes. the signals are called a, b, c, d, e \n\t// respectively.\n\tatom header = {"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (slowena && reset)\n  {\n  \n    reg [2]:0 <= 1'b1;\n  }\n  else if (slowena && !(reset || clk))\n  {\n  \n    reg [2]:0 <= reg [1];\n  }\n  else if (!slowena && clk)\n  {\n  \n    reg [2]:0 <= 9'b0;\n  }\n\t\n\t\n\n// On the negative edge of the clock:\n// if slowena is high, forward q elide 14 bits.\n// Return non-elide through a currently behind cleared register q.\n\n\nalways @(negedge clk)\n\nif (slowena && !(reset || clk))\n{\n\tif (!slowena)\n\t{\n    reg [2]:0 <= 14'h1111'"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n        q <= 0;\n    end\n    else begin\n        if (ena && q != 9) begin\n            q <= q + 1;\n        end\n    end\nend\n\nmodule count_fast(\n    input clk,\n    input slowena,\n    input reset,\n    input q,\n    output reg [3:0] q_prev);\n    \nalways @(posedge clk) begin\n    if (reset) begin\n        q_prev <= 0;\n    end\n    else begin\n        if (ena && q_prev != 9) begin\n            q_prev <= q;\n        end\n    end\nend\n\nstruct decade_counter_tb signature {\n    input clk;\n    // if slowena == 1, use fast decrement\n    input slowena;\n    //"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always(clk + slowena + reset)\n  begin\n    if (reset == 1'b1) q <= 0;\n    else if ({\n            countcycle(clk, slowena);\n          })\n    begin\n      q <= q + 1;\n    end\n  end\n;\n\n//resets count and countflag\nmod clk2(\n    output clk,\n    input clkslowena,\n    output clkdelayen,\n    output slowena_tx, \n    input slowena_reset, \n    input slowena_reseten,\n    input slowena_ackstb,\n    input slowena_ack,\n    output act_slowena)\n;\n\nalways(clkslowena.posedge) begin\n        if({\n            slowena_reseten == 1'b0 and slowena_ackstb == 1'b0 and"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "reg [3:0] q;\nalways inline\nbegin\n  if (reset or stall)\n    q <= 0;\n  else if (slowena and q != 9 and ena)\n    q <= q + 1;\n  end else noop;\nend;\n\n// On the negative edge of the clock:\n// if slowena is high, reset the counter to 0, because the IF requested an encode.\n// otherwise, if the counter is busy and ena is high, reset the counter to 0,\n// because the IF requested an encode.\nalways inline bool\nadvance_clk(\n    always input clk,\n    always input slowena,\n    always input reset,\n    always output ierr);\nbegin\n  if (slowena) ppc4xx_set_status(ppc4xx_exception_num_errs, false);\n  else if (pp"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "action slow_on_positive;\nalways @(posedge clk)\n    if(reset) q <= 0;\n    else if (slowena)\n        if(q <= 9) q <= q + 1;\n\n// On the negative edge of the clock:\n// if slowena is high, pause for a while, and then reset the output q to 0.\n// Otherwise, only decrement the output q if the ena input is low and q is not 0.\naction slow_on_negative;\nalways @(negedge clk)\n    if(slowena)\n        q <= (1 + sqrt(1 + ((4294967296+1000*9)/slowena))) - 1;\n    else\n        if(q > 0) q <= q - 1;\n\n// Compute the counter value wherever the slowena and reset inputs are high. \nalways @(posedge slow"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always(clk)\n    begin\n        if (slowena'input) begin\n            if (reset) begin\n                q <= 0;\n            else if (q < 9) begin\n                q <= q + ((slowena and not (q = 9)) ? 1 : 0);\n            end \n            else begin\n                q <= q + 1;\n            end   \n        end\n    end "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "//\nalways @(posedge clk_fast)\ncount_slow <=\n    (reg == 0) ? 0 :\n    (!reset || (slowena && q == 9)) ? q + 1 :\n    q;\n\n// Misc support code\nmodule c19();\n\nalways @(posedge clk_fast) begin\n    // Outputs to be signed 32-bits. Signed multiplied by signed 32-bit constant.\n    reg <= 32 - phas_fast(slowena) * q - 1;\nend\n\n"
+    }
+  ],
+  "created": 1663519812,
+  "id": "cmpl-2uMWdV0hgnTGyKVfSuAZM5SgcgDSF",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1810,
+    "prompt_tokens": 98,
+    "total_tokens": 1908
+  }
+}

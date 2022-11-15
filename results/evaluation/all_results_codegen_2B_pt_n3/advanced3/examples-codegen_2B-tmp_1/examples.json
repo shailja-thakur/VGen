@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// Reactive Circuit Implementation: \n//  Inputs: Clock, Reset, Input, Output\n//  Output: 0 or 1\n\nalways @(posedge clk, negedge rst ) \nbegin\n  if (reset == 1)\n    z = 1;\n  else\n    z = 0;\n    \n  #ifdef REG1_SPI \n  if (x == 1)\n    present_state = S11; \n  else\n    present_state = IDLE;\n  #else\n    present_state = present_state + 1; \n  #endif // REG1_SPI\n  \n  next_state = present_state;\n\nend\nmarch dofile Source/reg-march.txt\n#ifdef REG2_SPI\n\tREG1     REG3\nS1       simd8, rvdd\nS10       "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "   always @(posedge clk)\n   begin\n     if (reset == '1')\n       assign present_state = IDLE\n       next_state <= IDLE;\n     else\n       if (reset == '0')\n         assign present_state = IDLE\n         assign z = 1    ;\n       else\n        if (x == 1)\n        {\n           if (present_state == IDLE)\n             assign present_state = S1\n           else \n             assign next_state = IDLE\n        }\n        else\n        {\n           if (present_state == IDLE)\n             assign present_state = S10\n           else\n             assign next_state = IDLE\n        }\n       if (present_state == S1 && next_state == IDLE)\n         assign z = 1\n       elif (present_state =="
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n    always @(posedge clk)\n    {\n        if (reset)\n        {\n            if (rst_clk_c.get())\n            {\n                next_state = IDLE;\n            }\n            else\n            {\n                if (x == 1)\n                {\n                    next_state = S101;\n                }\n                else if (x == 0)\n                {\n                    next_state = IDLE;\n                }\n                else\n                {\n                    next_state = IDLE;\n                }\n            }\n\n        }\n        else if (x == 0)\n        {\n            if (clk==1)\n            {               \n                present_state = IDLE;\n            }               \n            else\n            {\n                // present state is IDLE if x is at 1, otherwise it stays as it is  \n                next_state = ("
+    }
+  ],
+  "created": 1663536910,
+  "id": "cmpl-EQCUKU9fC89V3WK16f32ZsswAKpkv",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 232,
+    "total_tokens": 832
+  }
+}

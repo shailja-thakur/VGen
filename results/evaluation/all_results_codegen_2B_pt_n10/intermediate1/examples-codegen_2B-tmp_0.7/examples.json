@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// half_adder is a half-adder with a carry-out and a final carry-out.\n// The state of the half-adder is (x,y,z,carry) where x is the input a,\n// y is the input b, z is the output sum, and carry is the carry-out.\n// The carry-out is a boolean that indicates whether error occurred.\n// The half-adder adds two bits and produces a sum and carry-out.\n// The carry-out is one-based, which is to say, a value of 1 is the carry.\n// The sum of a and b is 2*a + b.\n// The carry-out is the carry-out of the sum, 1 or 0.\n// The carry-out is set to 1 if the sum is 1, 0 otherwise. The result is 0x80.\nmodule half_adder_adder( \ninput a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n// prepare inputs\nreg a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18;\n\n// on inputs\nreg carry_out;\n\n// on outputs\nreg sum;\n\n// Local variables\nreg T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18;\n\nassign a1 = a >> 1;\nassign a2 = a1 & 0x1;\nassign carry_out = a1 >> 1; // carry-out\nassign a3 = a2 & 0x1;\nassign a4"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": " \n\n// 4-bit registers\nregister unsigned reg_a, reg_b, reg_c, reg_d;\n\n// inputs\n\n// outputs\n\n// state\n\n// inputs\n\n// outputs\n\n// 4-bit registers\n// state \n\n// inputs\n\n// outputs\n\n// 4-bit registers\n\n// state \n\n// inputs\n\n// outputs\n\n// 4-bit registers\n\n// state \n\n// inputs\n\n// outputs\n\n// 4-bit registers\n\n// state \n\n// inputs\n\n// outputs\n\n// 4-bit registers\n\n// state \n\n// inputs\n\n// outputs\n\n// 4-bit registers\n\n// state \n\n// inputs\n\n// outputs\n\n// 4-bit registers\n\n// state \n\n// inputs\n\n// outputs\n\n// 4-bit registers\n\n// state \n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\n// The half adder has a carry-out.\nmodule half_adder_carry_out( \noutput cout, sum ); // The carry-out is the last value in the output.\n\n// The half adder adds two bits and produces a sum and carry-out.\nmodule half_adder_saturating( \ninput a, b,\noutput cout, sum );\n\n// This is a fixed-point adder.\nmodule fixed_point_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a fixed-point adder.\nmodule fixed_point_adder_carry_out( \noutput cout, sum ); // The carry-out is the last value in the output.\n\n// This is a fixed-point adder.\nmodule fixed_point_adder_saturating( \ninput a, b,\noutput cout, sum );\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\ninput clk;\ninput carry;\n\ninput sum;\n\nconst int SIZE = 5;\nconst int BITS_PER_WORD = 32;\n\n//******************************************************************************\n// This is the half-adder, with a carry-out.\nvoid half_adder_with_carry(\ninput a, \ninput b, \noutput cout, \noutput sum, \ninput clk, \ninput carry) {\n  // Check for carry-out\n  if (carry == 0) {\n    sum = a ^ b;\n  } else {\n    sum = a ^ b ^ carry;\n  }\n  cout = clk;\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\n#include \"term.h\"\n\n#include \"../term.h\"\n#include \"../term_adder.h\"\n#include \"../sum_carry_o.h\"\n\n#include \"../loop.h\"\n#include \"../loop_adder.h\"\n#include \"../loop_loop_adder.h\"\n#include \"../loop_sum_carry_o.h\"\n\n#include \"print.h\"\n\nint main() {\n\n  printf( \"The tests run with:\\n\" );\n  print( \"\\t\" ); print( library_print_flags() );\n\n  printf( \"The half_adder test:\\n\" );\n  const int NUMBER_OF_INPUTS = 3;\n  term< half_adder<> > aa[NUMBER_OF_INPUTS];\n  sum_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\ninput bit_a,\ninput bit_b;\n\ninput carry_in,\ninput sum_in;\n\n/*\n    This is a 3-bit adder that adds three bits.\n    This is a multiply-accumulate with carry-in and sum-out.\n    The adder has three inputs:\n    a, b and carry_in.\n    a is the current input.\n    b is the carry_in.\n    carry_in is the carry_out.\n    sum_out is the sum_out.\n    The adder has three outputs:\n    cout is the sum_out when it is positive.\n    sum_out is the sum_out when it is negative.\n*/\nmodule three_adder( \ninput a, b,\noutput cout, sum, carry_in, sum_out );\n\ninput bit_a,\ninput bit_b"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\nbegin\n  sum = 0;\n  if (a > 0) cout = 1;\n  if (a > b) cout = 1;\n  sum = a + b;\n  cout = sum + (sum >> 1);\nend\n\n-------------------------------------------------------------------------------------\n*/\n\n#include <iostream>\n#include <cstdlib>\n#include \"adder.h\"\n\nusing namespace std;\n\nAdder::Adder( )\n{\n\t// Initialize the output, the sum, and the carry-out.\n\tsum = 0;\n\tcarry_out = 0;\n\toutput = 0;\n}\n\nvoid Adder::init_adder( \n\tunsigned int a, \n\tunsigned int b, \n\tunsigned int& sum, \n\tunsigned int& output, \n\tunsigned int& carry_out )\n{\n\t// Initialize"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\nvoid half_adder::execute( \n){\n  // Add two bits together.\n  sum.add( a, b );\n\n  // Compute the carry-out.\n  cout.set( sum.get_carry() );\n\n  // Clear the carry bit.\n  sum.clear_carry();\n}\n\n// =============================================================================\n// DYNAMICALLY GENERATED MODULE IMPLEMENTATION:\n// =============================================================================\n\nvoid half_adder::execute()\n{\n  // Add two bits together.\n  sum.add( a, b );\n\n  // Compute the carry-out.\n  cout.set( sum.get_carry() );\n\n  // Clear the carry bit.\n  sum.clear_carry();\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\nvoid\nmain()\n{\n  sum = 0;\n\n  cout = a & b;\n  sum += a | b;\n  sum += a ^ b;\n\n  while ( sum < 0xFFFF )\n  {\n    sum += a;\n    sum += b;\n  }\n\n  while ( sum < 0x10000 )\n  {\n    sum += a;\n    sum += b;\n    sum += a ^ b;\n  }\n\n  while ( sum < 0x1000000 )\n  {\n    sum += a;\n    sum += b;\n    sum += a ^ b;\n    sum += a ^ b;\n  }\n\n  while ( sum < 0x100000000 )\n  {\n    sum += a;\n    sum += b;\n    sum += a ^ b;\n    sum += a ^ b;\n    sum += a ^ b;\n  "
+    }
+  ],
+  "created": 1663540243,
+  "id": "cmpl-7upI0UOg6SyAXf90PcIJtqidr0JCi",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1925,
+    "prompt_tokens": 43,
+    "total_tokens": 1968
+  }
+}

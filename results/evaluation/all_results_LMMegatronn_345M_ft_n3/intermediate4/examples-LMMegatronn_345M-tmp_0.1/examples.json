@@ -1,0 +1,42 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// Set to 2 in state 1, and then state 0 in state 0.\nalways@(posedge clk)\nbegin\n  if(reset)\n    present_state <= 0;\n  else\n    present_state <= next_state;\nend\n\nassign out = present_state == 0 ||\n                                                                                                                               "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// Set to 2 in state 1, if in=1, then go to state 1.\nreg [1:0] next_state;\n// 0 in 10 in=0, else, go to state 0\n// 1 in=0, else, go to state 1\n// 2 in=1, then go to state 0\n// 3 in=0, else, go to state 1\n// 4 in=1, then go to state 0\n// 5 in=0, else, go to state 1\n// 6 in=1, then go to state 0\n// 7 in=0, else, go to state 1\n// 8 in=1, then go to state 0\n// 9 in=0, else, go to state 1\n// 10 in=1, then go to state 0\n// 11 in=0, else, go to state 1\n// 12 in=1, then go to state 0\n// 13 in="
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// Set to 2 in state 1, then state 0 in state 0.\nalways @(posedge clk)\nbegin\n  if (reset == 1'b1)\n  begin\n    state <= 1'b0;\n    next_state <= 1'b0;\n  end\n  else\n  begin\n    state <= next_state;\n    if (in == 1'b1)\n      next_state <= 1'b0;\n    else if (state == 1'b0)\n      next_state <= 1'b1;\n    else if (state == 1'b1)\n      next_state <= 1'b0;\n  end\nend\n\nassign out = (present_state == 1'b1) ? 1'b1 : 1'b0"
+    }
+  ],
+  "created": 1663299206,
+  "id": "cmpl-Pm63NZQJxZXTtI02HjUMW4N1eo2ty",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 148,
+    "total_tokens": 748
+  }
+}

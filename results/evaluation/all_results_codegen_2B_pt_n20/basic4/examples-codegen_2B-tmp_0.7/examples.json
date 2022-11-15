@@ -1,0 +1,139 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": " \n\n// Design a 2-to-1 demultiplexer.\nmodule demux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n\n// Design a 2-to-2 multiplexer.\nmodule mux2( \ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n// When sel=2, assign c to out. \n// When sel=3, assign d to out. \n\n// Design a 2-to-2 demultiplexer.\nmodule"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign out[4:0] = (a | b);\n\nmodule mult( \ninput [3:0] a, b,\ninput sel,\noutput [3:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\nassign out[3:0] = (a & b);\n\nmodule div( \ninput [3:0] a, b,\ninput sel,\noutput [3:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\nassign out[3:0] = (a / b);\n\nmodule add( \ninput [3:0] a, b,\ninput sel,\noutput [3:0] out );\n// When sel=0,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign the result of a xor b to out.\n\n// Design a directly mux.\nmodule dmux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out.\n// When sel=1, assign b to out.\n// When sel=2, assign the result of a xor b to out.\n\n// Design a 4-to-1 multiplexer.\nmodule mux4(\ninput [4:0] a[4:0], b[4:0],\ninput sel[4:0],\noutput [4:0] out );\n// When sel=0, assign a to out[0].\n// When sel=1, assign b to out[1].\n// When sel=2,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign in to out. \n// When sel=3, assign out to out.\nsignal [4:0] mux_in, mux_out;\nsignal [4:0] mux_sel;\nsignal [4:0] mux_val;\n// The Mux block has two \"inputs\".\n// The first \"input\" is a 2-to-1 multiplexer.\n// The second \"input\" is a 4-to-1 multiplexer.\n// The output is a 4-to-1 multiplexer.\nshared memory [4:0] tx_in_0, tx_in_1, tx_out;\n// The multiplexer in the \"input\" port is a 3-to-1 multiplexer.\n// The input port is a 2-to-1 multiplexer.\n// The"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n// Design a sequence of rotations. \nmodule seq( \ninput [5:0] a, \ninput [6:0] b, \noutput [5:0] c );\n\nparameter int N=6;\n\n// Rotate a by increments of N.\nmodule rotate( \ninput [5:0] a, \ninput [5:0] b, \noutput [5:0] c,\ninput [N:0] idx );\n\n// If idx = 0, output becomes b.\n// If idx = 1, output becomes a.\n// If idx = 2, output becomes c.\n\nmodule invert( \ninput [5:0] a, \noutput [5:0] b,\ninput [5:0] c );\n\nmodule\nalways @*\nbegin\n  // Generate a random number.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk) begin\n  if (a==0) out[0] = b;\n  else if (a==1)\n    out[0] = b;\n  else if (a==2)\n    out[1] = b;\n  else if (a==3)\n    out[2] = b;\n  else if (a==4)\n    out[3] = b;\n  else if (a==5)\n    out[4] = b;\n  else if (a==6)\n    out[5] = b;\n  else if (a==7)\n    out[6] = b;\n  else if (a==8)\n    out[7] = b;\n  else if (a==9)\n    out[8] = b;\n  else if (a==10)\n    out"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a and b to out. \n\n// Design a 4-to-1 multiplexer.\nmodule mux4(\ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n// When sel=2, assign c to out. \n// When sel=3, assign d to out. \n\n// Design a 2-to-2 multiplexer.\nmodule mux2(\ninput a, b,\ninput sel1, sel2,\noutput [2:0] out1, out2 );\n// When sel1=0, assign a to out1. \n// When sel1=1, assign b to out"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk)\nbegin\n  if (sel)\n    out <= b;\n  else\n    out <= a;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a and b to out.\n\nalways @( posedge clk )\n  if ( sel == 0 )\n    out[3] = a;\n  else if ( sel == 1 )\n    out[3] = b;\n  else\n    out[3] = a, out[2] = b;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a to out.\n// When sel=3, assign b to out.\n\nalways @* begin\n    if (sel == 1)\n        b <= a;\n    if (sel == 2)\n        a <= b;\n    if (sel == 3)\n        a <= b;\nend\n\n// Generate a random number between 1 and 3.\nalways @* begin\n//    a <= random(4 downto 0);\n    a <= random(1:0) + 1;\nend\n\n// This block is the core of the design. It's called from the main.\n\n// Destructive Sin Wave Generator.\n\nmodule ds( \n        input [4:0] a, \n        output [4:0] b, \n        output [4:0] c, \n        selection [1:0] sel"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// When a=0, assign 1 to out. \n// When a=1, assign b to out. \n// When b=0, assign 1 to out. \n// When b=1, assign a to out.\n// ---|>\n// design of a multiplexer based on the FPGA at \n// https://github.com/USI-MULT/fpga_design_patterns\n\n`\n\n// Test of a multiplexer.\nvar mux = NewMux()\n\n// This is a sequentially operating channel.\nvar c1 = NewChannel(make([]byte, 4), make([]byte, 4))\nvar c2 = NewChannel(make([]byte, 4), make([]byte, 4))\n\n// Set the input values.\nmux.SetInputs<4, 4>([]byte{0x01, 0x02"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a and b to out.\n\n// Finally, output a and b.\n\nreg [4:0] a_out;\nreg [4:0] b_out;\nassign a_out = a[sel];\nassign b_out = b[sel];\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n//When a=b=0, do nothing.\n\nwire [4:0] c;\nwire [4:0] out;\n\nassign out = a[sel];\n\nalways @(posedge clk)\nbegin\n  if (a[0] == 0)\n  {\n    if (sel == 0\n        && a[2] == 0)\n    {\n      out = b[2];\n      c = b[2];\n    }\n    else if (sel == 1\n        && a[2] == 0)\n    {\n      out = b[2];\n    }\n  }\n  else if (a[0] == 0)\n  {\n    if (sel == 0\n        && a[2] == 0)\n    {\n      out = b[0];\n      c = b[0];\n    }\n    else if ("
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": " \n\nmodule counter (\ninput [3:0] cnt);\n// Counter is either 0 or 1.\n// When counter=0, count up by 1.\n// When counter=1, count down by 1.\n// This module is also a multiplexer. \n// When counter=0, assign 1 to out.\n// When counter=1, assign 0 to out.\n\n// Counter module\nmodule counter_mux (\ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// Counter is either 0 or 1.\n// When counter=0, assign a to out.\n// When counter=1, assign b to out.\n// This module is also a multiplexer. \n// When counter=0, assign 1 to out.\n// When counter=1, assign 0 to out.\n\n// The design is to use the"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nwire [4:0] out;\n\n// Setup of the FSM.\n// When a=0, assign b to out.\nassign\nwhen a=0\n    out[3:0] = b\nend\n\n// When a=1, assign a to out.\nassign\nwhen a=1\n    out[3:0] = a\nend\n\n// The FSM starts in state 0.\ninitial begin\n  a = 0;\n  b = 0;\n  out = 0;\nend\n\n// The FSM executes in FSM state.\nstate state\n{\n  case 0\n    when (sel) = 1\n      a = b;\n    when (sel) = 0\n      b = a;\n  end\n}\n`\n\nconst muxMultiplexerMultipleState = `// Design a 2-to-1 multiplexer.\nmodule m"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a or b to out.\n\n// Design a 2-to-1 multiplexer.\nmodule mux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n// When sel=2, assign a or b to out.\n\n// Design a 2-to-1 multiplexer.\nmodule mux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n// When sel=2, assign a or b to out.\n\n// Design a 2-to-1 multiple"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign either a or b to out.\n\nwire w1, w2, w3;\n\nmux mux2;\nmux mux3;\nmux mux4;\n\nmux2 a_mux2;\nmux2 b_mux2;\nmux3 a_mux3;\nmux3 b_mux3;\nmux4 a_mux4;\nmux4 b_mux4;\n\nalways @( posedge clk )\n{\n  if ( sel )\n  {\n     a_mux2 = mux2( a, w1, w2 );\n     b_mux2 = mux2( b, w2, w1 );\n     a_mux3 = mux3( a, w3, w1 );\n     b_mux3"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n\nwire [4:0] q;\n\nmux mux_0;\nmux mux_1;\n\nalways @( posedge clk )\n{\n  if (sel)\n    q=0;\n  else\n    q=1;\n}\n\n// Multiplexer\n\nmux_0 mux_0_0;\nmux_0 mux_0_1;\n\nmux_1 mux_1_0;\nmux_1 mux_1_1;\n\n// The inputs to the multiplexers must be inputs.\nmux_0 mux_0_0_0;\nmux_0 mux_0_0_1;\n\nmux_0 mux_0_1_0;\nmux_0 mux_0_1_1;\n\nmux_1 mux_1_"
+    }
+  ],
+  "created": 1663537886,
+  "id": "cmpl-hs8ti0jTF3HtSTbIdu2Y1XCMIbUgG",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3204,
+    "prompt_tokens": 70,
+    "total_tokens": 3274
+  }
+}

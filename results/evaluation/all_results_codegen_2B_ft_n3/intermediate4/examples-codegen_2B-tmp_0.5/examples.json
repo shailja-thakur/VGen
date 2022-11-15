@@ -1,0 +1,42 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\nif(reset)\npresent_state <= 0;\nelse\npresent_state <= next_state;\nend\nalways @(present_state, in)\nbegin\ncase(present_state)\n0 : next_state <= in ? 0 : 1;\n1 : next_state <= in ? 0 : 0;\ndefault : next_state <= 0;\nendcase\nend\nassign out = (present_state == 1);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nif (reset)\npresent_state <= 0;\nelse\npresent_state <= next_state;\n// Next state\nalways @(present_state or in)\ncase (present_state)\n0: begin\n\tif (in == 1) next_state <= 1;\n\telse next_state <= 0;\n\tend\n1: begin\n\tif (in == 0) next_state <= 0;\n\telse next_state <= 1;\n\tend\ndefault: next_state <= 0;\nendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset)\npresent_state <= 0;\nelse\npresent_state <= next_state;\nend\nalways @(present_state or in)\nbegin\nnext_state = present_state;\ncase(present_state)\n0: begin\n\tif (in)\n\tbegin\n\tnext_state = 1;\n\tend\n\tend\n1: begin\n\tif (in)\n\tbegin\n\tnext_state = 0;\n\tend\n\tend\nendcase\nend\n"
+    }
+  ],
+  "created": 1663304496,
+  "id": "cmpl-PtbjiUxcrxb5J8h8FNbrAew9TjjDs",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 373,
+    "prompt_tokens": 148,
+    "total_tokens": 521
+  }
+}

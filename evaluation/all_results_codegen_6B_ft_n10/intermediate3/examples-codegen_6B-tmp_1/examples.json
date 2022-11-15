@@ -1,0 +1,87 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge reset)\nif (reset == 1'b0)\n\tbegin \n\tr_reg <= 5'b0;\n\tend\nelse \n\tbegin\n\tr_reg <= r_next;\n\tend\n// next most significant bit of r_reg to r_next\n\nxor(feedback_value,r_reg[2],r_reg[4]);\nxor(r_next[4],r_reg[3],feedback_value);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @* begin \n\tcase({reset,q[4],q[0]})\n\t//case(state)\n\t{1'b0,10'd0}: r_next = 5'b00000;\n\t{1'b0,10'd1}: r_next = 5'b00000;\n\t{1'b0,10'd2}: r_next = 5'b00000;\n\t{1'b0,10'd3}: r_next = 5'b00000;\n\t{1'b0,10'd4}: r_next = 5'b00000;\n\t{1'b0,10'd5}: r_next = 5'b00000;\n\t{1'b0,10'd6}: r_next = 5'b00000;\n\t{1'b0,10'd7}: r_next = 5'b00000;\n\t{1'"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or reset)\nif (reset)\nbegin \n\tif ( !q[0] )\n\tbegin \n \nmodule two_bit_comparator(A,B,A_grt_B,A_lt_B,A_eq_B); \ninput [1:0] A,B; \noutput A_grt_B,A_lt_B,A_eq_B; \n\nassign A_grt_B=(A[1]&~B[1])|((A[1]~^B[1]) & ((A[0]&~B[0]) | (~A[0]&B[0]))); \nassign A_lt_B=(A[1]&~B[1])|((A[1]~^B[1]) & (A[0]&"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign q = r_reg; \nassign r_next = {feedback_value, r_reg[2], r_reg[3],r_reg[4]};\nassign feedback_value = r_reg[4] ^ r_reg[2]; \nalways @ (posedge clk or negedge reset)\nbegin \n\tif( ~reset )\n\tbegin \n \t r_reg <= 5'b000001; \t\n \tend \n\telse\n\tbegin \n \t r_reg <= r_next; \t\n \tend \n \tend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @( posedge clk or posedge reset ) \nbegin\nif ( reset )\nr_reg <= 1;\nelse\nr_reg <= r_next;\nend\nassign q = {r_reg[0], r_reg[4:1]};\nassign r_next = {feedback_value, (r_reg[2:0] ^ r_reg[4:3]),1'b0};\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @*\nbegin\nif (reset)\nbegin\n r_reg = 5'b0;\nend\nelse\nbegin\nr_reg = r_next;\nend\nend\nassign q = r_reg;\n//a flag to check the last elementwise xor of r_reg is satisfied\nassign feedback_value = (r_reg[2] ^ r_reg[4]); \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin \nif(reset)\nr_reg <= 5'b10000;\nelse\nr_reg <= r_next;\nend \nassign r_next = {r_reg[3:2], xor_bitwise};\nassign q = {r_reg[3:0],7'h000};\nassign feedback = {r_reg[0],q[4]};\nalways @(posedge clk)\nif(feedback_value)\nq[0] <=~ q[0];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset) begin\n if(reset)\n r_reg <= 5'b0_0000;\n else \n r_reg <= r_next;\nend \n// 3 gates to implement the nextstate logic\n// a XNOR\n// a XOR\n// a AND \nassign r_next = {r_reg[3],r_reg[2],r_reg[1],feedback_value,r_reg[0]};\nassign q = r_reg; \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "// and q to Q_next\nvalue_flip_flop value_taps45 (\n\t.clk\t( clk\t),\n\t.reset\t( reset\t),\n\t.set\t( 1'b0\t),\n\t.feedback( feedback_value )\n);\nalways @ (posedge clk or posedge reset)\nbegin\nif (reset)\n\tr_reg <= 5'b00000;\nelse\n\tr_reg <= r_next;\nend\n\ngenvar i; \ngenerate for (i=5; i>3; i=i-1) \n\tbegin: tap_loop\n\tmanula(r_reg[i-3]^r_reg[i-2]^r_reg[i-4]^feedback_value,r_next[i-1]);\n\tend\n\t// crc_poly ="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "assign r_next = {r_reg[3], r_reg[4], feedback_value};\nassign q = {r_reg[3:0],r_reg[4]};\n\nalways @ (posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tr_reg <= 5'b0;\n\t//else\n\telse\n\tr_reg <= r_next;\n\tend\n"
+    }
+  ],
+  "created": 1663600345,
+  "id": "cmpl-CplQiKtJPy8qSGvhgSj8jAHo140SK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1412,
+    "prompt_tokens": 155,
+    "total_tokens": 1567
+  }
+}

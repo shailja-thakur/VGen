@@ -1,0 +1,112 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (load)\n    out = data;\n  else\n    out = left_rotate(out, amount) << amount;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  out <= load ? load_out :\n\t   (left_rotate(load_out,data,amount,out,out) << amount & out);\n// end of left_rotate\n\n// forward left shift\nmodule forward_left_shift(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\nalways @(posedge clk or negedge reset)\n  out <= load ? load_out :\n\t   (out << amount & out);\n// end of forward_left_shift\n\n// reverse left shift\nmodule reverse_left_shift(clk,reset,amount,data,load,out);\ninput clk,reset;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge load)\n  out <= (load == 1)? (data << amount) : (out >> amount) & data;\n\n// MOSI to DOUT\n// load HIGH to DOUT when load is high\nalways @(posedge clk or negedge load)\n  DOUT <= load;\n\n// RESET\nalways @(posedge reset or negedge clk)\n  state <= 'H';\n\n`;\nconst index_module = `\nmodule index(clk,reset,load,out);\n  input clk,reset;\n  input load;\n  output reg [7:0] out;\n\n  always @(posedge clk or negedge load)\n    out <= load;\n\n  always @(posedge clk or negedge load)\n    state <= 'H';\n\n  always @(posed"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  out <= load ? data.range(7,0) : (out << amount) | (out >> (64-amount));\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// clock is active low\nalways @(posedge clk or negedge load)\n  if (load) {\n    out = data;\n  } else {\n    out = reg_shift_left(out, amount, out);\n  }\nend\n\n// left shift and rotate operation\nmodule shift_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by left shift the out register by amount bits\n// clock is active low\nalways @(posedge clk or negedge load)\n  if (load) {\n    out = data;\n  } else {\n    out = reg_shift_left"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n        if (load)\n                out <= data;\n        else\n                out <= (left_rotate(data,2*bit(amount)-1,out));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n\tif (load) begin\n\t\tout <= data;\n\tend\n\telse begin\n\t\tout <= out << amount;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n    if(load)\n        out <= data;\n    else\n        out <= (out << amount) | ((~out >> (32-amount)) & out);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always(clk.posedge)\n        out <= (load ? data : rotate_left(out,amount));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (load)\n    out = data;\n  else\n    out = ((reg << amount) | (reg >> (8 - amount))) & 0x7f;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (load)\n    out <= data;\n  else\n    out <<= (unsigned)amount;\nend\n\n// testbench for the left_rotate module\n// NOTE: NOTE: input data is the same for all tests\n\n#define ASSERT(a) if (!(a)) { printf (\"assert failed = %d\\n\",__LINE__); }\n// assert test: assert that each bit of data is always shifted to the right\n//            and then shifted back to the left.\n//            this means that each bit of the output\n//            can be shifted to the right to get the\n//            original data, and shifted to the left\n//            to get the original data shifted\n//            left by 1 bit.\n//            NOTE: this is a static function to be used\n//            in the testbench\n//            NOTE: input data is the same"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  out <= left_rotate_load(load,data,amount);\n\nalways @(posedge clk)\n  if (load)\n    out <= left_rotate_out(out,amount,data);\n\n// left shift and rotate operation\nalways @(posedge clk)\n  out <= left_rotate_store(data,load,amount);\nsignal out_latch;\n\nalways @(posedge clk)\n  out_latch <= out;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(*)\n\tout <= (load ? data : left_rotate(out << amount, reset, amount, out));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  out <= load ? load <= data & load : out <= data << int(amount[0]) | amount[1] <= out << int(amount[1]) | amount[0] <= out >> int(amount[0]);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (load)\n    out = data;\n  else\n    out <<= amount[0];\n  if (amount[1]) out <<= 8;\n  if (amount[2]) out <<= 16;\n  if (amount[3]) out <<= 24;\n  if (amount[4]) out <<= 32;\n  if (amount[5]) out <<= 40;\n  if (amount[6]) out <<= 48;\n  if (amount[7]) out <<= 56;\nend\n\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when"
+    }
+  ],
+  "created": 1663520333,
+  "id": "cmpl-DVEFOHCUK6Cooq6sjN7cA746ouei9",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1553,
+    "prompt_tokens": 94,
+    "total_tokens": 1647
+  }
+}

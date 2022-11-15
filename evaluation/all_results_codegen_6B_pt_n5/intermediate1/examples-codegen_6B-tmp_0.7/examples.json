@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\ndef main():\n    a = 1;\n    b = '1';\n    \n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout, sum );\n    half_adder( a, b, cout,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\noutput_wire cout;\ninput_wire a, b;\n\nassign cout = sum;\nassign sum = a + b;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n// Inputs: a = A, b = B, cout = Carry-out\nvar half_adder_output_carry_out = 0;\nvar half_adder_sum = 0;\nvar half_adder_carry_in = 0;\n\nfunction half_adder_carry_out_1() {\n  half_adder_carry_out = (half_adder_carry_out + 1) & 1;\n  half_adder_sum = half_adder_sum + half_adder_input_carry_out;\n}\n\nfunction half_adder_carry_out_0() {\n  half_adder_carry_out = half_adder_carry_out + half_adder_input_carry_out;\n  half_adder_sum = half_adder_sum + half_adder_input_carry_out;\n}\n\n// Output: Carry-out\nvar half_adder"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nwire sum;\n\nalways @(posedge clk)\nbegin\n  sum <= a & b;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n// See half_adder_as_single.\nhalf_adder( \ninput c, d,\noutput cd, ad );\n\n// This is a single bit adder.\nmodule single_bit_adder( \ninput a,\noutput cout, sum );\n\n// See single_bit_adder_as_half.\nsingle_bit_adder( \ninput a,\noutput b );\n\n// This is a summation and carry-out gate.\nmodule sum_adder( \ninput a, b,\noutput cout, sum );\n\n// See sum_adder_as_carry_out.\nsum_adder( \ninput a, \noutput b, \noutput cout );\n\n// Half adder without carry-out, i.e. with carry-in.\nmodule half_adder_no_carry( \ninput a, b,\noutput cout, sum );"
+    }
+  ],
+  "created": 1663519681,
+  "id": "cmpl-NIXTVo5RFhwtH79PD4RmBj8dYTjV4",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 665,
+    "prompt_tokens": 43,
+    "total_tokens": 708
+  }
+}

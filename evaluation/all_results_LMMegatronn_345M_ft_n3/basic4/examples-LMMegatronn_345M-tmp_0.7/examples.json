@@ -1,0 +1,37 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// FIXME: The following are active at the end\n// of sel? \n*/\n\nreg [4:0] out;\n\n// If a, b, select input. \n// are 0, select input.\nalways @ (a or b or sel)\n\tbegin\n\t\tcase (sel)\n\t\t\t0: out = a;\n\t\t\t1: out = b;\n\t\tendcase\n\tend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " \n// * sel=2, assign out = sel? \n\nassign out = sel? b << a : a;\n//assign out = sel? b << b : a;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nreg [4:0] out;\nalways @(  or sel )\nbegin\n    case ( sel )\n        5'b00000 : out = in0;\n        5'b00001 : out = in1;\n        5'b00010 : out = in2;\n        5'b00011 : out = in3;\n        5'b00100 : out = in4;\n        5'b00101 : out = in5;\n        5'b00110 : out = in6;\n        5'b00111 : out = in7;\n        5'b01000 : out = in8;\n"
+    }
+  ],
+  "created": 1663299216,
+  "id": "cmpl-RZiQgfWBvDu6GRGUWXCabgg3zvZ9r",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 353,
+    "prompt_tokens": 70,
+    "total_tokens": 423
+  }
+}

@@ -1,0 +1,40 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin\nif (reset) out <= 0;\nelse if (load) out <= data;\nelse begin\nout[7] <= out[0];\nout[6] <= out[7];\nout[5] <= out[6];\nout[4] <= out[5];\nout[3] <= out[4];\nout[2] <= out[3];\nout[1] <= out[2];\nout[0] <= out[1];\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk,posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tout <= 0;\n\tend\n\telse\n\tbegin\n\tif (load)\n\tout <= data;\n\telse\n\tbegin\n\tout <= out << amount;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nout <= 8'b0;\nelse if (load)\nout <= data;\nelse begin\nout[0] <= data[7];\nout[1] <= data[6];\nout[2] <= data[5];\nout[3] <= data[4];\nout[4] <= data[3];\nout[5] <= data[2];\nout[6] <= data[1];\nout[7] <= data[0];\nend\nend\n"
+    }
+  ],
+  "created": 1663304518,
+  "id": "cmpl-0lK8CCWTS1tjvhmUQc6nnA5UEC9WH",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 322,
+    "prompt_tokens": 93,
+    "total_tokens": 415
+  }
+}

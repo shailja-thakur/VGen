@@ -1,0 +1,100 @@
+example-0: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+reg  [4:0] out;
+
+always @(a, b, sel)
+	case (sel)
+		1'b0: out = sel? a : b;
+		1'b1: out = sel? b : a;
+	endcase
+
+
+================================================================
+example-1: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+wire sel_mux;
+reg [4:0] out;
+
+always @ (sel or sel or in0 or in1 or in2 or in3 or in4 or in5)
+
+case(sel_mux)
+	0 : out = in0;
+	1 : out = in1;
+	2 : out = in2;
+	3 : out = in3;
+	4 : out = in4;
+	5 : out = in5;
+	6 : out = in6;
+	7 : out = in7;
+	8 : out = in8;
+	9 : out = in9;
+	10: out = {in10, in11, in12, in13, in14, in15};
+	11: out = in10;
+	12: out = in11;
+	13: out = in12;
+	14:
+================================================================
+example-2: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// * #5 is asserted, and the output becomes 'x' so that the
+// has allones are active
+/*
+mux2 mux_in0( .a(a[0]), .b(b[0]), .sel(sel), .y(out[0]) );
+mux2 mux_in1( .a(a[1]), .b(b[1]), .sel(sel), .y(out[1]) );
+mux2 mux_in2( .a(a[2]), .b(b[2]), .sel(sel), .y(out[2]) );
+mux2 mux_in3( .a(a[3]), .b(b[3]), .sel(sel), .y(out[3]) );
+mux2 mux_in4( .a(a[4]), .b(b[4]),
+================================================================
+example-3: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// when sel=2,
+reg [4:0] out;
+
+always @(a or b or sel)
+	case (sel)
+		1'b0: out = a;
+		1'b1: out = b;
+	endcase
+
+================================================================
+example-4: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// BecauseIl=0, are mapping from mux. 
+wire [1:0] sel_mux;
+mux mux_1_1(a[0], b[0], sel, out[0], sel_mux);
+mux mux_2_1(a[1], b[1], sel_mux, sel_mux);
+mux mux_3_1(a[2], b[2], sel_mux, sel_mux);
+mux mux_4_1(a[3], b[3], sel_mux, sel_mux);
+mux mux_5_1(a[4], b[4], sel_mux, sel_mux);
+mux mux_6_1(a[5], b[5], sel_
+================================================================

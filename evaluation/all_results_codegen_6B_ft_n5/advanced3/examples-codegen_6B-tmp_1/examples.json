@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(present_state,x,reset)\ncase(present_state) \nIDLE:\n\tif (x) next_state=S1; \n\telse next_state=IDLE;\nS1: \n\tif (x) next_state=S10; \n\telse next_state=IDLE;\nS10:\n\tif (x) next_state=S101; \n\telse next_state=IDLE;\nS101: \n\tif (x) next_state=S1; \n\telse next_state=IDLE;\ndefault: next_state=IDLE;\nendcase\n\nalways @(posedge clk, posedge reset) \nif (reset) present_state=IDLE; \nelse present_state=next_state; \n\nassign z=(present_state==S101); "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @( present_state,x ) begin : autoblock \n\tcase( present_state ) \n\tIDLE:\n\tif( reset ) \n\tcase( x )\n\t1'b0: to_state <= S1;\n\t1'b1: to_state <= S10;\n\tendcase\n\tS1: begin \n\tcase( x )\n\t1'b0: to_state <= S1;\n\t1'b1: to_state <= S10;\n\tendcase\n\tto_state <= S2;\n\tend\n\tS2: begin \n\tcase( x )\n\t1'b0: to_state <= S3;\n\t1'b1: to_state <= S10;\n\tendcase\n\tto_state <= S4;\n\tend\n\tS4: begin \n\tcase("
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin \nif(reset==1'b1) \n\tpresent_state<=IDLE;\nelse \n\tpresent_state<=next_state;\nend \n\nalways @(present_state or x)\nbegin \n\ncase(present_state)\n\n\tIDLE: \n\tbegin \n\tif(x==1'b1) \n\tbegin\n\tnext_state= S1 ;\n\tend \n\telse \n\tbegin\n\tnext_state= IDLE ;\n\tend \n\tend \n\t \n\tS1: \n\tbegin \n\tif(x==1'b1) \n\tnext_state= S10 ;\n\telse \n\tnext_state= IDLE ;\n\tend \n\t\n\tS10: \n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) // set the next state for state 101 \nif(next_state != 'd3) // the state for state 101 is not 'd3\nbegin \ncase(next_state) // next state for state 101\n2'b11: next_state = 'd3;\n2'b01: next_state = 'd2;\nendcase\nend\nelse \nbegin \ncase(next_state) // next state for next state in case of 2'b11\n2'b11: next_state = 'd1;\n2'b01: next_state = 'd0;\nendcase\nend\n// next state for state 1 \n// oputput logic \ncase(present_state) // case stes for output logic \n2'b11: z = 1;\n2'b01: z ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(*) \nbegin \npresent_state = next_state;\nend \n\nalways @(*) \nbegin \n //if the source or destination data are not available or the channel is already open\n if (data_out[1]==1'b0 ) \n\tnext_state = IDLE; \n //if SRV is closed, the master should send EOP and SD_complete, let tb_categorize know\n else if (dest_channel_valid[1]==0) \n\tnext_state = S1; \n //if channel is not open, but SRV is requesting directory information fork this task and\n else if (get_txn_out==1'b1) begin\n \tnext_state = S1; \n end \n //for all other cases, see if the master is sending directory/IOD type commanDS over the"
+    }
+  ],
+  "created": 1663600063,
+  "id": "cmpl-EhK38YztXLZXVgMpi0BO0JfvUopGZ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 232,
+    "total_tokens": 1232
+  }
+}

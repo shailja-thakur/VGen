@@ -1,0 +1,59 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign q = {data, ena, amount};\n  \nmodule advshift34(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [56:48] shift_t,\noutput reg [23:20] dst,\noutput reg [31:24] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 2 bits.\n// 2'b01: shift left by 3 bits.\n// 2'b10: shift right by 2 bits.\n// 2'b11: shift right by 3 bits.\n\n//Schedule generation:\n      always @(posedge clk)\n        "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "    always @(posedge clk) begin\n        if (ena && load) {\n            q <= data;\n        }\n    end\n\n    `include \"log2.tcl\"\n    `include \"axi_basic.tcl\"\n    `include \"lsa_datamask.tcl\"\n    `include \"lsa_arith.tcl\"\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "  int tmp ;\n\nalways @(posedge clk)\n  if(ena) {q <= data;}\n  else if(load) {\n    tmp = data[63:8 * amount[0] -1 : 8 * 1];\n    q[63:0] <- tmp;\n  }\n"
+    }
+  ],
+  "created": 1663534383,
+  "id": "cmpl-NAKIyzM4VCeZOapy4PC9E6ibws0sF",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 358,
+    "prompt_tokens": 184,
+    "total_tokens": 542
+  }
+}

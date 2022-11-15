@@ -1,0 +1,51 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset == 1)\n        cur_state = IDLE;\n    else\n        cur_state = (a == 1) ? SA : (b == 1) ? SB : SAB;\n    next_state = (cur_state == SAB) ? IDLE : (cur_state == SA) ? SB : IDLE;\n    z <= next_state;\nend\n);\n// This is an FSM module abro(\n// input clk,\n// input reset,\n// input a,\n// input b,\n// output z );\n// paramter IDLE = 0,\n// SA = 1,\n// SB = 2,\n// SAB = 3;\n// reg [1:0] cur_state,next_state;\n// The output z is high when 1 is received for signals a and b in any order.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset == 1)\n        cur_state = IDLE;\n    else\n        cur_state = (a == 1) ? SA : (b == 1) ? SB : SAB;\n    next_state = (cur_state == SAB) ? IDLE : (cur_state == SA) ? SB : IDLE;\n    z <= next_state;\nend\n);\n\n// This is an FSM module abro(\n// input clk,\n// input reset,\n// input a,\n// input b,\n// output z );\n// paramter IDLE = 0,\n// SA = 1,\n// SB = 2,\n// SAB = 3;\n// reg [1:0] cur_state,next_state;\n// The output z is high when 1 is received for signals a and b in any order."
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset == 1)\n        cur_state = IDLE;\n    else\n        cur_state = (a == 1) ? SA : (b == 1) ? SB : SAB;\n    next_state = (cur_state == SAB) ? IDLE : (cur_state == SA) ? SB : IDLE;\n    z <= next_state;\nend\n);\n// This is an FSM module abro(\n// input clk,\n// input reset,\n// input a,\n// input b,\n// output z );\n// paramter IDLE = 0,\n// SA = 1,\n// SB = 2,\n// SAB = 3;\n// reg [1:0] cur_state,next_state;\n// The output z is high when 1 is received for signals a and b in any order.\n"
+    }
+  ],
+  "created": 1663536915,
+  "id": "cmpl-F3kmkzRd1gMj0SrwGZ5HDT9CCalUS",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 218,
+    "total_tokens": 818
+  }
+}

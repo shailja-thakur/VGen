@@ -1,0 +1,86 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign overflow = a[7] & b[7] & ~s[7];\n\nalways@(*)\nbegin\n\n\n\tif(a[7] & !b[7] & !overflow)\n\tassign s[7:0] = a[7:0] + b[7:0]; \n\telse if(!a[7] & b[7] & !overflow)\n\tassign s[7:0] = a[7:0] + b[7:0];\n\telse if(a[7] & b[7] & overflow) //if there is a double overflow \n\tassign s[7:0] = ~(8'b00000000) + 1; //the 8'b00000000 is -1.\n\n\n\nend\n\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// a and b are added together. the 8 low bits of the result are stored in s. The overflow bit s[7] is set to 1 if the operation caused overflow,\n// inclusive of overflow caused by signed or unsigned large. This bit is set to 0 otherwise.\n\nalways@(*)\n\nbegin\n if (a<b)\n begin\n r<=8'b0;\n if (overflowIncr)? overflow <=1'b1: overflow <=1'b0;\n end\n \n else if (a>b)\n begin\n r<=8'bx;\n overflow <=1'b1;\n end\n\n else if (a>b)\n overflow <=1'b0;\n else\n overflow <=1'b0;\nend\n\n\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nreg cable, out_sign;\n\nalways @ (a, b, wiring[7:0], cable)\nbegin \n\tcasewire2 every (wiring[7:0], cable) begin\n\t(|| || (a[7]) && (b[7])) -> cable = 0; \n\t(1'bx || a[6] || a[5] || b[5] || b[4]) // all 1's\n\t(0 && (~b[6])) // s is negative\n\tbegin\n\tcycley[0]\n\tif (b[7] == \n\nend\n\nassign cycley = (!thisin || ! thatin) ? wiring[7] : cycleyneg; //compare the continuous assignment , watching the continuous assignment\nalways @ {a, b}\n\tifgt1 = a[6]&&!b[6];"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nwire signed [7:0] overflow1;\nwire [7:0] addin1a;\nwire [7:0] addin1b;\n\n//if you see non-negative flag following the minus-sign, it's a signed overflow.\n\n//li position #10_-_03/------------insert to this file------------------------; \nalways @ (a or b) \n\tbegin\n\tif ( a[7] == b[7] && a[7] != s[7] )\t\n\toverflow1 = 1'b1;\n\telse if ( a[7] /* complement of b */ == s[7] )\n\toverflow1 = 1'b1;\n\telse if ( b[7] /* complement of a */ == s[7] )\n\toverflow1 = 1'b0;\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\n// Create an 8-bit full adder function. \n\n// Give each equation a name based on its position in the sequence: \n\n// A full adder for a, b, carryin, s, and overflow. \n// Create an 8-bit ripple carry adder for each of the equations. \n\n// Assign a rolled-up version of the equations to the ripple_carry_adder_four.dll output for each ripple carry adder (n) component. \n// Execute the equations one by one, and then concatenate the product terms (e.g., in the cofactor's range) by unattended implicit arithmetic operations.\n// Put the items in the newly created module where they need to be. \n\n// It sounds good, yes. \n// The original equation: a + b + carryin = s, which has an handling for a carryin of zero. \n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nwire signed_sum;\nwire signed_sum_overflow;\n\n// module for the addition operator\nxor(signed_sum, a,b);\n\nassign signed_sum_overflow = (&signed_sum)&&(&adj(-b));\n\n// sum wire definition\nwire signed_adder_output;\n\n// adders for the four bit string adders\n\nadd sum0(\n\t.a(a[0]), \n\t.b(b[0]), \n\t.sum(signed_adder_output),\n\t.overflow(signed_sum_overflow)\t\n); \n\nadd sum1(\n\t.a(a[1]), \n\t.b(b[1]), \n\t.sum(signed_adder_output),\n\t.overflow(signed_sum_overflow)\n);\n\nadd sum2(\n\t.a("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\tanmadd \t #(.Width(8)) signed_adder1_8( .D(a[7:0]), .CLK(750), .RST(0), .AN(1'b0), .ADD(s[7:0]), .BK(1'b0), .SEL({1'b0, b[7]}), .CONTROL(), .DO(s[8:1]) );\n\t or(overflow,s[8],s[7]); //check for over or underflow\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": " assign overflow = ((~a[7] & ~b[7]) & (~(a[7]&b[7]) & (s[7] & (~a[7] | b[7])))); \n assign s = {signed_sum, overflow};\nwire sign_sum;\nwire sign_overflow;\n\nsign_weight sign_weigth1 (.a(a[7:0]), .b(b[7:0]), .w(8'b00001010), sign_sum);\nsign_weight sign_weigth2 (.a(a[7:0]), .b(b[7:0]), .w(8'b00001011), sign_overflow);\n \nor unsigned_or_condition (.a( sign_sum ), .b( sign_overflow) , output_sumdiff ());\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": " assign overflow = a[7] & b[7] & ~ s[7]; \n\n// Add the a and b making a 7 bit adder a[7:0]a;\n \n\n// if there is a processing overflow the set the overflow output to true otherwise inout indicate no overflow so out =in.\n\n // assign s = a + b;\n endmodule\n \n\n// Design a 1 bit adder, a[0]\n // out = sum of a and b; Bidirectional counter is synthesizable\n // This is used to add 1 bit in the case of rest, parity, zero check adder.\n // Carry out, carry only is processed\nmodule Lab5Part2(\n\n\n"
+    }
+  ],
+  "created": 1663606827,
+  "id": "cmpl-11uDR9dzj5hfz5s3QjxzoxzWmrU9d",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1619,
+    "prompt_tokens": 164,
+    "total_tokens": 1783
+  }
+}

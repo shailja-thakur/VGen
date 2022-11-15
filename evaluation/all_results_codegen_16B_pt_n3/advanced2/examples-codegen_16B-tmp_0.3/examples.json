@@ -1,0 +1,42 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// On the positive edge of the ena input:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the clock input is high and q is not 9.\n// On the positive edge of the clock input:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\n// On the positive edge of the ena input:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the clock input is high and q is not 9.\n// On the positive edge of the clock input:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\n// On the positive edge of the en"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\n    if (reset)\n        q <= 0;\n    else if (slowena && q < 9)\n        q <= q + 1;\n\n// On the negative edge of the clock:\n// if reset is high, reset the output q to 9. \n// Otherwise, only decrement the output q if the ena input is high and q is not 0.\n\nalways @(posedge clk or negedge reset)\n    if (reset)\n        q <= 9;\n    else if (slowena && q > 0)\n        q <= q - 1;\n\n// The output is q.\n\nassign q = q + 1;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\n    if (reset) q <= 0;\n    else if (slowena && q < 9) q <= q + 1;\n\n// On the positive edge of the slowena input:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\n\nalways @(posedge slowena or negedge reset)\n    if (reset) q <= 0;\n    else if (slowena && q < 9) q <= q + 1;\n\n// On the positive edge of the ena input:\n// if reset is high, reset the output q to 0. \n// Otherwise, only increment the output q if the ena input is high and q is not 9.\n\nalways @(posedge ena or negedge reset)"
+    }
+  ],
+  "created": 1663533853,
+  "id": "cmpl-nNbugqQetByQIuIhkqdmp09T05bkL",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 564,
+    "prompt_tokens": 98,
+    "total_tokens": 662
+  }
+}

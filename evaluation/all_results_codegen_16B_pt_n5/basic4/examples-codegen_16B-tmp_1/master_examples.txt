@@ -1,0 +1,106 @@
+example-0: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+ 
+// The middle 2 muxes sel to bits 25-26, the upper 2 spread sel to bits 28-29.
+
+module xor(
+  input [24:0] x,
+  input sel,
+  output [24:0] y );
+   
+  reg [4:0] h,l, a1,b1,out;
+  reg [4:0] h1,l1, a2,b2,out1;
+  var [4:0] tmp;
+  always @(posedge clk) begin
+     if (sel) begin
+      case(a>>4)
+       8'b00 (+) case(a>>5)
+       8'b00 (-) case(a>>6)
+       8'b00 (>) case(a>>7)
+       out <= a1 + tmp + b1;
+      
+================================================================
+example-1: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+always@* begin 
+    // If the value of sel is 0, set out to a
+    // associate the value of a with the value of out
+    if (sel==0)
+         assign [4:0] {{out,a}} = ignore;
+    // If the value of sel is 1, set out to b
+    else if (sel==1)
+         assign [4:0] {{out,b}} = ignore;
+end 
+
+================================================================
+example-2: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+initial begin 
+  if ( sel ) { 
+    out = b; 
+  } else { 
+    out = a; 
+  }
+end
+
+================================================================
+example-3: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+always @( posedge a, b ) begin
+   out <= a;
+   out[sel] <= b;
+end
+  : assume_valid_address
+    long unsigned int addr;
+//  input[1:31] bus
+//  generated : enable, enable_out, load, store
+// - load(addr) logic found in address pins
+// - store(logical) logic found in payload from a!
+// - bottom line/(top line on forget this) enable logic found in
+// enable_address
+================================================================
+example-4: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// The first two of the four bits specify the four selectors that will be needed; 
+// they are summed into sel, 
+// with the operation (sel+1)*2
+// Modify the Multiplexer network so that i is updated only when sel changed from 
+// ~input0 to input0, and so on, and construct a simple set-assign function.
+assign out = (sel==0)?a:b;
+
+always @(posedge clk)
+	if ((sel <= 3) && !(a & ~(sel-1))) assert((sel + 1)*2) else if ((sel <= 3) && (sel > 0)) assert((sel + 1)*2) else ;
+	
+// If sel=0, then the original input i matched track a and out is assigned a
+// If sel=1, then the original input i matched track b and
+================================================================

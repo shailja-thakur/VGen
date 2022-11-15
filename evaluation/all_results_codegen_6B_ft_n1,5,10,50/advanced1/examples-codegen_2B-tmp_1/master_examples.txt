@@ -1,0 +1,108 @@
+example-0: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+architecture w32nomad {
+    parameter VRM = "Vr-5829";                  // Cell-soc Vyvar VM microarchitecture. assignments may not contain ghost Cells.
+
+    initial Config_App(32, 1, 1);
+
+    communication comm
+    {
+        fifo bus_in_a;
+        buffer0(bus_in_a, i8(active));
+
+        fifo bus_in_b;
+        buffer0(bus_in_b, i8(active));
+
+        fifo bus_out;
+        buffer1(bus_out, i8(active));
+
+        communication
+        {
+            communication
+            {
+                fifo bus_a;
+                buffer0(bus_a, i8(organisation));
+                assert bus_a.empty()();
+                fifo bus_c;
+                buffer0(bus_c,
+================================================================
+example-1: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+    s[7:0] = min(a[7:0] + b[7:0], s[7:0]);
+    if (a[7:0] < b[7:0])
+    {
+        overflow = a[7:0];   
+    }
+    else
+    { 
+        overflow = b[7:0];   
+    }
+        
+Instance [overflow : Declaration<> = false]; 
+
+================================================================
+example-2: 
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+void
+maxOverflow()
+{
+	if (a[0]==99||b[0]==99) printf("Maximum failure");
+	else if ((a[0]>=b[0]) && (a[1]<=b[1]) || b[0]>=a[0] && b[1]<=a[1]){
+        s[0]=a[0]|(b[0]<<7);
+        s[1]=a[1]|(b[1]<<7);
+        overflow=0;
+    }
+    else{
+        s[0]=a[0];
+        s[1]=a[1];
+        throw overflow;
+    }
+  }
+
+
+void
+avx_signed_adder()
+{
+    s[2]=s[1]=0;
+    overflow=0;
+
+    /*
+================================================================

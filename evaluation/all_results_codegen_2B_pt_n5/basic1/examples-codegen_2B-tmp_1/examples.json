@@ -1,0 +1,46 @@
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "wire2vector( wire in,wire2vector out );\n// determine the standard cells to each input\nusing CellStruct = vector<Cell>,;\nvector<CellStruct> standardcells(vector<unsigned> src,vector<unsigned> dst);\n// determine a vector of wires that has all the standard connections\nusing ChCellStandardFormConn = vector<Transformer>;\nvector<ChCellStandardFormConn> standard_cellslist(vector<unsigned> src,vector<unsigned> dst);\n\n\n\n// Main program\nauto main() -> int\n{\n  // Possibilty to swap the inputs and outputs addresses\n  using Input = wires2vectors_inptr, Ouputs = vector<wires2vectors_outptr>;\n  using PyoMapping = wires2vectors_mapptr;\n  \n  // Ada net flow modifier computes the net flow of the inputs cells \n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// Let's add this to the module fir this manner:\nwire_assign\n    in \n    out;\n\n// Write a test case to simulate the input and output outputs:\nwire_assign\n    in = 4;\n    out = 5;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "module routes(inputs{source_pll, source_phy, source_spd_out}, outputs{pxl, phy, spd_out});\nmodule phys(inputs{pxl_path}, outputs{physical_path});\nmodule inputs(inputs{pxl, phy, spd_out});\nmodule outputs(outputs{source_pll, source_phy, source_spd_out, phy_rate});\n\n// Load needed NIT files\nload (\"/app/load/nit/phys_interface.nel\");\nload (\"/app/load/nit/phys_list.nel\");\n\n// Proc inputs and outputs and assign them conditionally\nmodule_func phys_inputs = {\n    .pxl = inputs{pxl_path},\n    .file = edges(phys_interface_table[\"pxl\"))\n};\nmodule_func phys_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// wecon out( in, last )\nvoid wire_assign( wire in, output out ) {\n\twire out_seg\t\t\t= freeze(out);\n\twire out_version\t= output_port<3>(out).connect(in);\n\twire last_bit\t\t= output_port<4>(out).connect(\n\t\t\t\t\t\t\t\t\toutput_port<final>(out_seg));\n\twire nf(OUT,out_version,\n\t\t\t\tOUT,out_seg,\n\t\t\t\tOUT,last_bit,\n\t\t\t\t0,last_bit );\n\n\t\tnf\t\t\t\t<= in;\n\t\tout\t\t\t\t<= nf;\n}\n// assert( working, if not, we fix it up )\nvoid assert_working( output out ) {\n\tif( !working(out) ) {\n\t\tprint \"WTF? isn't working :/\\n\";\n\t\twacky_assert"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// to implement\nmodule wire_assign( int[] in_fields, input[] out_fields );\n// as\nmodule wire_assign( int[][] in_fields, input out_fields[ ] );\n"
+    }
+  ],
+  "created": 1663539989,
+  "id": "cmpl-ZxGJ70VbDvGvY3dfezFuDkkAAEpgE",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 710,
+    "prompt_tokens": 31,
+    "total_tokens": 741
+  }
+}

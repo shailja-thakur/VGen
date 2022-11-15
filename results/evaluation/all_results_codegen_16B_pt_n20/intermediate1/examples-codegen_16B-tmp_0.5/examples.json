@@ -1,0 +1,136 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// This is the carry-in register.\nreg carry_in;\n\n// This is the sum register.\nreg sum;\n\n// This is the output register.\nreg cout;\n\n// This is the carry-out register.\nreg carry_out;\n\n// This is the process.\nprocess( in, out, sum, cout, carry_in, carry_out )\n{\n    // We add two bits.\n    sum = a + b + carry_in;\n\n    // Write the sum and carry-out to cout.\n    cout = sum;\n    carry_out = carry_in;\n}\n\n// This is the output port.\nport out;\n\n// This is the process instantiation.\nhalf_adder( in, out, sum, cout, carry_in, carry_out )\n{\n    // Instantiate the process.\n    in = in"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nwire a_i, b_i, sum_i, carry_out;\n\n// The carry-in is the carry-out of the previous cycle.\nassign carry_in = carry_out;\n\n// The sum is the sum of the bits.\nassign sum = sum_i;\n\n// The new carry-out is the carry-in of the current cycle.\nassign carry_out = carry_in;\n\n// The new sum is the sum of the bits and the carry-out.\nassign sum_i = (a_i + b_i + carry_out);\n\n// The new carry-out is the carry-in of the current cycle.\nassign carry_out = carry_in;\n\n// The new a is the a_i and the carry-out.\nassign a_i = a;\n\n// The new b is the b_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nalways @( posedge a or posedge b ) begin\n\tif ( a or b )\n\tbegin\n\t\tsum <= a + b;\n\tend\n\telse\n\tbegin\n\t\tcout <= sum;\n\tend\nend\n\n// This is a full adder. A full adder adds four bits and produces a sum and carry-out.\nmodule full_adder(\ninput a, b,\noutput cout, sum );\n\ninput a, b;\noutput cout, sum;\n\nalways @( posedge a or posedge b ) begin\n\tif ( a or b )\n\tbegin\n\t\tsum <= a + b;\n\tend\n\telse\n\tbegin\n\t\tcout <= sum;\n\tend\nend\n\n// This is a half subtractor. A half subtractor subtracts two bits and produces a difference"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nreg [1:0] sum;\n\n// This is a full adder. A full adder adds three bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b, c,\noutput cout, sum );\n\nreg [1:0] sum;\n\nalways @( posedge clk ) begin\n  if ( a and b and c ) begin\n    sum <= sum + 1;\n    cout <= sum[0];\n  end\nend\n\n// This is a half adder that has two inputs.\nmodule half_adder_2( \ninput a, b,\noutput cout, sum );\n\nreg [1:0] sum;\n\n// This is a full adder that has two inputs.\nmodule full_adder_2( \ninput a, b, c,\noutput cout, sum );\n\nreg [1:0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nwire a, b, cin;\nwire sout, carry_out;\n\n// This is a full adder. A full adder adds all four bits and produces an output.\nmodule full_adder( \ninput a, b, \noutput cout );\n\nwire a, b, cin;\nwire sout;\n\n// The carry-in is the number of bits that were added to the sum.\n// It is determined by the carry-out.\nwire carry_in;\n\n// The carry-out is the number of bits that were added to the sum.\n// It is determined by the carry-in.\nwire carry_out;\n\n// This is a half adder. A half adder adds two bits and produces a sum and carry-out.\nwire half_adder_output;\n\n// This is a full adder. A full adder adds all four bits and"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nwire a_in, b_in, cin, sum_out;\n\n// The carry-in is the carry-out of the previous cycle.\nwire carry_in = cin;\n\nwire carry_out = carry_in;\n\n// The sum is the output of the half adder.\nwire sum = sum_out;\n\n// The half adder adds two bits and produces a sum and carry-out.\nassign {\n    a_in, b_in, cin,\n    carry_in,\n    sum_out,\n    carry_out\n} = {a, b, carry_in};\n\n// The carry-in is the carry-out of the previous cycle.\nassign carry_in = carry_out;\n\n// The sum is the output of the half adder.\nassign sum = sum_out;\n\n// The half adder"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds four bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a half subtractor. A half subtractor subtracts two bits and produces a difference and carry-out.\nmodule half_subtractor( \ninput a, b,\noutput cout, diff );\n\n// This is a full subtractor. A full subtractor subtracts four bits and produces a difference and carry-out.\nmodule full_subtractor( \ninput a, b,\noutput cout, diff );\n\n// This is a half multiplier. A half multiplier multiplies two bits and produces a product and carry-out.\nmodule half_multiplier( \ninput a, b,\noutput cout, product );\n\n// This is a full multiplier. A full multiplier multiplies"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds two numbers and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a half subtractor. A half subtractor subtracts two bits and produces a difference and carry-out.\nmodule half_subtractor( \ninput a, b,\noutput cout, diff );\n\n// This is a full subtractor. A full subtractor subtracts two numbers and produces a difference and carry-out.\nmodule full_subtractor( \ninput a, b,\noutput cout, diff );\n\n// This is a full multiplier. A full multiplier multiplies two numbers and produces a product and carry-out.\nmodule full_multiplier( \ninput a, b,\noutput cout, prod );\n\n// This is a full divider. A full divider"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nvoid main() {\n    cout = 0;\n    sum = 0;\n    if ( a == 0 || b == 0 ) {\n        cout = 1;\n    } else {\n        cout = 0;\n        sum = a + b;\n    }\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\nwire carry_in, carry_out, sum_in;\n\n// This is the logic that performs the addition.\n// The inputs to the logic are a and b.\n// The outputs are cout, sum, and carry_out.\nmodule half_adder_logic( \ninput a, b,\noutput cout, sum, carry_out );\n\n// This is the logic that performs the carry-in.\n// The inputs are cout and sum.\n// The outputs are carry_out and sum_in.\nmodule half_adder_carry_in( \ninput cout, sum,\noutput carry_out, sum_in );\n\n// This is the logic that performs the carry-out.\n// The inputs are cout and sum.\n// The outputs are cout and sum.\nmodule half_adder_carry_out(\ninput cout, sum,\noutput carry_out, sum);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nwire cin;\n\nassign cin = a + b;\n\nreg sum;\n\nassign sum = cin + cin;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds two bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b, \noutput cout, sum );\n\n// This is a half adder with carry-in. A half adder adds two bits and produces a sum and carry-out.\nmodule half_adder_with_carry_in( \ninput a, b, carry_in,\noutput cout, sum );\n\n// This is a full adder with carry-in. A full adder adds two bits and produces a sum and carry-out.\nmodule full_adder_with_carry_in( \ninput a, b, carry_in,\noutput cout, sum );\n\n// This is a half adder with carry-out. A half adder adds two bits and produces a sum and carry-out.\nmodule half_adder_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n\n// The inputs to the half adder.\nwire a, b;\n\n// The outputs of the half adder.\nwire cout, sum;\n\n// The carry-out of the half adder.\nwire carry;\n\n// The full adder.\nfull_adder( a, b, cout, sum, carry );\n\n// The outputs of the full adder.\nwire out;\n\n// The carry-out of the full adder.\nwire out_carry;\n\n// The carry-out of the full adder.\nwire carry_out;\n\n// The half adder.\nhalf_adder( a, b, cout, sum );\n\n// The outputs of the half adder.\nwire out;\n\n// The carry-out of the half adder.\nwire out_carry;\n\n// The carry-out of the half adder.\nwire carry_out"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nwire carry_in, carry_out;\n\nassign cout = sum + carry_out;\nassign sum = a + b + carry_in;\n\nalways @(posedge clk)\n  if (rst)\n    cout <= 0;\n  else\n    carry_in <= carry_out;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\nwire a_in, b_in, a_plus_b, a_plus_b_carry_out, sum_out;\n\n// This is the function that will run when we start the simulation.\nalways @(posedge clk)\nbegin\n    // This is the input to the half adder.\n    a_in <= a;\n    b_in <= b;\n\n    // This is the output of the half adder.\n    sum_out <= a_plus_b;\n\n    // This is the carry-out of the half adder.\n    a_plus_b_carry_out <= a_plus_b_carry_in;\n\n    // This is the sum of the two bits.\n    sum <= a_plus_b_carry_out;\nend\n\n// This is the output port of the half adder.\nassign cout = sum_out;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n\nwire a, b, cout, sum;\n\n// The sum is output to the sum register and the carry-out is output to the carry-out register\nassign sum = {a, b};\nassign cout = sum;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n\nwire cin, sum, cout, carry;\n\nhalf_adder( a, b, cout, sum ) {\n  cin = a | b;\n  sum = cin + carry;\n  carry = ( cin > ( a | b ) ) ? 1 : 0;\n  cout = sum;\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n\nwire a, b, cin, sum;\n\n// The inputs are connected to the half adder.\na <= b;\nb <= cin;\n\n// The outputs are connected to the sum and carry-out.\ncout <= sum;\nsum <= a + b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n\nwire carry_in, carry_out;\nwire sum_in;\n\nwire a_in, b_in;\n\nassign a_in = a;\nassign b_in = b;\n\nassign cout = carry_out & sum_in;\n\nhalf_adder half_adder_1( a_in, b_in, cout, sum_in );\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n\n// Assign cout = a + b + carry_in\nassign cout = a + b + carry_in;\n\n// Assign sum = a + b\nassign sum = a + b;\n\n// Assign carry_out = carry_in\nassign carry_out = carry_in;\n\n"
+    }
+  ],
+  "created": 1663536014,
+  "id": "cmpl-W6BjDVqt5RlVPTsNk8TyS916pcXQI",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2981,
+    "prompt_tokens": 43,
+    "total_tokens": 3024
+  }
+}

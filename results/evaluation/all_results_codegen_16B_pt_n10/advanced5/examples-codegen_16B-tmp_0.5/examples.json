@@ -1,0 +1,93 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n    case(cur_state)\n        case(IDLE)\n            if (a && b) begin\n                cur_state <= SAB;\n            end\n            else begin\n                cur_state <= IDLE;\n            end\n        case(SA)\n            if (b) begin\n                cur_state <= SAB;\n            end\n            else begin\n                cur_state <= IDLE;\n            end\n        case(SB)\n            if (a) begin\n                cur_state <= SAB;\n            end\n            else begin\n                cur_state <= IDLE;\n            end\n        case(SAB)\n            end\n        endcase\n    end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk, posedge reset) begin\nif (reset) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\nend else begin\n    if (a and b) begin\n        next_state <= SAB;\n    end else begin\n        if (a) begin\n            next_state <= SA;\n        end else begin\n            next_state <= SB;\n        end\n    end\n    if ( !a and !b ) begin\n        next_state <= IDLE;\n    end\n    if ( !a and b ) begin\n        next_state <= SB;\n    end else begin\n        if ( !b and a ) begin\n            next_state <= SA;\n        end else begin\n            next_state <= IDLE;\n        end\n    end\n    if (a and !b)"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk or posedge reset) begin\nif (reset) begin\ncur_state <= IDLE;\nnext_state <= IDLE;\nend\nelse begin\nif (a and b) begin\ncur_state <= SAB;\nnext_state <= SAB;\nz <= 1;\nend\nelse if (a) begin\nif (b) begin\ncur_state <= SB;\nnext_state <= SB;\nend\nelse begin\ncur_state <= SA;\nnext_state <= SA;\nend\nelse begin\nif (b) begin\ncur_state <= SAB;\nnext_state <= SAB;\nend\nelse begin\ncur_state <= IDLE;\nnext_state <= IDLE;\nend\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk or posedge reset) begin\nif (reset == 1) begin\ncur_state <= IDLE;\nz <= 0;\nend\nelse begin\n// clk is high, reset is low\nif (a == 1 && b == 1) begin\ncur_state <= SAB;\nend\n// clk is low, reset is low\nif (a == 1) begin\nnext_state <= SA;\nend\nif (b == 1) begin\nnext_state <= SB;\nend\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk) begin\n  if (reset == 1) begin\n    cur_state <= IDLE;\n    next_state <= IDLE;\n  end\n  else begin\n    if (a == 1 && b == 1) begin\n      cur_state <= SAB;\n      next_state <= SAB;\n    end\n    else if (a == 1) begin\n      cur_state <= SA;\n      next_state <= SA;\n    end\n    else if (b == 1) begin\n      cur_state <= SB;\n      next_state <= SB;\n    end\n    else begin\n      cur_state <= IDLE;\n      next_state <= IDLE;\n    end\n    z <= cur_state;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "reg [1:0] z;\nalways @(posedge clk) begin\nif (reset) begin\ncur_state <= IDLE;\nnext_state <= IDLE;\nz <= 0;\nend\nelse begin\nif (a && b) begin\ncur_state <= SAB;\nnext_state <= SAB;\nz <= 1;\nend\nelse if (a) begin\ncur_state <= SA;\nnext_state <= SA;\nend\nelse if (b) begin\ncur_state <= SB;\nnext_state <= SB;\nend\nelse begin\ncur_state <= IDLE;\nnext_state <= IDLE;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "reg z;\nalways @(posedge clk) begin\nif (reset) begin\ncur_state <= IDLE;\nnext_state <= IDLE;\nz <= 0;\nend\nelse begin\nswitch (cur_state)\ncase IDLE:\nif (a) begin\nnext_state <= SA;\nend\nelse if (b) begin\nnext_state <= SB;\nend\nelse if (a && b) begin\nnext_state <= SAB;\nend\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n  if (clk or reset) begin\n    cur_state <= IDLE;\n  end else begin\n    next_state <= IDLE;\n    switch (cur_state)\n      case IDLE:\n        next_state <= SA;\n        if (a and b) begin\n          next_state <= SAB;\n        end\n        next_state <= SB;\n        if (a) begin\n          next_state <= SA;\n        end\n        next_state <= SB;\n        if (b) begin\n          next_state <= SB;\n        end\n        next_state <= SAB;\n        if (a and b) begin\n          next_state <= IDLE;\n        end\n        next_state <= IDLE;\n        if (a) begin\n          next_state <= IDLE;\n        end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if(reset) begin\n        cur_state <= IDLE;\n        next_state <= IDLE;\n    end\n    else begin\n        case(cur_state)\n            IDLE: begin\n                if(a) begin\n                    next_state <= SA;\n                end\n                else begin\n                    next_state <= SB;\n                end\n            end\n            SA: begin\n                if(b) begin\n                    next_state <= SAB;\n                end\n                else begin\n                    next_state <= IDLE;\n                end\n            end\n            SB: begin\n                if(a) begin\n                    next_state <= SAB;\n                end\n                else begin\n                    next_state <= IDLE;\n                end\n            end\n            SAB: begin\n                next_state <= IDLE;\n            end\n        end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "reg [1:0] z,y;\nalways @(posedge clk) begin\n  if (reset == 1) begin\n    cur_state <= IDLE;\n    y <= 0;\n    z <= 0;\n  end\n  else begin\n    if (a == 1 && b == 1) begin\n      next_state <= SAB;\n      y <= 1;\n      z <= 1;\n    end\n    else if (a == 1) begin\n      next_state <= SA;\n      y <= 1;\n      z <= 0;\n    end\n    else if (b == 1) begin\n      next_state <= SB;\n      y <= 0;\n      z <= 1;\n    end\n    else begin\n      next_state <= IDLE;\n      y <= 0;\n      z <= 0;\n    end\n    if (next_state != cur_state)"
+    }
+  ],
+  "created": 1663534605,
+  "id": "cmpl-4bHI1KqeJH61ZIFOOUSMbZFrcN0XL",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1733,
+    "prompt_tokens": 218,
+    "total_tokens": 1951
+  }
+}

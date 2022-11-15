@@ -1,0 +1,84 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@(posedge clk) begin\n\tif (reset)\n\tbegin\t\n\tpresent_state <= 0;\n\tout <= 0;\n\tend\n\telse \n\tbegin\n\tpresent_state <= next_state;\n\tout <= 0;\n\tend\nend\n\nalways@(present_state) begin\ncase (present_state)\n0: begin\n\tif (in==1'b1) \n\tbegin\n\tnext_state <= 0;\n\tout <= 0;\n\tend\n\telse begin\n\tnext_state <= 1;\n\tout <= 0;\n\tend\nend\n1: begin\n\tif (in==1'b0) \n\tbegin\n\tnext_state <= 0;\n\tout <= 1;\n\tend\n\telse begin\n\tnext_state <= 1;\n\tout <= 0;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// present state logic\nalways_ff @ (posedge clk or negedge reset)\nif (!reset)\n\tpresent_state <= 0;\nelse\n\tpresent_state <= next_state;\n// Next state logic\nalways_comb\ncase(present_state)\n\t0: next_state = in ? 0 : 1;\n\t1: next_state = in ? 1 : 0;\nendcase\n// Output logic\nassign out = (present_state == 0 && next_state == 1);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(present_state, in)\nbegin\n\tcase(present_state)\n\t0: if (in) next_state=0; else next_state=1;\n\t1: if (in) next_state=1; else next_state=0;\n\tdefault: next_state=0;\n\tendcase\nend\nalways @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tnext_state=0;\n\tend\n\telse\n\tbegin\n\tpresent_state=next_state;\n\tend\nend\nassign out = present_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "parameter RST=0, LOAD=1;\nalways @(present_state, in)\ncase (present_state)\nRST: if(in) next_state = LOAD;\nelse next_state=RST;\nLOAD: if(~in) next_state = RST;\nelse next_state=LOAD;\nendcase\n//Out = (present state == LOAD)? 1:0\nassign out = (present_state==LOAD)? 1:0;\nalways @(posedge clk)\nif(reset) present_state = RST;\nelse present_state=next_state;\n\n\n\t\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always@(posedge clk or negedge reset)\nbegin\nif (reset)\npresent_state <= reset0; // changing this random variable\nelse\npresent_state <= next_state; //changing this random variable\nend\n// State transition logic\nalways@(in or present_state or reset0)\nbegin\nif (reset || reset0)\nnext_state <= reset0; \nelse\nbegin\ncase(present_state)\nreset0: begin\nif(1)\nnext_state <= reset0;\nelse\nnext_state <= reset1;\nend\nreset1: begin\nif(in) \nnext_state <= reset0; \nelse \nnext_state <= reset1;\nend\nendcase\nend\nend\nassign out = (present_state == reset0) ? 1:0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "// out=1 in state 1 and out=0 in state 0\nalways@(posedge clk)\nbegin\nif (reset) \n\tpresent_state <= 0;\nelse \n\tpresent_state <= next_state;\nend\nalways@(*)\nbegin\ncase(present_state)\n\t0:begin\n\tnext_state = in;\n\tout = 0;\n\tend\n\t1:begin\n\tnext_state = in;\n\tout = 1;\n\tend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "parameter state0 = 1'b0, state1 = 1'b1;\n\n// The code goes here\nalways @ (in or present_state or next_state)\nbegin\nif(present_state == state0 & in == 1)\nnext_state = state0;\nelse if(present_state == state0 & in == 0)\nnext_state = state1;\nelse if(present_state == state1 & in == 1)\nnext_state = state1;\nelse if(present_state == state1 & in == 0)\nnext_state = state0;\nelse\nnext_state = present_state;\n\nend\n\n// Output logic of FSM goes here\n// assigns out = (present_state == state1) ? 1:0; \nsubor asdf(out, present_state == state1, in);\nalways @ (present_state or"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always_ff @(posedge clk)\nbegin\nif(reset==1)\nbegin\n\tpresent_state <= 0;\n\tnext_state <= 0;\nend\nelse\nbegin\n\tpresent_state <=next_state;\nend\nend\nalways_comb\nbegin\n\tout = (present_state == 1 && in ==1 ) ? 1 : 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @ (posedge clk or next_state or reset)\nbegin\nif (reset) // Active-low reset\n present_state <= 0;\nelse\n present_state <= next_state;\nend\nalways @ (present_state or in or reset)\nbegin\ncase (present_state)\n0 : begin\nif (in)\n next_state <= 0;\nelse\n next_state <= 1;\nend\n1 : begin\nif (in)\n next_state <= 1;\nelse\n next_state <= 0;\nend\nendcase\nend\nassign out = (present_state == 1); // Go to zero in state 0, and stay in state 1\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "// defparam state0.a=0, state0.b=0, state1.a=0, state1.b=1\nstate_0 state0 (in, clk, reset, 0, 0, present_state); \nstate_1 state1 (in, clk, reset, 0, 1, next_state);\ndff df[1:0] (present_state, next_state, clk, out);\n"
+    }
+  ],
+  "created": 1663544011,
+  "id": "cmpl-KoOmAj3IPIRn3lIDMkapEodgY68XK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1459,
+    "prompt_tokens": 148,
+    "total_tokens": 1607
+  }
+}

@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(present_state or x)\t// to tell the output if the next state is 0 or 1 \n \n \tcase(present_state) \n\tIDLE: \n \tbegin \n\tif(x) \n\tbegin \n\tnext_state = S1; \n\tend \n\tIDLE: \n\tbegin \n\t// $display(\"NO DOS, dawd\"); \n\tnext_state = S1; \n\tend \n\tcase(next_state) \n\tS1: \n\tbegin \n\tif(x) \n\tbegin \n\tnext_state = S10; \n\tend \n\tS1: \n\tbegin \n\t// high means -> edge triggered FF, logic 1 \n\t// $display(\"PE (s1:%d],IO (%d)\",present_state,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\ndone <= 0;\ncase(present_state)\nIDLE: if(x) next_state = S1; else next_state = IDLE;\nS1: if(x) next_state = S10; else next_state = IDLE;\nS10: if(x) next_state = S101; else next_state = IDLE;\nS101: if (x) next_state = S1; else next_state = IDLE;\ndefault: next_state = IDLE;\n\nendcase \n\nalways @ (present_state or x) // always statement to \n//to be next state of fsm, next_state is based on present state and state of x \nbegin\ncase(present_state)\nIDLE: if(x) next_state = S1; else next_state ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\ninitial begin \npresent_state=IDLE;\nend \n// register stage for next state \n\nalways @(posedge clk or posedge reset) \nbegin \nif(reset) \npresent_state=IDLE; \nelse \npresent_state=next_state; \nend \n// move to next stage \n\nalways @(*) \nbegin \ncase(present_state) \nIDLE: if (x==1) next_state= S1; else next_state=IDLE; \nS1: if (x==1) next_state=S10; else next_state=IDLE;\nS10: if (x==1) next_state=S101; else next_state=IDLE;\nS101: if (x==1) next_state=S1; else next_state=IDLE;\ndefault"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset) begin \n\tif (reset) //high at edge of clock\n\tpresent_state = IDLE;\n\telse //low at edge of clock\n\tpresent_state = next_state; //output should be equal to next state\nend //state\nalways @(present_state or x) begin //next state\n\tnext_state = IDLE; //default state\n\tcase(present_state)\n\tIDLE:; //state = IDLE\n\tS1:if(x==1'd1) next_state = S1; else next_state = S10; // x is 1\n\tS10:if(x==1'd0) next_state = S1; else next_state = S101; // x is 1\n\tS101:if(x==1'd1) next_state = S1; else next_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin \nif(reset) \npresent_state <= IDLE; \nelse \npresent_state <= next_state; \nend\n \nalways @ (present_state)\nbegin \ncase(present_state) \nIDLE: \nif(x) \nnext_state <= S1; \nelse \nnext_state <= IDLE;\n\nS1: \nif (x) \nnext_state <= S10; \nelse \nnext_state <= S1;\n\nS10: \nif (x) \nnext_state <= S101; \nelse \nnext_state <= S1;\n\nS101: \nif (x) \nnext_state <= S1; \nelse \nnext_state <= S10;\n\ndefault: \nnext_state <="
+    }
+  ],
+  "created": 1663306704,
+  "id": "cmpl-kA7fKrxh0sYhG7v0mh3hSfeF6o6RD",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 232,
+    "total_tokens": 1232
+  }
+}

@@ -1,0 +1,40 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// left shift and rotate the register out by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk, posedge reset)\nbegin\n\tif (reset)\n\t begin\n\t out = 8'b0;\n\t end\n\telse\n\t begin\n\t case(load)\n\t 1'b0:\n\t begin\n\t out = data;\n\t end\n\t 1'b1:\n\t begin\n\t out = out << amount;\n\t out = out >> amount;\n\t end\n\t endcase\n\t end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset) begin\n\tif (reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse if (load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],out[7]};\n\tend\n\tif (reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse if (load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],out[7]};\n\tend\n\tif (reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse if (load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (posedge clk, negedge reset)\nbegin\n\tif (reset == 0)\n\tbegin\n\t// when reset is low, reset out to 0\n\tout <= 8'b0;\n\tend\n\telse if (load)\n\tbegin\n\t// when load is high, load data to out\n\tout <= data;\n\tend\n\telse\n\tbegin\n\t// when load is low, left shift out\n\tout = out << amount;\n\tend\nend\n"
+    }
+  ],
+  "created": 1663333574,
+  "id": "cmpl-WhNZ6AAJVYFVwJZEw4WN0cogsilTH",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 421,
+    "prompt_tokens": 89,
+    "total_tokens": 510
+  }
+}

@@ -1,0 +1,40 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (load)\n    out.we<=1;\n    if (clk || reset)\n        load;\n    else {\n        out<=(data << amount) >>(~ amount);\n        out<=data >> amount;\n    }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(clk, reset) begin\n    if (resetn == reset) out <= out;\n    if (load)\n        out <= data;\n    else\n        // The value must be carried like this because it generates more shut down code \n        // and it works as a register through zero shift for out \"[7:0]\"\n        out[activar()] is load[activar()];\n    load <= clk;\nend\n// LCD data bus from output (cisco XLCD) if load is high\nalways @(clk, reset, amount)\n    if (amount == 0) {\n        type_data_bus[uint8_t (out[activar()])] <= entrada_LCD[uint8_t (out[activar()])];\n    }\nend\n\n\n// input data into the LCD bus for evaluation\nalways @(clk, reset)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign out[6:0] =\n(\n    ((load) && ((amount & (0b01) << 0)) ) |\n    ((load) && ((amount & (0b10) << 2)) ) |\n    ((load) && ((amount & (0b11) << 4)) || out[6] << 3)\n);\ninitial out = data;\n*/\n\nclass OptimizedLeftRotate {\n\n  protected StepInfo _left_rotate_info;\n  protected StateDataIsLoaded _stateIsDataLoaded;\n  private ActiveParties _generate_parties;\n\n  public OptimizedLeftRotate(int intClk, int intReset, int intAmount,\n      int intData, int intLoad, StateDataIsLoaded stateDataIsLoaded,\n      ActivenessInfo actInfo, String moduleName) {\n    _left_rotate_info"
+    }
+  ],
+  "created": 1663536967,
+  "id": "cmpl-1M8lcEMiyWvTXDBi0PdcfHv6oSOuB",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 460,
+    "prompt_tokens": 94,
+    "total_tokens": 554
+  }
+}

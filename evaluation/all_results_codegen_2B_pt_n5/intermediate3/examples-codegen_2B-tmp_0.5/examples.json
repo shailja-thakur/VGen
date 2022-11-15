@@ -1,0 +1,57 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    r_next <= (r_reg >> 5) & 1;\n  \nalways @(posedge clk)\n    r_reg <= r_next;\n    feedback_value <= r_reg ^ (r_reg >> 3) ^ (r_reg >> 3) ^ (r_reg >> 3) ^ (r_reg >> 3);\n    r_next <= r_reg ^ (r_reg >> 3) ^ (r_reg >> 3) ^ (r_reg >> 3) ^ (r_reg >> 3);\n\n// on reset set the value of r_reg to 1\n// otherwise assign r_next to r_reg\n// assign the xor of bit positions 2 and 4 of r_reg to feedback_value\n// assign feedback concatenated with 4 most significant bits of r_reg to r_next\n// assign r_reg to"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    r_reg <= (r_next = r_reg << 1) ^ (r_reg >> 4);\n    r_next <= r_reg;\n    feedback_value <= r_reg;\n    q <= r_reg;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (reset)\n    {\n        r_reg = 0x0;\n        r_next = 1;\n        feedback_value = 0;\n    }\n    else\n    {\n        r_reg = r_next;\n        r_next = r_reg >> 1;\n        feedback_value = (r_reg & 1) ^ (r_reg >> 2);\n        r_reg = r_reg >> 1;\n    }\n\n// for each bit position 4 to 0\nfor (int i = 0; i < 4; i++)\n{\n    // assign r_next to the output q\n    q[i] = r_next ^ feedback_value;\n    // increment r_next and assign r_next to the output q\n    r_next = r_next << 1;\n    r_next = r"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (reset) r_reg = 0;\n  else\n  {\n    r_reg = r_next;\n    r_next = r_reg >> 1;\n    r_reg = r_reg << 1;\n    r_reg = r_reg | (r_reg >> 4);\n    r_reg = r_reg ^ feedback_value;\n    r_reg = r_reg >> 4;\n    r_reg = r_reg | (r_reg >> 3);\n    r_reg = r_reg ^ feedback_value;\n    r_reg = r_reg >> 3;\n    r_reg = r_reg | (r_reg >> 2);\n    r_reg = r_reg ^ feedback_value;\n    r_reg = r_reg >> 2;\n    r_reg = r_reg | ("
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\n    if (reset)\n        r_reg = 1;\n    else\n        r_next = r_reg;\n    feedback_value = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    r_reg = r_next;\n    q = r_reg;\nend\n// design the 4-bit LFSR\nmodule lfsr_4bit(\n    input clk,\n    input reset,\n    output [4:0] q\n); \nreg [4:0] r_reg;\nwire [4:0] r_next;\nwire feedback_value;\n// on reset set the value of r_reg to 1\n// otherwise assign r_next to r_reg\n// assign the xor of bit positions 2 and 4 of r_reg to feedback_"
+    }
+  ],
+  "created": 1663540010,
+  "id": "cmpl-5QboNU9Cp1UFNzl0rerPTW2Jo1f2f",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 865,
+    "prompt_tokens": 155,
+    "total_tokens": 1020
+  }
+}

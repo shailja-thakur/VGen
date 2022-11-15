@@ -1,0 +1,40 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout = 0;\n\telse if (load)\n\tout = data;\n\telse begin\n\t// shift the data left by amount\n\t// i.e. out = {data[amount],data[5:1]};\n\tout = {out[6:0],out[7]};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout = 0;\n\telse if (load)\n\tout = data;\n\telse begin\n\t// shift out the data\n\t// the shift is accomplished by using a 16-bit left shift\n\t// this is a two-bit left shift\n\tout = {out[6:0],out[7]};\n\t// rotate the data\n\t// this is a three-bit left shift\n\tout = {out[5:0],out[6],out[7]};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tout <= 0;\n\telse if (load)\n\tout <= data;\n\telse begin\n\t// shift left by 2^(amount)\n\tout <= {out[6:0],out[7]};\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663306627,
+  "id": "cmpl-nbo70FPuX8ZfdAhFjjTwi5jmF4nF0",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 318,
+    "prompt_tokens": 93,
+    "total_tokens": 411
+  }
+}

@@ -1,0 +1,339 @@
+example-0: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always
+    if ( reset == 1'b0 )
+        q = 1;
+    else if ( q == 12'b11 )
+        q = 1;
+    else
+        q = q + 1;
+// The counter only ever increments Object Sizes of 4 bytes, so q is
+// multiplied by 256 before it is used to mask out input signals
+reg
+    [5:0]
+    i;
+// on rising edge of clock q is updatede increment q by 1
+always
+    if ( clk == 1'b1 ) begin
+        q <= q + 1;
+    end
+
+================================================================
+example-1: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or posedge reset) begin
+  if (reset) q <= 0;
+  else if (q == 12) q <= 0;
+  else q <= q + 1;
+end
+// end clk;
+
+================================================================
+example-2: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+assign q = (
+    (reset == 0) ? 1 : // reset phase
+    (q == maxval) ? 1 : // q is at max value
+    clk ?
+    ( < counter_max> ? 
+        ((counter_now) + 1) : 0 // positive edge 
+    ) : counter_now # wait until positive edge of clock begin current cycle
+);
+
+================================================================
+example-3: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+wire [3:0] qahead; 
+always @(posedge clk) #1 begin
+    qahead <= q; 
+    if (reset) begin
+        q <= 1;
+    end else...
+    if (qahead[3] == 1) begin
+        q <= 0;    // assign q to 0
+    end else...
+    q <= q + 1;  // move one step forward
+end
+assign q = qahead;
+
+================================================================
+example-4: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always_comb 
+    assign q = ({q, 1, 11, 7, 9, 3, 9, 7, 3, 9, 5})[case({
+            remainder(counter.q[1:0], 12), counter.q[1:0] = counter.q[1:0] + 1,
+            counter.q[1:0] = 1, counter.q[1:0] = counter.q[1:0] * 3 + 10 
+        })]; 
+
+// instantiate the counter 
+counter counterInst (.clk(clk), .reset(reset), .q(q)); 
+
+// trigger the counter 
+always_seq(  
+    counterInst.reset(false), 
+    timer(clk).elapsed(output clkRst), 
+    counterInst.start(),
+    clk.posedge(clkR
+================================================================
+example-5: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk, reset) begin
+    if (reset) q <= 1;
+    else if (q == 12) q <= 1;
+    else ++q;
+end
+"""
+
+def write(f,states,expect,pre,pst):
+    for i in states:
+        f.write("    assign o_q[3:" +str(len(states)-1)+"] = ")
+        f.write(str(expect[i]["expect"]['q'])+"\n")
+
+
+vals = make_vals('ones',[1,0,0,0])
+validate('test_select_yplusstar2plus3.v',variables = 'clk reset',contexts = 'pst pst',register_values = vals)
+
+f = open('expected_test_select_yplusstar2plus
+================================================================
+example-6: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+    always @ (posedge clk or (reset == 1'b0))
+        begin
+        	case (q[2:0])
+            	1'b0 : q <= 1 ;
+            	1'b1 : q <= 1 ;
+            	default : q <= q[0] + 1;
+            endcase
+
+
+================================================================
+example-7: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+// endeq counter
+
+================================================================
+example-8: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+// This is a callback from Verilog. 
+// This procedural approach is used for simplicity and clarity. 
+
+================================================================
+example-9: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @ (posedge or negedge clk or negedge reset) begin
+    if (reset == 1) q <= 0;
+    else if (q == 3) q <= 1;
+    else q <= q + 1;
+end
+
+================================================================
+example-10: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or posedge reset)
+begin
+    if (reset)
+    q <= 0;
+    else if (q == 12)
+    q <= 0;
+    else
+        q <= q + 1;
+end
+
+================================================================
+example-11: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or negedge reset)
+begin
+    if (reset)
+        q <= 1;
+    else if (q==12)
+        q <= 1;
+    else
+        q <= q + 1;
+end
+
+================================================================
+example-12: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or ~reset) 
+    if (reset) q <= 0;
+    else if (q == 12, q <= 0);
+    else q <= q + 1;                                        
+// For demo purposes, connect q to an LED.
+always @(posedge clk or ~reset) 
+    led = q == 0;       
+
+================================================================
+example-13: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or posedge reset) begin
+  if (~reset) begin
+	  q <= 12'b0;   
+  end else begin
+	 q <= q + 1'b1; 
+  end
+end
+
+// dummy section to make the synthesizer think that it has a PCTDMA block
+assign [12:8] q = 12'b0;
+
+
+// DMA highway loads get sent to this:
+wire q_highway[3];
+assign q_highway[0] = q;
+assign q_highway[1] = 12'b0;
+assign q_highway[2] = 12'b0;
+
+// DMA loads get sent to this:
+wire [3:0] loads;
+assign loads = q_highway;
+
+
+// change the OUTPUT enable signal of the PCTDMA do
+================================================================
+example-14: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+// When q is exactly 12, assign q to 0
+always @(posedge clk or posedge reset) begin
+    if (reset) q <= 0;
+    else if (q == 12) q <= 0;
+    else q <= q+1;
+    if (q == 12) q <= 0;
+end
+
+================================================================

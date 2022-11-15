@@ -1,0 +1,54 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign out=(present_state==1'b1)?(in):(~in);\n// Register output (next state)\nalways @(posedge clk or posedge reset)\n\tif (reset)\n\tbegin\n\tnext_state=0;\n\tpresent_state=0;\n\tend\n\telse\n\tbegin\n\tpresent_state=next_state;\n\tcase(present_state)\n\t0: if(in==1) next_state=1; else next_state=0;\n\t1: if(in==1) next_state=1; else next_state=0;\n\tendcase\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign out=(present_state==1'b1)^(in);\n\nalways @(posedge clk)\nbegin\nif(reset)\n\tpresent_state<=1'b0;\nelse\n\tpresent_state<=next_state;\nend\n\nalways @(present_state or in)\nbegin\ncase(present_state)\n1'b0: if(in)next_state<=1'b1;\n\telse next_state<=1'b0;\n1'b1: if(in)next_state<=1'b1;\n\telse next_state<=1'b0;\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// State Transition logic:\nalways @(posedge clk or posedge reset)\n\tif (reset) \n\tbegin\n\tpresent_state <= 0;\n\tend\n\telse \n\tbegin\n\tpresent_state <= next_state;\n\tend\n// State storage logic:\nalways @(present_state)\n\tcase(present_state)\n\t0: next_state = in ? 0 : 1;\n\t1: next_state = in ? 1 : 0;\n\tendcase\n// Output logic:\nassign out = present_state == 1'b1 ? 1'b1 : 1'b0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign out = present_state & in;\n\nalways @(posedge clk or posedge reset) begin\n\tif (reset) \n\tbegin\n\tnext_state = 0;\n\tpresent_state = 0;\n\tend\n\telse \n\tbegin\n\t// State transition logic\n\tpresent_state = next_state;\n\tcase(present_state)\n\t0: next_state = in ? 0 : 1;\n\t1: next_state = in ? 1 : 0;\n\tendcase\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif (reset) \n\tbegin\n\tpresent_state <= 0;\n\tnext_state <= 0;\n\tout <= 0;\n\tend\n\telse \n\tbegin\n\tpresent_state <= next_state;\n\tout <= next_state == 1'b1 ? 1'b0 : 1'b1;\n\tend\nend\nalways @(posedge clk)\nbegin\n\tif (reset) \n\tbegin\n\tnext_state <= 0;\n\tend\n\telse \n\tbegin\n\tcase(present_state)\n\t// In state 0, go to state 1 if in=1\n\t0: next_state <= in ? 1 : 0;\n\t// In state 1, stay in state 1 if in=1\n\t1: next_state <= in ? 1 : 1;\n\tdefault: next"
+    }
+  ],
+  "created": 1663306729,
+  "id": "cmpl-uaCqhkD4ivO4rUJUirQkn5U4LTRwK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 776,
+    "prompt_tokens": 148,
+    "total_tokens": 924
+  }
+}

@@ -1,0 +1,89 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(*)\nbegin\n    if (ena)\n    {\n        q = data;\n    }\n    else\n    {\n        q = 0;\n    }\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// \n// Copyright (C) 2016 Justin Lee <Justin.lee@uwaterloo.ca>\n//\n// This program is free software: you can redistribute it and/or modify\n// it under the terms of the GNU General Public License as published by\n// the Free Software Foundation, either version 3 of the License, or\n// (at your option) any later version.\n//\n// This program is distributed in the hope that it will be useful,\n// but WITHOUT ANY WARRANTY; without even the implied warranty of\n// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n// GNU General Public License for more details.\n//\n// You should have received a copy of the GNU General Public License\n// along with this program.  If not, see <http://www.gnu.org/licenses/>.\n//\n\n// This file is a part of the \"L"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n    if (ena)\n    {\n        q = data[amount];\n    }\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (ena)\n  {\n    if (load)\n    {\n      q = data;\n    }\n  }\n  else\n  {\n    if (load)\n    {\n      q = q << amount;\n    }\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n    if (ena)\n    {\n        q = data;\n    }\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n    if (ena)\n    {\n        q = data[amount];\n    }\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(*)\nbegin\n    if (clk == 1)\n    {\n        if (ena == 1)\n        {\n            q = data[63:0];\n        }\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n    if (ena)\n    {\n        if (load)\n        {\n            q = data;\n        }\n    }\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  if (ena)\n  {\n    if (load)\n    {\n      q = data;\n    }\n  }\n  else\n  {\n    q = 0;\n  }\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n  if (ena)\n  {\n    if (load)\n    {\n      q = data;\n    }\n  }\n}\n"
+    }
+  ],
+  "created": 1663540215,
+  "id": "cmpl-LCTpdFchV1ylJwDJScSJbkSoEIyi6",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 618,
+    "prompt_tokens": 184,
+    "total_tokens": 802
+  }
+}

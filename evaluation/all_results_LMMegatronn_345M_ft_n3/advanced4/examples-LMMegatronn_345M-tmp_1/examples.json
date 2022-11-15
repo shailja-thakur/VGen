@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "  always @(posedge clk)\n  begin\n    if (load == 1'b1)\n      q <= {data[63:0], data[63:0]} >> (amount + 0) << 1;\n    else if (load == 1'b0)\n      q <= q >> 1;\n  end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "                     reg [63:0] product;\n  \n   always @(posedge clk, negedge reset_b)\n     if (!reset_b)\n       begin\n           q <= 0;\n           product <= 0;\n       end\n     else\n       begin\n           // (STATE MACHINE) no parity; reset the loop\n           if (load)\n             begin\n                //q <= data;\n     "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "  always @(posedge clk)\n\n   q[63:0] <= data[63:0];\n"
+    }
+  ],
+  "created": 1663299232,
+  "id": "cmpl-bYVyqExRyUqX7qOSWiT1a83efyMhz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 315,
+    "prompt_tokens": 184,
+    "total_tokens": 499
+  }
+}

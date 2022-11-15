@@ -1,0 +1,49 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": " \n// Write code for the 2 always blocks.\nalways @ (sel or a or b) \nbegin\n\tif (sel == 0)\n\tbegin\n\tout = a;\n\tend\n\telse\n\tbegin\n\tout = b;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign out = (sel)? b:a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n"
+    }
+  ],
+  "created": 1663543710,
+  "id": "cmpl-4FjCVYetjg58VuaN8Qjbu3kuOwC1t",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 114,
+    "prompt_tokens": 70,
+    "total_tokens": 184
+  }
+}

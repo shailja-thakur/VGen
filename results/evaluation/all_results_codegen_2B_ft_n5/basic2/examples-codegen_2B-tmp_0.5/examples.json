@@ -1,0 +1,50 @@
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n always @(a, b)\n case({a,b})\n 2'b00: out = 1'b0;\n 2'b01: out = 1'b0;\n 2'b10: out = 1'b0;\n 2'b11: out = 1'b1;\n default: out = 1'b0;\n endcase\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways@(a, b, out)\nbegin\nout <= a & b;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign out = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nreg out;\nalways @(a or b)\n\tbegin\n\tif (a&b)\n\tout = 1;\n\telse\n\tout = 0;\n\tend\n"
+    }
+  ],
+  "created": 1663606710,
+  "id": "cmpl-P6b9a3NmoqSampZrLZmbqM4StBjF5",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 171,
+    "prompt_tokens": 47,
+    "total_tokens": 218
+  }
+}

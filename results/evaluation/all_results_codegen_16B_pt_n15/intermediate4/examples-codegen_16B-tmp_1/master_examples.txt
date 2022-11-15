@@ -1,0 +1,475 @@
+example-0: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+// Reset register is connected to reset.sig and can be clocked in any state. Prepare state register for initial load. bit[0]=1, bit[1]=0 in state 0, bit[0]=0, bit[1]=0 in state 1. out=0 at initial load.
+always @(posedge clk)
+  if (reset)
+    present_state = 0;  // or some value that is non zero
+  else if(present_state == 0)
+    present_state = ( in<1 ) && ~in<1; // second condition required because in<1 has no effect if in=1
+  next_state = next_state(present_state);
+  out = present_state;
+
+================================================================
+example-1: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+assign out = present_state;
+always @(posedge clk)
+if (reset)
+  present_state = 0;
+else
+  present_state = next_state;
+assign next_state = (present_state == 1)? 0 : 1;
+
+================================================================
+example-2: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+wire jump_if_not_present;
+always @(posedge clk || posedge reset)
+begin
+	if (reset)
+		present_state <= 0;
+	else
+		present_state <= present_state;
+	if (present_state == 0 && in != 0)
+		next_state <= 0;
+	else if (present_state == 1 && in != 0)
+		next_state <= 1;
+	else next_state <= 0; // if reset, initial state is 0 and init value is here emitted
+	out <= jump_if_not_present <= present_state;
+end
+
+================================================================
+example-3: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @(posedge clk) begin
+  if (reset) begin
+    present_state <= 0;
+  end else begin
+    if (present_state == 0) begin
+      present_state <= 1;  // implicit transition rule
+      next_state <= in;  // implicit transition rule
+      out <= next_state;
+    end else begin
+      next_state >= present_state;  // implicit transition rule
+      out <= next_state;
+    end
+  end
+end
+
+// ...........................................................................
+
+#3 en 0 ff 0 00
+#8 en 0 ff 0 01
+#15 en 0 ff 0 00
+#22 en 0 ff 0 01
+
+================================================================
+example-4: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+
+initial begin:
+ present_state = 0;
+ next_state = 0;
+ out=0;
+  lsfsm_${IL}(clk,reset,in,out,present_state,next_state);
+end
+
+always @(posedge clk or posedge reset) begin
+ case(present_state)
+   0:
+     begin
+       if (in=1) begin
+         next_state = 0;
+         out=1;
+       end 
+     end
+     case(next_state)
+       0:
+         begin
+           case(present_state)
+              0:
+               end
+           end
+           case(next_state)
+              0:
+               begin
+                 if (in=1) begin
+                    next_state = 0;
+                    u_${P}_out = out;
+                 end
+               end
+               case(next_
+================================================================
+example-5: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @(posedge clk) begin
+if (reset) present_state <= 0;
+else if (in) present_state <= 1;
+else present_state <= 0;
+end
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @(posedge clk) begin
+if (reset) present_state <= 0;
+else if (in) present_state <= 1;
+else present_state <= 0;
+end
+assign out = present_state;
+end
+
+
+================================================================
+example-6: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always_ff @(posedge clk, phantms)+ begin //Construct the Moore state machine
+
+	if(reset)  present_state=0;
+	else if(present_state==0 and (in==1)) present_state=0; // Start the thing off
+	else present_state=1;
+
+	if(present_state==0) 
+		next_state=0; // State 0
+	else 
+		next_state=1; // State 1
+
+	out=next_state; //Go with the newly computed values
+end
+
+================================================================
+example-7: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always begin begin
+present_state = 0;
+next_state = next_state + 1;
+wait100 [(present_state == 0) & (reset == 0) & (in != 0)];
+end;
+
+================================================================
+example-8: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+// Assume high-high on in for initialization
+if(reset) present_state = 0;
+else       present_state = 1;
+
+always @(posedge clk) begin begin
+    if(reset) present_state = 0;
+    else       present_state = 1;
+    case (present_state)
+        0 : if(in) next_state = 0;
+        1 : if(!in) next_state = 1;
+        endcase
+    endbegin
+// assign next_state to present_state
+    present_state <= next_state;
+    // assign output
+    case (present_state)
+        0 : out=1;
+        1 : out=0;
+        endcase
+// assign present_state to next_state
+    next_state <= present_state;
+end
+end
+
+================================================================
+example-9: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+simple_fsm myfsm(clk, in, present_state, next_state, out);
+always begin
+	// enable the FSM
+	present_state = 0;
+	next_state = 1;
+end
+always begin
+	// update the FSM, set clk true if ready
+	// to avoid collecting latency, increment clock before since more than one operation might need to
+	// happen on it at a time
+	clk = !clk;
+			
+	// if clk is high signal a latching reset
+	out = !reset;
+	
+	// update our output
+	out = out && present_state;
+	
+	// read our input
+	present_state = present_state;
+	present_state = present_state;
+end
+================================================================
+example-10: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @(posedge clk, posedge reset) begin
+	if (~reset) begin
+		next_state <= 0; present_state <= 0; out <= 0;
+	end else begin
+		// Resynchronize the FSM and the pipeline
+		if ((present_state = next_state) != 0) begin
+			// Block FSM in state 1 if there is some in task aganist
+			next_state <= present_state;
+		end else begin
+			// There is no in task against, go to state 0
+			next_state <= 0;
+		end
+		
+		// Afterwards, begin behavior based on present_state
+		switch (present_state)
+		{
+			case 0: // State 0
+				
+				// Define the behaviour of this FSM state if there is an out task again
+				if (out) begin
+					// Assign input to present_state
+================================================================
+example-11: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @ (posedge clk) begin
+	if(reset){
+		present_state = 0;
+	}
+	else {
+		if(in){
+			present_state = 0;
+			out = 1;
+		}
+		else {
+			present_state = 1;
+			out = 0;
+		}
+	}
+	next_state = present_state;
+	if(present_state == 0){
+		if (in && present_state != next_state) {
+			out = 1; present_state = 1;
+		}
+	}
+	if(present_state == 1){
+		if (!in && next_state != present_state) {
+			out = 0;
+			next_state = 0;
+		}
+	}
+end
+
+================================================================
+example-12: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+initial
+    present_state = 0;
+    next_state = 1;
+    out = 1;
+    next_state = present_state;
+
+always @(posedge clk or posedge reset)
+    if (reset == 1) {
+        present_state = 0;
+    } else {
+        if (in == 1) present_state = next_state;
+    }
+    next_state = present_state;
+    if (present_state == 0 && in == 1) out = 1;
+    if (present_state == 1 and in == 1) out = 1;
+    out = next_state;
+
+================================================================
+example-13: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @(posedge clk or posedge reset)
+begin
+if (reset) begin
+    next_state <= 0;
+    present_state <= 0;
+    out <= 0;
+end
+else if (out) begin
+    next_state <= 0;
+    present_state <= 1;
+    out <= 1;
+end
+else if (in) begin
+    next_state <= 1;
+end
+else begin
+    next_state <= 0;
+end
+endassign next_state;
+
+
+================================================================
+example-14: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+int main() {
+    present_state = 0;
+    next_state = 0;
+    out = 0;
+    always @(posedge(clk)) {
+        if(reset) {
+            present_state = 0;
+        }
+        else {
+            out = present_state == 0 ? 1 : 0;
+            next_state = present_state == 0 ? 1 : 0;
+        }
+        if(in) {
+            present_state = next_state;
+        }
+    }
+
+}
+'''
+
+setup_tb(t, 'simple_fsm.v', '-odbug -fpga -p ' +
+      '' + ' --defbzero 0 ' + ' -f Sanity')
+
+================================================================

@@ -1,0 +1,25 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+reg [7:0] shift_reg;
+// which is the "shift" register, which is the "shift" register
+reg [7:0] data;
+// 1 for bit, 0 for all ones
+// which uses "pipe" register, no need to be loaded
+reg [7:0] shifted_data;
+// which is the "pipe" register, which is the "pipe" register
+reg [7:0] shifted_data_2;
+// 1 for bit, 0 for all ones
+// which uses "pipe" register, which is the "pipe" register
+reg [7:0] shifted_data_final;
+// which is the "pipe" register, which is the "pipe"
+reg [7:0] shifted_data_final;
+// 1 for bit, 0 for all ones
+// which uses "pipe" register, which is the "pipe" register
+reg [7:endmodule

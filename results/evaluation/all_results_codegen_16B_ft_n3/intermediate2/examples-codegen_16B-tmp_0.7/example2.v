@@ -1,0 +1,35 @@
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @( posedge clk, posedge reset )
+begin 
+	if ( reset == 1'b1 )
+	assign q = 4'b0000;
+	else 
+	begin
+	case( q )
+	4'b0000: 
+	assign q = 4'b0001;
+	4'b0001: 
+	assign q = 4'b0010;
+	4'b0010: 
+	assign q = 4'b0011;
+	4'b0011: 
+	assign q = 4'b0100;
+	4'b0100: 
+	assign q = 4'b0101;
+	4'b0101: 
+	assign q = 4'b0110;
+	4'b0110: 
+	assign q = 4'b0111;
+	4'b0111: 
+end
+end
+endmodule

@@ -1,0 +1,55 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\tif (we)\n\tbegin\n\tram[addr] = data;\n\tend\n\tq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign q = (we) ? ram[addr] : 8'bz;\n\n// Synchronous read\nalways @(posedge clk)\nbegin\n\tif (we)\n\tbegin\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n if (we)\n ram[addr] <= data;\nend\nassign q = (we) ? ram[addr] : 8'bz;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (we)\n\tbegin\n\tram[addr]<=data;\n\tend\n\tq<=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\tif (we)\n\tbegin\n\tram[addr]<=data;\n\tend\n\telse\n\tbegin\n\tq<=ram[addr];\n\tend\nend\n"
+    }
+  ],
+  "created": 1663600180,
+  "id": "cmpl-sabbaEdJlFSlgIG03FLToPh17ckXW",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 249,
+    "prompt_tokens": 143,
+    "total_tokens": 392
+  }
+}

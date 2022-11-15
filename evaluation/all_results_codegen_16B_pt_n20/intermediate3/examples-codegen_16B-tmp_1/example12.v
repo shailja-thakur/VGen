@@ -1,0 +1,37 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always begin
+    assign r_reg = r();
+    r_next = r_reg;
+    if (reset == 1) begin
+        r_reg = 1;
+    end else begin
+        //assign feedback_value = (r_reg == [r4] + [r2^4])?[r2](otherwise)[0][0];                             
+        assign feedback_value = (r_reg == 1)?0:1;               
+        r_next[1] = r_next[0];
+        r_next[0] = feedback_value;
+    end
+    q <= r_next;
+end
+
+
+// Concatenate two 5-bit LFSRs
+module lfsr5( 
+    input clk,
+    input reset,
+    input reset2,
+    output [5:0] q
+); 
+GFFTBIN5endmodule

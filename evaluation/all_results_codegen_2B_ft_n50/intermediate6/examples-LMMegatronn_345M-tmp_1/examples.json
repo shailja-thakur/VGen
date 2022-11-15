@@ -1,0 +1,54 @@
+// This is a ram module
+module ram
+(
+input [7:0] data,
+input [5:0] addr,
+input we, clk,
+output [7:0] q
+);
+reg [7:0] ram[63:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// We use a stored data in the ROM chip\nalways @(posedge clk) begin\n  ram[addr] <= data;\nend\n\ninitial\nbegin\n$readmemh(\"boot.mem\", ram);\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign q = ram[addr];\n\nalways@(posedge clk) begin\n    if(we)\n        ram[addr] <= data;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (we)\n        ram[addr] <= data;\n    q <= ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "initial\nbegin\n  ram[0] = 8'd0;\n  ram[1] = 8'd0;\n  ram[2] = 8'd0;\n  ram[3] = 8'd0;\nend\n// on clock edges\nalways @(posedge clk)\nbegin\n  if (we && we)\n    begin\n      //ram[addr] <= data;\n      if (we || we)\n        ram[addr] <= data;\n    end   \nend\n// on clock edge\nalways @(posedge clk)\nbegin\n  q <= ram[addr];\n  qd <= ram[addr];\nend   \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "wire [5:0] addr_new;\nassign addr_new = we ? data : ram[addr];\nalways @(posedge clk) begin\n  if (we)\n    ram[addr] <= data;\n  q <= ram[addr_new];\nend\nassign q = ram[addr_new];\n"
+    }
+  ],
+  "created": 1663299318,
+  "id": "cmpl-tTfTe8ZVFhutmK22sOdRCN6A3QL4X",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 395,
+    "prompt_tokens": 85,
+    "total_tokens": 480
+  }
+}

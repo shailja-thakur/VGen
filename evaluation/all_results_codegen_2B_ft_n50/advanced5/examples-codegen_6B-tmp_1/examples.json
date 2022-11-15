@@ -1,0 +1,153 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (clk or (reset & !idle)) begin\n    cur_state <= SA & SA | SB | SAB;\n   if (cur_state==IDLE)\n   begin\n       if (a && b) cur_state <= SAB;\n       if (!a && b) cur_state <= SAB;\n       if (a && !b) cur_state <= SA;\n       if (!a && !b) cur_state <= IDLE;\n    end\n   else begin\n       if (next_state==IDLE) next_state <= SAB;\n       if (next_state==SA || next_state==SB) next_state <= SAB;\n       if (b)  next_state <= next_state;\n       if (next_state==SAB && a) next_state <= next_state;\n       if (next_state==SAB && !"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @ (\nclk,\nreset )\nbegin\n    next_state = IDLE;\n    if (a && b) begin next_state = SAB;\n    else if (a) begin next_state = SA;\n    else if (b) begin next_state = SB;\n    assert next_state < 4;\n    always @ (\n        a,\n        b,\n        next_state_a,\n        next_state_b)\n        begin\n            switch (next_state) begin\n            case SA: next_state_a = 1;\n            case SB: next_state_b = 1;\n            default: next_state = IDLE; end\n        end\n    end\nendif\nend\n\nmodule connect(\ninput a,\ninput b,\noutput out);\n\nconnect(\na,\nb,\nout_port(1,1));\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n    if(cur_state == IDLE && a) // not finished but a is 1\n{\n    next_state = 1;\n}\n    else if(cur_state == IDLE && b) // not finished but b is 1\n{\n    next_state = 2;\n}\n    else if(cur_state == IDLE) // IDLE\n{\n    if(a and b) // both high\n    {\n        cur_state = A;\n    }\n    else if(a and !b) // a high and b is 0\n    {\n        cur_state = SAB;\n    }\n    else if(b and !a) // b high and a is 0\n    {\n        cur_state = SB;\n    }\n    else // both low\n    {\n        cur_state = IDLE"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always start\n{\n    cur_state = IDLE;\n    next_state = IDLE;\n}\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n\nunsigned char abro_arch();\nnext_state = next_state | !(abro_arch() == 0);\nshow_state(next_state);\nendbehavior\n//endbehavior\n\nbeginbehavior\nfunction show_state(next_state)\nendfunction\n\n// Function: abro_arch\nbehavior abro_arch()\n\tcreg [next_state] == 0;\n\tnext_state = next_state << 1 | cur_state;\n\treturn next_state;\nendbehavior\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @ (clk_i)\n        z <= a | b;\n// The inputs (a,b) and (a,!b) propagate to the transition A->B * If\n// cur_state is IDLE, signal a will propogate to A->B\nalways @ (a | !a)\n        if (cur_state == IDLE) next_state = A - B;\nelse next_state = cur_state;\nalways @ (cur_state & SA)\n        next_state |= B;\nalways @ (cur_state & SB)\n        next_state |= A;\nwhen (next_state == SAB || (cur_state & cur_state))\n        next_state := IDLE;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge a or b)\n  next_state <= cur_state ? (next_state == SAB ? 1 '1' : next_state == SA ? 1 '0' : next_state == SB ? 1 '0' : 0) : cur_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset) begin\n    \tcur_state <= SAB;\n    else begin\n    \tcur_state <= IDLE;\n    \tnext_state <= SAB;\n    end\n    else begin\n\tcur_state <= IDLE;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nz <= (~b && ~a) && (cur_state==IDLE);\nalways @(posedge clk)\nz <= ~a & ~b & (cur_state==SA);\nalways @(posedge clk)\nz <= ~a & ~b & (cur_state==SB);\nalways @(posedge clk)\nz <= ~b &  a & (cur_state==SAB);\nalways @(posedge clk)\nz <=  a & ~b & (cur_state==IDLE);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "ensure main_loop:\ncarry out:\n  cur_state <= next_state;\n  begin\n    dbg_line:\n    a <= z ? 1'b1:1'b0;\n    b <= z ? 1'b1:1'b0;\n  end\n  case SA:\n    next_state = next_state + 1'b1;\n    clk <= 1'b1 & reset;\n  endcase\n  case SB:\n    next_state = next_state + 1'b1;\n    clk <= 1'b1 & reset;\n  endcase\n  case SAB:\n    next_state = IDLE;\n    clk <= 1'b1 & reset;\n    z <= 1'b1;\n    clk <= ~a;\n  endcase\nendfunction\n\n// This is an FSM to implement arbitration between"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n{\n  if (reset == 1) {\n    next_state = IDLE;\n    cur_state = IDLE;\n    __xtint(b);\n    __xtint(a);\n } else if( a == 1 && b == 1) {\n    next_state = SA;\n    cur_state = SA;\n    __xtint(b);\n    __xtint(a);\n   } else if( a == 1) {\n    next_state = SA;\n    cur_state = SA;\n    __xtint(b);\n   } else if( b == 1) {\n    next_state = SB;\n    cur_state = SB;\n    __xtint(a);\n    __xtint(b);\n   } else if( a == 1 && b == 0) {\n    next_state = SAB"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "ensure arithmetic_property generic Q(N);\nassign IO 0 = (a && b) || (!a && !b), cur_state = IDLE, next_state = IDLE;\nstate C1 begin [1:0]next_state = IDLE;\nstate C2 begin [1:0]next_state = IDLE;\nstate C3 begin [1:0]next_state = IDLE;\nend state;\n//in_clk <= clk;\nensure IO produces z = (cur_state[1:0] == SAB); end requires IO;\n//z_out <= z;\nend state;\n//parameter DISPLAY = false;\nreg [1:0] p_out;\nprocedure p1;\ninvariant p1_inv\n    [cur_state = SAB]\n    [next_state = SA || next_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "behavior abro_TB_FSM =\n  always( clk.posedge )\n    begin\n      // Init variable to IDLE\n      cur_state <= IDLE;\n      // Init next_state to IDLE\n      next_state <= IDLE;\n      // Set sign/level\n      if (a != 1) { abro_output_o <= z; }\n      if (b != 1) { abro_output_o <= z; }\n      // If current state is SAB, because :1/0\n      if (cur_state.eq(SAB)) {\n        // Call next state SL\n        next_state <= SA;\n      }\n      // \u2078 (next_state,cur_state) \u2070 \u206d\n      abro_next_state(next_state,cur_state)\n    end;\n// NOTE: Maybe this shouldn't"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  cur_state <= id(1);\n  if (cur_state == IDLE)\n  begin\n    if (a && b)\n    begin\n      next_state <= SAB;\n    end\n\tend\n  end\n  if (cur_state == SAB and a) begin next_state = SA; end\n  if (cur_state == SAB and !(a)) begin next_state = SB; end\n  if (cur_state == SA and b) begin next_state = SAB; end\n  if (cur_state == SA && !(b)) begin next_state = SB; end\n  if (cur_state == SB and a) begin next_state = SA; end\n  if (cur_state == SB && !(a)) begin next_state = IDLE; end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nz <= (a && b);\n0 <= next_state <= SB && next_state != SAB && next_state != SA : input;\nalways @(posedge clk)\ncur_state <= SAB && cur_state != IDLE && next_state;\nalways @(negedge clk)\nnext_state <= IDLE;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge mclk)\nreset <= 1;\nstart //Delay signals for setup only (can delay anything b/c rea/res not gated)\n{\n    cur_state <= IDLE;\n    init_state = IDLE;\n    first_state = IDLE;\n    next_state = IDLE;\n}\nalways @(posedge clk)\nnext_state <= first_state;\nif( first_state == IDLE ) begin: // prevention of unexpected attractor loop\n  if( next_state == SAB and a == 1 and b == 1) begin: //fsm after delay\n  {\n    next_state <= SAB;\n  }else if( next_state == SA and b == 1) begin: //fsm after delay\n  {\n    next_state <= SA;\n  }else if( next"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n        if (cur_state == IDLE) begin\n        \tnext_state = IDLE;\n                if (a == 1) next_state = SA;\n                if (b == 1) next_state = SB;\n                if (next_state != cur_state) begin\n                \tif (next_state == SA)\n                \t\tnext_state = SAB;\n                \tif (next_state == SB)\n                \t\tnext_state = SAB;\n                \tif (next_state == SAB)\n                \t\tcur_state = next_state;\n        \tend\n                break;     \n        end\nelse begin\n        if (cur_state == IDLE and a == 1) next_state = SA;\n        if (cur_state == IDLE and b == 1) next_state = SB;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  cur_state <= IDLE ? next_state <= IDLE :\n      cur_state <= SA ? next_state <= SA :\n      cur_state <= SB ? next_state <= SB :\n      cur_state <= SAB ? next_state <= SAB :\n      next_state <= IDLE;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nread_scope monitor\nnext_state = IDLE;\nif ( !a && !b )\nnext_state = IDLE;\nelse if ( !a )\nnext_state = SB;\nelse if ( !b )\nnext_state = SA;\nabs_te();\nif ( next_state != IDLE )\nnext_state = IDLE;\nabs_to();\nabs_tn();\nabs_k();\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (cur_state == IDLE and a == 1 and b == 1) next_state = SAB;\n  else next_state = cur_state;\n  if(next_state == IDLE) \n  begin\n    if (a == 1) cur_state = SA;\n    if (b == 1) cur_state = SB;\n  \tif (next_state == IDLE) \n    begin\n      if (a == 0) next_state = SA;\n      else        next_state = SB;\n    end\n  end\nend\n"
+    }
+  ],
+  "created": 1663520661,
+  "id": "cmpl-0nXzVD9KHgtaOqMpRR9vJlfhSnkir",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3015,
+    "prompt_tokens": 218,
+    "total_tokens": 3233
+  }
+}

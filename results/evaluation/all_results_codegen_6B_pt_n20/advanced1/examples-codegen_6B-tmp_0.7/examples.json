@@ -1,0 +1,146 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n//Variables\nvar a, b, s, overflow, i, j, k;\n\n//Initialize a and b to a certain value\na = b = 123;\n\n//Set a[i] and b[i] to an initial value\nfor (i = 0; i < 7; i++) {\n    a[i] = 0;\n    b[i] = i + 1;\n}\n\n//Initialize overflow to 0\noverflow = 0;\n\n//Initialize s to 0\ns = 0;\n\n//Initialize k to a certain value\nk = 0;\n\n//While there are more bits to add to the output\nwhile (k < 8) {\n    //If the bit at position k of a is high\n    if (a[k] == 1) {\n        //If the bit at position k of b is high\n        if (b[k"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// a signed overflow occurs when the most significant bits of a and b are low and the most significant bit of s is high\n// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low\n// The order of addition of the two inputs is important. \n// Since the unsigned overflow is first calculated, the result is added to the sign of the inputs. \n// So the addition of the two inputs s and the result of the addition is added to the sign of the inputs. \n// The sign of the inputs is the sign of the most significant bit of the inputs.\n\nalways @(posedge clk) begin\n    if (ws_enable) begin\n        s <= a + b;\n    end\n    if (w_enable) begin\n        s <= b + a;\n    end\n    if (r_enable) begin\n        if (over"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n//module test_simple_adder(input [7:0] a, \n//    input [7:0] b, \n//    output [7:0] s, \n//    output signed_overflow); \n\n\n// The following test verifies that the adder works when the inputs are positive. \nfunction test_simple_adder_positive(a, b, s, overflow)\n{\n    assign(s, a + b);\n    assert(s == a + b);\n}\n\n// The following test verifies that the adder works when the inputs are negative. \nfunction test_simple_adder_negative(a, b, s, overflow)\n{\n    assign(s, a + b);\n    assert(s == a + b);\n}\n\n// The following test verifies that the adder throws an exception when the inputs are zero. "
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n//An example from http://www.hushcode.com/forums/viewtopic.php?f=70&t=45482\n/*\n   int\n   main() {\n   unsigned char a, b, c, sum;\n   signed char s;\n   int i;\n\n   a = 0x06;\n   b = 0x02;\n   c = 0x00;\n\n   s = a + b + c;\n\n   // print the sum\n   for (i = 0; i<7; i++) {\n      printf(\"%02X\", s);\n   }\n   printf(\"\\n\");\n   // print the count of the bytes used by the sign byte\n   for (i = 0; i<7; i++) {\n      printf(\"%02X\", s & 0x80);\n   }\n   printf(\"\\n\");\n   }\n*/\n//This is"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\nbegin\n    s <= a + b;\n    if ((a[7] == 0) && (b[7] == 0)) {\n        overflow <= 0;\n    }\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// The number s is the sum of a and b. \n\nalways @(posedge clk or negedge reset) // Reset the adder to 0\nbegin\n    s <= a + b; \n    if (a > 127) // If A is less than 128, then add B to s\n    begin\n        if(b > 127) // If B is less than 128, then add A to s\n        begin\n            s <= a + b; \n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// Implement the add function using the signed_adder module. \n\nfunction add(a, b) {\n    signed_adder(a, b, s, overflow);\n}\n\n// Implement the increment function using the signed_adder module. \n\nfunction increment(a) {\n    signed_adder(a, 1, s, overflow);\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n#define SIGN_ADD_RESULT(a, b, s) (((a)+(b))&0xFF)\n\n#define SIGN_ADD_OVERFLOW(a, b, s) (s>>7)\n\n#define SIGN_ADD_INT(a, b) ((a)+(b))\n\nmodule signed_adder_test(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\nsignal [15:0] a;\nsignal [15:0] b;\nsignal [7:0] s;\nsignal overflow;\n\n\n// These are the input signals\n//  a[7:0] is the first input\n//  b[7:0] is the second input\n//  s[7:0] is the output\n//  "
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "    always@(posedge clk) \n    begin\n        if(a[7] > 0)\n        begin\n            s[7] <= a[7] + b[7];  \n        end\n        else\n        begin\n            s[7] <= b[7] + a[7];  \n        end\n        if(a[6] > 0)\n        begin\n            s[6] <= a[6] + b[6];  \n        end\n        else\n        begin\n            s[6] <= b[6] + a[6];  \n        end\n        if(a[5] > 0)\n        begin\n            s[5] <= a[5] + b[5];  \n        end\n        else\n        begin\n            s[5] <= b[5] + a[5];  \n        end\n        if(a[4"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// The example of the function:\n\n\n// An functional-style, lambda-function?\n\nmodule signed_adder(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n)\n{\n  return (s[7:0] = a[7:0] + b[7:0] + (a[6] and b[6]));\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nmodule signed_adder_v4(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\nmodule signed_adder_v3(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\nmodule signed_adder_v2(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\nmodule signed_adder_v1(input [7:0] a,\n    input [7:0] b,\n    output [7:0] s,\n    output overflow\n); \n\nmodule signed_adder_v0(input [7:0] a,\n    input"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// we can use unsigned additions to add two 8-bit 2's complement numbers:\n// s = a + b + (s & 0x80)\n// + a + b + (s & 0x80)\n// + a + b + (s & 0x80)\n// + a + b + (s & 0x80)\n// + a + b + (s & 0x80)\n// + a + b + (s & 0x80)\n\n#define ADD(a, b) a + b + (a < 0 && b > 0 ? 1 : 0)\n\n#define SHR(x, n) (x) >> (n)\n\n// s = a + b + (s & 0x80)\n// add a and b to the output s\n#define ADD_A(a) s = ADD(s, a)\n\n// add b and the most significant"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\ndef signed_add(a, b, s, overflow):\n    if (a >= 0) && (b >= 0) :\n        s = a + b \n        if (s >= 0) :\n            overflow = false\n        else :\n            overflow = true\n    else :\n        if (a < 0) :\n            s = a - b\n            if (s >= 0) :\n                overflow = false\n            else :\n                overflow = true\n        else :\n            if (b < 0) :\n                s = a + b\n                if (s >= 0) :\n                    overflow = false\n                else :\n                    overflow = true\n            else :\n                s = a + b\n                if (s >= 0) :\n                    overflow = false\n                else :\n                    overflow = true\n                                     \ndef add(a, b"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n// The inputs a and b are clocked in bits MSB to LSB. \n// The carry is propagated to the next bit of the output s. \n// The output s is clocked out bits MSB to LSB. \n\nalways @(posedge clk or negedge rst) begin\n    if (rst) begin\n        s <= 0;\n        overflow <= 0;\n    end else begin\n        a <= a[7:0];\n        b <= b[7:0];\n        s <= a + b;\n        if (s[7:0] > 0x7f)\n            overflow <= 1;\n    end\nend\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n#(define M(x) #x)\n#(define M1(x) M(x))\n#(define M2(x) M1(x))\n#(define M3(x) M2(x))\n#(define M4(x) M3(x))\n#(define M5(x) M4(x))\n#(define M6(x) M5(x))\n#(define M7(x) M6(x))\n#(define M8(x) M7(x))\n#(define M9(x) M8(x))\n#(define M10(x) M9(x))\n#(define M11(x) M10(x))\n#(define M12(x) M11(x))\n#(define M13(x) M12(x))\n#(define M14(x"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n// The output is added with carry.\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\n// The input a is represented as a decimal number in the range [-32768, 32767]. \n// The input b is represented as a decimal number in the range [-32768, 32767]. \n// The input overflow is represented as a decimal number in the range [0, 1].\n\nfunction add(a, b) {\n  //overflow := a[6] + b[6]\n  //s[6] := a[6] + b[6] + overflow + (a[5] + b[5] + overflow) + (a[4] + b[4] + overflow) + (a[3] + b[3] + overflow) + (a[2] + b[2] + overflow) + (a[1] + b[1] + overflow) + (a[0] + b[0] + overflow)\n  overflow = 0;\n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (clk)\n    begin\n        s <= a + b + s_load;\n        if (s_load == 0) {\n            s_load = 1;\n        }\n        if (a_load == 0) {\n            a_load = 1;\n        }\n        if (b_load == 0) {\n            b_load = 1;\n        }\n        if (s_load == 1 && a_load == 1 && b_load == 1) {\n            overflow <= 1;\n            a_load = 0;\n            b_load = 0;\n        }\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\n\n// The signed adder signed add function.\nalways @(posedge clk)\n  signed_adder_input_a <= a;\n\nalways @(posedge clk)\n  signed_adder_input_b <= b;\n\nalways @(posedge clk)\n  signed_adder_output <= s + (signed_adder_overflow ? 1'b1 : '0');\n\nalways @(posedge clk)\n  signed_adder_overflow <= signed_adder_input_a[7:0] + signed_adder_input_b[7:0];\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n// Provide a procedure prototype for the function.\n\n\n\n\n// Specification:\n//\n// The inputs a and b of the adder are assumed to be 2's complement. \n// The inputs a and b are assumed not to overflow. \n// The output s of the adder is assumed to have the same sign as the inputs a and b and to have no sign change. \n// The output overflow is assumed to have the same sign as the inputs a and b. \n//\n// The inputs a and b can be any value. \n// The inputs a and b must not have any leading zeros. \n// The inputs a and b must not overflow. \n// The inputs a and b must not have any sign mismatch with the output s. \n// The inputs a and b must not have any sign mismatch with the output overflow. \n// The inputs a and b must not be null. \n// The"
+    }
+  ],
+  "created": 1663520554,
+  "id": "cmpl-FoOauyx7JirfD1BaTQmUG3PJgv2Lo",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3216,
+    "prompt_tokens": 164,
+    "total_tokens": 3380
+  }
+}

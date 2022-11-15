@@ -1,0 +1,94 @@
+example-0: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out 
+        
+    task or_gate( 
+        input a, 
+        input b, 
+        output out );
+
+
+================================================================
+example-1: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    ensure
+    out = a & b;
+
+Note that the AND gate assigns the 'short-circuit' bit 
+on the output side. The first gate is logically ANDed 
+with the second. 0x00 will always be assigned to the output 
+(eg:  0b10 = true, 0b00 => false 
+and true | true = true)
+
+module and_gate_skeleton( 
+    input a, 
+    input b, 
+    output out );
+
+    // assign values from the inputs to the output 
+    assign out = a & b;
+
+Notes:
+- De Morgan's Law :: and X or not(X) = !X or !not(X)
+- OR = Xor + !Xor = !(Xor AND !Xor)
+- Xor = Xor OR !Xor = (Xor OR !xor
+================================================================
+example-2: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign out = a and b{}
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+// Main function that calls the design layers
+
+void realize( and_gate Inputs, and_gate_output& outputs )
+{
+    (void)and_gate( 
+        input a, 
+        input b, 
+        output out );
+}
+
+
+
+--------------------------------------------------------------------------------
+
+// Design the module to compute the AND gate
+
+// Device Interface class definition
+class and_gate_udevice : public udevice {
+public:
+
+    // User inputs as input pins of the device
+    // Equivalent of a physical GPIO pin
+    //DataType_bitset( 10 );    
+
+    // Here input a represents a logical input pin, and input b represents a logical input pin
+    inputs a,
+    b;
+    
+    // User outputs as output pins of the device
+    // Multiplex
+================================================================

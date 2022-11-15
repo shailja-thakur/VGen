@@ -1,0 +1,368 @@
+example-0: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+assign {out[0:0], out[0:0]} = dupa(sel);  assign {out[0:0], out[0:0]} = dupb(sel);
+
+// Positonal optimization
+module opt1              (.x(sel,.y(a, b), inando));
+module opt2              (.x(sel,.y(a, b), inbno));
+
+
+  always_ff (sel) {
+    opt1 .x (.x = ~andno [4:0] (.x = ina [(0) (3)], ^sel),
+    opt2 .x (.x = ~andno [4:0] (.x = inb [(0) (3)], ^sel),
+    .y (a,b) (.y = ino, .x = ino),
+    .y (a,b)
+================================================================
+example-1: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+always @(posedge clk) begin
+    if (sel == 0)
+        out <= a;
+    else
+        out <= b;
+end
+
+================================================================
+example-2: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+assign out = (sel==0) ? a : b;
+
+================================================================
+example-3: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+================================================================
+example-4: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+assign out = (sel==1) ? b : a;
+
+
+void currdnsample( int working_a, int req ) {
+  // When requsting the next sample
+  // in the input port "a" port (port C),
+  // the given bit is transfered to port"a". 
+  ch_3_din = (chan_sel==3) ? req : a; 
+  ch_2_din = (chan_sel==2) ? req : a; 
+  ch_1_din = req; 
+  // Increment the timer on port"a". 
+  a = a + 1;
+}
+
+always @(posedge clk)
+begin
+
+  int adder_a_en;
+  int i;
+  block bcount = 0;
+  int chan_sel = idata;
+  
+  //
+================================================================
+example-5: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// Both the inputs and the outputs are driven by signals.
+// Test cases to be generated:
+// Case where a=0 and b=3, sel=0.  Expect out=0.
+// Case where a=0 and b=3, sel=1.  Expect out=3.
+// Case where a=2 and b=5, sel=0.  Expect out=2.
+// Case where a=2 and b=5, sel=1.  Expect out=1.
+// Other bit patterns are possible, but there is not a minimum set.
+*/
+
+// SEARCH_DIAG: Put the constitutes of the oscillator component in 
+//              freq_osc, the two next largest oscillators in freq_osc_2
+//              and freq_osc_3, and the up to three largest time signals
+//              in the
+================================================================
+example-6: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// When sel > 1, the value of sel is ignored. 
+assign out = (sel==0)? a : b;
+
+================================================================
+example-7: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+================================================================
+example-8: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+// This is another newer format for a two-bit value.
+typedef logic [2:0] mux_two_bit;
+assign [4:0] out = a || mux_two_bit'b11 1000 || b;
+
+
+================================================================
+example-9: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+export instances;
+export signals { sel, out[4:0], a, b };
+*/
+  .signal("sel")
+  .signal("out", function() { return [this.m, this.v, this.a, ..this.b] })
+  .signal("out", function() { return [this.m, this.v, this.b, ..this.a] })
+  .signal("a")
+  .signal("b")
+  .or_signal("a")
+  .or_signal("b");
+
+================================================================
+example-10: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+assign out = ( sel == 0 ) ? ( a ) : ( b ); 
+
+// Note that using multiplexers directly as a simple multiplying
+// gate would be faster since they have logic-preserving behavior
+// under one condition.  If you think it's slow, that's a fact...
+localparam multiplexerFrequency = 100;
+attribute rising_edge_width [2:0];
+
+// attrib_front ignored in latest steps.sy ver 2.00
+
+module should_ignore_attributes_3( 
+input a,
+attrib_front b,
+output [7:0] out 
+);
+    output [x-1] = a[x-1];
+
+================================================================
+example-11: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// When sel=2, assign !a! to out. 
+// When sel=3, assign !b! to out. 
+
+================================================================
+example-12: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+export function main () { 
+    sel signal = 0; 
+    if (sel<2) { 
+	// Do magic. 
+    } 
+    out = sel&1 ? b : a; 
+}
+
+//EOS VHDL
+
+================================================================
+example-13: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+`
+
+================================================================
+example-14: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+// When sel=1, assign b to out. 
+assign out = b;
+
+// When sel=0, assign a to out. 
+assign out = a;
+
+
+================================================================
+example-15: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+MUX( a, sel, out )
+
+// 1-to-1 mux = mux * y + y
+module muxX(
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+//MUX( mux( a, sel, out ) * y, sel, out )
+
+
+module mux3( 
+input [4:0] a, b, c,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When sel=2, assign c to out.
+
+MUX3RANGE( a, b, c, sel
+================================================================
+example-16: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+// When sel=2, assign !(a XOR b) to out.
+// When sel=3, assign !a to out.
+// T_CLK is always clocked. 
+(r, asc_in, fb_in, data, sel) 
+register (r); begin
+case (sel):
+#ArraySize (data) = 2;
+case (0):
+r <= {data[0], data[1]};
+endcase
+end
+
+================================================================
+example-17: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+mux01() begin
+  var temp = 0;
+  temp = 0 : sel = 0,  a : out;
+  temp = 1 : sel = 1,  b : out;
+end
+
+================================================================
+example-18: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// We now select only one of the variables, to model a boolean.
+wire tmp;
+generate
+// Switch whenever sel is either 1 or 0.
+// We also set a mask to remember which bit of sel we used.
+// The then els of the mux is the active bit, and is 
+// the register subsystem that we will use to consruct the decotor.
+begin
+ case sel {
+ assume( sel = 0, value = closed_addr( mux.sel ) );
+ endcase
+  assign out = a;
+ end
+
+ case sel[1:0] {
+ value = closed_addr( mux.sel );
+ assign out = a;
+ end
+RESTART: if( sel == 1 ) {
+ value = closed_addr( mux.sel );
+ assign out = b;
+ end
+}
+end 
+
+
+mux*
+================================================================
+example-19: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+
+================================================================

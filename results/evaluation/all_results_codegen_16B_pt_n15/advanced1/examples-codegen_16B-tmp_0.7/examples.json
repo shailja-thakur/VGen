@@ -1,0 +1,116 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow);\n\n\n//always returns 0. This is a negative example and has been removed from the menu\n\nsigned_adder(a,b,s,overflow);\n\n//always returns 1. This is a positive example and has been removed from the menu\n\nsigned_adder(a,b,s,overflow);\n\n//always returns -1. This is a positive example and has been removed from the menu\n\nsigned_adder(a,b,s,overflow);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// Implement the signed adder.\n\nsigned_adder(a, b, s, overflow) {\n    overflow = (a[7] == 0 && s[7] == 1) || (b[7] == 0 && s[7] == 0);\n    s[7:0] = a[7:0] + b[7:0];\n    s[15:8] = a[15:8] + b[15:8];\n    s[23:16] = a[23:16] + b[23:16];\n    s[31:24] = a[31:24] + b[31:24];\n}\n\n// Use the signed adder in the adder module.\n\nsigned_adder_module(a, b, s, overflow) {\n    signed_adder(a[7:0], b[7:0], s,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow)\n{\n  s = a + b\n  if (b[7] == 1)\n  {\n    if (s[7] == 0)\n    {\n      overflow = 0\n    }\n    else\n    {\n      overflow = 1\n    }\n  }\n  else\n  {\n    if (s[7] == 1)\n    {\n      overflow = 1\n    }\n    else\n    {\n      overflow = 0\n    }\n  }\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "    s = a + b; \n    if ((a[7] == 0) and (b[7] == 0))\n    {\n        overflow = 0;\n    }\n    else if ((a[7] == 0) and (s[7] == 1))\n    {\n        overflow = 1;\n    }\n    else if ((b[7] == 0) and (s[7] == 1))\n    {\n        overflow = 2;\n    }\n    else if ((a[7] == 1) and (b[7] == 1) and (s[7] == 1))\n    {\n        overflow = 3;\n    }\n    else\n    {\n        overflow = 4;\n    }\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nsigned_adder(a,b,s,overflow);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nsigned_adder:\n    // The most significant bit of a is low. \n    // The most significant bit of b is low.\n    assign a_overflow = 0;\n    assign b_overflow = 0;\n    // The most significant bit of s is low.\n    assign s_overflow = 0;\n    // The most significant bit of a and b are high. \n    assign a_high = 1;\n    assign b_high = 1;\n    // The most significant bit of a and b are low. \n    assign a_low = 1;\n    assign b_low = 1;\n\n    // The most significant bit of a is low. \n    // The most significant bit of b is low.\n    assign a_overflow_lut[0] = a_overflow;\n    assign b_overflow_l"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nsigned_adder : input [7:0] a, input [7:0] b, output [7:0] s, output overflow\n{\n    overflow <= '0';\n\n    // if a and b are both 0, the output is 0\n    if ((a == 0) && (b == 0))\n    {\n        s <= 0;\n    }\n    else\n    {\n        // if a and b have opposite sign, the output has the sign of a\n        if ((a > 0) && (b < 0))\n        {\n            s <= a;\n        }\n        else if ((a < 0) && (b > 0))\n        {\n            s <= b;\n        }\n        // if a and b have the same sign, the output has the sign of b\n        else\n        {\n            s <= b;\n        }\n\n        // if the most significant"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\ninitial begin:\n  s <= (a + b);\n\n  // detect a signed overflow of a and b\n  overflow <= '0' != (a[7:0] == 0) and '0' != (b[7:0] == 0) and '1' == (s[7:0] == 0);\n\n  // detect a signed overflow of a and b\n  overflow <= '1' != (a[7:0] == 0) and '1' != (b[7:0] == 0) and '0' == (s[7:0] == 0); \nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nsigned_adder(a0,b0,s0,overflow);\n\nsigned_adder(a1,b1,s1,overflow);\n\nsigned_adder(a2,b2,s2,overflow);\n\nsigned_adder(a3,b3,s3,overflow);\n\nsigned_adder(a4,b4,s4,overflow);\n\nsigned_adder(a5,b5,s5,overflow);\n\nsigned_adder(a6,b6,s6,overflow);\n\nsigned_adder(a7,b7,s7,overflow);\n\ns0 += a0 + b0;\ns1 += a1 + b1;\ns2 += a2 + b2;\ns3 += a3 + b3;\ns4 += a4 + b4;\ns5 += a5"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// s[7:0] = a[7:0] + b[7:0]\n// s[15:8] = s[15:8] + a[15:8] + b[15:8]\n// s[23:16] = s[23:16] + a[23:16] + b[23:16]\n// s[31:24] = s[31:24] + a[31:24] + b[31:24]\n// s[39:32] = s[39:32] + a[39:32] + b[39:32]\n// s[47:40] = s[47:40] + a[47:40] + b[47:40]\n// s[55:48] = s[55:48] + a[55:48] + b[55:48]\n// s["
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow);\n\n// Display the result of the signed addition in hexadecimal format.\n\ns <= a + b;\n\n// Display the result of the signed addition in decimal format. \n// add the value of a and b to determine the value of s. \n// use s[7] as the most significant digit of s. \n// s[6:0] is the least significant digit of s. \n// subtraction of a and b to determine overflow. \n// use s[7] as the most significant digit of overflow. \n// use s[6:0] as the least significant digit of overflow. \n// if s is greater than a and b, the signed overflow is positive. \n// if s is less than a and b, the signed overflow is negative. \n// if s is equal to a and b, the signed overflow"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// Specify the behavior of the signed adder in the case that a signed \n// overflow occurs. \n\n// if a or b is negative, it's value is wrapped around to the other side of the word and the carry bit is set. \n// if s is negative, it's value is wrapped around to the other side of the word and the carry bit is set. \n// if a and b are both positive and s is negative, an unsigned carry is generated and the result of the add is wrapped around to the most significant bit of the word.\n\n// The use of the carry bit to avoid the need for an additional status bit is not required in this design.\n\nsigned_adder\n    sig_carry_out_a,\n    sig_carry_out_b,\n    is_overflow\n    (\n        input [7:0] a,\n        input [7:0] b"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nsigned_adder(a, b, s, overflow)\n{\n  overflow = false;\n  s = a + b;\n  \n  // Check for signed overflow\n  if ((a[7:0] == 0x7F) && (b[7:0] == 0xFF) && (s[7:0] == 0x00))\n  {\n    overflow = true;\n  }\n  else if ((a[7:0] == 0x00) && (b[7:0] == 0x00) && (s[7:0] == 0x80))\n  {\n    overflow = true;\n  }\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n// Implement this signed adder. \n\nsigned_adder(a, b, s, overflow)\n{\n    // Initialize your variables. \n    // You may assume that a, b, and s are zero-initialized.\n    // Set s to the sum of a and b\n    // Set overflow to false\n    // Perform the following if the most significant bit of s is 1\n    //    set overflow to true\n    \n    if (s[7] == 1)\n    {\n        overflow = 1;\n    }\n    s[7:0] = a[7:0] + b[7:0]\n    \n}"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nsigned_adder #(\n    .a(a),\n    .b(b),\n    .s(s),\n    .overflow(overflow)\n) adder;\n\n\n// Assign the carry of s[7:6] to the overflow\nadder.overflow = a[7] + b[7] + s[7] + s[6];\n\n\n// Assign the carry of s[5:4] to the overflow\nadder.overflow = adder.overflow + s[5] + s[4];\n\n\n// Assign the carry of s[3:2] to the overflow\nadder.overflow = adder.overflow + s[3] + s[2];\n\n\n// Assign the carry of s[1:0] to the overflow\nadder.overflow = adder.overflow + s[1] + s[0];\n"
+    }
+  ],
+  "created": 1663534970,
+  "id": "cmpl-IN6i9IyGDaflaunZILYSVF95ThN2p",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2477,
+    "prompt_tokens": 164,
+    "total_tokens": 2641
+  }
+}

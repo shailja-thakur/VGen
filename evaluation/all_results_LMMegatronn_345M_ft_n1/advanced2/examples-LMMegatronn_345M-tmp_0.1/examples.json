@@ -1,0 +1,30 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// This is an example for counter that chooses which\n// the actual clocked clk.\n\nreg [3:0] q_reg;\n\nalways @(posedge clk or posedge reset)\nbegin\n  if (reset)\n    q_reg <= 0;\n  else\n    q_reg <= q_reg + 1;\nend\n\nassign q = q_reg;\n\n"
+    }
+  ],
+  "created": 1663299166,
+  "id": "cmpl-9IzdKphyMPFPe0ULG4XHzA2NdePNp",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 96,
+    "prompt_tokens": 98,
+    "total_tokens": 194
+  }
+}

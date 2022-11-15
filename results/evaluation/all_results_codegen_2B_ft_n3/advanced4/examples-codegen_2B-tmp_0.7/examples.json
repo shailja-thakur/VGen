@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\tif (load) begin\n\t// when load is high, assign data[63:0] to shift register q.\n\tq <= data;\n\tend\n\telse if (ena) begin\n\t// shift q by amounts in amount.\n\tq <= q >> amount;\n\tend\n\tend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk) begin\n\tif(load == 1) q <= data;\n\tif(ena == 1) begin\n\tcase(amount)\n\t2'b00: q <= q << 1;\n\t2'b01: q <= q << 8;\n\t2'b10: q <= q >> 1;\n\t2'b11: q <= q >> 8;\n\tendcase\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " always @(posedge clk) begin\n\tif (load == 1) begin\n\t q <= data;\n\tend\n\telse if (ena == 1)\n\t q <= {q[62:0], q[63]};\n\telse\n\t q <= q;\n end\n"
+    }
+  ],
+  "created": 1663304525,
+  "id": "cmpl-F1k7zNq09MGe2uc73VSLsVM6QyKgd",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 249,
+    "prompt_tokens": 184,
+    "total_tokens": 433
+  }
+}

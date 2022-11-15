@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// The output is forced to 0 at which point the incrementing the counter.\n\nreg [3:0] q_next;\n\nalways @(posedge clk, posedge reset)\nbegin\n    if(reset)\n        q_next <= 0;\n    else\n        q_next <= q_next + 1;\nend\n\nalways @*\nbegin\n    if(slowena)\n        q = q_next;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// This implementation is designed to work with timing.\n\nreg [3:0] q_next;\n\nalways @(posedge clk, posedge reset)\nbegin\n    if(reset)\n        q_next <= 0;\n    else\n        q_next <= q_next + 1;\nend\n\nalways @*\nbegin\n    q = q_next;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// This implementation is designed to work with timing.\n\nreg [3:0] q_next;\n\nalways @(posedge clk or posedge reset)\n    if(reset) q_next <= 4'b0000;\n    else q_next <= q_next + 1;\n\n// When the ena is high, reset the output q to 0.\n// This implementation is designed to work with timing.\n\nalways @(q)\n    if(q == 4'b0000) q_next = 4'b0000;\n    else q_next = q_next + 1;\n\n// If the ena is low, reset the output q to 0.\n// This implementation is designed to work with timing.\n\nalways @(q)\n    if(q == 4'b0000) q_next = 4'b0000;\n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// This implementation is designed to work with timing.\n\nreg [3:0] q_next;\n\nalways @(posedge clk, posedge reset)\nbegin\n    if(reset)\n        q_next <= 0;\n    else\n        q_next <= q_next + 1;\nend\n\n// If the ena is high, reset the output q to 0.\n// This implementation is designed to work with timing.\n\nalways @(q, q_next)\nbegin\n    if(q == 0)\n        q_next = 0;\n    else\n        q_next = q_next + 1;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// This implementation is designed to work with timing.\n\nreg [3:0] q_next;\n\nalways @(posedge clk, posedge reset)\nbegin\n    if(reset)\n        q_next <= 4'b0;\n    else\n        q_next <= q_next + 1;\nend\n\nalways @(q, q_next)\nbegin\n    if(q_next == 4'b0)\n        q = 1'b1;\n    else\n        q = 1'b0;\nend\n\n"
+    }
+  ],
+  "created": 1663299264,
+  "id": "cmpl-OuE8DYDWu7jZLLaLpsGIDsbNTcxM4",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 771,
+    "prompt_tokens": 98,
+    "total_tokens": 869
+  }
+}

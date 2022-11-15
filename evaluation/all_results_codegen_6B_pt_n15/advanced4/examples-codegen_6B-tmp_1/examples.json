@@ -1,0 +1,119 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nmodule bin2dec(input reg,output bit); // Decode bit 40:to 39.\nmodule par_output();\nmodule interrupt;\n\n\nsignal pingsource_msr;\n\n/*!!--------------------------------------------------------------------------\n++! The notable IPv4 pack and unpack functions are lifted from VxWorks-586 \n++! (dfh).  The IPv4 datagrams are neither encrypted nor calculated.\n++!\n++! Author:     Dave Hallorop\n++! !Date:       May 23, 1998\n++! Copyright 2001 Spenser-Privileges. All rights reserved.\n++! !Author:     Jiodo-sb regeneration by Verilog-1997\n++! !Date:       May 4, 1997\n++! Technical Support by Health Industries International America Ltd., \n++!  a sponsored project by Redbaud, Pty. Ltd., Sydney, Australia.\n++!\n++! Warning"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n// \tMIN------------------2'b00\n// \t01\t----------|01\n//   <-------------------->\n//   |\n//   |\n//   |\n//   3----------2'b01\n//  01  -|01- |01 - \n//   0---------->.\n//  10  ---------->\n//\n//\n//\n// \tMIN------------------2'b10\n// \t01\t--->|01   \n// \n//   <---------------->\n//   |\n//   |\n//   | \n//   3--->|010  --->|10\n//  01 | 010--|01 10\n// |0|--->|01  --->|1\n\nns advshift #(.clk(clk), .load(load), .ena(ena), .amount(amount), .data(data))(load,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\ninterface // with attribute reg, data : Registers: 63..0\n\tstdlib.types.conc.conc.init-uint64,\n\tstdlib.types.conc.conc.init-reg = {data:1:0; q:0; Z=value : \"zeded012e4c9f*\", initial=_}.reg;\n\ninterface toclauses.advice.advise //-> toclauses.advice.advisory?\n\tdata fixes, reg fix,\n\tdata untilisready({init-true-boolean}), reg isready({init-true-boolean}),\n\tdata clk({init=\"clk\"}), reg ack({init=false}),\n\tdata loads, reg bytesloaded((reg bytesloaded-load)(reg bytesloaded-notloaded))) = {\n\t\t\t\t\top(1)\n\t\tinnfficontainer"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nvoid logic_sync_sync_shift::Timing::behavior_Cell_AdvShift()\n{\n\t/*\n\tcell active_input[2:0]=clock;\n\tout\tdata.out[63:0]=data[63:0];\n\tout\tshift.out[63:0]=shift[63:0];\n\t*/\n\n\tm_execute_speed = 0;\n\tsysc = 0;\n\tsysc_load = 0;\n\tsysc_store = 0;\n\n\tstatef = true;\n\twhile(next_state_inv)\n\t{\n\t\tif(next_state)transition_state();\n\t}\n\tendstatef();\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nmodule early_test = ERRORS_A[2:0],ARMs_A[1:0](\n\t\"fast sum\",1'b1,fast_sum_reg,\n\t\"counter\",1'b1,counter_reg,\n\t\"wait_counter\",1'b1,wait_counter_reg,\n\t\"state\",1'b1,state_reg,\n\t\"outShift\",WS_Q[0],\n\t\"DFSlatch\",DFS[64],\n\t\"enanti\",ena'r1,enable_reg,\n\t\"reset\",reset_reg);\n\n\n\n\n\n\talways @(posedge clk) begin\n\t\twait_counter_reg <= wait_counter_in %res;\n\t\tDFS[counter_reg] <= DFS[DFS_clock_reg-1] & DFS[DFS_clock_reg-3];"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n// First look at Bit shifts:\nsigned result = data[63:0]; // 32 before 20 after shift\n\nif(amount == 0b01) {\n    // need to work way from left to right\n    for(int i = 63; i > 0; i--) {\n        result = result >> 1;\n        if((data[i] & 0x01) == 1) {\n        // shift_left\n        // if i is enabled && bit lsb of data\n        // add one to data on word index\n        }\n        else if(((~(data[i-1] >> (i - 1)) & 1) == 0) && ((~(data[i] >> (i - 1)) & 1) == 0))\n        {\n            // move i from left to right\n            // bits from both sides of i are aligned\n            result = result >> 2;\n        "
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "        // HFILE of MAC1, EVAL for MAC2\n        module mac(input clk,\n                input [63:0] q,\n                output macinstall);\n        // shift each bit out to shifter with xor, \n        always @(posedge clk) {\n                if(load==1) {   if(ena==1) {mac = macinstall;} \n                    else {mac = '0'; }}\n                else {mac = mac.q;}\n        }\n        reg #1 to_shift_out(bool reg_load, int shift_amount);\n        always @(posedge clk) {\n                connect(mac);\n                mux4321 ctrl(.Q4, .Q3, .Q2, .Q1);\n                mux4321_mac mmac(.Q9, .Q10, .Q11);\n                to_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n      always @(posedge clk or negedge load)\n      if(ena)\n      begin\n      begin\n        if (en)\n        begin\n        begin\n          direc = 'r'; amount = 64 - 1;\n        end\n        else\n        begin\n        begin\n          direc = 'l'; amount = 2;\n        end\n        end\n        shift q <= data [63:0]  [direc]  (2'b00)  :=  data [63:0]  [direc]  (2'b00);\n        shift q <= data [63:0]  [direc]  (2'b01)  :=  data [63:0]  [direc]  (2'b01);\n        shift q <= data [63:0]  [direc]  (2'"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// ( 1, \"load\", \"ena\", \"amount\", 1, data [63:0]);\n// ( 1, \"load\", \"ena\", \"amount\", 1, data [63:0]);\n// ( 1, \"load\", \"ena\", \"amount\", 1, data [63:0]);\n// ( 1, \"load\", \"ena\", \"amount\", 1, data [63:0]);\n\n// SIGNED_SHIFT_REGISTER is s16 \n\nassign phrase_lines = ena & 0b1;\nbegin\n   if (phrase_lines==0) begin\n      load 0 <= 1 <= 1 <= 1 <= 0 ; \n      if (ena & 0b1000) begin\n         q <= 0;\n      end\n      \n      if (ena & 0b0100) begin\n         q <= data shift 1;\n      end\n      \n      if (ena & 0b0010"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "  always @(*output*) begin\n       \tif (load) {q <= data;}\n    \telse if(ena) {q <= ena;}\n\t\telse {*q <= 0x00;}//or more fixed value needed\n  end\n  \n// convert 'just shifted' value ('q') into register value ('reg')\n \n\n\n\n\nmodule shftreg<ty> (\n\t.CE( clk, 1), // CE signals the module that a clock edge occurs.\n//\t.load( load), // MUST set to 1 in constructor.\n\t.ena( ena),\n\t.data( data[63:0]),\n\t.q(q[63:0])\n); \n\n\n// instantiation of shftreg\n\t\t\t// without load or ena force zero\n#pragma HLS EPITECH\n\n// instantiation of huge advshift\n#pragma HLS INTER"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n// The 6'b01010101 data pattern is used as a test pattern.\n// If the register (or data) to be shifted is updated during the shift or load cycle\n// the able will be result in future shift cycles producing an incorrect result.\n\nalways @(posedge clk,\n       negedge load)\nbegin\n    // The X output register data is updated when ena is high\n    if (load)\n    begin\n        if (ena) begin\n            if (amount == 1)\n            begin\n                X <= data[63:0];  // shift by 1 bit\n                enable_right = 1;     // shift by 8 bits now\n            end\n            else begin\n                enable_right = 0;\n                X <= data[63:0];  // shift by 8 bits\n            end\n        endendif\n    end\n    if (ena) begin\n        if (enable"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\n\n//OSC clock = 84MHz =  4915199460141 MHz: the period can be set to return this.\n\nregister extern osc      wrk;\n\n\n#include \"FBC.h\"\n#include \"IARRA.H\"\n\n//global array with all the read/result registers\t\t\n\narray textables(0 to textables_array_size-1);\n\n\n\n\n/* expected stimulus is:\n   data: levels[63:0]\n   instance: c_2 // first instance\n   compare: compare with\n*/\n\n// The stimulus, Z start\n\nmodule pulse(input clk,\ninput active,\noutput reg inst,\noutput reg compare);\n\nreg save;\n\nmodule initializeReadAdvance(input clk,\ninput en,\noutput res);\n\nfunction reset();\n\n\n\n/*\n FUNCTION: initializeAdvance\n SU"
+    }
+  ],
+  "created": 1663520364,
+  "id": "cmpl-GQKX3hd5yE3eQBiIPzdhgLMxZBWHt",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2366,
+    "prompt_tokens": 184,
+    "total_tokens": 2550
+  }
+}

@@ -1,0 +1,28 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// left shift and rotate the register out by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse if(load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],out[7]};\n\tout[7:1] <= out[6:0];\n\tend\nend\n"
+    }
+  ],
+  "created": 1663333357,
+  "id": "cmpl-KQK7s7mvKPKl5nUG49ffJJyGCq5S0",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 95,
+    "prompt_tokens": 89,
+    "total_tokens": 184
+  }
+}

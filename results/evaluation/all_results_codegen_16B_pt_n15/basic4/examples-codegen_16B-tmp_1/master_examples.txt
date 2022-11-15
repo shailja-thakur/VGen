@@ -1,0 +1,241 @@
+example-0: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// There should be no control port connected to this signal.
+wire [2:0] muxsel;
+// These should be four to one multiplexes. Signal 1 corresponds to output 1
+wire [2:0] active0;
+wire [2:0] active1;
+// active{0,1} selects whether sel=0 or sel=1 
+active100 muxsel_100;
+active02 muxsel_02; 
+always @* begin
+  if(sel==0) {
+    out = a; 
+    muxsel=0;
+  } else {
+    out = b;
+    muxsel=1;
+  }
+  muxsel_100 = ~muxsel^(sel_xor==1);
+  muxsel_02 = ~muxsel^(sel_xor==1);
+end
+
+================================================================
+example-1: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+// Output a=out.
+always @(posedge clk)
+ begin
+  if (sel==0) out <= a;
+  else
+// Latch input.       ALU select W2.
+    if (a==3'b000 || b==3'b010) {     // a0
+// Exclusive-or with alu_inv.    Out=in^alu_inv.
+      out <= in^alu_inv;
+    } else if (a==3'b001 || b==3'b010) { // a1
+// OR together.            Out=in|alu_enc.
+      out <= in|alu_enc;
+    } else if (a==3'b100 || b==3'b001) { // a2
+// nAND together.          Out=in&~alu_enc.
+      out <= in&~
+================================================================
+example-2: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+* down = sel;
+* left = ~((sel | down) << 1);
+* right = ~down & ~left;
+* up = ~down & (right >> 1);
+ * up = ~down & ~left &
+ *        ~((sel | down) << 1) & ~(~down & ~left);
+
+================================================================
+example-3: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+assign out = a;
+
+
+================================================================
+example-4: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+
+================================================================
+example-5: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+assign out=sel?b:a;
+
+================================================================
+example-6: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+================================================================
+example-7: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+always #0 begin 
+    if (sel) out = b; 
+end
+
+================================================================
+example-8: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+extern logic_input clk;
+begin bram T_MUX_PORT//SYN=N, P40, P41, P24
+
+//NB_DELAYE(461) // Design the logic function that detects write requests on the
+//               // mux select that will become valid before the rising edge of
+//               // sel before the mux select becomes valid.
+//NB_SELECT_PRIOR(RR) // Select a signal during the preceeding one clock cycle
+//                  // if it's old will take no effect
+endinstance
+
+
+================================================================
+example-9: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+always @() begin
+    case( sel ) 
+       out <= a;
+       out <= b;
+    endcase
+
+================================================================
+example-10: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+	always begin // assume fail
+		if ( $readall ) begin
+			sel = $sel;
+		end
+		else begin
+			sel = 1;
+		end
+		if ( sel = 0 ) begin
+			out = a;
+		end
+		else begin
+			out = b;
+		end
+	end
+
+	initial begin
+		sel = ~$sel;
+	end
+
+================================================================
+example-11: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+================================================================
+example-12: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+void main(){
+    uint a = 0;
+    uint b = 0;
+    uint out = 0;
+    
+    if(sel==0){
+        out = a;
+    } else {
+        out = b;
+    }
+}
+
+
+================================================================
+example-13: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.
+
+================================================================
+example-14: 
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out. 
+
+================================================================

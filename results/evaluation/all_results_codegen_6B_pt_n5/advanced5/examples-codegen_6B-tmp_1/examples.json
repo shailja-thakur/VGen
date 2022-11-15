@@ -1,0 +1,63 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk\nor next_state == cur_state\nor next_state == IDLE)\n    z = 1;\n    cur_state = next_state;\nend\n\nmodule psm(\ninput clk,\ninput reset,\ninput i,\ninput o,\ninput q,\noutput r );\nparameter IDLE = 0;\nreg [1:0] cur_state,next_state;\n// cycle count increments when selector goes low - 0 => 1, 1 => 2, ...\n// Selector goes high if cur_state is IDLE and both input signals\n// returned to high\nalways @ (posedge clk\nor next_state == IDLE\nor next_state == 0)\n    r = i & !q;\n    cur_state = next_state;\nend\n\n// w is the same as z and is only enabled at low time of"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "    begin {\n\tnext_state = IDLE;\n\tenable abort,next_state_gen,next_state_done;\n\texpect PARAMETER_ALIVE;\n\tnext_state_gen = next_state;\n\tnext_state_done = next_state;\n\tabort = 0;\n    }\n\tnext_state_done = SAB;\n\tnext_state_gen = SAB;\n\tabort = 0;\nuses abort,next_state_gen,next_state_done,__di.clo,__di.clr;\n\tnext_state_gen = IDLE;\n\tnext_state_done = IDLE;\n\tabort = a;\n\tz = 1;\nend {\n\t\t// If cur_state is IDLE and a and b are both high, state changes to SAB\n\tif(next_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// ASSIGNMENT NOT AUTHORIZED\nassert($guard(a,cur_state) && $guard(b,cur_state));\nque(IDLE,next_state,SA,SB); next_state <= SB, next_state <= IDLE ;\n(* next_state is IDLE and a and b are high *) implies long (next_state == IDLE) then long (cur_state == IDLE) implies long (cur_state[1:0] = SA, z[0] = 1) else long (cur_state[1:0] = SA, z[1] = 1) then long (cur_state[1:0] = SB, z[0] = 1, z[1] = 1)+ assert ($guard(z,next_state))+ assert ($guard(a,next_state) && $guard(b,next_state));\n//! ASSIGNMENT NOT AUTHOR"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge a or b)\n  design <= (\n    a <= b,z <= 1 passe,\n    idle;\n  );\nalways @(negedge clk or a or b)\n  design <= (\n    a <= b,z <= 0 passe;\n  );\nalways @(negedge clk)\n  design <= (\n    a <= b,z <= 0 passe,\n    idle;\n  );\nreg __SIZE_OF_delays_node__ = 256;\nsubckt upstream(\n\tassy:upstream,\n        clk,\n        reset,\n        a,\n        b,\n        delimiter,\n        z\n\t) begin\n\t    always @ (posedge clk)\n\t        design <=\n\t            b,\n\t            delimiter,\n\t            a;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    cur_state <= SB;\n    if (a == 1 && b == 1)\n        next_state <= SAB;\n    if (a == 1)\n        next_state <= SA;\n    if (b == 1)\n        next_state <= SB;\n    if (next_state == SA) next_state <= SA;\n    if (next_state == SB) next_state <= SB;\n    if (next_state == SAB) next_state <= SAB;\nend\n"
+    }
+  ],
+  "created": 1663519554,
+  "id": "cmpl-KSBLhcR8NYX1OX6aUwOfJ31wBctEm",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 926,
+    "prompt_tokens": 218,
+    "total_tokens": 1144
+  }
+}

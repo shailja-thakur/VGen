@@ -1,0 +1,138 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst) begin\n  if (rst == 1) begin\n    pos = 0;\n  end\n  else begin\n    if (sel) begin\n      pos = pos | in[2];\n    end else begin\n      pos = pos & in[2];\n    end\n  end\nend\n\n// Module for inverting the input\nmodule inverter(\ninput [1:0] in,\noutput reg [1:0] out);\n// When sel=1, assign b to out\nalways @ (posedge clk or negedge rst) begin\n  if (rst == 1) begin\n    out = 0;\n  end\n  else begin\n    if (sel) begin\n      out = ~in;\n    end else begin\n      out = in;\n    end\n  end\nend\n\n// Module for"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge rst)\n  begin\n    if (sel)\n      pos = 1;\n    else\n      pos = 0;\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n  if (sel) begin\n    out <= in;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif(sel)\n\tbegin\n\t\tpos = in;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst) begin\n    if(rst) begin\n        pos <= 0;\n    end else begin\n        case(sel)\n            if(in[0]) begin\n                if(in[1]) begin\n                    if(in[2]) pos <= 1;\n                    else pos <= 0;\n                end else begin\n                    if(in[1]) begin\n                        if(in[2]) pos <= 2;\n                        else pos <= 0;\n                    end else pos <= 0;\n                end\n            end else begin\n                if(in[1]) begin\n                    if(in[2]) pos <= 3;\n                    else pos <= 0;\n                end else begin\n                    if(in[2]) pos <= 4;\n                    else pos <= 0;\n                end\n            end\n        end\n    end\nend\n\n// There are eight priority enc"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk) \n  priority_encoder.sel <= (in[0] & in[1] & in[2]);\n// Read priority encoder and assign output to port.\nreg [1:0] pos;\nalways @(posedge clk) \n  begin\n    pos <= priority_encoder.sel;\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst) {\n  if(rst) {\n    pos = 0;\n  } else {\n    pos <= in;\n  }\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n    if (sel) begin\n      pos <= in;\n    end\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (sel)\n  {\n    pos = in;\n  }\n  else\n  {\n    pos = 0;\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\nbegin\n\tif(rst)\n\tbegin\n\t\tpos <= 0;\n\tend\n\telse if(in[2] == 1)\n\tbegin\n\t\tpos <= in[1];\n\tend\n\telse if(in[2] == 0)\n\tbegin\n\t\tpos <= 0;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge rst)\nbegin\n  if (sel)\n  begin\n    if (r_sel)\n    begin\n      if (neg_in)\n      begin\n        if (r_pos)\n        begin\n          pos <= 0;\n        end\n      end\n    end\n  end\nend\n\nmodule priority_encoder_test( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nalways @(posedge clk or posedge rst)\nbegin\n  if (sel)\n  begin\n    if (r_sel)\n    begin\n      if (neg_in)\n      begin\n        if (r_pos)\n        begin\n          pos <= 0;\n        end\n      end\n    end\n  end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst)\n  if(rst == 1)\n    pos <= 0;\n  else if(sel == 1)\n    pos <= in;\n  else\n    pos <= in + 2;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk or not in) \nif(sel) \n{\n  reg[pos] = b;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge rst)\n  if ( rst )\n  {\n    pos = 0;\n  }\n  else if ( in[2] && in[1] )\n  {\n    pos = 2;\n  }\n  else if ( in[0] )\n  {\n    pos = 1;\n  }\n  else\n  {\n    pos = 0;\n  }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\nif (sel && !rst)\n{\n    pos <= (in & 0b11);\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge rst)\nif(sel)\n{\n   priority_encoder(in) = b;\n}\nelse\n{\n   priority_encoder(in) = 0;\n}\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always@(posedge clk_enable) begin\n  if(sel) begin \n    pos <= in;\n  end else begin\n    pos <= 0;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nif (sel)\n  pos = b;\nendalways\n\nalways @(posedge clk)\nif (sel)\n  b = in;\nendalways\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\n  if (rst)\n  begin\n    pos <= 0;\n  end\n  else if(sel)\n   begin\n     prio_out <= in;\n   end\n  else \n   begin\n     if (in[0] == 1)\n       prio_out <= 1;\n     else if (in[1] == 1)\n       prio_out <= 2;\n     else\n       prio_out <= 0;\n   end;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge rst)\nbegin\n  case(in)\n    when 0,1 | sel,\n      pos <= 0;\n    else (reg[1] = reg[0] || (sel && !pos));\n  endcase\nend\n"
+    }
+  ],
+  "created": 1663520859,
+  "id": "cmpl-jOck3hEFXUxLoFZ55HrJF8h4Q5KMA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1581,
+    "prompt_tokens": 65,
+    "total_tokens": 1646
+  }
+}

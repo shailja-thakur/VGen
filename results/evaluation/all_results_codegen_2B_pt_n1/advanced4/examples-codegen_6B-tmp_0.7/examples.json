@@ -1,0 +1,149 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n`)\n\nfunc Single(s State) {\n\tfmt.Println(\"??\")\n}\n\nfunc main() {\n\tfmt.Printf(\"program\")\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " \nbegin\nint i;\nfor (i=0; i < 64; i++) begin\n    if (load == high) begin\n        q[63-i] = data[63-i];\n    end else begin\n        q[63-i] = 0;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// This is a very simple testbench for the shift register.\n// The simulated shift register has a fixed size of 8 bits.\n\nbegin\n\n  // reset register.\n  reg [63:0] q = 0;\n\n  assign load = 1;\n  assign ena = 1;\n  for (int i=0; i<8; i++)\n    assign q = q | ((data [i] & 1) << (7-i));\n//  assign q = q | ((data [8] & 1) << (7-8));\n\n  assign load = 0;\n  assign ena = 1;\n  assign amount = 0;\n\n  while (1) begin\n    if (ena) begin\n      if (load) assign q = data [63:0];\n      assign ena = 0;\n    end\n    begin\n      if (load"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nmodule rf_advshift(input [63:0] data,\noutput reg q); \n// shift data left by 1 bit.\n// shift data right by 1 bit.\n// shift data left by 8 bits.\n// shift data right by 8 bits.\n\nmodule rf_advshift_1(input [63:0] data,\noutput reg q,\ninput reg ena);\n// shift data left by 1 bit.\n// shift data right by 1 bit.\n// shift data left by 8 bits.\n// shift data right by 8 bits.\n\nmodule rf_advshift_8(input [63:0] data,\noutput reg q,\ninput reg ena);\n// shift data left by 1 bit.\n// shift data right by 1 bit.\n// shift data left by 8 bits.\n// shift data right by 8 bits.\n\nmodule rf_advshift_64"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nmodule\n  mod1 (\n    clk,\n    load,\n    ena,\n    amount,\n    data,\n    q);\n  mod1_load = load_reg;\n  mod1_ena = ena_reg;\n  mod1_amount = amount_reg;\n  mod1_data = data_reg;\n  mod1_q = q_reg;\n  reg mod1_load;\n  reg mod1_ena;\n  reg mod1_amount;\n  reg mod1_data;\n  reg mod1_q;\n  int mod1_load_load;\n  int mod1_load_ena;\n  int mod1_load_amount;\n  int mod1_load_data;\n  int mod1_load_q;\n  int mod1_ena_load;\n  int mod1_ena_amount;\n  "
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#pragma pipeloop(0)\n#"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n#include <stdint.h>\n#include <complex.h>\n#include \"rtos_types.h\"\n#include \"rtos_assert.h\"\n#include \"rtos_handoff.h\"\n#include \"rtos_priority.h\"\n#include \"rtos_periodic.h\"\n#include \"rtos_semaphore.h\"\n#include \"rtos_wait.h\"\n#include \"rtos_event.h\"\n#include \"rtos_queue.h\"\n#include \"rtos_mailbox.h\"\n#include \"rtos_timer.h\"\n#include \"rtos_message.h\"\n#include \"rtos_shell.h\"\n#include \"rtos_malloc.h\"\n#include \"rtos_task.h\"\n#include \"rtos_service.h\"\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n#include \"reg.h\"\nvoid test_advshift() {\n  \n    reg r;\n    r = advshift(clk, load, ena, amount, data, r);\n    \n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n`\n\nfunc TestADVSHIFT(t *testing.T) {\n\tfor _, g := range generators{\n\t\tg.Run(t)\n\t}\n}\n\nfunc TestADVSHIFT_TR(t *testing.T) {\n\tfor _, g := range generators{\n\t\tg.Run(t)\n\t}\n}\n\nfunc BenchmarkADVSHIFT(b *testing.B) {\n\tfor _, g := range generators{\n\t\tg.Benchmark(b)\n\t}\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nmodule uart_fifo(input [31:0] payload,\noutput reg [31:0] data,\noutput reg en);\n\nmodule uart(input clk,\ninput en,\ninput [1:0] rxd,\ninput [3:0] tf,\ninput [3:0] rxf,\ninput [3:0] tx,\ninput [3:0] txf,\ninput [1:0] ctl,\ninput [31:0] payload,\noutput reg [31:0] data,\noutput reg en);\n\nmodule uart_decoder(input clk,\ninput en,\ninput data,\noutput reg [31:0] payload,\noutput reg en);\n\nmodule uart1(input clk,\ninput en,\ninput [1:0] rxd,\ninput [3:0] tf,\ninput ["
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nmodule print_state(input clk, input state_enum);\n// output any state to the screen.\n\nmodule print_all_states(input clk, input [63:0] data);\n// output all the states to the screen.\n\nmodule print_state_counter(input clk, input state_counter_enum);\n// output the current state (counter) to the screen.\n\nmodule print_state_bit(input clk, input state_bit_enum);\n// output the current state (bit) to the screen.\n\n// Read from a counter.  \n// Reads the current state of the counter.\n\nmodule print_state_bit_counter(input clk, input state_bit_counter_enum);\n// output the current state (bit) to the screen.\n\nmodule print_state_counter_zero(input clk, input state_counter_zero_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n//module advshift(input clk,\n//input load,\n//input ena,\n//input [1:0] amount,\n//input [63:0] data,\n//output reg [63:0] q); \n//when load is high, assign data[63:0] to shift register q.\n//if ena is high, shift q.\n//amount: Chooses which direction and how much to shift.\n//2'b00: shift left by 1 bit.\n//2'b01: shift left by 8 bits.\n//2'b10: shift right by 1 bit.\n//2'b11: shift right by 8 bits.\n\n\n//#define bit(i) (1<<i)\n//#define bit_or(a,b) ((a)|b)\n//#define bit_and(a,b) ((a)&(b))\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n\n// This is code to generate the testbench.\nreg [63:0] comp;\nreg [63:0] data;\nreg data_load;\n@(posedge clk, negedge load, negedge ena)\nbegin\n  if (load) begin\n    data_load = data;\n  end\n  if (ena) begin\n    data = data_load;\n    comp = data << (amount[0] + 1); // shift left by 1 bit\n    q = comp;\n  end\nend\n\n\n\n#define TESTBENCH\n#ifdef TESTBENCH\n// Test bench\nreg [63:0] data;\nreg data_load;\nreg ena_load;\nreg clk_load;\nreg load_load;\nreg amount_load;\nreg [63:0] comp;\nreg [63:0] result"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nmodule test_advshift(input clk,\ninput ena);\n\n\nmodule test_advshift2(input clk,\ninput ena);\n\nmodule test_advshift3(input clk,\ninput ena);\n\n\nmodule test_advshift4(input clk,\ninput ena);\n\n\n// ---------------------------------------------------\nmodule test_advshift(input clk,\ninput ena)\n{\n  reg [63:0] q;\n  reg int i;\n  reg int tmp;\n  reg int load_tmp;\n  always @(posedge clk)\n  {\n    i = 0;\n    tmp = load_tmp;\n    load_tmp = (load) ? (data[63:0]) : (tmp);\n    if (ena)\n    {\n      q = shift_register_q(load_tmp, i, amount);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nmodule test_advshift(input clk,\ninput [31:0] q);\nmodule test_advshift2(input clk,\ninput [31:0] q);\nmodule test_advshift3(input clk,\ninput [31:0] q);\nmodule test_advshift4(input clk,\ninput [31:0] q);\nmodule test_advshift5(input clk,\ninput [31:0] q);\nmodule test_advshift6(input clk,\ninput [31:0] q);\nmodule test_advshift7(input clk,\ninput [31:0] q);\nmodule test_advshift8(input clk,\ninput [31:0] q);\nmodule test_advshift9(input clk,\ninput [31:0] q);\nmodule test_advshift10(input clk,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nmodule shft(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n//------------------------------------------------------------------------------\n#include <stdint.h>\n#include \"bitop.h\"\n#include \"reg_mux.h\"\n#include \"clock_utils.h\"\n#include \"sync_reg.h\"\n\n//"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n\n// Check whether the shift register is empty.\nalways @(posedge clk)\nbegin\n  if (load)\n  begin\n    if (ena)\n      reg[63:0] <= data[63:0];\n  end\n  else\n    reg[63:0] <= 0;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nmodule clk_divider(input clk, output div);\nmodule clk_divider(input clk, output div);\n\nmodule cin_clk_3(input clk, output div);\nmodule cin_clk_3(input clk, output div);\n\nmodule cin_clk_4(input clk, output div);\nmodule cin_clk_4(input clk, output div);\n\nmodule cin_clk_5(input clk, output div);\nmodule cin_clk_5(input clk, output div);\n\nmodule cin_clk_6(input clk, output div);\nmodule cin_clk_6(input clk, output div);\n\nmodule cin_clk_7(input clk, output div);\nmodule cin_clk_7(input cl"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n// Synchronously load data into the shift register q.\n// The load cycle is followed by a 100ns pulse to ensure the load \n// is stable.\nfunction load_data(input load, input ena, input load_data, input ena_load, input [1:0] amount, input [63:0] data)\n{\n  if (ena == 1'b1) {\n    if (amount == 2'b00) {\n      while (load == 1'b1) {\n        q = data;\n        wait(100.0ns);\n      }\n    } else if (amount == 2'b01) {\n      while (load == 1'b1) {\n        q = data << 8;\n        wait(100.0ns);\n      }\n    } else if (amount == 2'b10) {\n      while (load == 1'b"
+    }
+  ],
+  "created": 1663520832,
+  "id": "cmpl-qtwYSxr6P1lUvvpLQ2mj6WB22e4h8",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3167,
+    "prompt_tokens": 184,
+    "total_tokens": 3351
+  }
+}

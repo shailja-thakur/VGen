@@ -1,0 +1,116 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// let x = 8-bit number b by default\n// let overflow = true if signed overflow occurred, yes if overflow has occurred\n// s is the output value\n// s before modification \nvoid signed_adder_mux8(\n    input [7:0] _in,\n    output [7:0] s,\n    output overflow\n) {\n    // s before modification \n    int x = _in[7];\n    int overflow = true;\n    s[7:0]  =  _in[7] + _in[6] + overflow;\n    s[6:0]  = _in[6] + _in[5] + overflow;\n    s[5:0]  = _in[5] + _in[4] + overflow;\n    s[4:0]  = _in[4] + _in[3] + overflow;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\ninput [7:0] adder_input = {12, 44, 2, 83, 0, 33};\n\n\n//init output s and overflow\noutput clear;\n\nfunction main\n{\n   // Preserve signed overflow of a and b for input_t\n   intentional interference with signed overflow\n   let b_interf: bit_vector = b_roll_input,\n       a_interf: bit_vector = a_roll_input;\n\n   let max_a_val: integer = 0xffffff,\n       max_b_val: integer = 0xffffff;\n\n   //add -264 and save -256 for a and b (32768 bytes) to ensure that overflow occurs\n   a_input [a_input_index] = ~((uint8) -264);\n   b_input [b_input_index] = -256;\n\n   // compare input and output"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign overflow = a[bits(a,0..7)-1] == b[bits(b,0..7)-1]\n\ndecode mismatch (s[7..0]!=a[7..0] or s[7..0]!=b[7..0]) if overflow else 0\n\nprocess\nbegin\n        case (int8_t(a[7]) - int8_t(b[4])) encoded 16\n                add_s_8_s_8_2103_1 101 101\n                case (int8_t(-1) +s[7] - int8_t(b[4])) encoded 16\n                add_s_8_s_8_2111_1 101 101\n                case (int8_t(a[7]) +s[7] - int8_t(b[4])) encoded 16\n                add_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nsign_adder ()\n{\n  // attach the SIGNEDNESS token to a.\n  // assign to a dispatch line of sign addition and gate.\n\n\n  // assignments\n  // parse adjacent zeroes\n  // assignment on input stream\n  // assignment on output stream\n  // polling and success detection\n  // output persists\n}\n\n\n\n// define the expression of the task\n\nsigned_adder : gtic (+ 0x80, - 0x80) overflow : STAT (ax < 0x80), \n                  ax ;\n \n// declare the input and output signals\n\n\n\nsigned_adder : signed_adder(a, b, s, overflow)  \n\n// dbnc assembly line\nsigned_adder : \n  ax < 0x80    => \"15 counter\", \n  ax == 0 => \n    ax < 0x80 => \"4 duty complete status cycle\", \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nsigned_adder( \\beta,\\tau,s,overflow)\\ \nthis->b = a[7:0] + b[7:0];\nthis->s = s[7:0] + this->b;\n\n // if overflow is true, the most significant bit of the sum of the bits is a sign bit of the most significant bit of s. \n  if (this->b[0] != 0) {\n    this->s[0] = 1;\n  } else {\n    this->s[0] =0;\n  }\n\n{ // if overflow is cinfinity, dont add the zero extenstion\nif (this->b[576] < 0x80) {\n  this->overflow = this->overflow is TRUE;\n}else {\n  this->overflow = FALSE;\n}\n}\n\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// 3/11/2010: Fixed signed_adder as given in the example.\n// \n// This bug causes the AVR simulator to crash because it\n// assumes that s is always 0 when overflow is 0.\n\nsigned_adder.derivations a = \npublic sig  ([_n] a) {\n  auto overflow = _n X_os.bit<int>(); \n  \n  switch (overflow) {\n    case (0x00): \n      s = s + a;\n      break;\n    case (0x01):\n      extern void abort(void); abort();\n      break;\n    default:\n      s = s + a + 1;\n      break;\n  }\n  overflow = overflow.popdata<int>();\n  s overflow = overflow.popdata<int>();\n\n  return override;\n}\nsigned_adder."
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\ntask main()\n{\n    int  A[8] = {0x3D, 0x8E, 0x9E, 0xAD, 0xAE, 0x00, 0x00, 0x00};\n    int  B[8] = {0x00, 0x00, 0x88, 0xC6, 0x15, 0x00, 0x00, 0x99};\n    int  s[8] = {0x80, 0x00, 0x7E, 0xDA, 0xAA, 0xF3, 0x00, 0x00}; \n    int  o[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};\n\n    \n    signed_adder  a(a, b, s, o);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nvoid @unsigned_adder(\n    input     a[7:0],\n    input     b[7:0],\n    output    s[7:0],\n    output    overflow\n)\n{\n  // memcpy function in ROS\n  // all the data that you can send to that memory location memory copy to the addressed location\n  memcpy(q, &b, 7);\n  memcpy(r, &a, 7);\n  \n  // subtract part of the number\n  q[7] -= b[7];\n  r[7] -= a[7];\n  \n  // logical shift\n  r[7] <<= 1;\n  r[7] >>= 1;\n  \n  \n  s[7] = q[7];\n  s[6] = r[6];\n  s[5] = r[5];\n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "    assign s[7:0] a[7:0] a << 1;\n    assign overflow */\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nwire S[8];\n\nwire overflow;\n\n// XOR a and b\nwire overflowb = ~a & b & ~s\n\n// Signature factor ? ???\ninput bit overflowf;\n\nreg [15:0] ar2, ar1, barg\n;\n\nassign ar2 = (a[3:0] << 4) + (a[4:0] << 4)\n, the transition is predictable if S[2:0] = ar2\n, so we use only a special case: ar2 = 0, then we can skip ar1\n\n// Split in some mess ? ? \nassign ar1[7:4] = s[1:0]\n, ar1 = s[0]\n, read the two integer, thanks XMB... \n// XMB:\n// 09 09 09 00 01\n// 09 09 02 02 03 04 05 06 07 08\n//"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nbehavior Adder:\n    handler overflow_init\n    entry\n        clk <= led, clk => 1\n    end\n    \n    msg a, b, result_s, result;\n    reg [7:0] result_tmp, i;\n    assign result_tmp = result = a[7:0] + b[7:0];  \n    always @ ()\n        clk <= led\n    end    \n            \n    sign_calc_msg(a, b, result_tmp);\n    \n    result_s[7:0] = result_tmp[7:0]; \n \n    if((a[7:0] < 0 && b[7:0] < 0 && result_tmp < 0) ||\n       (a[7:0] > 0 && b[7:0] > 0  && result_tmp > 0))\n                overflow"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "  assign overflow = (a[7] < b[7]) | (s[7] < a[7])| (s[7] < b[7]);\n\nin(in0, in1) out(soft_out0, out0) \n{ \n  in { \n    input sign_in { 0, 1 };\n  }   \n  out(printf(\"Softout0, overflow \")) { \n    input overflow_in { 0, 1 };\n  }\n}\n\ncontrol ck_q03 { \n  input [7:0] sig { 00, 01, 10, 11 };\n  output qout { q00: bit lane, q01, q10, q11: soft_out0 output soft_out1 }; \n}\n\nrazerr(err_q03; q03); \nin0 { \n  input sign_in {"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n// help/input\n// The numbers 7b and 7c are added to the output s. \n// a signed overflow occurs values 7b and 7c are\n//  high\n//  negative/positive \n\n\n// Reference\n// https://projecteuler.com/problem=2\n\n#include<iostream>\n\nusing namespace std;\n\n#define INT_MAX 1073741824\n#define INT_MAX2 18 228897661\n\nvoid console_unsigned_adder(unsigned int a, unsigned int b, unsigned int carry_bit); \nvoid console_signed_adder_base2(unsigned int base2_a, unsigned int base2_b, unsigned int& carry_bit);\n\nint main() \n{\n    // a(that) + b(that)\n\n    unsigned int a = INT_MAX, b = NUMBER_MAX;\n    unsigned int s ="
+    }
+  ],
+  "created": 1663537420,
+  "id": "cmpl-tgdu5wqeHfiYROP0NHiitR56RUyoG",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2428,
+    "prompt_tokens": 164,
+    "total_tokens": 2592
+  }
+}

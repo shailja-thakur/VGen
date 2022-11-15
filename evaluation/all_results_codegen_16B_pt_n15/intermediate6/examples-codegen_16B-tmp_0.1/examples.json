@@ -1,0 +1,115 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr[0] == 0) begin\n            ram[addr[1]] <= data;\n        end else begin\n            ram[addr[1]] <= ram[addr[0]];\n        end\n    end\nend\n\n// This is a ROM module\nmodule rom #(\n    parameter ADDR_WIDTH=6,\n    parameter DATA_WIDTH=8\n) (\n    input [DATA_WIDTH-1:0] data,\n    input [ADDR_WIDTH-1:0] addr,\n    input we, clk,\n    output [7:0] q\n);\nreg [DATA_WIDTH-1:0] rom[2**ADDR_WIDTH-1:0];\n// when we is high, write data to rom"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (we)\n        ram[addr] <= data;\n    q <= ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\n    q <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\n    q <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\n    q <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        ram[addr] <= data;\n        q <= ram[addr];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) q <= ram[0];\n        else if (addr == 1) q <= ram[1];\n        else if (addr == 2) q <= ram[2];\n        else if (addr == 3) q <= ram[3];\n        else if (addr == 4) q <= ram[4];\n        else if (addr == 5) q <= ram[5];\n        else if (addr == 6) q <= ram[6];\n        else if (addr == 7) q <= ram[7];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr[0] == 0) begin\n            ram[addr[1]] <= data;\n        end else begin\n            ram[addr[1]] <= ram[addr[2]];\n        end\n    end\nend\n// return the value at address addr\n// return the value at address addr + 1\n// return the value at address addr + 2\n// return the value at address addr + 3\n// return the value at address addr + 4\n// return the value at address addr + 5\n// return the value at address addr + 6\n// return the value at address addr + 7\n// return the value at address addr + 8\n// return the value at address addr + 9\n// return the value at address addr + 10\n// return the value at address addr + 11\n// return the value at address addr + 12\n// return"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        ram[addr] <= data;\n    end\n    q <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if (we)\n        ram[addr] <= data;\n    q <= ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        if (addr == 0) begin\n            ram[0] <= data;\n        end else begin\n            ram[addr] <= data;\n        end\n    end\n    q <= ram[addr];\nend\n"
+    }
+  ],
+  "created": 1663535417,
+  "id": "cmpl-AZUUf7y5TuSaitRC4Ufl7dixRsKbI",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1210,
+    "prompt_tokens": 143,
+    "total_tokens": 1353
+  }
+}

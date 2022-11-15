@@ -1,0 +1,85 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n\tq <= ram[addr];\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @ (we | clk) begin\n        ram[addr] <= data;\n        repeat i range [DATA_WIDTH-1:0] :=\n            ENCODE_ONLY( ram[ADDR_WIDTH+i-1:1] );\n        end;\nend;\n\n// Example\n// Print 4 bits - hex code of 0..15\nreg [15:0] hex4 =\n    ram[0] |\n    ram[3]<<8 |\n    ram[2]<<16 |\n    ram[1] << 24;\nreg [16:0] word4 =\n    ram[0]<<0 |\n    ram[3]<<8 |\n    ram[2]<<16 |\n    ram[1]<<24;\nalways @(posedge clk, negedge clk2) begin\n        if (we) begin\n            q"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge we)\n    if (we)\n    begin\n        ram[addr] <= data;\n        q <= ram[addr];\n    end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways(clk.posedge) begin\n    if (we) and( addr[ADDR_WIDTH-1:0] ) RAM_WRITE(ram);\n    else RAM_READ(ram);\n    if( q != ram)\n    begin\n        q <= ram[7:0];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk) begin\n    if (ack && clk && we) begin\n        ram[addr] <= data;\n        q <= ram[addr];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": " and jack it through we before\nalways (we && clk.posedge) begin\n    #(advance() { ram[addr] <= data; }.Else() {})\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif(we) begin\n\t\tram[addr] = data;\n\t\tassign(q, conv);\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        ram[addr] <= data;\n    end\n    ram.mem_buf <= ram;\n    ram.RST <= 1'b1;\n    default:\n        q <= ( //fence here to correctly trigger simulation also on edge trigger\n            cop}2'h11111\n            ffc}.2'h11111 ffs*.2'h11111)+_;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @ (clk or !we) begin\n    ram_latest = ram[addr];\n    ram[addr] = data;\n    q = ram_latest @ 0xff;\nend\n`;\nconst tr = simpleTransmon;\nconst trNet = tr(1);\ncpu = new CPUController({ clk: 1 });\nconst ram = RAM.fromMemory(seedRom);\nconst top = new Sysmem({ sam:ram });\n\ndescribe('seed emulator', function () {\n    beforeEach(function () {\n        top.reset();\n    });\n\n    it('should flash RAM', function () {\n        let mem = new SOS({ sam:RAM });\n        let algo = new Seed({ mem });\n        algo.execute();       \n    });\n});\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways (we and clk) begin\n    ram[2*ADDR_WIDTH-1:0] <= data;\n    q <= ram[2*ADDR_WIDTH-1:0][6*ADDR_WIDTH-1:0];\nend\n"
+    }
+  ],
+  "created": 1663520032,
+  "id": "cmpl-AmXy4RLlkTxIy1i8JoQwLU56u9ypz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 829,
+    "prompt_tokens": 143,
+    "total_tokens": 972
+  }
+}

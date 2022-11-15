@@ -1,0 +1,53 @@
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\n\tif(reset)\n\t\tq <= 0;\n\telse\n\t\tq <= q + 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk, negedge reset)\nbegin \n\tif(!reset)\n\t\tq <= 0;\n\telse\n\t\tq <= q + 1'b1;\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset) begin\n    if(reset) q = 0;\n    else begin\n        if(q == 13) q = 0;\n        else q = q + 1;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\n\tif(reset) q<=0;\n\telse if(q == 13) q<=q+1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\n  if(reset)\n    q <= 0;\n  else\n    q <= q + 1;\nend\n"
+    }
+  ],
+  "created": 1663299277,
+  "id": "cmpl-s6h5fLykuAkq9UOt1abPguE71B4sA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 261,
+    "prompt_tokens": 88,
+    "total_tokens": 349
+  }
+}

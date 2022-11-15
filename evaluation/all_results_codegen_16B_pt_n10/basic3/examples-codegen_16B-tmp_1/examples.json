@@ -1,0 +1,78 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways void priority_encoder_instance( input [2:0] in, output [1:0] pos ); \npriority_encoder_instance:priority_encoder UGT low;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always #( (((~in[2]) && (~in[1]) && (~in[0]) && (sel==1)) == false) && (out==0) )\n  \n  \tufunc arrzero[2]:0\n\t\tsel = 1\n                 ufunc code: v\n\t\tassign out = arrzero[b];\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// When sel=0, assign 0 to out\n// Output = (~(in & sel) !=0) << prio\nalways @(posedge clk) \nif (pos == 0) begin\n\toutput[0] <= 0; \n\toutput[1] <= 0; \nend else begin\n\tif (((~(in[0]&1) == 0) && (sel[0] == 1)) || ((~(in[1]&1) == 0) && (sel[0] == 0))) output[0] <= 1;\n\tif (((~(in[0]&1) == 0) && (sel[1] == 1)) || ((~(in[1]&1) == 0) && (sel[1] == 0))) output[1] <= 1;\nend \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// when sel=0, assign a to out\nalways with ( pos ) begin \n\tif (in[0])\n\t\tpos = 0;\n\telse if (in[1])\n\t\tpos = 1;\n\telse\n\t\tpos = 2; // select the input\n\n\tif (in[2])\n\t\tpos = 4;\n\telse if (in[3])\n\t\tpos = 5;\n\telse\n\t\tpos = 6; // select the input\n\n\toutput=pos;\nend\n        */\n        for(int i=0;i<32;i++){\n            for(int j=0;j<4;j++)\n                Configuration::TransitionConfiguration[i][j]=0;\n        }\n\n//             Configuration::TransitionConfiguration[chgpin] = { 1, 2, 3, 4 } ;\n//             Configuration::transitionFiniteStateMachine( Configuration"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge gu) begin\n        if (in[2] == 1 && sel == 1) {\n        pos <= 2;\n        }\n        else if (in[1] == 1 && sel == 0) {\n        pos <= 1;\n        }\n        else if (in[0] == 0) {\n        pos <= 0;\n        } \n    end\n)\n\n// *\n// * Easy PWM Test\n// *\n// import dac_lm3700.all;\n// reg state = 0;\n\nvoid simulation()\n{\n        // Synchronous/sequential test write\n        ch_data_wr_[0] = 1;\n        ch_data_wr_[1] = 501;\n        ch_data_wr_[2] = 502;\n        ch_data"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "// When sel=0, assign 0 to out\nalways @* begin\n  pos <= ~(in | pos);\nend link_one;\n// When sel=1, assign a to out\n// When sel=0, assign 0 to out\nalways @* begin\n  if (sel==1) pos <= ~(proc.a | pos);\nend link_two;\n// When sel=1, assign c to proc.o and a to proc.o\n// When sel=0, assign 0 to proc.o and a to proc.o\nalways @* begin\n  if (sel==1) proc.o <= ~proc.a & ~proc.c & pos;\n  else if (sel==0) proc.o <= ~pos & ~proc.a & (~pos);\nend link_three;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "// When sel=2, assign a to out\n// When sel=4, assign c to out\n`).slice( 0, 1 + generate_length ).split( '\\n' ).forEach( expected( { Math.random(), Math.random()  }, [ [ 0, 0, 5, 0  ], [ 4, 0, 5, 4 ],\n                    [ 4, 4, 5, 3 ], [ 3, 0, 5, 2 ], [ 3, 1, 5, 4 ], [ 2, 1, 5, 3 ], [ 2, 2, 5, 2 ], [ 1, 2, 5, 4 ],\n                    [ 1, 4, 5, 3 ], [ 0, 4, 5, 2 ], [ 0, 3, 5, 4 ] ] ));\n});\n\n// $fin desIGNATE POINTER-CMPROCESS nuumpuere\ntest('Designate pointer-cmpproc', function"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk[0]) \nbegin \n\tpos <= (~(in | in[1]) & ~in[0]) ? 4'b1111 : 0;\nend\n\n\n// The following is a 3-bit priority encoder. \n// If the first input is high, *and* if the second input is high *and* if the\n// output of the priority encoder indicates that the last input is low,\n// take the output from the high side output multiplexer.\nmodule priority_encoder2(\ninput \tsel, \t// Select high or low side (b value)\n\t  out, \t// Address 0: output, address 1:input1, address 2:input2\n\t  input1, \t// Address 3: input1, address 4:input2\n\t input2, \t// Address 5: input1, address 6:input"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk):\n\tif ( sel == 1 ) \n    \tpos <= ( 1<<in[1] & 1 );\nreturn pos;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "// When sel=0, rotate b left until pos is input. [...]\nassign out = select sel (\n\t\tassign sel = in [2],\n// When sel=1, assign b to out\n// When sel=0, rotate b left until pos is input. [...]\n\t\tassign b = \n\t\t\twhen (sel==0) => pos >=0\n\t\t\t\t(\n\t\t\t\t(input==0) && (sel==0) => select sel (drop (pos+1) ),\n\t\t\t\t(input==1) && (sel==1) => select sel (drop (pos+2) ),\n\t\t\t\t)\n\t\t\telse (pos+3);\nENDMODULE\n\n// Assumes in is positive if sel=0 and negative if sel=1\nmodule input_neg_sel(\ninput [3:0] in,\noutput [3:0] out,\noutput"
+    }
+  ],
+  "created": 1663534850,
+  "id": "cmpl-m0ZIrhwrLO99xOpTW2TaVBZso4LIb",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1545,
+    "prompt_tokens": 65,
+    "total_tokens": 1610
+  }
+}

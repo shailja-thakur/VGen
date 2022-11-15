@@ -1,0 +1,34 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @(*) begin
+  if (reset) begin
+    next_state <= 0;
+    next_state <= 1;
+    present_state <= 0;
+  end else begin
+    present_state <= in;
+    if (present_state && next_state) begin
+      out <= 1;
+      next_state <= 0;
+    end else begin
+      out <= 0;
+    end
+  end
+end
+
+// A more complex state machine that implements the state machine shown above.
+// It uses the 'case' construct to dispatch control to the proper state.
+// The first state is 0, the default state.
+// If the current state is 0 and in is 1, then the state becomes 1.
+// If the current state is 1 and in is 1, then the state becomes 2.
+// If the current state is 2 and in is 1, then the state becomes 3.
+// Ifendmodule

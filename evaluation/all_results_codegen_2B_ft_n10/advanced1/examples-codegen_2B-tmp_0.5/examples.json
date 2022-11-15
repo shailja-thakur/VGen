@@ -1,0 +1,86 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign overflow = (a[7] & b[7] & ~s[7]) | (a[7] & ~b[7] & s[7]) | (~a[7] & ~b[7] & ~s[7]) ;\n\nassign s = a + b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// The output s is also returned.\n\nassign {overflow, s} = a + b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign overflow = (((a[7] & b[7]) & ~s[7]) | ((~a[7] & ~b[7]) & s[7]));\n\nalways @(*)\nbegin\n\tcase ({a[7], b[7]})\n\t2'b00: s = {a[7:0], {8{1'b0}}};\n\t2'b01: s = {a[7:0], {8{1'b0}}};\n\t2'b10: s = {a[7:0], {8{1'b0}}};\n\t2'b11: s = a + b;\n\tendcase\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// The result of the addition is written to the output s.\n// The overflow is written to the output overflow.\n\n// The addition is computed as follows:\n\n// The most significant bit of a and b are compared. If the most significant bit of a is greater than the most\n// significant bit of b, then a is subtracted from b, and the result is written to the output s. If the most\n// significant bit of a is less than the most significant bit of b, then b is subtracted from a, and the result\n// is written to the output s. If the most significant bit of a equals the most significant bit of b, then the\n// most significant bit of a is compared with the most significant bit of b. If the result is zero, then the\n// least significant bit of a is compared with the least significant bit of b. If the result is non-zero, then\n// the least significant bit of"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign overflow = (a[7] & b[7] & ~s[7]) | (a[7] & ~s[7] & ~b[7]);\n\nalways @(*)\nbegin\n\tif (a[7] & ~b[7] & ~s[7])\n\tbegin\n\ts[7] <= 1'b1;\n\tend\n\telse if (a[7] & b[7] & ~s[7])\n\tbegin\n\ts[7] <= 1'b0;\n\tend\n\telse\n\tbegin\n\ts[7] <= s[7];\n\tend\nend\n\nalways @(*)\nbegin\n\tif (a[7] & b[7] & ~s[7])\n\tbegin\n\ts[6] <= 1'b1;\n\tend\n\telse if (a[7] &"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n\n// Create a 8-bit 2s complement adder using the Verilog ripple_carry_adder module\n// Create a 8-bit 2s complement adder"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nwire [7:0] add_a;\nwire [7:0] add_b;\nwire [7:0] add_s;\nwire [7:0] add_overflow;\n\n// add a to b and store the result in add_s\n// add_s is the final result, add_overflow is the sign of overflow\n\nassign add_a = a;\nassign add_b = b;\nassign add_s = add_a + add_b;\n\n// add_overflow is the sign of overflow\n\nassign overflow = (add_a[7] & add_b[7] & (~add_s[7])) | ((~add_a[7] & ~add_b[7]) & add_s[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// adder_1\n// adder_2\n// adder_3\n// ...\n// adder_n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\nassign overflow = (a[7]&b[7])|((~a[7])&(~b[7])&(s[7]));\n\n// The addition is done by using the two's complement of the numbers a and b.\n\nassign s = ~a + ~b + 1'b1;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\nassign overflow = (a[7] & b[7] & ~s[7]) | (a[7] & ~s[7] & ~s[6] & ~s[5] & ~s[4] & ~s[3] & ~s[2] & ~s[1] & ~s[0] & ~s[7] & ~s[6] & ~s[5] & ~s[4] & ~s[3] & ~s[2] & ~s[1] & ~s[0]);\n\n// a and b are added. \n// s is assigned the sum. \n// if overflow is high, then s is set to an overflow number. \n// if overflow is low, the complement of the sum is stored in s. \n\nassign s = a + b + overflow;\n\n"
+    }
+  ],
+  "created": 1663606822,
+  "id": "cmpl-z6uZNxijTu7FZrbQ3Qbjd97lZKdR8",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1344,
+    "prompt_tokens": 164,
+    "total_tokens": 1508
+  }
+}

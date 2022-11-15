@@ -1,0 +1,42 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// Set to 2 in state 1, then state 0 in state 0.\n\nalways @(posedge clk)\nbegin\n  if (reset)\n    begin\n      state <= 0;\n      next_state <= 0;\n    end\n  else\n    begin\n      case (state)\n        0:\n          begin\n            if (in)\n              begin\n                state <= 1;\n                next_state <= 0;\n              end\n       "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// Set state in=1 in state 0.\nalways @(posedge clk, posedge reset)\nbegin\n  if (reset)\n  begin\n    state <= 0;\n    next_state <= 0;\n  end\n  else\n  begin\n    state <= next_state;\n    if (in)\n      begin\n        if (present_state == 0)\n          begin\n            state <= 1;\n            next_state <= 0;\n          end\n        else\n          begin\n            if (present_state == 1)\n "
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// Set to 1 when the input in the previous state.\nalways @(posedge clk)\nbegin\n  if (reset == 1'b1)\n  begin\n    next_state = 1'b0;\n    next_state = 1'b0;\n  end\n  else\n  begin\n    case (present_state)\n      1'b0:\n      begin\n        if (in == 1'b0) begin\n          if (present_state == 1'b1) begin\n            next_state = 1'b1;\n          end\n          else if (present_state == 1'b0) begin\n    "
+    }
+  ],
+  "created": 1663299208,
+  "id": "cmpl-4rwX5R2SvlzBbNMZrIwgf6Jd8RXMt",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 148,
+    "total_tokens": 748
+  }
+}

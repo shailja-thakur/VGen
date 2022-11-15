@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nlocalparam double_mode_mul_lp_z = 0.01, outer_lp_z = 0.01;\n\nlocalparam uint32_t lp_z_bits = 0.70;\n\nmodule mult( \ninput a,\noutput b, sum, carry_out );\n\n// Matlab's LUT computes the min and max (z-coding) of the smallest\n// representable number, if all inputs are in the input range, else,\n// the smallest or largest representable number is decided by the value\n// of the smaller or largest input. This is made easier to understand\n// trying to take the floor and ceiling of the input, fires the min\n// or max losses to an output LUT just as the internal operation,\n// context it makes answer comes out\nmodule common_lut( \ninput in_in,\noutput in_out, int_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\ninner_loop:\n  sum += a;\n  sum = sum >>> 1;  // unpack.\n  count = sum + b;\n  sum = sum >> 1;\n  if( count > (1<<( 31-FIN_MSB_BITS)) ) {\n    sum = sum | ((1<<( 31-FIN_MSB_BITS)) - 1);\n    sum = sum << 1;\n  }\n  a = b \n  if( (a != b) && (b != 0){  // using equality rather than <= b, \n    sum = sum + b + b;  // inconditional\n    sum = sum >> 1;\n    sum = sum + b + b;\n    sum = sum >> 1;\n  }\n  b = a;\n  if( b != 0 ) {\n    update();\n  }\n\noutput1:\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nvoid half_adder_block( \ninput a[8], output b[8],\noutput cout[8], sum[8] );\n\n// To sum two half-words\n\nvoid half_adder( const half_adder* me )\n{\n  // loop over packets.\n  reg8 d0 = 0, d1 = 0, d2 = 0, d3 = 0;\n  if (me->paused) return;  \n  \n  // Convert to bytes.\n  \n  // Pointers for reading, writing and swapping.\n  \n  reg8* a[8] = (reg8*)&a[0];\n  reg8* b[8] = (reg8*)&b[0];\n  reg8* sum[8] = (reg8*)&sum[0];\n  \n  for (int n=7; n>=0; n--"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n// This is a product-adder. The product-adder multiplies two bits and produces a sum and carry-out.\nmodule polynomial_adder( \ninput s1, s2,\ninput cin , cout, sum);\n\n\n/** \n * \\brief \\author maria.caldas.canale@gmail.com\n * TODO dar codigo repetido en a, s1, s2\n */\n\nmodule module_0( \ninput a, b,\ninput c, d,\noutput      sum, count\n);\n\n/*\n * Kernel adaptado desde la pre-b\u00fasqueda en que compono el c\u00f3digo como un sistema de noficie.\n * https://github.com/spring-coin/talky/blob/4ea008d115d5ffc2ceff5c4cf12c"
+    }
+  ],
+  "created": 1663540046,
+  "id": "cmpl-ujYSxaKdBf2nXYXzs1yfSr8tDFnpp",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 804,
+    "prompt_tokens": 43,
+    "total_tokens": 847
+  }
+}

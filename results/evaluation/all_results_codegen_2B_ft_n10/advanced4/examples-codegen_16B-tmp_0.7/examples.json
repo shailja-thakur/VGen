@@ -1,0 +1,329 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\talways@(posedge clk)\n\tbegin\n\tif(load==1'b1)\n\tq<=data;\n\telse\n\tbegin\n\tif(ena==1'b1)\n\tbegin\n\tif(amount==2'b00)\n\tq<=q<<1;\n\telse if(amount==2'b01)\n\tq<=q<<8;\n\telse if(amount==2'b10)\n\tq<=q>>1;\n\telse if(amount==2'b11)\n\tq<=q>>8;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n\tif(load)\n\tbegin\n//\tif (ena)\n\t begin\n\tq[63:0] = data;\n\tend\n\tend\n\telse if(ena)\n\tbegin\n//\tif (ena)\n\tbegin\n\tif(amount==2'b00)\n\tbegin\n\t//logic for shifting left by 1 bit\n\tq[63:1] = q[62:0];\n\tend\n\telse if(amount==2'b01)\n\tbegin\n\t//logic for shifting left by 8 bits\n\tq[63:8] = q[56:0];\n\tend\n\telse if(amount==2'b10)\n\tbegin\n\t//logic for shifting right by 1 bit\n\tq[63:1] = q[62:0]<<1;\n\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " always @(posedge clk)\n begin\n\tif (ena) begin\n\tcase (amount)\n\t2'b00: q <= {q[62:0],1'b0};\n\t2'b01: q <= {q[55:0],8'b0};\n\t2'b10: q <= {q[63],q[63:1]};\n\t2'b11: q <= 64'b0;\n\tendcase\n\tend\n\telse if (load)\n\tq <= data;\n\telse\n\tq <= q;\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)begin\n\tif(load) begin\n\tq <= data;\n\tend\n\telse if (ena) begin\n\tcase(amount)\n\t2'b00: q <= q << 1;\n\t2'b01: q <= q << 8;\n\t2'b10: q <= q >> 1;\n\t2'b11: q <= q >> 8;\n\tendcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)begin\n\tif(load)\n\tbegin\n\tq[63:0]<=data[63:0];\n\tend\n\t\n\tif(ena)\n\tbegin\n\t//performs operation\n\tif(amount == 2'b00)\n\tbegin\n\tq[63:1] <= q[62:0];\n\tq[0] <= q[63];\n\tend\n\t\n\tif(amount == 2'b01)\n\tbegin\n\tq[63:8] <= q[56:0];\n\tq[0] <= q[63];\n\tend\n\t\n\tif(amount == 2'b10)\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\t\n\tif(amount == 2'b11"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": " always @(posedge clk) begin\n\t if (load) begin\n\t q<=data;\n\t end\n\t if (ena) begin\n\t \n\t case(amount)\n\t 2'b00:\tq<=q<<1;\n\t 2'b01:\tq<=q<<8;\n\t 2'b10:\tq<=q>>1;\n\t 2'b11:\tq<=q>>8;\n\t endcase\n\t end\n\t \n\t end\n\t \n\t \n\t \n\t \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load == 1'b1)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena == 1'b1)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq[0] <= q[31];\n\tq[31:1] <= q[30:0];\n\tq[63:32] <= q[31:0];\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq[63:1] <= q[31:0];\n\tq[0] <= q[31];\n\tq[31:1"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\nif(load)\nbegin\n\tq <= data;\nend\nelse if(ena)\nbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:1] << 1;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq[63:0] <= q[63:0] >> 1;\n\tq[63] <= q[0];\n\tend\n\telse\n\tbegin\n\tq[63:0] <= q[63:0] << 1;\n\tq[63"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif(load)\n\tq <= data;\n\tif(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tq <= q << 1;\n\tif(amount == 2'b01)\n\tq <= q << 8;\n\tif(amount == 2'b10)\n\tq <= q >> 1;\n\tif(amount == 2'b11)\n\tq <= q >> 8;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif(load) begin\n\tq <= data;\n\tend\n\telse begin\n\tif(ena) begin\n\tcase(amount)\n\t2'b00:\n\tbegin\n\tq[1:0] <= q[63:62];\n\tq[63:62] <= q[63:62] + 1'b1;\n\tend\n\t2'b01:\n\tbegin\n\tq[7:0] <= q[63:56];\n\tq[63:56] <= q[63:56] + 8'b1;\n\tend\n\t2'b10:\n\tbegin\n\tq[1:0] <= q[63:62];\n\tq[63:62] <= q[63:62] - 1'b1;\n\tend\n\t2'b11:\n\tbegin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) \n\tbegin\n\tif (load)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena) \n\tbegin\n\tcase(amount)\n\t2'b00:\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\t2'b01:\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:1] << 1;\n\tend\n\t2'b10:\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:1] >> 1;\n\tend\n\t2'b11:\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\t\n\tif (load == 1)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena == 1)\n\tbegin\n\tif (amount == 2'b00)\n\tbegin\n\tq[0] <= q[63];\n\tq[1] <= q[62];\n\tq[2] <= q[61];\n\tq[3] <= q[60];\n\tq[4] <= q[59];\n\tq[5] <= q[58];\n\tq[6] <= q[57];\n\tq[7] <= q[56];\n\tq[8] <= q[55];\n\tq[9] <= q[54];\n\tq[10] <= q[53];\n\tq[11] <= q[52];\n\tq[12] <= q"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif (load)\n\tq<=data;\n\telse \n\tbegin\n\tif(ena)\n\tbegin\n\tcase(amount)\n\t2'b00: q<={1'b0,q[62:1]};\n\t2'b01: q<={8'b0,q[55:0]};\n\t2'b10: q<={q[63], q[63:1]};\n\t2'b11: q<={8'h0,q[63:0]};\n\tendcase\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load) q <= data;\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00) q <= q << 1;\n\telse if(amount == 2'b01) q <= q << 8;\n\telse if(amount == 2'b10) q <= q >> 1;\n\telse if(amount == 2'b11) q <= q >> 8;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n\tif (load)\n\tbegin\n\t//\t$display(\"advshift : loading %b into q in time %t\", data, $time);\n\t//\t$display(\"advshift : clk is %b at time %t\", clk, $time);\n\t//\t$display(\"advshift : q is %b at time %t\", q, $time);\n\t//\t$display(\"advshift : ena is %b at time %t\", ena, $time);\n\t//\t$display(\"advshift : amount is %b at time %t\", amount, $time);\n\t//\t$display(\"advshift : clk is %b at time %t\", clk, $time);\n\tend\n\t\n\tif (ena)\n\tbegin\n\t//\t$display(\"advshift: enabling shift in time %"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load) q<= data;\n\telse begin\n\tif(ena) begin\n\tcase(amount)\n\t2'b00: q <= q<<1;\n\t2'b01: q <= q<<8;\n\t2'b10: q <= q>>1;\n\t2'b11: q <= q>>8;\n\tendcase\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif (load) begin\n\tcase(amount)\n\t2'b00: q<=data;\n\t2'b01: q<=data<<8;\n\t2'b10: q<=data>>8;\n\t2'b11: q<=data<<56;\n\tendcase\n\tend\n\t\n\telse if (ena) begin\n\t// q<=q(q-1)\n\tcase(amount)\n\t2'b00: q<=q<<1;\n\t2'b01: q<=q<<8;\n\t2'b10: q<=q>>8;\n\t2'b11: q<=q<<56;\n\tendcase\n\tend\n\telse begin\n\tq<=q;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\tif (load == 1'b1)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena == 1'b1)\n\tbegin\n\tif (amount == 2'b00)\n\tbegin\n\t// shift left by 1 bit\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\telse if (amount == 2'b01)\n\tbegin\n\t// shift left by 8 bits\n\tq[0] <= q[56];\n\tq[56:1] <= q[55:0];\n\tq[63:8] <= q[63:0];\n\tend\n\telse if (amount == 2'b10)\n\tbegin\n\t// shift right by 1 bit\n\tq[63] <= q[0];"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": " always@(posedge clk) begin\n\tif(load) begin\n\tq <= data;\n\tend\n\telse begin\n\tif(ena) begin\n\tif(amount == 2'b01) begin\n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b10) begin\n\tq <= q >> 1;\n\tend\n\telse begin\n\tq <= q;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 20,
+      "logprobs": null,
+      "text": " always @(posedge clk) begin\n if (load) begin\n q <= data;\n end\n else begin\n if(ena) begin\n case(amount)\n 2'b00: q <= q << 1;\n 2'b01: q <= q << 8;\n 2'b10: q <= q >> 1;\n 2'b11: q <= q >> 8;\n endcase\n end \n end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 21,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk)\n\tbegin\n\tif (load)\n\tq <= data;\n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00)\n\tq <= q << 1;\n\telse if (amount == 2'b01)\n\tq <= q << 8;\n\telse if (amount == 2'b10)\n\tq <= q >> 1;\n\telse if (amount == 2'b11)\n\tq <= q >> 8;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 22,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\tif(load)\n\tq <= data;\n\telse if(ena) begin\n\tq <= {q[62:0],1'b0};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 23,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n\tif (load)\n\tbegin\n\tq<=data;\n\tend\n\telse\n\tbegin\n\tif(ena)\n\tbegin\n\tif(amount==2'b00)\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1]<= q[62:0];\n\tend\n\t\n\tif(amount==2'b01)\n\tbegin\n\tq[0] <= q[63];\n\tq[63:8]<= q[56:0];\n\tend\n\t\n\tif(amount==2'b10)\n\tbegin\n\tq[63:1] <= q[62:0];\n\tq[0] <= q[63];\n\tend\n\t\n\tif(amount==2'b11)\n\tbegin\n\tq["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 24,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\tif(ena) begin\n\tif(amount == 2'b00) begin\n\tq <= q << 1;\n\tend\n\tif(amount == 2'b01) begin\n\tq <= q << 8;\n\tend\n\tif(amount == 2'b10) begin\n\tq <= q >> 1;\n\tend\n\tif(amount == 2'b11) begin\n\tq <= q >> 8;\n\tend\n\tif(load) begin\n\tq <= data;\n\tend\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 25,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk) \n\tbegin\n\tif (load)\n\tq <= data;\n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00) //left shift by 1 bit\n\tq <= {q[62:0], q[63]};\n\telse if (amount == 2'b01) //left shift by 8 bits\n\tq <= {q[56:0], q[63:56]};\n\telse if (amount == 2'b10) //right shift by 1 bit\n\tq <= {q[0], q[63:1]};\n\telse //right shift by 8 bits\n\tq <= {q[0], q[63:1]};\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 26,
+      "logprobs": null,
+      "text": " always @ (posedge clk)\n begin\n if(load)\n q <= data;\n else\n begin\n if(ena)\n begin\n case(amount)\n 2'b00: q <= q << 1;\n 2'b01: q <= q << 8;\n 2'b10: q <= q >> 1;\n 2'b11: q <= q >> 8;\n default: q <= q;\n endcase\n end\n else\n q <= q;\n end\n end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 27,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n\nif (load == 1'b1) begin\n\t//assign q = data;\n\tq <= data;\n\tend\n\t\nelse if (ena == 1'b1) begin\n\t\n\tif (amount == 2'b00) begin\n\t// Left Shift\n\t// first bit shifted out = 1'b0\n\t// final bit shifted out = 1'b0\n\tq[0] <= q[1];\n\tq[63:1] <= q[62:0];\n\tend\n\t\n\telse if (amount == 2'b01) begin\n\t// Left Shift\n\t// first bit shifted out = 1'b0\n\t// final bit shifted out = 1'b1\n\tq[0] <= 1'b0;\n\tq[63:1] <= q[62:0] + 1"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 28,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\t\n\tif (load)\n\tbegin\n\t// shifts the input along the amount line on the negative edge of the clock\n\t// and assigns it to the output shift in q\n\tq <= data <<< (-amount);\n\tend\n\telse if (ena)\n\tbegin\n\t// shift q along the amount line on the positive edge of the clock\n\tq <= q >> amount;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 29,
+      "logprobs": null,
+      "text": " reg [63:0] q_temp;\n always @ (posedge clk) begin\n if(load)\n q_temp <= data;\n else if(ena)\n q <= q_temp;\n end\n \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 30,
+      "logprobs": null,
+      "text": " always @(posedge clk) begin\n if (load) q <= data;\n else begin\n if (ena) begin\n case(amount)\n 2'b00: q <= q << 1;\n 2'b01: q <= q << 8;\n 2'b10: q <= q >> 1;\n 2'b11: q <= q >> 8; // if bits are all 1's, q = -1.\n endcase\n end\n end\n end\n endmodule\n// PART 2 BELOW:\n\nmodule advshift_tb();\nreg clk, load, ena, [1:0] amount;\nreg [63:0] data;\nwire [63:0] q;\ninteger i;\n\nadvshift dut(clk, load, ena, amount, data, q);\ninitial begin\n$dumpfile(\"advshift.vcd\"); $dumpvars(0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 31,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\nif(load)\n\tq <= data;\n\t// shift left or right, depending on amount.\n\t// if left, shift 1 bit.\n\t// if right, shift 8 bits.\nelse if (ena)\n\tbegin\n\tif(amount == 2'b00 | amount == 2'b11)\n\tq <= q << 1;\n\telse\n\tq <= q << 8;\n\tend\n\t// set output to input.\n\t// else, do not perform any shifting, and return input unchanged.\n\t\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 32,
+      "logprobs": null,
+      "text": "\talways @(posedge clk)\n\tbegin\n\tif(load)\n\tbegin\n\tq[63:0] <= data[63:0];\n\tend\n\tif(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq[63:0] <= q[63:0] << 1; // shift left by 1 bit.\n\tend\n\tif(amount == 2'b01)\n\tbegin\n\tq[63:0] <= q[63:0] << 8; // shift left by 8 bits.\n\tend\n\tif(amount == 2'b10)\n\tbegin\n\tq[63:0] <= q[63:0] >> 1; // shift right by 1 bit.\n\tend\n\tif(amount == 2'b11)\n\tbegin\n\tq[63:0] <= q[63"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 33,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n\tif(load)\n\tbegin\n\tq <= data;\n\tend \n\tif(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin \n\tq <= q << 1;\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\telse\n\tbegin\n\tq <= q >> 8;\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 34,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\n\tif(load)\n\tbegin\n\tq <= data;\n\tend\n\t\n\telse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq <= q << 1;\n\tend\n\t\n\telse if(amount == 2'b01)\n\tbegin\n\tq <= q << 8;\n\tend\n\t\n\telse if(amount == 2'b10)\n\tbegin\n\tq <= q >> 1;\n\tend\n\t\n\telse if(amount == 2'b11)\n\tbegin\n\tq <= q >> 8;\n\tend\n\t\n\tend\n\t\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 35,
+      "logprobs": null,
+      "text": "\talways@(posedge clk)\n\tbegin\n\tif(load)\n\tq <= data;\n\telse begin\n\tif(ena)\n\tbegin\n\tcase(amount)\n\t2'b00:\n\tq <= q << 1;\n\t2'b01:\n\tq <= q << 8;\n\t2'b10:\n\tq <= q >> 1;\n\t2'b11:\n\tq <= q >> 8;\n\tendcase\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 36,
+      "logprobs": null,
+      "text": " always @(posedge clk)\n begin\nif(load)\n\tq <= data;\nelse begin\n\tif(ena)\n\tbegin\n\t// Shift left by 1 bit\n\tif(amount == 2'b00)\n\tbegin\n\tq[0] <= q[1];\n\tq[1] <= q[2];\n\tq[2] <= q[3];\n\tq[3] <= q[4];\n\tq[4] <= q[5];\n\tq[5] <= q[6];\n\tq[6] <= q[7];\n\tq[7] <= q[8];\n\tq[8] <= q[9];\n\tq[9] <= q[10];\n\tq[10] <= q[11];\n\tq[11] <= q[12];\n\tq[12] <= q[13];\n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 37,
+      "logprobs": null,
+      "text": " always@(posedge clk) \n begin\n\tif(load == 1'b1)\n\tbegin\n\tq <= data;\n\tend\n\telse\n\tbegin\n\tif(ena == 1'b1)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\telse if(amount == 2'b01)\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:1] << 1;\n\tend\n\telse if(amount == 2'b10)\n\tbegin\n\tq[63:1] <= q[63:1] >> 1;\n\tq[0] <= q[0];\n\tend\n\telse\n\tbegin\n\tq"
+    },
+    {
+      "finish_reason": "length",
+      "index": 38,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n\tif (load)\n\tbegin \n\t//if (ena) begin\n\tq <= data;\n\t//q <= 64'h0000000000000000;\n\tend \n\telse if (ena)\n\tbegin\n\tif (amount == 2'b00)\n\tbegin\n\tq[63:1] <= q[62:0];\n\tq[0] <= q[63] ^ q[63:1];\n\tend\n\tif (amount == 2'b01)\n\tbegin\n\tq[63:8] <= q[62:0];\n\tq[0] <= q[63:8] ^ q[63:8+1];\n\tend\n\tif (amount == 2'b10)\n\tbegin\n\tq[63:1] <= q[62:0];\n\tq[0] <= q"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 39,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\tif(load)\n\tbegin\n\t//\tq <= data;\n\tend\n\telse \n\tbegin\n\tif(ena)\n\tbegin\n\t//\tq <= q[63:amount];\n\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 40,
+      "logprobs": null,
+      "text": "\talways@(posedge clk)\n\tbegin\n\tif (load)\n\tbegin\n\tcase (amount)\n\t2'b00: q=data;\n\t2'b01: q=data<<1;\n\t2'b10: q=data>>1;\n\t2'b11: q=data>>>1;\n\tendcase\n\tend\n\telse if (ena)\n\tq=q<<amount;\n\telse \n\tq = q;\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 41,
+      "logprobs": null,
+      "text": "\nalways@ (posedge clk)\nbegin \nif(load)\n\tq <= data;\nelse if(ena)\n\tbegin\n\tif(amount == 2'b00)\n\tbegin\n\tq[0] <= q[1];\n\tq[1] <= q[2];\n\tq[2] <= q[3];\n\tq[3] <= q[4];\n\tq[4] <= q[5];\n\tq[5] <= q[6];\n\tq[6] <= q[7];\n\tq[7] <= q[8];\n\tq[8] <= q[9];\n\tq[9] <= q[10];\n\tq[10] <= q[11];\n\tq[11] <= q[12];\n\tq[12] <= q[13];\n\tq[13] <= q[14];"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) begin\n\tif (load == 1'b1) begin\n\tq <= data;\n\tend\n\tif (ena == 1'b1) begin\n\tcase(amount)\n\t2'b00: q <= q << 1;\n\t2'b01: q <= q << 8;\n\t2'b10: q <= q >> 1;\n\t2'b11: q <= q >> 8;\n\tendcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 43,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\nbegin\n\tif(load == 1)\n\tbegin\n\t//\tq <= data;\n\tend\n\t\n\telse\n\tbegin\n\t\n\tif(ena == 1)\n\tbegin\n\tcase(amount)\n\t2'b00:\n\tbegin\n\tq[1:0] <= q[63:62];\n\tq[63:2] <= q[61:60];\n\tend\n\t2'b01:\n\tbegin\n\tq[1:0] <= q[63:62];\n\tq[63:2] <= q[59:56];\n\tend\n\t2'b10:\n\tbegin\n\tq[1:0] <= q[63:62];\n\tq[63:2] <= q[55:52];\n\tend\n\t2'b11:\n\tbegin\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 44,
+      "logprobs": null,
+      "text": "\talways @ (posedge clk) begin\n\tif(ena) begin\n\n\tcase(amount)\n\t2'b00: q <= {q[62:0],1'b0};\n\t2'b01: q <= {q[55:0],8'b0};\n\t2'b10: q <= {q[63],q[63:1]};\n\t2'b11: q <= data;\n\tendcase\n\tend\n\telse if(!ena) begin\n\tq <= q;\n\tend\n\telse begin\n\tq <= q;\n\tend\n\tend\n\t\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\nif(ena)\nbegin\n// shift left or right.\nif(amount == 2'b00)\nq = {data[62:0], 1'b0};\nelse if(amount == 2'b01)\nq = {data[55:0], 8'b0};\nelse if(amount == 2'b10)\nq = {data[63], data[63:1]};\nelse if(amount == 2'b11)\nq = {{data[63], data[63:1]}, data[63:1], data[63:1], data[63:1], data[63:1], data[63:1], data[63:1], data[63:1], data[63:1]};\nend\n\nelse if(load)\nq = data;\n\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 46,
+      "logprobs": null,
+      "text": "\talways @ ( posedge clk )\n\tbegin\n\tif(load == 1'b1)\n\tbegin\n\tq <= data;\n\tend\n\telse if (ena == 1'b1)\n\tbegin\n\tcase(amount)\n\t2'b00: q <= q << 1;\n\t2'b01: q <= q << 8;\n\t2'b10: q <= q >> 1;\n\t2'b11: q <= q >> 8;\n\tendcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "\n// if load is high, shift left/right by 1 bit.\n// if ena is high, shift left/right by 8 bits.\nalways @ (posedge clk)\nbegin\n\tif (load) begin \n\t// if load is high, assign data[63:0] to shift register q.\n\t// if ena is high, shift left/right by 8 bits.\n\tq <= {data[62:0], 1'b0};\n\tend\n\telse if(ena) begin\n\t// if ena is high, shift left/right by 1 bit.\n\tq <= {q[62:0], 1'b0};\n\tend\n\t// if ena is low, retain value of q.\n\tend\n\t// if load is low, retain value of q.\nend\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 48,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n\tif(load)\n\tbegin\n\t//load data into the shift register\n\tq <= data;\n\t$display(\"Shifted: %b \\n\",q);\n\tend\n\telse if(ena)\n\tbegin\n\t//shift the register\n\tq <= q << amount;\n\t$display(\"Shifted: %b \\n\",q);\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 49,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk) begin\n\tif (load) begin\n\tq <= data;\n\tend\n\telse begin\n\tif (ena) begin\n\tcase(amount)\n\t2'b00:\n\tbegin\n\tq[0] <= q[63];\n\tq[63:1] <= q[62:0];\n\tend\n\t2'b01:\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:1] << 1;\n\tend\n\t2'b10:\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:1] >> 1;\n\tend\n\t2'b11:\n\tbegin\n\tq[0] <= q[0];\n\tq[63:1] <= q[63:"
+    }
+  ],
+  "created": 1663550767,
+  "id": "cmpl-dgYTxf4wOgTyaxkQTBGw6cO5iUWcW",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 7694,
+    "prompt_tokens": 184,
+    "total_tokens": 7878
+  }
+}

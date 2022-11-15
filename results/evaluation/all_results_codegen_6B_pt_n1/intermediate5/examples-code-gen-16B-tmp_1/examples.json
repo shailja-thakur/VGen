@@ -1,0 +1,27 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// shift left and rotate the register out by amount bits{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\nif (reset)\nbegin\nout=8'bzzzzzzzz;\nend\nelse if (load)\nbegin\nout={data,data};\nend\nelse\nbegin\ncase(amount)\n 3'b000:out={data,data} ;\n 3'b001:out = {1'b1,data,data[7:1]};\n 3'b010:out = {2'b1,data,data[7:2]};\n 3'b011:out = {3'b1,data,data[7:3]};\n 3'b100:out = {4'b1,data,data[7:4]};\n 3'b101:out = {5'b1,data,data[7:5]};\n 3'b110:out = {6'b1,data,data"
+    }
+  ],
+  "created": 1663281802,
+  "id": "cmpl-lI3n7eKJsVUYtU5f0SuL1A8ukWWVP",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 91,
+    "total_tokens": 291
+  }
+}

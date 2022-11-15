@@ -1,0 +1,630 @@
+example-0: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always(clk or reset) begin
+    r_next <= r_reg;
+    r_reg <= feedback_value;
+    q <= r_next;
+end
+
+================================================================
+example-1: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg ^ feedback_value;
+    end
+end
+
+================================================================
+example-2: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+        r_next <= r_reg;
+        feedback_value <= 4'b1111;
+    end
+    else
+    begin
+        r_next <= r_reg ^ (r_reg >> 5);
+        feedback_value <= r_next[4:0];
+    end
+end
+
+================================================================
+example-3: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg ^ (r_reg >> 5) ^ (r_reg >> 3);
+        feedback_value <= r_next[4:0];
+    end
+end
+
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 4 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 1 and 5 of
+================================================================
+example-4: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg ^ ((r_reg >> 2) & 0x1f);
+        feedback_value <= r_next[4:0];
+        q <= r_next[4:0];
+    end
+end
+
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+assign feedback_value = r_reg[4:0] ^ ((r_reg >> 2) & 0x1f);
+
+// assign r_next to r_reg
+assign r_next = r_reg[4:0];
+
+// assign r_reg to the output q
+assign q = r_reg[4:0];
+
+
+================================================================
+example-5: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+        r_reg <= 1;
+    else
+        r_next <= r_reg ^ feedback_value;
+    q <= r_next;
+end
+
+================================================================
+example-6: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg ^ (r_reg >> 5) ^ (r_reg >> 3);
+        feedback_value <= r_next[4:0];
+        q <= r_next[4:0];
+    end
+end
+
+// end of file
+
+================================================================
+example-7: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset) begin
+        r_reg <= 1;
+    end
+    else begin
+        r_next <= r_reg ^ feedback_value;
+        q <= r_next;
+    end
+end
+
+================================================================
+example-8: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg[4:0] xor (r_reg[4:0] & 0b1010);
+        r_reg <= r_next;
+    end
+end
+
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+assign feedback_value = r_reg[4:0] xor r_reg[4:0] xor r_reg[4:0];
+
+// assign r_next to r_reg
+assign r_next = r_reg;
+
+// assign r_reg to the output q
+assign q = r_next;
+end
+
+
+================================================================
+example-9: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk or negedge reset)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg ^ feedback_value;
+        q <= r_next[4:0];
+    end
+end
+
+
+================================================================
+example-10: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset) begin
+        r_reg <= 1;
+        r_next <= r_reg[4:0];
+        feedback_value <= r_reg[4:0] xor (r_reg[4:0] >> 2) & 0b00000001;
+    end
+    else begin
+        r_next <= r_reg;
+        feedback_value <= r_reg[4:0] xor (r_reg[4:0] >> 2) & 0b00000001;
+    end
+end
+
+// assign the xor of bit positions 1 and 3 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset) begin
+================================================================
+example-11: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+        r_next <= r_reg;
+        feedback_value <= r_reg[4:0] ^ r_reg[3:0];
+    end
+    else
+    begin
+        r_next <= r_reg;
+        feedback_value <= r_reg[4:0] ^ r_reg[3:0];
+    end
+end
+
+
+================================================================
+example-12: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg xor (r_reg[4:0] & 0b00001111);
+    end
+end
+
+// This is the LFSR implementation for the Galois LFSR
+// It is a minimal implementation that only uses the
+// Galois LFSR.
+//
+// The Galois LFSR is a feedback register that can be used
+// to generate LFSRs.
+//
+// The Galois LFSR is defined by the following equation:
+//
+// x_n = x_{n-1}^x_{n-2}
+//
+// where x_0 is the initial value of the LFSR, x_n is the
+// value of the LFSR after n
+================================================================
+example-13: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= (r_reg ^ (r_reg >> 5) ^ (r_reg >> 3));
+    end
+end
+
+================================================================
+example-14: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+  r_next = r_reg ^ (r_reg >> 5) ^ (r_reg >> 3) ^ (feedback_value << 2);
+
+================================================================
+example-15: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk or negedge reset) begin
+    if (reset) begin
+        r_reg <= 1;
+    end
+    else begin
+        r_next <= r_reg xor (r_reg[4:0] & 0b00000011);
+        feedback_value <= (r_reg[4:0] & 0b00000010);
+    end
+end
+
+
+================================================================
+example-16: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk or negedge reset)
+  r_next <= r_reg;
+always @(posedge clk or negedge reset)
+  r_reg <= (r_reg & 0x1F) | (r_next[4:0] & 0xE0);
+always @(posedge clk or negedge reset)
+  feedback_value <= (r_next[4:0] & 0x1F);
+
+================================================================
+example-17: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always(clk or reset) begin
+    r_reg <= 1;
+    if (reset) begin
+        r_reg <= 0;
+    end
+    else begin
+        r_next <= r_reg xor feedback_value;
+    end
+end
+
+// function lfsr_init(clk, reset, q)
+// begin
+//     lfsr(clk, reset, q);
+// end
+
+// function lfsr_next(clk, reset, q)
+// begin
+//     lfsr(clk, reset, q);
+// end
+
+// function lfsr_next_init(clk, reset, q)
+// begin
+//     lfsr_init(clk, reset, q);
+// end
+
+// function lfsr_next_next(clk, reset, q)
+// begin
+//     lfsr_next(
+================================================================
+example-18: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+    begin
+        r_reg <= 1;
+    end
+    else
+    begin
+        r_next <= r_reg ^ (r_reg >> 3) ^ (r_reg >> 5);
+        feedback_value <= r_reg >> 4;
+    end
+end
+
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    r_next <= r_reg ^ (r_reg >> 3) ^ (r_reg >> 5);
+    feedback_value <= r_reg >> 4;
+end
+
+
+================================================================
+example-19: 
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+always @(posedge clk)
+begin
+    if (reset)
+        r_reg <= 1;
+    else
+        r_next <= r_reg[4:0];
+    feedback_value <= r_next[4:0];
+    q <= feedback_value;
+end
+
+================================================================

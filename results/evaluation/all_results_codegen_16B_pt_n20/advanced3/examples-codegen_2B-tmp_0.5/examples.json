@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin\nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways @(present_state or x)\nbegin\ncase(present_state)\nIDLE:\nbegin\nif(x == 1)\nnext_state <= S1;\nelse\nnext_state <= IDLE;\nend\nS1:\nbegin\nif(x == 0)\nnext_state <= S10;\nelse\nnext_state <= S1;\nend\nS10:\nbegin\nif(x == 1)\nnext_state <= S101;\nelse\nnext_state <= IDLE;\nend\nS101:\nbegin\nif(x == 0)\nnext_state <= IDLE;\nelse\nnext_state <= S1;\nend\ndefault:\nnext_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin\nif (reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways @(present_state, x)\nbegin\ncase (present_state)\nIDLE: begin\nif (x)\nnext_state <= S1;\nelse\nnext_state <= IDLE;\nend\nS1: begin\nif (x)\nnext_state <= S10;\nelse\nnext_state <= IDLE;\nend\nS10: begin\nif (x)\nnext_state <= S101;\nelse\nnext_state <= IDLE;\nend\nS101: begin\nif (x)\nnext_state <= IDLE;\nelse\nnext_state <= S1;\nend\ndefault: next_state <= IDLE;\nendcase\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or posedge reset)\nbegin\nif (reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways @ (present_state or x)\nbegin\ncase (present_state)\nIDLE: next_state <= x ? S1 : IDLE;\nS1: next_state <= x ? S10 : IDLE;\nS10: next_state <= x ? S101 : IDLE;\nS101: next_state <= x ? IDLE : S1;\nendcase\nend\n\nassign z = (present_state == S101);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk or posedge reset)\nbegin\nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways @ (*)\nbegin\ncase(present_state)\nIDLE:\nif(x)\nnext_state <= S1;\nelse\nnext_state <= IDLE;\n\nS1:\nif(x)\nnext_state <= S10;\nelse\nnext_state <= IDLE;\n\nS10:\nif(x)\nnext_state <= S101;\nelse\nnext_state <= IDLE;\n\nS101:\nnext_state <= IDLE;\nendcase\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk, posedge reset)\nbegin\nif(reset)\npresent_state <= IDLE;\nelse\npresent_state <= next_state;\nend\n\nalways@(present_state, x)\nbegin\ncase(present_state)\nIDLE:\nbegin\nif(x)\nnext_state <= S1;\nelse\nnext_state <= IDLE;\nend\n\nS1:\nbegin\nif(x)\nnext_state <= S10;\nelse\nnext_state <= S1;\nend\n\nS10:\nbegin\nif(x)\nnext_state <= S101;\nelse\nnext_state <= S10;\nend\n\nS101:\nbegin\nnext_state <= IDLE;\nend\n\ndefault:\nnext_state <= IDLE;\nendcase\nend\n\n"
+    }
+  ],
+  "created": 1663304560,
+  "id": "cmpl-0UeY1ZJcVCgvA8dkeBwS6KMk84sgJ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 902,
+    "prompt_tokens": 232,
+    "total_tokens": 1134
+  }
+}

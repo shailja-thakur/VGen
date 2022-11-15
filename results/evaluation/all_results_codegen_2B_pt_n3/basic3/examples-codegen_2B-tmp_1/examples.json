@@ -1,0 +1,36 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "wire [3:0] b; \n// When sel=0, assign s to out\nwire [3:0] s; \n    \n      // Build the component\nprimitive adder implementation\n( \ninput [2:0] in, \noutput reg [1:0] out);\n\n// Implement the reg function\nreg r, r2=r+1;\nreg [3:0] out;\nreg shift; // For accurate compare\n\ntrigger 1w\nalways @*\nbegin \n    b=0;\n    s=0;\n    \n    for (b=0;b<125;b++)\n    @ b[4:0] != offset_reg[4:0];\n\tbool result = select (b[3]=b[2:0]) != b[1]; -- if(!result)b=b+1;\n\tresult = select"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "wrising_up_n   [in, 6:0] r = sel ? b[1] : 0b111\nwrising_up_n   [in, 0:6] w = sel ? b[0] : 0b10111\n\nwbpri_low       [pos, 6:1]  = w[12:12]\nwbpri_low       [pos, 1:0]  = w[10:9]\nwbpri_high      [pos, 6:1]  = p[19:15]\nwbpri_high      [pos, 0:0]  = p[11:8]\nwbstate_low     [pos, 9:5]  = w[0:0]\nwbstate_low     [pos, 4:3]  = w[5:4]\nwbstate_high    [pos, 9:5]  = p["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (in[2:0] || ~in[5:0]) begin\n  lcd_pos = pos < 8 ? pos : pos - 16;\n  pos = pos < 8 ? pos + 1 : pos;\nend\n\n// Write the position to LCD display\nalways @ (lcd_pos) begin\n  h_const = h_const_value;\n  h_stack = h_stack << 3 & ~(H_CLEAR_BUSY | (H_STACK_LOAD));\n  h_stack = h_stack ^ pos & 0xf;\n  lcd_intseq.high = ((h_stack & 0x10) == 0);\n  lcd_intseq.low = lcd_clear_busy_high ? 1 : 0;\nend\n"
+    }
+  ],
+  "created": 1663536981,
+  "id": "cmpl-4f1ulrUQKO2ozLBe4o1JHNpspad1H",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 577,
+    "prompt_tokens": 65,
+    "total_tokens": 642
+  }
+}

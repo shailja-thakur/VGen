@@ -1,0 +1,57 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign r_next = (!feedback_value || feedback_value);\n//assign r_next = (!feedback_value || feedback_value);\nassign q = r_reg + r_reg;\nassign q = feedback_value;\nassign feedback_value = feedback_value && r_reg == 5'b11111;\n\n\ninitial begin\nr_reg = 5'b00000;\nend\n\nalways @ (posedge clk or posedge reset)\nbegin\n\tif (reset) begin\n\t\tr_reg <= 5'b00000;\n\tend else begin\n\t\tr_reg <= r_next;\n\tend\nend\n\nassign q = (r_reg < 50); // r_reg < 50\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign r_next = r_reg - 1;\n//assign r_next = {r_reg[0], feedback_value}; \nassign r_next = {r_reg[0], r_reg[1]};\nassign q = r_reg;\n//assign r_next = {r_reg[0], feedback_value};\nassign r_next = {r_reg[0], feedback_value}; \n\n\nalways@(posedge clk, posedge reset)\nbegin\n  if(reset == 1'b1) // send the current rst\n\t  r_reg <= 5'b00000;\n\t else if(r_next != 5'b00000 && feedback_value == 1'b0) \n\t  r_reg <= r_next;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "assign r_next = {r_reg[3], feedback_value};\n// together the output mux to output\nalways@(posedge clk)\nbegin\n if(reset)\n r_reg <= 5'b11111;\n else \n r_reg <= r_next;\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always@(posedge clk, posedge reset)\nbegin\n\tif(reset) r_reg <= 5'b0;\n\telse r_reg <= {r_reg[3:0], feedback_value}; \nend// end of the module\n\nassign r_next = r_reg;\nassign q = r_reg;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign r_next = {r_reg[3], feedback_value};\nr #(5) r_reg_enc(.c(clk), .d(r_reg[4]), .rst(reset), .q(r_next[4]));\n\n//assign r_next = {r_reg[2], feedback_value, ^r_reg[0]};\nassign r_next = {r_reg[3], feedback_value, ^r_reg[2]};\n\nalways@(posedge clk or posedge reset)\nbegin\n\tif(reset == 1'b1)\n\tbegin \n\t\tr_reg  <= 5'b00000;\n\tend\n\telse\n\tbegin\n\t\tr_reg  <= r_next;\n\tend\nend\n\n"
+    }
+  ],
+  "created": 1663299292,
+  "id": "cmpl-HYYvX0i4ua5J1lSxjEUvWAgEc5J5k",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 698,
+    "prompt_tokens": 155,
+    "total_tokens": 853
+  }
+}

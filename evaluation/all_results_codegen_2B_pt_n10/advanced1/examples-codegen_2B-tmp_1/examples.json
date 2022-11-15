@@ -1,0 +1,86 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\ns signed max(a[7:0], b[7:0])\ns {654} if (a[7:0] <= 0xFFFF) && ($signed_neighbor_or_eq(a[7:0], b[7:0]); $signed_non_neighbor_or_ne(b[7:0], a[7:0]); $signed_non_neighbor_or_ne(a[7:0], b[7:0]); s[7:0] == 0xFFFF) else ($s(a[7:0] - b[7:0]) + $s);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": " input overflow_behavior \"{\n\twhen overflow =>\n\t    sldb({output overflow});\n     }\".\n/***********************************************************************/\nvoid\nsigned_adder::entry_point()\n{\n  // [s] and [overflow] signals are provided by the design service\n  // a latch is used to make sure that sequence begins at first execution\n  // in case action statement has no effect\n  ldb(a[7:0]) lda(b[7:0]);\n  if (a[7:0] < b[7:0])\n    s[7:0] = a[7:0];\n  else\n    s[7:0] = b[7:0];\n  \n  // Don't write to sldb on default path\n  s[7:0] += boot_counter;\n  \n  #pragma HLS INLINE off "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\narchitecture data bvt = (\n    // internal memories\n    (* maps )   ( 8, '[]'), \n    (* circuit )( 8, '[]'), \n    (* *) 8bit(* & 16 ) (.could(\"*\") output) \n);\n\n\n\narchitecture signAdder = (\n\n    (* adder )( 8, '[]'), \n    (* cycles )( * ), \n    (* scan )( * ), \n    (* (* test )( 8, '[]')), \n    signed_adder\n);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "  assign overflow = a[7] // overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high\n      && b[7] // overflow occurs if the most significant bits of a and b are high and the most significant bit of s is low\n\n  s[7:0] = a[7:0] + b[7:0];\n//let overflow = bout >>s[7]  // make everything unsigned truncates the bailout condition\n\n  s[7] = s.boudsoverflow_and_low ? 0 : 1 ;\n// zero-borrow Ellison-Luiseno overflow\n  vout(s) .or_(overflow_evidence);\n \n//overflow A/TTL: \n// During the binop we alter the supports while we call mutate, \n// so the overflow sensor must be called before doing anything concerning the right"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// design:\n// - base builder\n// - unitary builder\n// - one unitary job for 2 bits, 1 for higher bits\n// - include inheritance from calc?\n// - list of flags\n// - can write real arimstory\n// - PREPARE for JIT: nearly no flags - 32 bits\n// - points to so func:\n// - use register for input output \n// - not self contained\n// - minimize serialization size\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nsignal overflow;\n\n\n\n// Outputs a and b before and after the addition\n\nsignal [7:0] add;\nsignal [7:0] sum;\nsignal [7:0] a_new;\nsignal [7:0] b_new;\n\n// sigmas to store the bits in those signals\nsignal bit s_add;\nsignal bit s_sum;\nsignal sinverted bit s_a_new;\nsignal sinverted bit s_b_new;\n\n\ninput [7:0] add_value;\ninput [7:0] sum_value;\n\n\nwire signal_value;\n\n// The following procedure fixes the bit of the adder outputs.\n// The results are inverted.\n\nfunction add_output_fix(input [7:0] a,\n    input [7:0] b,\n    output [7"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nm(clk, res, inv);\n\nwire ss; \nwire invss;\nclk_i = clk;\n// += m(xs, p, o, y);\n// xout will be forwarded to y if overflow occurs of x\ninv_o = inv;\nstrongly_ordered o(invss, mux24(clk, clk_i, inv, _));\n// assigned the case for signal overflow\ncase overflow: \n    core(a, b, s, ss);\n    o(i, y);\n    io_o(i, inv);\n    io_x(i, ios[x], x);\n    core_y(b, a, y); \nendcase\nend\n*/\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\noftype f() { \n    reg uint8_t carry; //carry\n\n    #pattern( \n        a <= b\n    );\n\n    if (\n        (carry = a + b) != 0) {\n        s<3:1> = carry<5:1>'; //tell the chips they need to catch a value over 21 in one of the most\n                               //boring places\n        s<5:0> = (a - b) < 1:0>(s); //they can catch a adder overflow\n        overflow<3:0>(s); //hold where the ouput words should be\n    }\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nauthor\tA00747424\n\n// notice that I don't use register to reduce the code size, so the author is supposed to be very familiar with this code and understand the semantics of state feature control\n// each state control includes code, ....\n\n{\nstatic int state = 0;\n\nSoundoverflow over = a | b; // notice that this is rvalue expression rather than lvalue expression\n\t\t\t    // however with the current design each function (but soundoverflow) returns a value. Refactoring may help to rewriten this with a lvalue expression\n\t\t\t    // However I am not sure if refactoring is carried out...\nstate |= over; \noutput overflow"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\ninput [7:0] a,b,s,overflow;\n\n\noutput construct func process_overflows(a7 : bit;\n    b7 : bit. \n    . \n    . \n    . \n) : macro bit;\n\n${process_overflows(~a ~~b) | \n              bit(a&~b) };\n\n\ninput [7:0] a;\ninput [7:0] b;\noutput [7:0] s;\noutput overflow;\n\nprocess_overflows(a+b);"
+    }
+  ],
+  "created": 1663540099,
+  "id": "cmpl-7pKzaF91Dgn7ms6jZgDRExCbHjL2Q",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1564,
+    "prompt_tokens": 164,
+    "total_tokens": 1728
+  }
+}

@@ -1,0 +1,63 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is nothing that isn't SAB\ninitial begin\nif(reset) next_state = IDLE;\nelse if(a==1) next_state = SA;\nelse if(b==1) next_state = SB;\nelse next_state = SAB;\ncur_state = next_state;\nend\n\n// E clock and SMBUS monstrosity\nclk_var clock;\nsmbus_var smbus_req;\nclk_rise ( clk )\nsmbus_rise ( smbus_req ).clk_nb = a;\nsmbus_rise ( smbus_req ).smbus_req = b;\ndata_out( z ).clk_nb = reset;\ndata_out( z ).smbus_req = clock;\n\n// S port AB transition\nab_rise ( a, b"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign z 1 when (cur_state = SAB and a and b) or (cur_state = SA and a) or (cur_state = SB and b) or (cur_state = IDLE and 0)\nbegin\n  next_state = zeroBits(cur_state, a, b);\n    // notice: Classic FSM accepts all possible modelling so z is assigned on false transition\n  if ((cur_state = z) == SAB)\n    cur_state = IDLE;\n    //SEND(idle|bar);\n  if ((cur_state = next_state) == SAB)\n    cur_state = SA | SB;\n    //next_state = zeroBits(sa, bar);\n    //if next_state is IDLE, then the system is in an IDLE state\n  if ((cur_state = next_state) == IDLE)\n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(clk, reset)\nbegin\n    if (reset == 0) // Reset events take the active state.\n        cur_state = IDLE;\n\n\treg new_z = 0;\n    if ((a == 1) && (b == 1))\n        if (cur_state == IDLE)  // As soon as SAB is raised, the output is high\n            new_z = 0;\n        else\n            cur_state = SAB;\n\n    if ((a == 1) && (b == 0))\n        if (cur_state == IDLE)  // As soon as SAB is raised, the output is high\n            new_z = 0;\n        else\n            cur_state = IDLE;\n\n    if ((a == 0) && (b == 1))\n        if (cur_state == IDLE)  // As soon as SAB is raised, the output is"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "wire [7:0] tmp_a1,tmp_a2;\nfunction state_logic(\ninput falseedge,\ninput trueedge)\n{\n    if     ( cur_state==SAB      and falseedge) return SA3;\n    else if( cur_state==SA       and trueedge) return SA2;\n    else if( cur_state==SB       and falseedge) return SB0;\n    else if( cur_state==SB       and trueedge) return SB1;\n    else if( cur_state==SAB      and trueedge) return SAB0;\n    else if( cur_state==SAB      and falseedge) return SAB1;\n    else if( cur_state==IDLE     and falseedge) return IDLE0;\n    else if( cur_state==IDLE     and trueedge) return IDLE1;\n    else                        "
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "entity temp {\n    input [18:0] tick_delay;\n    input [3:0] prev_state, z;\n    output [3:0] next_state, z;\n    // This is an FSM\n    reg [1:0] cur_state,next_state;\n};\nhardwire\nentity device {\n    top\n    interface\n    inst_cons c;\n\n    // This is a fan-out module\n    reg a;\n    reg b {\n        modal 1.2 1 +\n    };\n    // The output z is high when a == 1\n    // At state IDLE, z is low\n    // a is high, b = 0, z is high\n    // a is low, b = 1, z is high\n    output clk;\n    last   z;\n    // This is an FSM module\n    reg [6:0"
+    }
+  ],
+  "created": 1663539971,
+  "id": "cmpl-GwK7kMnW6KbYnU5tGJqnXOqlIX5Tf",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 218,
+    "total_tokens": 1218
+  }
+}

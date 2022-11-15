@@ -1,0 +1,59 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// the maximum amount that can be shifted\nconst maxshift = 1;\n// the number of bits in the shift register\nconst nbits = 64;\n\nreg [63:0] q;\nreg load;\nreg ena;\nreg [2:0] amount;\n\nalways @(posedge clk)\n   if(ena)\n   q = data;\n\n// Shift left by 1 bit\nalways @(posedge clk)\n   if(ena & load & amount == 0)\n      q = q << 1;\n\n// Shift left by 8 bits\nalways @(posedge clk)\n   if(ena & load & amount == 2)\n      q = q << 8;\n\n// Shift right by 8 bits\nalways @(posedge clk)\n   if(ena & load & amount == 3)\n      q = q >> 8;\n\n// Shift right by"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// Design a 64-bit arithmetic shift register, with synchronous load. \n// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.\nmodule advshift64(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n// Design a 64-bit arithmetic shift register, with synchronous"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "    always @(posedge clk)\n\tif(ena)\n\t{\n\t\tif(load)\n\t\t{\n\t\t\tq <= data[63:0];\n\t\t}\n\t\telse\n\t\t{\n\t\t\tq <= data[63:0];\n\t\t}\n    }\n    else\n    {\n        q <= 0;\n    }\n    \n    always @(posedge clk)\n\tif(ena)\n\t{\n\t\tif(amount)\n\t\t{\n\t\t\tq <= q << 1;\n\t\t}\n\t\telse\n\t\t{\n\t\t\tq <= q >> 1;\n\t\t}\n\t}\n    else\n    {\n        q <= 0;\n    }\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\nalways @* begin\n\tif (load)\n\t{\n\t\tq = data;\n\t}\n\tif (ena)\n\t{\n\t\tif (amount[1] == 0)\n\t\t{\n\t\t\tq = q << amount[0];\n\t\t}\n\t\telse\n\t\t{\n\t\t\tq = q >> amount[0];\n\t\t}\n\t}\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a 64-bit unsigned arithmetic shift register.\n// To make the shift register's input and output easier to model, the input and output are implemented as input and output buffers.\n\n// The shifter's input is clk; the shifter's output is q.\n\n// The load input is high when the register should be loaded with data.\n// The ena input is high when the shifter should be shifted.\n// The amount input chooses how much to shift, and is either 1 or 8 bits, selected by amount.\n\n// The q output is the shifter's output.\n// This module has only one output: q, and q is driven by three inputs: clk, load, and ena.\n\n// shiftIn:  load (1) or not (0), shift (1) or not (0), amount (8)\n// shiftOut: load (1) or"
+    }
+  ],
+  "created": 1663534377,
+  "id": "cmpl-k3cw6colI1F6Q3uefGaeFVrF5ir4S",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 939,
+    "prompt_tokens": 184,
+    "total_tokens": 1123
+  }
+}

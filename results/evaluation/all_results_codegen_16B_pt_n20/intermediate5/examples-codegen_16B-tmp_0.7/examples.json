@@ -1,0 +1,142 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or reset) begin\n    if(reset) begin\n        out <= 0;\n    end\n    else begin\n        if(load) begin\n            out <= data;\n        end\n        else begin\n            out <= out << (amount-1) | (out << 1);\n        end\n    end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @* begin\n  if (load) begin\n    out = data;\n  end\n  else begin\n    out = (data << amount) | (out >> (8-amount));\n  end\nend\nvoid main() {\n  // in order to write the out register, we must be in idle state\n  // in order to write the out register, we need to load data to it\n  // the data to be loaded is the right shifted out register\n  // the out register is shifted by amount bits while the out register is loaded\n  // we do not have to worry about having a load to an empty register\n  // the final result is that we just need to shift out register right by amount bits\n  // the final result is that we just need to shift out register left by amount bits\n  // the final result is that we just need to shift out register left by amount bits\n  // the final result is that"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @* begin\n    if(load) begin\n        out = data;\n    end\n    else begin\n        out = rotate(out,amount)<<amount;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n  if(reset) begin\n    out <= 0;\n  end\n  else begin\n    if(load) begin\n      out <= data;\n    end\n    else begin\n      out <= (out << amount) | (out >> (32-amount));\n    end\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "reg [4:0] out_reg;\nalways begin\n\t// when load is high, load data to out\n\tif (load) begin\n\t\tout_reg <= data;\n\tend else begin\n\t\t// rotate the out register followed by left shift the out register by amount bits\n\t\tout_reg[0] <= out_reg[amount];\n\t\tout_reg[1] <= out_reg[amount+1];\n\t\tout_reg[2] <= out_reg[amount+2];\n\t\tout_reg[3] <= out_reg[amount+3];\n\t\tout_reg[4] <= out_reg[amount+4];\n\t\tout_reg[5] <= out_reg[amount+5];\n\t\tout_reg[6] <= out_reg[amount+6];\n\t\tout_reg[7] <= out_reg[amount+7];\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n\tif (reset == 1) begin\n\t\tout <= 0;\n\tend else begin\n\t\tif (load == 1) begin\n\t\t\tout <= data;\n\t\tend else begin\n\t\t\tout <= (data << amount) | (out >> (8 - amount));\n\t\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n  if (load) begin\n    out <= data;\n  end else begin\n    out <= (out << amount) | (out >> (width-amount));\n  end\nend\n//\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nalways @(posedge clk or negedge reset) begin\n  if (load) begin\n    out <= data;\n  end else begin\n    out <= (out >> amount) | (out << (width-amount));\n  end"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n\tif(reset==1) begin\n\t\tout <= 0;\n\tend\n\telse begin\n\t\tif(load==1) begin\n\t\t\tout <= data;\n\t\tend\n\t\telse begin\n\t\t\tout <= (data << amount) | (out >> (32-amount));\n\t\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n  if(reset==1) begin\n    out <= 0;\n  end else begin\n    if(load) begin\n      out <= data;\n    end else begin\n      out <= (out << amount) | (out >> (8 - amount));\n    end\n  end\nend\n// right rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nalways @(posedge clk or negedge reset) begin\n  if(reset==1) begin\n    out <= 0;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @* begin\n\tif(load) begin\n\t\tout = data;\n\tend else begin\n\t\tout = data << (amount - 1) | (data >> 1);\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "reg [7:0] out;\nalways @(posedge clk or posedge reset) begin\n  if(~reset) begin\n    out=0;\n  end\n  else begin\n    if(load) begin\n      out=data;\n    end\n    else begin\n      out<=out<<amount;\n      out=out<<amount|out>>(32-amount);\n    end\n  end\nend\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nreg [7:0] out;\nalways @(posedge cl"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n  case(load)\n    if (reset) begin\n      out <= data;\n    end\n    else begin\n      if (load) begin\n        out <= data;\n      end\n      else begin\n        out <= (data << amount) | (out >> (8-amount));\n      end\n  end\nend\n\n// load the data to be rotated into out\n// if load is high, load data into out\n// otherwise rotate the data to be loaded into out\nassign out = load ? data : (data << amount) | (out >> (8-amount));\n// the counter\nreg count;\n// the output register\nreg out_reg;\n// the number of bits to shift\nreg shift_amount;\n// the number of bits to rotate\nreg rotate_amount;\n// the number of bits to load\nreg load_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @* begin\nif(load) begin\n\tout = data;\n\tif (reset == 1) begin\n\t\tout = 0;\n\tend\nend\nelse begin\n\tif (reset == 0) begin\n\t\tout = 0;\n\tend\n\tif (clk == 1) begin\n\t\tout = (out << amount) | (out >> (8 - amount));\n\tend\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n    if (load == 1) begin\n        out <= data;\n    end else begin\n        out <= (data << (amount)) | (data[0] >> (8 - amount));\n    end\nend\n// end of left_rotate module\n\n// right rotate and shift operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nalways @(posedge clk or negedge reset) begin\n    if (load == 1) begin\n        out <= data;\n    end else begin"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @* begin\n\tif (load) begin\n\t\tout <= data;\n\tend else begin\n\t\tout := (out << amount) | (out >> (32-amount));\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n\tif (load) begin\n\t\tout <= data;\n\tend else begin\n\t\tout <= (data << amount);\n\t\tout <= out << (32 - amount);\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n\tif (reset == 1) begin\n\t\tout <= 0;\n\tend else begin\n\t\tif (load) begin\n\t\t\tout <= data;\n\t\tend else begin\n\t\t\tout <= reg[amount-1]{1'sb0,amount} && out;\n\t\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n  if(load) begin\n    out <= data;\n  end\n  else begin\n    out <= (out << amount) | (out >> ((size - amount) + 1));\n  end\nend\n// left shift and rotate operation\nmodule left_shift(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise left shift the data register by amount bits\nalways @(posedge clk or posedge reset) begin\n  if(load) begin\n    out <= data;\n  end\n  else begin\n    out <= data << amount;\n  end\nend\n// right rotate and right shift"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n  if (load) begin\n    if (reset) {\n      out<0> = 0;\n    } else {\n      out<0> = data;\n    }\n  end else begin\n    if (reset) {\n      out<0> = 0;\n    } else {\n      out<0> = out<0> << amount;\n      out<0> = out<0> | data;\n    }\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n  if (reset) begin\n    out <= 0;\n  end else begin\n    if (load) begin\n      out <= data;\n    end else begin\n      case (amount)\n        3'b000: begin\n          out <= out << 2;\n        end\n        3'b001: begin\n          out <= out << 1;\n        end\n        3'b010: begin\n          out <= out << 4;\n        end\n        3'b011: begin\n          out <= out << 3;\n        end\n        3'b100: begin\n          out <= out << 6;\n        end\n        3'b101: begin\n          out <= out << 5;\n        end\n        3'b110: begin\n          out <= out << 8;\n        end\n        3'b111: begin\n          out"
+    }
+  ],
+  "created": 1663535901,
+  "id": "cmpl-Ybum8CAJCpaLStD27fTR3rPUy5Ulf",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2621,
+    "prompt_tokens": 94,
+    "total_tokens": 2715
+  }
+}

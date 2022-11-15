@@ -1,0 +1,30 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [1:0] next_state;\n// And a register, reused to compare in from the two states don't compile here.\nwire [1:0] logic1;\nassign {out, present_state} = in;\n\n// Optional statement to help timing.\n// A register. It does not have many states to allow the effect of the clock\n// to see the processor before starting a new transaction.\nreg new_state;\nalways@(posedge clk)\nbegin\n  {next_state,copy_state} <= {next_state,copy_state};\n  if(reset)\n    // Do nothing!\n    state <= 0;\n  else\n    // Do nothing!\n    state <= (state==0) ? next_state : state+1'b1;\nend\n\nassign out = (reset) ? next_state"
+    }
+  ],
+  "created": 1663299172,
+  "id": "cmpl-PK7O76vDSVL7hkIWUMpD2uQg9J5mg",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 148,
+    "total_tokens": 348
+  }
+}

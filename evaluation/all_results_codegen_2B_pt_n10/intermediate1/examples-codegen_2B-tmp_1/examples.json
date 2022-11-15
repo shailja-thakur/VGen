@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nbasic half_adder_basic( \ninput a, b,\noutput cout, sum \n);\n\n\n/*\n  Generates the example circuit.\n*/\nvoid generate_example_circuit()\n{\n  half_adder_basic ader_instance;\n\n  // Initializing the inputs\n  input a_port(\"a\", clk, RST_N);\n  input b_port(\"b\", clk, RST_N);\n\n  // Initializing the internal outputs\n  cout = output(\"cout\", ab_reg[AB_OUT5], RST_N);\n  sum = output(\"sum\", ab_reg[AB_OUT4], RST_N);\n\n  /*\n    The generator box enables clarity when specifying peripherals.\n\n    Generating the complete half adder using two blocks.\n  */\n  [sum, sum_pointer] TGUI_AND_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nvoid maya_print( void )\n{\nconsole[a];\nconsole[b];\nconsole[cout];\nconsole[sum];\nconsole( \"\\\\\\\\\\\\\" );\n}\n\nvoid Adder instruction( void )\n{\nConsoleLogger::debug::putLineNZ( &a );\nConsoleLogger::debug::putLineNZ( &b );\nConsoleLogger::debug::putLineNZ( &cout );\n\n//Convert to bit carry-out\nunsigned int carryOut = carry_out();\nsum = a + b + carryOut;\n\n//ConsoleLogger::debug::putLineNZ( &a );\n//ConsoleLogger::debug::putLineNZ( &b );\n//ConsoleLogger::debug::putLineNZ( &cout );\n//ConsoleLogger::debug::putLineNZ( &a );\n//ConsoleLogger::debug::putLineNZ"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nwire [15:0] in[]  = hb16( a );\n    wire [8:1] in'[]  = hb8( b );\n      wire out[]      = ob16();\n      wire sum[]      = os16();\n      wire carry[]    = oc16();\n     contract halfAdd(\n       in[>, <16], in'<[>, <16], out[>, <16], sum<[31:16], [15:0], bool carry[]<>);\n         begin\n           carry<=true, { sum <= output, carry <= carry} end\n     "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nvoid main(void)\n{\n  cout = a ^ b; // form I[0.31]\n  sum = a << 1 | carry_in;\n  carry_out = roll_carry( sum, 32 );\n}\n\n#endif\n\n\"\"\"\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\n// Global variables for the cache\ninteger switcher[2] = {0, 0};\ninteger cache[2] = {0, 0};\ninteger cache_counter = 0;\n\n// Combined compute cycle\n// Swap registers around between two in the cache\n// Output the sum output from the second half of the adder\nvoid half_adder_cache() {\n  if (cache_counter % 2 == 0) {\n    switcher[0] = !!(switcher[0] & 1);\n    switcher[1] = !(switcher[1] | 1);  \n    cache[0] = a;\n    cache[1] = b;\n  } else {\n    switcher[0] = !!(switcher[0] & 1);\n    switcher[1] = !(switcher[1] | 1);  \n    cache[0] = b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nmodule adder_end(\ninput [4:0] adcout, input c);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n\"\"\"\n\n\ndef main():\n    # half_adder function implementation.\n    # input:\n    #   a = a high register [ 15:0 ]\n    #   b = b high register [ 15:0 ]\n    #\n    # output (1):\n    #   cout = congtate [ 15:0 ]\n    #\n    # output (2):\n    #   sum = sumlow [ 14:0 ]\n    #\n    a = hls.Constant(VAL_ADDER_A * 0.500)     # a >> m\n    b = hls.Constant(VAL_ADDER_B * 0.500)     # b >> m\n    mult_a = a.mult{a};\n    add_in = a.add{0, mult_a}                     # add high from a and mult_a (393)\n    16bit_comp"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\n{\n  \n  // ----------------------- First Half ---\n  \n  // This is the sum line.\n  sum := a + b;\n  \n  // The overflow line.\n  if ( sum > 127 )\n  {\n    sum -= 256;\n  }\n  \n  // Output the result.\n  cout\n  |= ( sum & 1 );\n  \n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds two bits and produces a sum.\nmodule full_adder(\ninput a, b,\ninput cout_a, cout_b,\noutput sum );\n\n// This is a MUX. This thing selects one bit of a or b depending on a number.\nmodule sign_mux(\ninput a, b, int c, \noutput cout, cc );\n\n// This is a 32-bit multiply. I'm passing output A to the multiply.\nmodule mul32_a(\ninput A, B, output C );\n\n// The three LUTs. They're registered together.\ninput rar, eee, cer, tar, total;\n\nmodule rar_mul(\ninput A, B, oc, ocand, ocor, ocrc, odivs,\noutput rcand, prod, prod"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\nwire a3  = a[3],  a2 = a[2],  a1 = a[1],  a0  = a[0];\nwire b3  = b[3],  b2 = b[2],  b1 = b[1],  b0  = b[0];\n\nalways @* begin\n  cout = 0;\n  sum  = 0;\n  cout = cout | ((a3 & b3) == 0 ? 1 : 0);\n//  cout = cout | ra[1];\n  sum = sum + (a2 << 5) + (a1 << 3) + a0;\n  cout = cout | ((b2 & (b3/2)) == 0 ? 1 : 0);\n  sum = sum + (b1 << 5) + (b0 << 3) + b1;\nend\n\ndestination"
+    }
+  ],
+  "created": 1663540245,
+  "id": "cmpl-hD9qEYhndGnhmWtGKPGH6p7OkFZHy",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1516,
+    "prompt_tokens": 43,
+    "total_tokens": 1559
+  }
+}

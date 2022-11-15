@@ -1,0 +1,59 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nmodule advshift_2(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q);\n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\nmodule advshift_3(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q);\n// when load is high,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nadvancefsm advance_fsm(\n    .clk,\n    .load,\n    .ena,\n    .amount,\n    .data,\n    .q\n);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// BEHAVIOR\n// When load is high, load the shift register with the data.\n// When load is low, shift the shift register and assign the result to the data.\n\n// When ena is high, shift the shift register by amount.\n// When ena is low, shift the shift register and write the result to the data.\n\n// THE MODEL\n// The shift register is a 64-bit register, and the data is a 64-bit register.\n// The data is also a 64-bit register, but only the lower half of the register is\n// written, because the registers are paired.\n// This is a hardware design.\n\n// The shift register is not implemented as a register.\n// It is implemented as a shift register, and uses a one-bit register to determine\n// how much to shift.\n\n// The data is not implemented as a register.\n// It is implemented as"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "  always @(posedge clk or negedge load)\n  if (ena) begin\n    if (load)\n      q <= data;\n    else\n      q <= shift(q, amount, 8);\n  end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// sh_init\n// \n// initializes shifter\n// \nalways @(posedge clk)\nbegin\n\tif(load)\n\t{\n\t\tq <= data;\n\t}\n\tif(ena)\n\t{\n\t\tif(amount == 0b11)\n\t\t{\n\t\t\tq <= data;\n\t\t}\n\t\telse\n\t\t{\n\t\t\tq <= 0;\n\t\t}\n\t}\nend\nend\n\n\nmodule sh_clk(input clk,\noutput reg clk_out);\n//\n// sh_clk\n// \n// produces clock signal on clk_out.\n//\nalways @(posedge clk)\nbegin\n\tclk_out <= 1'b1;\nend\nend\n\n// sh_load\n// \n// loads shifter to data[63:0]\n// \nalways @(posedge"
+    }
+  ],
+  "created": 1663519651,
+  "id": "cmpl-lRm8AOO58yHhzlaiKSIU87rCJEhvj",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 700,
+    "prompt_tokens": 184,
+    "total_tokens": 884
+  }
+}

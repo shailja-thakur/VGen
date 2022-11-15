@@ -1,0 +1,342 @@
+example-0: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+
+void advshift next_clk( inout advshift st,
+                      inout reg[63:0] q);
+        clk <= next_clk;
+
+void main()
+{
+        reg[63:0] q;
+        advshift st;                              // input
+        q <= st.data[63:0];
+        assign q = st.data[63:0];                   // load
+        // Turn the oscillator on, and load the shift register
+        st.ena <= 1;
+        st.next_clk;                              // synchronous load
+        system.run;
+}
+
+================================================================
+example-1: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+  
+  assign ena = ena ? "1" : "0";
+// When clock is high, chore moves data[63:0] into shift register q.
+  assign clk = clk & ! load ^ ena;
+  reg [63:0] long_shift[3:0] = case (amount[0]) 
+    // 2'b00 (shift left by 1 bit)
+    : data[63:0] and (load << prev()[8:0] | ~(1<<prev()[8:0])) | prev().req();
+  
+  assign clk = clk && (amount[1]) == (amount[0]);
+  
+  reg [63:0] short_shift[3:0] = case (amount[2]) 
+    // 2'b10 (shift right by 1 bit)
+    : ~data[63
+================================================================
+example-2: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+
+// Initialization/use
+// selects shift direction @a dir (alow, aright), and amount @a aamt.
+// @para op: operator for reading the content of the register (read(), capture())
+module AdvancedShiftPort(input clk,
+input load,
+input data,
+input ena,
+input [1:0] dir,
+input [3:0] aamt,
+output [63:0] d,
+output [ENABLEN:0] clear_req,
+output [OPCONTROL:0] opr,
+output [ADDRESS:0] index,
+output [DATA:0] data_in,
+input [DATAOUT:0] data_out,
+output [MSYNCH1:0] msync1,
+output [MSYNCH2:0:0] msync2); 
+// @para clear_
+================================================================
+example-3: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+
+================================================================
+example-4: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+
+// commented out
+//module [63:0] foo;
+// reg always @(posedge clock) begin
+// // 4-bit right shift on the input to the 64-bit shifter
+//        foo <= {data[5:0], data[63:56], data[127:120], load, ena, amount};
+// // 4-bit left shift on the input to the 64-bit shifter
+//        foo <= {data[5:0], data[63:56], data[127:120], load, ena, amount, 2'b00};
+// // 8-bit right shift on the input to the 64-bit shifter
+//        foo <= {data[5:0], data[63:56], data[127:120], data[191:184], load, ena, amount};
+//        foo <= {data[5:0], data[63:56
+================================================================
+example-5: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+    always @(posedge clk) {
+        if( load && ena ) {q <= data; }
+    }
+    assign q <<= (amount-1); // shift depending on action
+    assign q[63] = ena;
+    assign q = 32'damagedleftmost;
+    assign out = q; // just to have something writing here, rather than assign nothing to q.
+
+    always @(posedge clk) {
+        if(enb & load) {
+            if( ena & ~(1'b0) ) {
+                q[31] <= 2'h00;
+                q[30:27] <= 2'h10;
+                q[26:23] <= 2'h00;
+                q[22:19] <= 2'h00;
+                q[18:15] <= 2'h00;
+                
+================================================================
+example-6: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+
+    //int amount = 1;
+
+always @(posedge clk) begin
+	// shift data left by 1 bit if amount = 0;
+	if(amount == 0) begin
+		q <= data << 1;
+	end
+
+	// shift data right by 1 bit if amount = 1;
+	if(amount == 1) begin
+		q <= data >> 1;
+	end
+	// shift data right by 8 bits if amount = 2;
+	//amount == 2 ? begin
+	//	q <= data - data[7:0];
+	//end	
+
+	// update the shift register if load = 1 and ena = 1,
+	if(load && ena) begin
+		q <= data;
+	end
+end
+
+================================================================
+example-7: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+
+// • The shift register is implemented by wires holding 8-bit numbers.
+// • We use the normal <reg + 1> addressing to read the register.
+//   Shift register s[i] is defined as follows:  
+//   s[0] to s[63]
+//   • In the case where each bit i of the 64 bits in data is shifted, 
+//     the input amount is set to zero and the output is written to s[i].
+//   • In the case where 8 bits are shifted left, the input amount is set to 1 
+//     and the output is written to s[i-1].
+//   • In the case where 8 bits are shifted right, the input amount is set to 
+//     8 and the output is written to s[i+1], which must be a valid register.
+//   • In the case where 2 bits are shifted right, the input amount
+================================================================
+example-8: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+
+
+
+//attention.
+(* KEEP, DONT_TOUCH, LOC = CONST[48])
+#(clock reset)
+#(normal port inst finish)
+
+#(set registeres)
+assign q = data[63:0];
+
+#(set output)
+assign reg[63:0] = q;
+assign clk = !ena && clk;
+#(end)
+
+
+
+
+
+
+#(initial const)
+const(int res0, int res1, int res10) #(0:1 bit mackerel)
+    return 10;
+// res0: 0,1,10
+
+// res1: (!
+//
+// res10: (<)
+// 0 bit: 1.1.1.1
+// 4 bit: 1.8.0.0.9
+// 8 bit: 1.2.3.6
+
+
+================================================================
+example-9: 
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+    assign q[/*1*/64] = (load ? {data[63:0]} : ({shiftena !== 0} ? ({enabitemsaplaceholder: {shiftbits}}) : ({sldata: {shiftbits}})) + ({periphdata: {shiftena !== 0 ? toint(data[63:8],amount) : 0}})) $
+                      ({byemasters1bits:{shiftbits} = 0x{shiftbits}})
+
+
+
+`
+# pragma export 
+#oeuvre_base += open_arch(`
+	// shorthand for primitive clock functions
+	function set_reset(rst);
+				input rst //Clock reset
+				//protection fases
+				if rising_edge(rst); erase_won_and_won_paused = false reset_asserted_int nop
+				if rising_edge(rst
+================================================================

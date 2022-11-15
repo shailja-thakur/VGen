@@ -1,0 +1,36 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(*)\ncase(in)\n3'b000: pos=2'b00; \n3'b001: pos=2'b01;\n3'b010: pos=2'b10;\n3'b011: pos=2'b11;\nendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(*) begin \n\tif(in[2] == 1'b1)\n\tpos = 2'b11;\n\telse if(in[1] == 1'b1)\n\tpos = 2'b10;\n\telse if(in[0] == 1'b1)\n\tpos = 2'b01;\n\telse \n\tpos = 2'b00;\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(*) \nif(sel[1]==1'b1) \npos=b; \n//assign a to out when sel=0\nelse \npos=a; \n"
+    }
+  ],
+  "created": 1663306653,
+  "id": "cmpl-pf0qCX57Saj1xw3asmTWh27I5f8r6",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 213,
+    "prompt_tokens": 65,
+    "total_tokens": 278
+  }
+}

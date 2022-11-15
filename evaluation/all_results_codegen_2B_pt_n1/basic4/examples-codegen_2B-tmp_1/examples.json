@@ -1,0 +1,49 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n\nassign out = sel ? b : a;\n\n// If sel is true, then assign b to output. \n// If sel is false, then assign a to output.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nassign out[sel] = sel ? b : a; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nnot n1\t(sel_bar, sel);\nand a1\t(idx_0, a[4], sel_bar);\nnot n2\t(idx_1, a[4]);\nand a2\t(temp_0, b[4], sel);\nnot n3\t(temp_1, b[4]);\nor r1\t(out[4], idx_0, temp_0);\nand a3\t(idx_2, a[3], sel_bar);\nnot n4\t(idx_3, a[3]);\nand a4\t(temp_2, b[3], sel);\nnot n5\t(temp_3, b[3]);\nor r2\t(out[3], idx_2, temp_2);\nand a5\t(idx_4, a[2], sel"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign out = ( sel == 0 ) ? a : b;\n"
+    }
+  ],
+  "created": 1663304589,
+  "id": "cmpl-dJjXPOShOjhSihiTLHUImJys6L2zn",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 287,
+    "prompt_tokens": 70,
+    "total_tokens": 357
+  }
+}

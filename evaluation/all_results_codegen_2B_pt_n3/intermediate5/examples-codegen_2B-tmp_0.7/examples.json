@@ -1,0 +1,40 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (load)\n    {\n        out = (data << amount) | (data >> (32 - amount));\n    }\n    else\n    {\n        out = (data << amount) | (data >> (32 - amount));\n        // rotate the data register by amount bits\n        data = data << amount;\n    }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// add this to the primary clock and latch\n// then add this to the primary clock\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @ (clk, reset, load)\nbegin\n    if (reset) out <= 0;\n    else {\n        if (load) out <= data;\n        else out <= data << amount;\n    }\nend\n// left shift and rotate operation\nmodule left_shift(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by left shift the out register by amount bits\nalways @ (clk, reset, load)\nbegin\n    if (reset) out <= 0;\n    else {\n        if (load) out <= data >> amount;\n        else out <= data << amount;\n    }\nend\n\nmodule right"
+    }
+  ],
+  "created": 1663536965,
+  "id": "cmpl-JjdF6v0vEVHzN69PmpJiJw0FgeENh",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 309,
+    "prompt_tokens": 94,
+    "total_tokens": 403
+  }
+}

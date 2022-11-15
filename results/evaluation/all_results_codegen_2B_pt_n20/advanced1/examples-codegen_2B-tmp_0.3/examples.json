@@ -1,0 +1,146 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// $ cat s_adder.v\n// signed_adder a b s overflow\n// $ cat s_adder.t\n// signed_adder a b s overflow\n// $ cat s_adder.c\n// signed_adder.c\n// $ gcc -o s_adder s_adder.c\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_adder 0x80 0x80 0x80\n// $ ./s_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// S = a + b\n// S = a - b\n// S = a - b\n// S = a + b\n// S = a - b\n\n// overflow = (a > b) or (a < b)\n// overflow = (a < b) or (a > b)\n\n// a > b\n// a < b\n// a > b\n// a < b\n// a > b\n// a < b\n\n// a > b\n// a < b\n// a > b\n// a < b\n// a > b\n// a < b\n\n// a > b\n// a < b\n// a > b\n// a < b\n// a > b\n// a < b\n\n// a > b\n// a < b\n// a > b\n// a < b\n// a > b\n// a < b\n\n// a > b\n// a <"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// $ cat input.txt \n// 00000111\n// 00001011\n// 00000000\n// 11111111\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000\n// 00000000"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nsigned_adder:\n  assign s[7:0] = a[7:0] + b[7:0];\n  assign overflow = (a[7] != 0) and (b[7] != 0) and (s[7] != 0);\n  \n  always @ (posedge clk)\n  begin\n    if (overflow)\n      s[7] = 1;\n  end\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// $ cat t1.in\n// a = 0x00\n// b = 0x00\n// s = 0x00\n// overflow = 0\n// $ cat t1.out\n// a = 0x00\n// b = 0x00\n// s = 0x00\n// overflow = 0\n// $ cat t2.in\n// a = 0x00\n// b = 0x01\n// s = 0x00\n// overflow = 1\n// $ cat t2.out\n// a = 0x00\n// b = 0x00\n// s = 0x00\n// overflow = 1\n\n// $ cat t3.in\n// a = 0x00\n// b = 0xFF\n// s = 0x00\n// overflow = 1\n// $ cat t3.out\n// a = 0x00\n// b = 0x00\n// s = 0x00"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// $ cat t1.txt t2.txt t3.txt t4.txt t5.txt t6.txt t7.txt t8.txt t9.txt t10.txt t11.txt t12.txt t13.txt t14.txt t15.txt t16.txt t17.txt t18.txt t19.txt t20.txt t21.txt t22.txt t23.txt t24.txt t25.txt t26.txt t27.txt t28.txt t29.txt t30.txt t31.txt t32.txt t33.txt t34.txt t35.txt t36.txt t37.txt t38.txt t39.txt t40.txt t41.txt t42.txt t43.txt t44.txt t45.txt t46.txt t47.txt t48.txt t49.txt"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// Add two 8-bit 2's complement numbers a and b, a[7:0] and b[7:0], and store the result in s[7:0].\n// If the result overflows, assign overflow to the output overflow.\n\n// Assume that a[7:0] and b[7:0] are both between 0 and 255.\n\n// Example:\n\n// Input:\n// a = 0x00, b = 0x01\n// Output:\n// s = 0x02\n// overflow = 0\n\n// Input:\n// a = 0x00, b = 0x80\n// Output:\n// s = 0x80\n// overflow = 1\n\n// Input:\n// a = 0xFF, b = 0x00\n// Output:\n// s = 0xFF\n// overflow = 1\n\n// Input:\n// a = 0xFF,"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n//------------------------------------------------------------------------------\n// function overflow\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n// function adder\n//------------------------------------------------------------------------------\n\n//------------------------------------------------------------------------------\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// function adder(a,b,s,overflow)\n//     if a[7:0] < b[7:0] then\n//         s[7:0] = a[7:0] + b[7:0]\n//         overflow[7:0] = 0\n//     else\n//         s[7:0] = a[7:0] - b[7:0]\n//         overflow[7:0] = 1\n// end adder\n\n// function adder(a,b,s,overflow)\n//     if a[7:0] < b[7:0] then\n//         s[7:0] = a[7:0] + b[7:0]\n//         overflow[7:0] = 0\n//     else\n//         s[7:0] = a[7:0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// $ cat input.txt\n// 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// S-A-B\n\n// S-A-B-O\n\n// S-A-B-O-W\n\n// S-A-B-O-W-E\n\n// S-A-B-O-W-E-R\n\n// S-A-B-O-W-E-R-E\n\n// S-A-B-O-W-E-R-E-R\n\n// S-A-B-O-W-E-R-E-R-E\n\n// S-A-B-O-W-E-R-E-R-E-R\n\n// S-A-B-O-W-E-R-E-R-E-R-E\n\n// S-A-B-O-W-E-R-E-R-E-R-E-R\n\n//"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$\n// $$$"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n// $ cat t1.txt t2.txt t3.txt t4.txt t5.txt t6.txt t7.txt t8.txt t9.txt t10.txt t11.txt t12.txt t13.txt t14.txt t15.txt t16.txt t17.txt t18.txt t19.txt t20.txt t21.txt t22.txt t23.txt t24.txt t25.txt t26.txt t27.txt t28.txt t29.txt t30.txt t31.txt t32.txt t33.txt t34.txt t35.txt t36.txt t37.txt t38.txt t39.txt t40.txt t41.txt t42.txt t43.txt t44.txt t45.txt t46.txt t47.txt t48.txt t49.txt"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n//@begin{}\n//@end{}\n\n//@begin{}\n//@end{}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\nsigned_adder(a[7:0], b[7:0], s[7:0], overflow);\n\n// Output:\n// s[7:0] = a[7:0] + b[7:0]\n// overflow = (a[7:0] > b[7:0]) ? 1 : 0\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\ninput [7:0] a, b, s, overflow;\n\nwire [7:0] carry;\n\nalways @(posedge clk)\n    if (a[7] == 0 && b[7] == 0)\n    {\n        s[7:0] = 0;\n    }\n    else if (a[7] == 0)\n    {\n        s[7:0] = b[7:0] + 1;\n        if (s[7] == 0)\n        {\n            carry = 1;\n        }\n        else\n        {\n            carry = 0;\n        }\n    }\n    else if (b[7] == 0)\n    {\n        s[7:0] = a[7:0] + 1;\n        if (s[7] == 0)\n        {\n            carry = 1;\n        }"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nsigned_adder(a[7:0], b[7:0], s[7:0], overflow[7:0]);\n\n// Output:\n// s[7:0] = a[7:0] + b[7:0]\n// overflow[7:0] = a[7:0] signed overflow\n\n// The numbers a and b are added to the output s. \n// assign the occurence of the signed overflow of a and b to the output overflow.\n// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high\n// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "\n// function adder(a, b, s, overflow)\n//     if a is less than b, then s = a + b\n//     else if a is greater than b, then s = b + a\n//     else if a is equal to b, then s = a\n//     else\n//         if overflow is true, then s = overflow\n//         else\n//             s = overflow\n// end function\n\n// function adder(a, b, s, overflow)\n//     if a is less than b, then s = a + b\n//     else if a is greater than b, then s = b + a\n//     else if a is equal to b, then s = a\n//     else\n//         if overflow is true, then s = overflow\n//         else\n//             s = overflow\n// end function\n\n// function adder(a, b, s, overflow)"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nsignal [7:0] s;\nsignal [7:0] overflow;\n\nvoid main()\n{\n  s <= (a + b);\n  overflow <= (a < b);\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n\n// $ cat /tmp/input\n// 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00"
+    }
+  ],
+  "created": 1663537724,
+  "id": "cmpl-7331Hk9S5OrsflEcaBaixKc6VZzYq",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3419,
+    "prompt_tokens": 164,
+    "total_tokens": 3583
+  }
+}

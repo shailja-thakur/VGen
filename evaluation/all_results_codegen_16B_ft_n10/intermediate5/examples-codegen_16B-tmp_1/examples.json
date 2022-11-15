@@ -1,0 +1,82 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tcase(load)\n\t0: out <= data;\n\t1: out <= {data [7], data [7],data [7],data [6:0]};\t\n\tendcase\t\n\tend\n\telse \n\tbegin\n\tcase(load)\n\t0: out <= out >> amount;\n\t1: out <= {out [7],out [7:1]};\n\tendcase\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset)\nbegin\n\tif(reset == 1'b1 && load == 1'b1) \n\tbegin\t\n\t out <= data;\n\tend\n\telse if(load == 1'b1 && reset == 1'b0)\n\tbegin\n\tout <= {data[0+:amount],data[7-:8]};\n\tend\n\telse if(load == 1'b0 && reset == 1'b0)\n\tbegin\t\n\t out <= left_rot(out,amount);\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "//only items that are zero need not be shifted\nalways @(posedge clk, posedge reset)\nbegin\nif(reset)\nbegin\nout<= 8'b0;\nend\nelse\nbegin\nif(load)\nout <=data;\nelse\nbegin\nif ( amount>0 )\nbegin\nout <= out << amount;\n// add zeros when rotating towards 000\n// set the LSB to 0\nout[0] <= 1'b0;\nend\nelse\nbegin\n// same operation except the right most bits are rotating \nout <= out >> abs(amount);\n// add the zeros when rotating towards 000\nout[abs(amount)-1] <=1'b0;\nend\nend\nend\n\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// this creates the following left shift and rotation operations simulatenously\nalways @ (posedge clk)\nbegin\nif (reset == 1'b1)\n\tout = 8'b00000000;\nelse if (load == 1'b1)\n\tout = data;\nelse\nbegin\nout = out << amount;\nout = out >> amount;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tbegin\n\tif(reset) out<=0;\n \telse if(load) out<=data;\n\telse begin \n\tout->left_shift(amount);\n\tout<=out;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset)\nbegin\n\tif(!reset) begin\n\t// reset\n\tout = 8'h00;\n\tend\n\telse\tif(load)\n\tbegin\n\t// load\n\tout = data;\n\tend\n\telse\n\tbegin\n\t// rotate and left shift\n\tout = {out[6:0],out[7]};\n\tout = {out[0],out[7:1]};\n\t// add correction at the end of rotation\n\t// to had a 1 in the msb of the rotation instead of all 0\n\tout = out + {8'h01} + {8'h01} - {8'h00};\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\n\tif(reset)\n\tbegin\n\t// resetting the register\n\tout=0;\n\tend\n\telse if(load)\n\tbegin\n\t// when load is high, load data to out\n\tout=data;\n\tend\n\telse\n\tbegin\n\t// else rotate the register and left shift\n\tout=({data[0],data[7:1]});\n\tif(amount > 2)\n\tbegin\n\t// greater than 2, then do the rotate and left shift in one loop\n\t// to prevent generating excess stressed value in internal registers\n\tout=~out;\n\tend\n\tif((amount > 2) && (amount <7 )) begin\n\t// width less than 8, so add while loop and a generate\n\t// capped at 4 bit addition.\n\twhile(amount <5 )\n\tbegin\n\tout"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always@(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tout = 8'b00000001;\n\tend\n\telse\n\tif(load)\n\tbegin\n\tout = data;\n\tend\n\telse begin\n\tout = {out[6:0],out[7]};\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @ (posedge clk or posedge reset)\nbegin\n\tif (reset) begin\n\tcase (load)\n\t1'b0:\tbegin\tout = data; end\n\t1'b1:\tbegin\tout = data <<< amount; end\n\tendcase\n\tend // reset case\n\telse begin\n\tcase (load)\n\t1'b0:\tbegin\tout = out; end\n\t1'b1:\tbegin\tout = data; end\n\tendcase\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk )\nif (load) begin\n\tout <= data;\n\tend\nelse begin\n\t//rotate\n\tout <= {out[6:0],out[7]};\n\t//left shift\n\tout <= {out[0+amount:amount],out[7:1+amount]};\n\tend\n"
+    }
+  ],
+  "created": 1663544105,
+  "id": "cmpl-ao2VOTN8Te55faDwvVqieuneWzNV0",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1238,
+    "prompt_tokens": 94,
+    "total_tokens": 1332
+  }
+}

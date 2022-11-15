@@ -1,0 +1,115 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign q = (we ? data[addr] : ram[addr]);\n// when we is low, read data from ram at address addr\n// assign data[addr] to ram[addr]\nalways @ (clk, we)\nbegin\n    if (we) begin\n        ram[addr] <= data;\n        ram[addr] <= q;\n    end\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nwire [DATA_WIDTH-1:0] q;\nalways @(posedge clk)\n    if (we) begin\n        if (addr[1] == 1) begin\n            ram[addr[0]] = data;\n        end else begin\n            q = ram[addr];\n        end\n    end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign q = ram(addr, data, we, clk);\n// when clk is high, read data from ram at address addr\n// assign the ram value at address addr to d\nassign d = ram(addr, we, clk, q);\n// when clk is low, read data from ram at address addr\n// assign the ram value at address addr to d\nassign d = ram(addr, clk, we, q);\n// when we is high, write data to ram at address addr\n// assign the ram value at address addr to q\nassign q = ram(addr, data, we, clk);\n// when clk is high, read data from ram at address addr\n// assign the ram value at address addr to d\nassign d = ram(addr, we, clk, q);\n// when clk is low, read data from ram at address addr\n//"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(we, clk) begin\n    #15; // this is a register that represents the level of the we signal\n    clk <= clk and we;\n    ram[addr] <= data;\n    q <= ram[addr];\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @ (we, clk)\nbegin\n    q <= ram[addr];\nend\n\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(we) begin\n    if (clk == 1) begin\n        ram[addr] <= q;\n    end else begin\n        q <= ram[addr];\n    end\nend\n// when we is low, do nothing\nalways @(posedge clk) begin\n    if (we == 1) begin\n        ram[addr] <= q;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @ (we, clk)\nbegin\n    if (clk == 1) ram[addr[7:0]] <= data[7:0];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign q = ~(data[7:0] & we) & (addr[7:0] & we) & (addr[7:0] & ~we) & (addr[7:0] & ~~we);\nalways @(posedge clk) begin\n    addr[7] <we;\n    if (we) ram[addr[7:0]] = data[7:0];\nend\n// when we is low, q is equal to the ram value at address addr\nassign q = ~(addr[7] & we) & (addr[7:0] & we) & (addr[7:0] & ~we) & (addr[7:0] & ~~we);\nend\n\"\"\"\n\nfrom pyOCD.pyocd_protocol import PyOCD\nimport logging\nimport random\n\n#: Logging level for this module.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @ (we, clk)\nbegin\n    if (clk'==1) begin\n        q <= ram[addr];\n    end\nend\n// when we is low, increment addr to the next lower address\nalways @ (we, clk)\nbegin\n    if (clk'==0) begin\n        addr <= addr + 1;\n    end\nend\n// if we is high, increment addr to the next higher address\nalways @ (we, clk)\nbegin\n    if (clk'==1) begin\n        addr <= addr + 1;\n    end\nend\n// when we is low, write data to ram at address addr\nalways @ (we, clk)\nbegin\n    if (clk'==0) begin\n        ram[addr] <= data;\n    end\nend\n//----------------------------------------------------------------------------\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nassign q = data[addr[7:0]-1];\n// when we is low, the ram value at address addr is q\n// assign the ram value at address addr to q\nassign q = data[addr[7:0]-1];\narchitecture ex_ram is and (\n    ram(\n        clk,\n        we,\n        clk,\n        q[ADDR_WIDTH-1:0]\n    ),\n    ram_mem(\n        [DATA_WIDTH-1:0] data,\n        [ADDR_WIDTH-1:0] addr,\n        [7:0] q\n    )\n);\nend architecture;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways @(we)\nbegin\n    if (clk == 1) begin\n        ram[addr[ADDR_WIDTH-1:0]][0] = data[DATA_WIDTH-1:0];\n    end else begin\n        q[0] = data[DATA_WIDTH-1:0];\n    end\nend\n// wait for a write\nalways @(we)\nbegin\n    if (clk == 1) begin\n        if (data == 0) begin\n            ram[addr[ADDR_WIDTH-1:0]][0] = data[DATA_WIDTH-1:0];\n        end\n    end else begin\n        if ((data != ram[addr[ADDR_WIDTH-1:0]][0]) and (data != 0)) begin\n            q[1] = data[DATA_WIDTH-"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nalways @ (we, clk)\nbegin\n    if (clk == 0)\n        q <= 0;\n    else\n        ram <= {data[ADDR_WIDTH-1:0], data[ADDR_WIDTH-2:0]};\nend\n// when we is low, the data write to our ram is ignored\nalways @ (we, clk, addr)\nbegin\n    if (clk == 0) {\n        addr <= 0;\n        data <= 0;\n    }\nend\nend\nend\n'''\n\n#-------------------------------------------------------------------\n# To run the example, see the README.md file for example usage\n#-------------------------------------------------------------------\nif __name__ == '__main__':\n  print(example1())\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @ (we, clk)\nbegin\n    if (clk) begin\n        ram[addr] <= data;\n        q <= ram[addr];\n    end\nend\n// when we is low, read data from ram at address addr and write q to data\nalways @ (clk, we)\nbegin\n    if (clk) begin\n        data <= ram[addr];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalways @(we)\nbegin\n    if (clk == 0)\n        ram[addr] <= data;\n    else\n        ram[addr] <= q;\nend\n\n// This is a RAM module\nmodule ram_no_invert #(\n    parameter ADDR_WIDTH=6,\n    parameter DATA_WIDTH=8\n) (\n    input [DATA_WIDTH-1:0] data,\n    input [ADDR_WIDTH-1:0] addr,\n    input we, clk,\n    output [7:0] q\n);\nreg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];\n// when we is high, write data to ram at address addr\n// assign the ram value at address addr to q\nalways @(we)\nbegin\n    "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways @(we)\n  if (clk && !we) {\n    ram[addr] = q;\n    q = ram[addr];\n  }\n"
+    }
+  ],
+  "created": 1663537639,
+  "id": "cmpl-ckLWI16a3Sx7RMS0lFLZyDx16FWEy",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1835,
+    "prompt_tokens": 143,
+    "total_tokens": 1978
+  }
+}

@@ -1,0 +1,541 @@
+example-0: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always(\*.clk,reset\*) partition_1:\*q = '1' until (~clk || reset) && (!clk || !reset) 
+; 
+
+================================================================
+example-1: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk) begin private_issue process_outslice(reg[0:1], reg[2:3]);
+  if (reset) begin reg[0] = 1; reg[1] = 1; end
+  if (reg[0] == 12) begin reg[0] = 0; end
+  else begin reg[0] = reg[0] + 1; end
+end
+
+next_post * main() begin
+  reg < 32> q;
+  counter c(clk, reset, q);
+
+  // This is the initialization load for the counters, we use a loop to 
+  // synthesize it as ticks not bursts
+  for (int4 i = 1; i < 8; i++) begin
+      c <= i;
+  end
+}
+
+// Local Variables:
+// tab-width: 4
+// c-basic-offset: 4
+
+================================================================
+example-2: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk) begin
+    if(reset) begin
+        q <= 0;
+    else if(q[2] == 12) begin
+        q <= 1;
+    else begin
+        q <= q[2]+1;
+    end
+end
+
+
+================================================================
+example-3: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or negedge reset) def prod(q):
+    if (reset) q = 1; 
+    if (q == 12) q = 1; 
+    else q = q + 1;
+
+================================================================
+example-4: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always@(posedge clk) {
+    if (reset) q <= 1;
+    else if (q == 12) q <= 1;
+    else q <= q + 1; // use <= to only increase q on outclock edge
+}
+
+bool overflow(output boolean reg [3:0]) {
+    for (int i = 0; i < 3; i++) if (q[i] == 13) return true;
+    return false;
+}`)
+
+	husky.HelloClientPackage = helpers.MustCreatePackage("husky_client_pkg", helpers.Pkg{
+		MustCreateFiles("sut.c", "input_logger.h", "counter.v"),
+	})
+}
+
+================================================================
+example-5: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk)
+{
+    if (reset)
+        q <= 1;
+    else if (q == 12)
+        q <= 1;
+    else
+        q <= q + 1;
+}
+
+
+// task t1 does something
+task t3;
+
+// this is some critical information for t1 to work
+int frequency = 48000000;
+int a,b,c,d,e,f;
+int pipelineWidth = 31; // must be even number
+
+init:
+nop;
+always @(posedge clk)
+{
+    int data = a; // t1 must know this
+    if (a > b)
+        c = 1;
+    else
+        c = 0;
+    t3.frequency = 500000;
+q = int(((c ? 0x100 : 1) << (data & 0x3f)) | (data
+================================================================
+example-6: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or negedge reset) begin
+    case reset: 
+		q <= 1;
+		break;
+    case negedge reset: if(q == 12) q <= 1; else q <= (q + 1); break;
+	default: break;
+}
+
+================================================================
+example-7: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk) 	q <= (   bin2bv(0,12)-1 == reset  ? 1'b1 : int( q == 12 ? (q-12)+1 : (q+1) ) 
+); 
+ 
+
+// My code for multithreading and parallel assignments
+task siemens( 
+    input clk,
+    input rst_o,
+    input rst_i,
+    input vsyn
+); 
+        assert(vsyn == 0'b11 || vsyn == 0'b01); 
+     
+        assert(rst_i == 0'b00 || rst_i == 0'b11 || rst_i == 0'b01);
+        assert(rst_o == 0'b00 || rst_o == 0'b11 || rst_o == 0'b01);
+               
+================================================================
+example-8: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @ (always,negedge clk) begin
+    if (reset) begin
+        q <= 1;
+    end else 
+        if (q == 12) begin
+            q <= 1
+        end else begin
+            q <= q + 1;
+        end
+end 
+
+================================================================
+example-9: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always( counter.clk )
+ begin
+    if (reset) q <= 12'h0000;
+    else if (q == 12'h0000) q <= 12'h0001;
+    else q <= next_state( q );
+ end
+ends;
+
+entity reg_check( reg00 reg01 reg02 reg03 );
+instance( reg_check );
+input clk, reset;
+output reg00 g;
+has_output reg01 g'out;
+has_output reg02 g'out;
+has_output reg03 g'out;
+input clk, reset;
+output reg [3:0] q;
+instance( reg_check );
+storage reg00 elems;
+event end_inc;
+entity ctrl_check( ctrl_reg1 boolean ctrl_clk, ctrl_reg2 boolean ctrl_post );
+instance( ctrl_check );
+in
+================================================================
+example-10: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk)
+begin 
+    if (reset) begin //On reset
+	q <= 1;
+    else if (q == 12) begin // ow, q equals 12
+	q <= 1;
+    else begin // otherwise q is clamped
+	q <= q + 1;
+end
+end
+
+*/
+
+#include <xcopy.h>
+
+int main()
+{
+	int i;
+
+// reset is active low
+	WRITE(obj[rst], 0);
+	for (i=0; i<=12; i++)
+	{
+		/* Reset sequence */
+		/* Low -> Leftmost Q -> Receiving PWM */
+		/* Clear sedge of last bit to discharge the lifeline */
+		/* High -> Leftmost Q -> Sending PWM */
+		/* Clear sedge of last bit to discharge the lifeline */
+		SET(
+================================================================
+example-11: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk or negedge reset)
+begin
+   if (reset) 
+       q <= 1;
+   else if (q == 12) 
+       q <= 1;
+   else 
+       q <= q + 1;
+end
+
+
+================================================================
+example-12: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk)
+    if (reset) q = 1;
+    else if (q == 12) q = 1;
+    else q <= 1;    
+
+================================================================
+example-13: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk)
+//q <= r'[q & 0b000] & (r & 0b111);
+//q <= (r & 0b111);
+//q <= 1;
+//q <= r ' q & 0b111;
+//q <= 1'q & 0b111;
+//q <= 1;
+
+counter(clk, reset, q);
+
+
+
+// This is a toggle_flip_flip that is controlled
+// by a hardware toggle flip prerequisite gate.
+// Performs a toggle flip when internal reset
+// happens or the flip in the flip flip gate is one.
+counter tapcounter(
+    input clk,
+    input reset,
+    output reg r
+); 
+
+always @(posedge clk)
+reg [15:0] twst ;
+
+// Toggle flip through a toggle flip-flip gate.
+// Only one
+================================================================
+example-14: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always ( clk' = clk and reset )
+begin
+    // count 1 - 1
+    if ( 0 == reset )
+        q <= 1;
+    // cause 12 to be the new q
+    else if ( MAX_COUNT <= q )
+        q <= 1;
+    else
+        q <= q + 1;
+end
+
+================================================================
+example-15: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+_hd_module counter_module = ( .clk(clk) .for_free_input() .clk(reset) .q(q) );
+
+// The modules above are identical to the counter blocks found in Chapter 5.  
+// The voltage divider blocks found in Chapter 6 extend these modules by using 
+// input hold resistors and inverting them when necessary. 
+
+// Here are the channels that circulate between this voltage divider and the 
+// standard voltage like a voltage divider. 
+wire c_q1, c_q2, c_q3, c_q4, c_q5;
+
+// created at clock frequency of 100Mhz 
+begin : default
+ 	c_q1 = not q;
+ 	c_q2 = c_q1 && not q;
+ 	c_q3 = c_q2 && not q;
+ 
+================================================================
+example-16: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always@(posedge clk or posedge reset)
+    q[3] <= q[2] + q[1];
+
+================================================================
+example-17: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+assign q = ( init_q | (carry_q | 0) | 
+             !init_q | !(carry_q | 1) |
+             carry_q | q[2],
+weight_55. At posedge clk reset happens on the leading clock edge. */
+ (
+    default_nettype = 1
+    clk <= prev_clock
+    & reset <= clk_25. clock <= clk
+); 
+
+//******************************************************************************
+//          Notes on timing and logisitic sequences
+// This circuit demonstrates how to combine AND, NOT, Complement, and XNOR 
+// gates to implement syncronization on your system. See Calculator for more
+// information about how syncing is implemented with Miller-Rabin computations.
+//
+// In each cell, the orgate is located to the right, and the clock is located
+// to the right of the orgate.
+================================================================
+example-18: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always @(posedge clk)
+  begin
+    if (reset)
+        q <= 1;  
+    else if (q == 12)
+        q <= 1;  
+    else
+        q <= q + 1; 
+  end
+end
+
+always @(posedge clk)
+  begin
+    if (!clk)
+        en=[1:0];  
+  end
+end
+
+module short_delay_cell  (
+  input en,
+  output result
+)  
+  //en and result share the same ports
+  <=en | result;
+
+// Four Inline Output Peripherals: Led4-Led3-Led2-Led1
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+//  ----------------
+================================================================
+example-19: 
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+always(clk) { if (reset) q <= 1;
+    else if (q == 12) q <= 1;
+    else q <= q + 1;
+}
+
+realize real output resx [3:0] = counter:[3:0];
+`
+
+================================================================

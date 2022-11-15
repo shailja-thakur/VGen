@@ -1,0 +1,87 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @( posedge clk ) sim\n  r_reg = ( \n    r_reg >> 1 |\n    ((int(r_reg) & 1) << 4) |\n    r_next \n  );\n  r_next = ( \n    ((r_reg >> 3) ^ ((r_reg >> 1) ^ (r_reg >> 5))) & 1\n  );\n  // feedback\n  feedback_value = ( \n    (((feedback_value >> 4) ^ ((r_next << 5) ^ (r_reg & 31))) >> 3) & 1\n  );\n  \n  q(feedback_value);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @*\nbegin\n    r_reg = rev(res);\nrepeat(n)\n    r_next <= r_reg ^ r_reg << 4 | (rand(6) & 0w40);\nend\nwire reset_cond;\n// with on reset always reset+1, no matter what feedback values exist, as the inputs are valid\nif (clk == reset)\n    reset_cond <=(1'b0) && r_next != r_next - 1;\nelse\n    reset_cond <=(1'b0) && r_next != r_next - 1 || r_next == r_next - 1;\nassign feedback_value = (r_next << 1) ^ rev(r_reg) << 2;\nassign r_reg = r_next;\nalways @+\nbegin\n    if (reset_cond)\n        r_next = in_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "initial begin\n\n  r_reg = 0b0101010101;\n  r_next = 0;\n  feedback_value = r_reg ^ ((r_reg = 0) << 2);\n  q = (r_reg >> 2) | (feedback_value >> 4);\n\nend\n);\n\n//------------------------------------------------------------------------------\n// design @5.2.2 VCD : register {\n//\n//\n//\n//------------------------------------------------------------------------------\n// register full_j\n\n// Design a (Fast) In-Place CRC with 64-bit input result and 64-bit output\n// using a 6-bit, 4-bit poly, a ladder of 8 shift registers, the high clock\n// bit, and 1-bit initial starting state.  The output part of the circuit is\n// a Least Significant Bit at a Cache Line Boundary which the result in the\n// 64-bit access may have shifted left or"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\ninstance lfsr_clock( \n    clk,\n    reset,\n    q\n); \nwire [301:16] mask {indices_r_reg.w[0] & 0b1111111111111111; indices_r_reg.w[1] & 0b1111111111111111;}\nreg [301:16] r_reg;\nwire r_out;\n\ninstance lfsr_module( \n    clk,\n    reset,\n    q\n); \nwire [3] clk_slavo;\nwire [301:16] r_idx_reg {indices_r_idx.w[1] & 0b1111111111111111; indices_r_idx.w[0] & 0b1111111111111111;}\nreg [301:16] indices_r_idx;\nwire r_idx_link;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "initial begin\n    r_reg = 1'b0000;\n    q = r_reg;\n    r_next = r_reg ROR 2;\n    r_reg = r_reg ROR 2;\n    r_next = r_reg ROR 5;\nend\n// Every clock cycle write states r_reg to increment by 1 even if all inputs are high\nwire [31:0] v_reg;\nfeedback_index = 0;\n// A similar sequence as above for q\ninitial begin\n    r_reg = 1'b0000;\n    q = r_reg;\n    r_next = r_reg ROR 2;\n    r_reg = r_reg ROR 2;\n    r_next = r_reg ROR 5;\nend;  \nalways @(posedge clk) begin\n    v_reg = r_reg;\n    r_reg"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "parameter\nloop_counter_ir = 0;\nalways @(posedge clk)\nbegin\n    loop_counter_ir += 1;\n    if (loop_counter_ir == 5)\n        reset <==> 1;             \n    if (loop_counter_ir == 15) {\n        reset <==> 1;\n        r_reg    <==> r_next;\n        feedback_value == r_reg[3] || r_reg[2];\n    } else {\n        if (loop_counter_ir % 2 == 0) {\n\n            r_reg[1] <== simd_carry_out or r_reg[0];\n            r_reg[2] <== r_reg[1] || r_reg[1];\n            r_reg[3] <== r_reg[2] || r_reg[2];\n            r_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n//replica logic in the the R(reg,r_next) clause as an OR clause\n\nalways @(posedge bool_clk)\nendcase\nendcase\n\n// within the clause r_next toggle if clk == 1\nalways \n    #4\n    r_reg == (r_next != feedback_value)\nendcase\n\n// round-robin design pattern\nalways r_next = r_reg + r_next;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "initial begin\n  r_reg = 1;\nend\n\n\n// ----------------- Generated LFSR Logic Functions -----------------\ninitializer\nlfsr (\n    r_next,\n    reset,\n    4,\n    5,\n    clk, \n    q\n)\n{\n    rx<32>(r_reg);\n    r_reg = r_reg + 1;\n    if (r_reg >= 256)\n      r_reg = r_reg - 256;\n    rx<8>(r_next);\n    q = r_reg;\n    rx<5>(feedback_value) = r_next & 0x1f;\n    r_next = r_next + 0x10;\n    if (r_next >= 256)\n      r_next = r_next - 256;\n    rx<5>(r_reg) = r_next;\n\n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "initial begin\n    r_reg <- r_reg << 1;\n    r_next(w_1) = r_reg(w_2);\nend\nend\n// if clk is still low\n// turn lfsr to the last value of 'r_reg'\nwire [4:0] r_old_reg;\nwire [4:0] k_reg;\nwire [4:0] r_old_b_reg;\nwire tmp;\nwire mux_in_bit[4:0];\nwire k_rem [3:0];\nwire r_bit[5:0];\nwire is_on;\n// for designqualitytesting purposes\ninitial begin\n    r_old_b_reg > 0;\n    {r_old_reg}(l_out) <= r_old_b_reg;\n    \n    k_bit <= 4;\n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// soft-rand\nwire next_wrp [4:0];\nreg [4:0] new_val;\n\nassign new_next = ~b_c.q & (~ b_r.q & (new_wrp [7] ? 1 : 0)) & (~ next_wrp [3]) & (~ 1);\n// assign new_val = (z0 + 1)*2^28 // (new_next*2^32 + (new_next ^int(softrand) ^ new_next == new_next));\nassign new_val = new_next*2^28; // softrand(new next != new_next)\n\nalways @(*) // this tick rate in the firm sanfole app can not be greater than 200ns\n{\n    clk <= clk; \n    reset <= 1'b0;\n    r_reg <= 0; // reset"
+    }
+  ],
+  "created": 1663540204,
+  "id": "cmpl-vofoP8AnSNrmhsaDcstzG2ULYn6gK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1854,
+    "prompt_tokens": 155,
+    "total_tokens": 2009
+  }
+}

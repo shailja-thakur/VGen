@@ -1,0 +1,561 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a&b;
+ 
+
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+// 
+wire a0, a1, b0, b1, c0;
+//
+// The carry-out is calculated by using two half adders.
+//
+// The input of each half adder (a and b) must be 1.
+//
+half_adder HA1 (a0, a1, b0, b1);
+half_adder HA2 (a0, a1, c0, sum);
+
+// 
+// This is the carry out.
+//
+assign cout = c0;
+//
+
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign {cout, sum} = a + b;
+
+
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// Full adder
+// assign sum = a^b^cout;
+// assign cout = (a^b)&cout | (a&b)&cout;
+
+// Half adder
+assign sum = a^b;
+assign cout = (a^b)&1'b1;
+
+
+================================================================
+example-5: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a^b;
+and(cout, a, b);
+
+
+================================================================
+example-6: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum ); 
+	xor(sum, a, b);
+	and(cout, a, b);
+
+================================================================
+example-7: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+
+================================================================
+example-8: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum ); //sum and carry-out, cout (carry out)
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-9: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// Declare the wires here
+wire s0, c0;
+
+// Create the half adder
+half_adder_structural U1 (.a(a), .b(b), .s0(s0), .c0(c0));
+
+// Create the output structurally
+half_adder_structural U2 (.a(s0), .b(1'b0), .sum(sum), .cout(cout));
+
+// Or you could simplify the circuit by using assign statements
+// assign {cout, sum} = a + b;
+
+
+================================================================
+example-10: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+
+================================================================
+example-11: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+xor(sum, a, b);
+and(cout, a, b);
+
+================================================================
+example-12: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-13: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+	assign sum = a ^ b;
+	assign cout = a & b;
+	
+
+================================================================
+example-14: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+xor( sum, a, b);
+and(cout,a,b);
+
+================================================================
+example-15: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+	xor(sum, a, b);
+	and(cout, a, b);
+
+================================================================
+example-16: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+ 
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-17: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// Create the adder modules.
+// Input a and b are binary, so we need two 1-bit wires.
+// Output cout is binary, so we need another 1-bit wire.
+// The adder modules take two 1-bit inputs and produce a 1-bit output and carry-out.
+// The adder modules don't care if the inputs are binary or not.
+// They use boolean logical operations to perform the add. 
+// This is the arithmetic adder module. It takes two 1-bit inputs and produces a 1-bit output and carry-out.
+// The carry-out is the overflow bit.
+// This can be seen as a two-bit adder with a carry-in.
+// The carry-in is a special case of the carry-out since it's the same as a one-bit adder.
+// Carry-in is the output of a one-bit adder.
+================================================================
+example-18: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+wire cin;
+
+// Half adder
+half_adder u1( 
+.a(a), 
+.b(b), 
+.cin(cin),
+.sum(sum),
+.cout(cout) );
+
+================================================================
+example-19: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a&b;
+
+================================================================
+example-20: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-21: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+
+================================================================
+example-22: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+
+================================================================
+example-23: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign {cout, sum} = a + b;
+
+
+================================================================
+example-24: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+assign {cout, sum} = a + b;
+
+================================================================
+example-25: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+and a1(w1, a, b);
+and a2(w2, b, a);
+or o1(sum, w1, w2);
+and a3(cout, a, b);
+or o2(cout, w1, w2);
+
+================================================================
+example-26: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+// Half adder implementation
+// Sum and carry bits are stored in the output
+// Carry is stored in the "cout" output
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-27: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign {cout, sum} = a + b;
+
+================================================================
+example-28: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+wire ab,cout;
+half_adder_1 h1(a, b, ab, cout);
+half_adder_2 h2(ab, cout, sum, cout);
+
+================================================================
+example-29: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+wire w1, w2, w3, w4;
+xor x1(w1, a, b);
+and a1(w2, a, b);
+xor x2(sum, w1, w2);
+and a2(w3, a, w2);
+or o1(w4, w3,w1);
+or o2(cout, w4, w2);
+
+================================================================
+example-30: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// sum and carry-out are given as output
+xor( sum, a, b );
+and( cout, a, b );
+
+================================================================
+example-31: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+// Full adder
+assign sum = (a ^ b) ^ (a & b);
+assign cout = (a & b) | (a ^ b);
+
+================================================================
+example-32: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+wire w1, w2;
+xor G1(w1, a, b);
+and G2(w2, a, b);
+or G3(sum, w1, w2);
+and G4(cout, w1, w2);
+
+================================================================
+example-33: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-34: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+	// Half Adders have 2 inputs, and a carry-in. 
+	// For any input, the carry-in is the same as the sum.
+	// Half Adder has an output.
+	
+	// 1:1 mux decision
+	// sum output is a 1 bit. cout output is a 0 bit.
+	assign sum = (a^b) & b;
+	assign cout = a & b;
+
+================================================================
+example-35: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a&b;
+
+================================================================
+example-36: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// The half adder module has two ports. 
+// Each port is a 1 bit.
+// Each port has a carry-in and a carry-out.
+// The carry-in port is a 1 bit.
+// The carry-out port is a 1 bit. 
+// The carry-in port is a 1 bit.
+// The carry-out port is a 1 bit. 
+// The carry-in and carry-out ports are named a and b respectively.
+// The sum and cout ports are named sum and out respectively.
+
+// The adder module will add two bits and return the carry-out bit. 
+// The carry-in bit is a 1 bit.
+// The sum and cout are always 1 bits.
+
+// The sum and cout ports are named sum and out respectively.
+// The carry-in and carry-out ports are named a and b respectively.
+// The sum and
+================================================================
+example-37: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+xor( sum, a, b );
+and( cout, a, b );
+
+================================================================
+example-38: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+xor xor0(sum, a, b);
+assign cout = a&b;
+
+================================================================
+example-39: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+	xor( sum, a, b );
+	and( cout, a, b );
+
+================================================================
+example-40: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+	xor(sum, a, b);
+	and(cout, a, b);
+
+================================================================
+example-41: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-42: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a&b;
+
+================================================================
+example-43: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-44: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a + b;
+assign cout = (a & b);
+
+================================================================
+example-45: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = (a & b) | (a & b);
+
+================================================================
+example-46: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+xor(sum, a, b);
+and(cout, a, b);
+
+
+================================================================
+example-47: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-48: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-49: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+	half_adder_gate a1 (a, b, w1, w2);
+	half_adder_gate a2 (w1, w2, cout, sum);
+
+================================================================

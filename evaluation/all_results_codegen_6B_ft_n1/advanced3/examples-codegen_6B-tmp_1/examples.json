@@ -1,0 +1,35 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset) begin \n//if you are using UART, you should use output_z\nif (reset == 1'b1) \noutput_z = 0; \nelse \nbegin\n\tcase ({present_state,x}) //using the CASE construct to specify are you are uses the 2x1 multiplexer to set the correct output\n\t//note insetle you use casez to handle the cases that do not have an oktatinated state name\n\tcasez ({present_state,x}) // named case doesnt matter the implicit version is named case\n\t2z1: output_z = 0; // casez is the same as case \n\t2z0: output_z = 0; // casez is the same as case \n\tIDLE: output_z = 0; //default is equal to 0\n\tS1:"
+    }
+  ],
+  "created": 1663599946,
+  "id": "cmpl-tRVFyS1VueFntcSts5fqjJddhka38",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 232,
+    "total_tokens": 432
+  }
+}

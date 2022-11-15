@@ -1,0 +1,48 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst) \nbegin\n  if (!rst) priority_encoder_mem <= '0' || joseph(pos); \n  in_queue <= in && bus_sel;\n  out_queue <= in_queue && pos'val == '0;\nend\n\n// Priority encoder buffer - 4 bit\nbuffered reg [4:0] priority_encoder_mem;\n\n// Generate output bits from priority encoder\nmodule priority_encoder_chain_out( \ninput [4:0] in_bit,\noutput reg [3:0] out_bit ); \nY => priority_encoder_chain_out_out;\n// Priority encoder input signals\nalways @* begin\n  priority_encoder_mem <= in_bit;\nend\n\n// Priority encoder - enable generation of output bits\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @ (posedge clk) begin\n  pos = in ? 2 : 1;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge rst)\nif(x)\nbegin\nswitch(sel)\ncase 0:\ndout = 0;\nwhen(sel == 1) begin // Positive part\npos = pos % 3;\n           // Negative part\ndout = in%3;\npos = pos << 1;\n           // Clear higher bits at pos\nmod = ((dout >= 8) and (dout <=15) ? dout : 7);\ndout = dout - mod;\n           // Negate\ndout = (8-dout);\nif (mod != 0) dout = ~dout;\n        else dout = 0;\n           // Gain bits at pos\nregs(int) c1 = 0 + 0x20;\nc1 = c1 & reg;\nc1 = 1 << reg.b11;\ndout = dout + c"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk) mask0\n  priority_encoder__output(sel) <= \n    (b = r << (~sel & in));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "if (sel[0]) \n  {\n    if (out) \n      {\n        pos = out[1:0]<==1'b0;\n  \t}\n  }\nelse \n  {\n    pos = 0;\n  }\nalways@(posedge clk)\n  out = pos & in;\n"
+    }
+  ],
+  "created": 1663519668,
+  "id": "cmpl-8AIRXYH3ry922lnUHWLL99qExhtoA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 541,
+    "prompt_tokens": 65,
+    "total_tokens": 606
+  }
+}

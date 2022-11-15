@@ -1,0 +1,50 @@
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nout <= a AND b;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n    def out = if( a && b ) then; end;\n\nmodule main_system( \n    input clk, \n    input da, \n        input db, \n        output s );\n\n    // Assign main_system to local variable\n    def s = and_gate( da, db, &clk );\n\n    // Start the local with the variables defined\n    def main;\n    end.\n\nmodule and_gate( \n    input a, \n    input b, \n    output out );\n\noutput out = if( a && b ) then; end;\n\"\"\"\n    tb = myhdl.toVerilog(mod,timescale=\"1ns/10.6ns\")\n    assert tb == \"\"\"\\\n\n#define tab_conj 0\n#define da 0\n#define db 0\n\nand_gate:\n    dl ne"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nout <=and(a,b);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": " with your module\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": ".\n\n    always_comb begin\n        out <= a & b;\n    end\n"
+    }
+  ],
+  "created": 1663519508,
+  "id": "cmpl-hVqrdb3R12xWfNyD36YhNeCDQBNMJ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 249,
+    "prompt_tokens": 47,
+    "total_tokens": 296
+  }
+}

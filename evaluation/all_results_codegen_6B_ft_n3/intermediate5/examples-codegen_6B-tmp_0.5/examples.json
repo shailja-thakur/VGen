@@ -1,0 +1,40 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset)\n\tout <= 8'b11111111;\nelse if (load)\n\tout <= data;\nelse begin\n\tif (amount == 3'b110)\n\tout <= {out[6:0],out[7]};\n\telse if (amount == 3'b101)\n\tout <= {out[5:0],out[6]};\n\telse if (amount == 3'b100)\n\tout <= {out[4:0],out[5]};\n\telse if (amount == 3'b011)\n\tout <= {out[3:0],out[4]};\n\telse if (amount == 3'b010)\n\tout <= {out[2:0],out[3]};\n\telse if (amount == 3'b001)\n\tout <= {"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// when amount is high, shift right by amount\n\nalways @(posedge clk)\n\tbegin\n\tif(reset)\n\tout<=0;\n\telse if(load)\n\tout<=data;\n\telse if(amount)\n\tout<={out[6:0],out[7]};\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n\tif (reset) out = 0;\n\telse if (load) out = data;\n\telse begin // if (load)\n\t//\tout = {out[6:0],out[7]};\n\tout = {out[5:0],out[6]};\n\tend\n"
+    }
+  ],
+  "created": 1663306630,
+  "id": "cmpl-5O87Fj4LNPvGVee6qZTJWwoM23RWF",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 361,
+    "prompt_tokens": 93,
+    "total_tokens": 454
+  }
+}

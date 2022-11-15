@@ -1,0 +1,462 @@
+example-0: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign2( output out, input in );
+// assign out to input in
+module wire_assign3( input in, output out );
+// declare an output wire
+module wire_declare( output out );
+// declare an output wire using a value
+module wire_declare_use( output out, input in );
+// declare an output wire that is used in a module
+module wire_declare_use_module( output out, input in, module module_name );
+// declare an output wire that is used in a module
+module wire_declare_use_module_multiple( output out, input in, module module_name, module module_name_2 );
+// declare an output wire that is used in multiple modules
+module wire_declare_use_multiple( output out, input in, module module_name, module module_name_2 );
+// declare a module that uses a
+================================================================
+example-1: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign2( input in, output out );
+
+// Design a module that implements a fault-tolerant OR gate
+module fault_tolerant_or( input in_1, input in_2, output out );
+
+// Design a module that implements a fault-tolerant AND gate
+module fault_tolerant_and( input in_1, input in_2, output out );
+
+// Design a module that implements a fault-tolerant OR gate
+module fault_tolerant_or2( input in_1, input in_2, output out );
+
+// Design a module that implements a fault-tolerant AND gate
+module fault_tolerant_and2( input in_1, input in_2, output out );
+
+// Design a module that implements a fault-tolerant OR gate
+module fault_tolerant_or3( input in
+================================================================
+example-2: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+void foo(int in, int out);
+// assign in to out
+void bar(int in, int out);
+// module main
+main() {
+    // instantiate an array to hold the wire names
+    char *wire_names[] = { "input", "output" };
+    // instantiate an array to hold the wire numbers
+    int wire_numbers[] = { 0, 1 };
+    // instantiate a module with the given inputs and outputs
+    wire_assign wire_module(wire_names, wire_numbers, 2);
+    // set the module's operations
+    wire_module.set_op(0, foo);
+    wire_module.set_op(1, bar);
+    // execute the module
+    wire_module.execute();
+}
+// wire_assign wire_module(wire_names, wire_numbers, 2);
+// set the module
+================================================================
+example-3: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign2( input in, output out );
+
+// wire_assign wire_assign2 wire_assign( input in, output out );
+// wire_assign wire_assign2( input in, output out );
+
+// The wire_assign module does not export a wire.
+wire_assign() -> out;
+// The wire_assign module does not export another wire.
+wire_assign2() -> out;
+// The wire_assign module does not export a wire.
+wire_assign2() -> out;
+
+// The wire_assign module does not export another wire.
+//wire_assign2() -> out;
+
+// The module wire_assign does not export a wire.
+out = in;
+// The module wire_assign does not export another wire.
+out = in;
+// The module wire_assign does
+================================================================
+example-4: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+
+// The module wire_assign contains a single module wire_assign_in
+// and a single module wire_assign_out.
+//
+// The module wire_assign has two ports, wire_assign_in and
+// wire_assign_out, and two connections, wire_assign_in_out_1 and
+// wire_assign_in_out_2.
+//
+// wire_assign_in connects to wire_assign_in_out_1, and wire_assign_out
+// connects to wire_assign_in_out_2.
+//
+// These connections are logical, and are made apparent by the
+// fact that they are contained within the module.
+//
+// The module wire_assign_in and wire_assign_out contain the same
+// module wire_assign_in_out_1
+================================================================
+example-5: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+// close the module
+module_end();
+
+================================================================
+example-6: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module assign( out out, in in);
+
+// module simple_assign( in in, out out ) {
+//   outs( out, in );
+// }
+
+function simple_assign( in in, out out ) {
+  out = in;
+}
+
+// module dut( input in, output out ) {
+//   simple_assign( in, out );
+// }
+
+function dut( in in, out out ) {
+  simple_assign( in, out );
+}
+
+// module top( input in, output out ) {
+//   dut( in, out );
+// }
+
+function top( in in, out out ) {
+  dut( in, out );
+}
+
+module top_module = top( input in, output out );
+
+// function top_f( input in ) {
+//   dut( in, out
+================================================================
+example-7: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+assign out = in;
+
+================================================================
+example-8: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+wire_assign( in, out );
+// or
+wire_assign( in, out, 3 );
+
+// Chain a module
+module wire_chain( output out, input in );
+// chain out to in
+wire_chain( out, in );
+// or
+wire_chain( out, in, 3 );
+
+// Add a module
+module wire_sum( input in, output out );
+// add in to out
+wire_sum( in, out );
+// or
+wire_sum( in, out, 3 );
+
+// Add a constant to a module
+module wire_sum_const( input in, output out, const int c );
+// add in to out
+wire_sum_const( in, out, 3 );
+
+// Subtract a module
+module wire_diff( input in, output out );
+// subtract in from out
+wire_diff( in, out );
+
+================================================================
+example-9: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign_i( input in, output out )
+{
+	out = in;
+}
+
+// design module:
+// assign output to input using an array
+module wire_array_assign( input in[], output out[] )
+{
+	for( int i=0; i<input_width; i++ )
+		out[i] = in[i];
+}
+
+// assign output to input using a parameter
+module wire_param_assign( input in, output out )
+{
+	out = in;
+}
+
+// design module:
+// assign output to input using a struct
+module wire_struct_assign( input in, output out )
+{
+	out = in;
+}
+
+// design module:
+// assign output to input using an array
+module wire_array_assign_i( input in[], output out[] )
+{
+================================================================
+example-10: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+
+int main( )
+{
+
+    // Declare an input and output wire
+    wire_t in, out;
+
+    // Wire in and out
+    in = 1;
+    out = in + 4;
+
+    // Write the value of out to the screen
+    out.write( out );
+    out.write( out );
+    out.write( out );
+    out.write( out );
+    out.write( out );
+    out.write( out );
+    out.write( out );
+
+    return 0;
+
+}
+
+================================================================
+example-11: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+
+// design a module that prints the input
+module print_input( input in );
+// print in
+print "input: ", in;
+
+// design a module that prints the output
+module print_output( output out );
+// print out
+print "output: ", out;
+
+// design a module that adds 1 to the input
+module add_one( input in );
+// add 1 to in
+in += 1;
+
+// design a module that adds the input to the output
+module add( input in, output out );
+// add in to out
+out = in + out;
+
+// design a module that adds 2 to the output
+module add2( output out );
+// add 2 to out
+out += 2;
+
+// design a module that concatenates the output
+module concat( output out, input in );
+// concatenate the output with the input
+out
+================================================================
+example-12: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+
+// design a block that assigns the output to the input
+module wire_assign_block( input in, output out );
+// assign out to in
+out = in;
+
+// design a block that assigns the output to the input
+module wire_assign_block_2( input in, output out );
+// assign out to in
+out = in;
+
+// design a module that assigns the output to the input
+module wire_assign_1( input in, output out );
+// assign out to in
+out = in;
+
+// design a module that assigns the output to the input
+module wire_assign_2( input in, output out );
+// assign out to in
+out = in;
+
+// design a module that assigns the output to the input
+module wire_assign_3( input in, output out );
+// assign out to in
+out = in
+================================================================
+example-13: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+function wire_assign_assign( in, out )
+{
+	out = in;
+}
+
+================================================================
+example-14: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+wire_assign( in, out );
+// assign out to in, using a function
+wire_assign( in, out, &out );
+
+================================================================
+example-15: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+
+module wire_assign_exported( out out, in in );
+// exports out
+
+module wire_assign_exported_in( out out, in in );
+// exports out, in
+
+wire_assign_exported_in_out( out out, in in );
+// exports out and in
+
+wire_assign_exported_in_out_out( out out, in in );
+// exports out, in and out
+
+wire_assign_exported_in_out_out_in( out out, in in );
+// exports out, in, and in
+
+wire_assign_exported_in_out_out_in_out( out out, in in );
+// exports out, in, and in, out
+
+wire_assign_exported_in_out_out_in_out_out( out out, in in );
+
+================================================================
+example-16: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module wire_assign2( input in, output out );
+
+// An assignment is a module with each port defined as a wire.
+// The assign module will have a default input wire named "0"
+// and a default output wire named "0"
+module wire_assign( input in, output out ) {
+    assign( out, in );
+}
+
+// assign out to in
+// module wire_assign2( input in, output out ) {
+//     assign( out, in );
+// }
+
+// An assignment module can accept multiple inputs, and multiple outputs.
+// The module will have multiple inputs and multiple outputs.
+// The inputs and the outputs can be either wires or ports.
+//
+// The module will have a default input wire named "0"
+// and a default output wire named "0"
+module wire_assign( input1 in1, output1 out1
+================================================================
+example-17: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+wire_assign( in, out );
+// wire assignment is allowed in a module
+wire_assign( 3, 0 );
+// wire assignment is allowed in a module
+wire_assign( 3, 3 );
+// wire assignment is allowed in a module
+wire_assign( get_bit( 3, 77 ), 33 );
+
+// Design a module that assigns the output to the input
+module wire_assign2( input in, output out );
+// assign out to in
+wire_assign2( in, out );
+// wire assignment is allowed in a module
+wire_assign2( 3, 0 );
+// wire assignment is allowed in a module
+wire_assign2( 3, 3 );
+// wire assignment is allowed in a module
+wire_assign2( get_bit( 3, 77 ), 33 );
+
+// Design a module that assigns the output to the input
+module wire_ass
+================================================================
+example-18: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+module assign( input in, output out ) {
+	out <= in;
+}
+
+// Design a module that increments the input by 1
+module add_one( input in ) {
+	in <= in + 1;
+}
+
+// Design an adder module
+module adder( input a, input b ) {
+	output out = a + b;
+}
+
+// Design an 8-bit shift register
+module shift_register( input in ) {
+	output out = in << 1;
+}
+
+// Design an 8-bit BCD shift register
+module bcd_shift_register( input in ) {
+	output out = in << 1;
+	output out2 = out & 0x100;
+	output out3 = out2 << 1;
+	output out4 = out3 << 1;
+	output out5 = out4 << 1;
+	output out6 = out5 <<
+================================================================
+example-19: 
+// Design a module that assigns the output to the input
+module wire_assign( input in, output out );
+// assign out to in
+out = in;
+
+================================================================

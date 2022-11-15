@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nbegin\n\n    @( _ + _ ) @(_ c_out + ((a << 1) | b) )@ = {};\n    @( _ + _ ) @(_ sum + b + ((a << 1) & 0x80 ) )@ = {};\n\n    IF( a\");\n        IF( b\");\n            result = sum;\n        ELSE\n            result = (a << 1) | b;\n    END-IF\n\n    IF( c_out\");\n        protected\n            res = result;\n    END-IF\n\n    end\nelse \";\n\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nlet sum_reg = a + b;\nbegin\n\tif ( ((sum_reg & 0b11110000) <= a) && ((sum_reg & 0b00001) != 0) )\n\t\tcout <- '1';\n\telse\n\t\tcout <- '0';\n\tsum <<= 1;\n\tsum_reg <<= 1;\nend\na <<= 1;\nb <<= 1;\nsum <<= 1;\nassert(_trace_memory( sum_reg, 8 ));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n    a_phi:wire bool a1, a2;\n    b_phi:wire bool b1, b2;\n    half_adder:wire (a1, a2)( a, a );\n    half_adder:di({a1:0, a2:0, sum:0, cout:0;});\n\n    nand:wire( a1 & b1 | a2 & b2 );\n    sum:wire(data);\n    cout:out;\n    datapaper( a1, \"A1\" );\n    datapaper( a2, \"A2\" );\n    datapaper( b1, \"B1\" );\n    datapaper( b2, \"B2\" );\n    datapaper( cout, \"COUT\" );\n    datapaper( sum, \"SUM\" );\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nbegin\n    xfer cout, a, b;\n    xfer half_sum, half_carry;\n    \n    while true begin\n            half_sum = a + 256 * b;\n            half_carry = half_sum < a ? 1 : 0;\n            a = half_sum;\n            b = half_carry;\n            \n            xfer half_sum, half_carry;\n            case lead   when b = 0 then cout = 0;        cout = half_sum + half_carry;                \n            case 0      when a >= 0 and b < 0 then cout = half_sum + half_carry; \n            case 1      when a < 0 and b < 0 and half_sum < 0 and half_carry = 1 then cout = half_sum + half_carry; \n            case 2      when a < 0 and b < 0 and half_sum < 0 and half_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nassign( cout, a );\n\nassign( sum, a + b );\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. It may alter its input bits to sum them collectively \nmodule full_adder( \ninput a, b, c,\noutput cout, sum );\n\n// The signals in tulip_bit_adder contain only 'bits' bits (the bit density in a node)\n// The signals in half_adder and full_adder contain 'bits' bits plus the carry-out signal\n// half_adder not only acts as a half adder but also as a numerical state\n// full_adder is also a numerical state\n// bits: the word size, equivalent to the bit density in a module\n// loc: the location of the input/output on the module\ntlm_behavior half_adder::behaviour()\n{\n  // the adder's behaviour can be described as a half adder behaviour\n  tmpl(\n  if ( got_cout ) { \n    "
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n// Next, we have a full adder. A full adder adds two bits and\n// ANDs the carry-out from each call together. It produces a sum\n// of the bits that have been anded together.\n#include \"adder.h\"\n\n#include \"adder_intrinsics.hax\"\n\nfunction int full_adder(\ninput a,\ninput cout,\ninput sum,\noutput b,\noutput carry_out\n)\n{\n    if ( handle_condition( a ) ) return sum;\n\n    if ( a( a_num_bits - 1 ) & a( a_num_bits - 1 ) )\n    {\n        sum( sum( 2, a_num_bits - 2 ) );\n   }\n    else\n    {\n        // Overflow either to carry-out buffer or to sum.\n        sum( sum( 1, a_num"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nimport org.apache.nees.rpc.Function;\nimport org.apache.nees.rpc.RPC;\nimport org.apache.nees.rpc.RPCContext;\nimport org.apache.nees.rpc.RPCRequest;\nimport org.apache.nees.rpc.RPCResponse;\nimport org.apache.nees.util.FnvHash;\n\npublic class HalfAdd {\n\n\tfinal static String ADD_HALF_ADDER = \"halfadder\";\n\n\tpublic RPCResponse test() {\n\t\tFnvHash hash = new FnvHash();\n\n\t\t// Add a randomly chosen value to the vector of ones.\n\t\thash.update( 1.0, 1.0 );\n\n\t\tRPC request = new RPCRequest( \n\t\t\tADD_HALF_ADDER,\n\t\t\thash,\n\t\t\tnew RPCResponse( hash"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\n// Takes a decimal sum as an input \nfunction half_adder( a, b, cout, sum ) {\ncout <= sum + ( a & b );\nsum <= a & b | cout;\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\ninput cin;\noutput operand_cout;\n\nalways @ (posedge clk)\n{\n  operand_cout = a + b;\n  sum = discard_sum(sum);\n  cout = a + b + sum[31];\n}\n\n\n"
+    }
+  ],
+  "created": 1663520013,
+  "id": "cmpl-a8ks2UB5JuoqKxmDUWxw79mmGuLi6",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1380,
+    "prompt_tokens": 43,
+    "total_tokens": 1423
+  }
+}

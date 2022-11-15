@@ -1,0 +1,149 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "  always @(*reset_reg)\n    begin \n      ena <= 1'b0;\n      load <= 1'b0;\n      next;\n    end \n    begin \n      ena <= ena;\n      load <= ena;\n    end \n\n\n    always @(*q_reg)\n      begin \n      if signal_clk and clk pin = '0' \n        ena <= 1'b1;\n        q <= second 8'b0;\n      \n      if load and signal_clk and clk pin = '1' \n        ena <= 1'b1;\n        q <= second [decimal: 31:0];\n      else next;\n\n      if ena and load and signal_clk and clk pin = '1' \n        ena <= 1'b0;\n      else next;\n\n    end \n  "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @ (clk) begin\n    if ((ena == 1) && (clk == 1))\n    {\n        q(63'h00) = data(63'h0.b);\n    }\nend\n\n/*\n// design a chain of registers that can do 8-bit arithmetic shift.\nmodule shifter(clk,\ninput clk,\ninput [7:0] amount,\ninput rega,\ninput writes,\noutput rega); \nreg b, c;\n\n\n// write to shifter, maximum to left is 8.\nwire [7:0] data;\nreg shifter = 0;\nalways @(clk)\nbegin\n    if ((ena == 1) && (clk == 1))\n    {\n        switch (amount)\n        {\n            case 0: // leftshift neighbour\n                shifter < 8'h00;\n            break"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nreg [64:0] r=0;\nalways @(*AIO_CLK) clk = 1'b0;\nreg clks=0;\nalways @(*AIO_CLK) ena = 1'b0;\nalways @(*AIO_ENA) ena = 1'b0;\nreg [63:0] q=0;\nalways @(*IORQ0) q(read r),rrd(q),qwr(q);\n\n\nalways @(*AIO_CLK) ena = 1'b0;\nalways @(*AIO_CLK) clks = clk;\n// counter to keep track of the number of clocks needed between our writes to q and qwr.\nreg clcnt=0;\nalways @(*AIO_CLK) clke=1'b0;\nalways @(*AIO_CLKSIG) clks"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\talways @ (sr_o)\n\t{\n\t\t// Get Ena and amount info from regs.\n\t\tins_En = ena_o;\n\t\tins_Amt = amount_o;\n\n\t\tansr = 0;\n\t\tif (load_o) ansr = ansr | amt_o; \t\t\tif (ins_En) ansr = ansr | SR;\n\t\t\n\t\tqueue shared [63:0] q; \t\t\t\t\t\t// make queue memory, queue and shared can be interleaved if this module is not blocked\n\t\tq_Din = data;\t\t\t\t\t\t\t\t\tq_Load = queue(amt_o + ins_En * amt_o + 1); // Prepare registers for actual logic.\n\t\tq_Amt = ins_Amt;\n\n\t\tdo{\n\t\t\tq_EnAB = fidt_o;\t\t\t\t\t\t\t\t// if ins_En is 1 in reg"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(*)\nbegin\n    if (clk) q = data[63:0];\n    else if (load)\n        q = concat(data[63:63], data[61:55]);\n    else\n        q = concat(data[55:0], data[23:16]);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nreg [49:0] r;\nalways @(posedge clk)\nbegin\n    r[10:0] = (48'b1) | (ena & load);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n// ***this line makes the output of a shift register constant ***\n\"\"\")\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nreg shiftlevel {1'b0; bit}; // shift level detected.\nsignal shifted; // when shifter detects shift, this signal is high\nsignal loadready; // when shifter detects shift, this signal is high\n\nalways @(posedge clk) \nbegin\n    // This begins the logic of how this module actually operates.\n    shiftlevel <= load;\n    shifted <= (ena & !shiftlevel);\n    ena <= ena and !shiftlevel; // shifter keeps one bit per clock cycle.\n    if (ena and !shifted)\n        q <= data[amount];\n    \nend\n// Enabling the shifter after each load with it's period set to 010 controls \n// which level the shifter generates. Actualize shitter state by rising a signal.\nalways @(posedge clk) \nbegin\n    // This begin runtime suppor of what"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n  if (!ena)\n  {\n    q <= (data[63:0]//transfer it to register Q, at most up to one more shift position\n      || (clk && amount == 0));\n    data += amount;\n  }\n  else if (voltage_enabled() && ena)\n  {\n    data[63:0] -= amount;\n    //shift data[63:0] (see advshift above)\n    //if ena also is high, shift Q liberally.\n    q <- load;\n  }\n\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nreg [63:0] shift_reg;\n\nalways @(posedge clk)\n{\n    q <= shift_reg;\n    if ((ena <= 1) && rising_edge(clk)) \n    {\n        shift_reg <= load;\n        shift_reg <= shift_reg & ~data;\n    }     \n\n}\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "    always @(posedge clk)      // Only happens when clk goes low during reset.\n    wire [63:0] register;\n    always @(posedge load)\n    {\n        /*print \"Load is low\";*/\n        if (ena == 0)\n        {\n            enb=0;\n            compare=0;\n\n            register loadbits; \n            if (active0)\n               loadbits=register;            \n            volatile uint64 retVal;\n        {\n            analshiftbits; \n            a[63:0]=result0;             // Extract the results.\n        }\n    }\n    else \n    if (ena == 1 and enb && compare == 0)\n    { \n        if (amount == 0)\n        {\n            compare=1;\n            ana=1; \n            \n            \n            tmp64="
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nsubckt xinplow(input [3:0] data, output [3:0] q)\n// Apply the low order 4 bits of data to the shifter's data register.\nmux srca,enbk1,enbk0,clkk;\ninput dckk,srca,enbk1,ena;\noutput dckk,enbk1,enbk0,steal,dckck;\n\nif {(clk == 1 && (ena == 1 && srca == 0 && enbk1 == 0 && enbk0 == 1 && srca == 1))}\n// translated into\nif {(clk == 1 && ena == 1 && (data[2] == 0 && data[1] == 0 && data[0] == 0))}\n// translated into\nif {(ena == 1 && clk == 1 &&"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n// 2'b00 => 2'b00: Q0 = ((amount)[q]&load).\n// 2'b01 => 2'b01: Q0 = (((load&amount)[q])<<1).\n// 2'b10 => 2'b10: Q0 = ((load&(amount[q]<<1))>>1).\n// 2'b11 => 2'b11: Q0 = (((ena&amount[q]^1)<<1)|(load&(amount[q]>>1))).\nvoid main()\n{\n    if (load)\n    {\n        q[0] = data[63:0];\n    }\n\n    if (ena && load)\n    {\n        q[1] = ((amount[q])<<1) | (load>>1);\n    }\n\n    if (ena)\n    {\n        q[2]"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "\n// Pure code, no ram.\n// wireless advshift\nclass advshift {\n// SREG\n// 32k clock\n\t// RS\n\t// [0] 2'b11:bit no lsb access in shifter mode, wire clk serial input\n\t// [1] 2'b1x:2MSB as clock, other bits 0 (aka serial input)\n\t// [2] 2'b0: enable/disable shifter pre 16b\n\t// [3:4] 12bit shifter multiplexer\n\t// [5:7] 12bits shifter register address counter\n\t// [8:9] 2'b11:4MSB as clock, other bits 0 (always 0)\n\t// [10:17] 2'b1x:4LSB as clock, other bits 0 (0x11 - 1+ 2'b00)\n\t// [20:22"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "  always@ DCOSC=1\n    always@ lda = addr\n    may @ lagg\n      ena @ da = da + ena\n            data[0] @ da[0] = data[63:0] @ q[63:0]\n            lagg @ da[64:65] = 0b10010001\n            load\n            sleep(1)\n\n  module shifter()\n        load ya = 0\n        ena @ clk = 1\n        lagg @ ya[0] = 0b11111111\n\n        forr(rep, 8)\n            forl(rep, 8)\n                for r in [8, 7, 6, 5, 4, 3, 2, 1]\n                    for d in [7, 6, 5, 4, 3, 2, 1, 0]\n                        data[r] @ q[d] = data[r] @ q[d]"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": ""
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": ""
+    }
+  ],
+  "created": 1663537945,
+  "id": "cmpl-9XabYlp0UYF5SEOfPUEM15EzKMppF",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2363,
+    "prompt_tokens": 184,
+    "total_tokens": 2547
+  }
+}

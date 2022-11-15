@@ -1,0 +1,119 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if(ena){\n        q <= data[63:0];\n    }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// This design is not particularly efficient.\n// #define SHIFT_WHEN_LOAD \n// when ena is high, shift q.\n// #define SHIFT_WHEN_LOAD2\n// when ena is high, shift q.\n// #define SHIFT_WHEN_LOAD3\n\nalways @(clk)\n  if (clk == 1)\n    ena = 1;\n  else\n    ena = 0;\n\nalways @(load)\n  if (ena) \n    q = data;\n  else\n    q = 0;\n\nalways_comb\n  if (load)\n    q = q;\n  else\n    ena = 1;\n\n#ifdef SHIFT_WHEN_LOAD\nalways @(clk)\n  if (ena == 1 && clk == 1)\n    ena = 0;\n#endif\n\nalways @("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(*)(clk, ena, amount) \nbegin\n    if (ena == 1)\n    {\n        q <- (data[63:0] >> amount) | (data[0] << (64 - amount));\n        data[63:0] << amount;\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\nreg clk;\nreg [63:0] data;\n\nalways @(posedge clk)\n    if (ena) {\n        if (load) {\n            data = q;\n        }\n    }\n    else {\n        q = data;\n    }\n\nalways @(posedge clk)\n    if ((ena) && (load))\n        q = data;\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// Wiring:\n// clk -- CLK\n// load -- BOOLEAN\n// ena  -- BOOLEAN\n// amount -- INTEGER\n// data -- [63:0]\n// q     -- [63:0]\n\n// Wire up the pins:\n// A: sclk\n// B: sclk\n// C: sclk\n// D: sclk\n// E: sclk\n// F: sclk\n// G: sclk\n// H: sclk\n// I: sclk\n// J: sclk\n// K: sclk\n// L: sclk\n// M: sclk\n// N: sclk\n// O: sclk\n// P: sclk\n// Q: sclk\n// R: sclk\n// S: sclk\n// T"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n  if (ena)\n  {\n    if (load)\n    {\n      q = data;\n    }\n    \n    #ifdef TIMING\n      if (clk == 0)\n      {\n        load = true;\n      }\n      else\n      {\n        load = false;\n      }\n    #endif\n  }\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// SERIAL_ENABLE : enable serial communication.\n// SERIAL_DATA  : valid data to send to serial output.\n// SERIAL_CLK   : valid clk to send to serial output.\n// SERIAL_LOAD  : valid ena to send to serial output.\n// SERIAL_LOAD_ENABLE\n// SERIAL_LOAD_DISABLE\n\n// SERIAL_START_ENABLE : enable the shift register to take data from the shifter.\n// SERIAL_START_DISABLE\n\n// SERIAL_STOP_ENABLE : stop the shift register from taking data from the shifter.\n// SERIAL_STOP_DISABLE\n\n// SERIAL_ENABLE_LOAD_ENABLE : enable the shift register to load data from the shifter.\n// SERIAL_ENABLE_LOAD_DISABLE\n\n// SERIAL_ENABLE_LOAD_DISABLE"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(*)\nbegin\n    if (clk_i == 1) begin\n        ena_i = ena;\n        load_i = load;\n        amount_i = amount;\n        data_i = data;\n    end\n    if ((ena_i & load_i) == 0) begin\n        q = data_i;\n    end\n    if (ena_i == 0) begin\n        shift_i = q;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// Notice: if you are using a shift register to shift data, you need to make sure that the\n// shift register does not overflow when you load and shift the data.\n// For example, if you are using a shift register to shift data[63:0] to data[31:0] and shift\n// the data[31:0] to data[15:0] by 1, the data[31:0] will be shifted to the data[15:0] and the\n// data[15:0] will not be loaded and shifted by 1.\n\n// Note: If you are using a shift register to shift data, you should make sure that the shift\n// register is empty before you assign data to it.\n\n// Note: If you are using a shift register to shift data, you should make sure that the shift\n// register does not overflow when you load and shift the data.\n\n// Note: If"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n// design a 64-bit arithmetic shift register, with asynchronous load\n// the shifter can shift left or right, by 1 or 8 bit positions, selected by amount.\nmodule advshift_async(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// when ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule shiftr(input ack,\ninput [63:0] data"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nreg [64:0] q;\nreg [2:0] count;\n\n// When ena is high, shift q.\nalways @(posedge clk)\n  if (ena)\n    q = data;\n\n// When load is high, increment count.\nalways @(posedge clk)\n  if (load)\n    count = (count + 1) & 63;\n\n// When amount is low, load q with data[amount].\nalways @(posedge clk)\n  if (amount == 0)\n    q = data[count];\n\n// When amount is high, load q with data[63 - amount].\nalways @(posedge clk)\n  if (amount == 63)\n    q = data[63 - count];\n\n// Shift q by amount bits.\nalways @(posedge clk)\n  if (amount > 0)\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nreg [63:0] q;\nreg [63:0] r;\nreg load_by;\n\nalways @(posedge clk)\n{\n    load_by = load;\n    if (ena)\n        r = data;\n    else\n        q = r;\n}\n\nalways @(posedge clk)\n{\n    load_by = load_by << amount;\n    if (ena)\n        r = r << amount;\n    else\n        q = q << amount;\n}\n\nalways @(posedge clk)\n{\n    if ((r[63] & 0b00000001) == 0)\n        q[63] = r[63];\n    else\n        q = r;\n}\n\nalways @(posedge clk)\n{\n    if ((q[63] & 0b00000001) == 0)\n        "
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nsig_reg<bool> shift_ena;\nsig_reg<bool> shift_clk;\nsig_reg<bool> shift_load;\nsig_reg<bool> shift_load_ena;\nreg shift_data_out; // output data to shift register\nreg shift_data_in; // input data to shift register\nreg shift_count; // shift register count\nreg shift_mode; // shift register mode\nreg shift_shift; // shift register shift amount\nreg shift_load_shift; // shift register shift amount\nreg shift_shift_ena; // shift register shift ena\nreg shift_shift_out; // shift register output shift amount\nreg shift_shift_in; // shift register input shift amount\n\n// shift port\nreg shift_clk_in;\nreg shift_load_en;\nreg shift_load_clk;\nreg shift_"
+    }
+  ],
+  "created": 1663537592,
+  "id": "cmpl-thZdcOPI9iuZxrnD4hzMLfWc0PZdj",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2013,
+    "prompt_tokens": 184,
+    "total_tokens": 2197
+  }
+}

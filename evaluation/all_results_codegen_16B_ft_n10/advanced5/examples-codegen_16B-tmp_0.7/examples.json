@@ -1,0 +1,93 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk )\nbegin \n\tif (reset)\n\tbegin\n\tcur_state <= IDLE;\n\tend\n\telse\n\tbegin\n\tcur_state <= next_state;\n\tend\nend\nalways @ (posedge clk )\nbegin\n\tcase (cur_state)\n\tIDLE : // idle state\n\tbegin\n\tif(a == 1 & b == 1)\n\tbegin\n\tnext_state <= SAB;\n\tend\n\telse if(a == 1)\n\tbegin\n\tnext_state <= SA;\n\tend\n\telse if(b == 1)\n\tbegin\n\tnext_state <= SB;\n\tend\n\telse\n\tbegin\n\tnext_state <= IDLE;\n\tend\n\tend\n\tSA : // state that sets a to 1\n\tbegin\n\tif(b == 1)\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nif (reset) begin\ncur_state <= IDLE;\nz <= 1'b0;\nend \nelse begin\ncur_state <= next_state;\nz <= (cur_state == SAB);\nend\nalways @(cur_state or a or b)\nbegin\ncase (cur_state)\nIDLE : begin\nif (a == 1 && b == 1) next_state <= SAB;\nelse if (a == 1) next_state <= SA;\nelse if (b == 1) next_state <= SB;\nelse next_state <= IDLE;\nend\nSA : begin\nif (b == 1) next_state <= SAB;\nelse next_state <= IDLE;\nend\nSB : begin\nif (a == 1) next_state <= SAB;\nelse next_state <= IDLE"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset == 1'b1) \ncur_state <= IDLE;\nelse \ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1 && b == 1) \nbegin\nnext_state = SA;\nz = 1'b0;\nend\nelse \nbegin\nnext_state = IDLE;\nz = 1'b0;\nend\nend\nSA:\nbegin\nif(b == 1) \nbegin\nnext_state = SB;\nz = 1'b0;\nend\nelse \nbegin\nnext_state = IDLE;\nz = 1'b0;\nend\nend\nSB:\nbegin\nif(a == 1) \nbegin\nnext"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// z is assigned 0 when cur_state is IDLE\nalways @(posedge clk, posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE : begin\nif(a==1&&b==1)\nbegin\nnext_state = SAB;\nend\nelse\nnext_state = IDLE;\nend\nSA : begin\nif(a==1)\nbegin\nnext_state = SB;\nend\nelse\nnext_state = IDLE;\nend\nSB : begin\nif(b==1)\nbegin\nnext_state = SAB;\nend\nelse\nnext_state = IDLE;\nend\nSAB : begin\nnext_state = IDLE;\nend\ndefault"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign z = (cur_state==SAB)?1:0;\n// FSM\nalways @ (posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @ (cur_state or a or b)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif (a == 1&& b == 1)\nnext_state = SA;\nelse if (a == 1)\nnext_state = IDLE;\nelse if (b == 1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif (b == 1)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nend\nSB:\nbegin\nif (a == 1)\nnext_state = SAB;\nelse\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state,a,b)\nbegin\ncase (cur_state)\nIDLE : begin\nz <= 0;\nif (a == 1 & b == 1) begin\nnext_state <= SA;\nend else if (b == 1) begin\nnext_state <= SB;\nend else if (a == 1) begin\nnext_state <= SA;\nend else begin\nnext_state <= IDLE;\nend\nend\nSA : begin\nz <= 0;\nif (b == 1) begin\nnext_state <= SAB;\nend else begin\nnext_state <= IDLE;\nend\nend\nSB : begin\nz <= 0;\nif (a == 1) begin\nnext"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "reg z;\nalways @(posedge clk,posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a==1 && b==1)\nbegin\nnext_state = IDLE;\nz=0;\nend\nelse\nbegin\nnext_state = SA;\nz=0;\nend\nend\nSA:\nbegin\nif(a==1)\nbegin\nnext_state = SB;\nz=0;\nend\nelse\nbegin\nnext_state = SA;\nz=0;\nend\nend\nSB:\nbegin\nif(b==1)\nbegin\nnext_state = SAB;\nz=1;\nend\nelse\nbegin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "assign z = (cur_state == SAB);\nalways @(posedge clk or negedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(a or b or cur_state)\nbegin\ncase(cur_state)\nIDLE: begin\nnext_state = IDLE;\nif(a == 1'b1 && b == 1'b1)\nnext_state = SA;\nif(a == 1'b1 && b == 1'b0)\nnext_state = SB;\nif(a == 1'b0 && b == 1'b1)\nnext_state = SB;\nif(a == 1'b0 && b == 1'b0)\nnext_state = IDLE;\nend\nSA: begin\nnext_state = SAB;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(*)\nbegin\ncase(cur_state)\nIDLE:\nbegin\n\tif(a==1 && b==0)\n\tbegin\n\tnext_state = IDLE;\n\tz = 0;\n\tend\n\telse if(a==0 && b==1)\n\tbegin\n\tnext_state = IDLE;\n\tz = 0;\n\tend\n\telse\n\tbegin\n\tnext_state = SA;\n\tz = 0;\n\tend\nend\nSA:\nbegin\n\tif(b==1)\n\tbegin\n\tnext_state = SAB;\n\tz = 0;\n\tend\n\telse\n\tbegin\n\tnext_state = SB;\n\tz = 0;\n\tend\nend\nSB:\nbegin\n\tif(a==1)\n\tbegin\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\n// z is assigned one when the first input is high\n// z is assigned zero when the second input is high\nalways @(posedge clk, posedge reset)\nbegin\n if(reset)\n begin\ncur_state <= IDLE;\n end\nelse\n begin\n cur_state <= next_state;\n end\nend\nalways @(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE : begin\n if(a) begin\nnext_state <= IDLE;\n end\n else begin\nnext_state <= SA;\n end\nend\nSA : begin\n if(b) begin\nnext_state <= SAB;\n end\n else begin\nnext_state <= SA;\n end\nend\nSB : begin\n if(a) begin\nnext_state <= SAB;\n end\n else begin\nnext"
+    }
+  ],
+  "created": 1663543972,
+  "id": "cmpl-bgiUK5CuGKUi7vkgNEgA4LZC1X3RS",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2000,
+    "prompt_tokens": 218,
+    "total_tokens": 2218
+  }
+}

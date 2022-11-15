@@ -1,0 +1,142 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or ~reset) begin\n        out <= (load ? data : left_rotate(out << amount,out >> amount));\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg_repeat(`,cnt`);\nVBIF `cnt` = -2'd`cnt`;\nassign z = out[2];\nalways @(posedge clk or negedge reset) begin\n\tif (`cnt` > 0) begin\n\t\tif (load) begin\n\t\t\tout = data;\n\t\tend\n\t\telse begin\n\t\t\tout >>= amount;\n\t\tend\n\tend else begin\n\t\tout = 0;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk,negedge reset) begin\n  if(load) out <= data;\n  else out <= (out << amount) | (out >> (BITDEG * (7 - amount)));\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge load)\n  out <= (NOT load) & data | left_rotate (&load, amount, out);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk_d)\n    if(load == 1) out = data; else out = left_rotate(data,out,amount[2:0],7:0);\nend\n\n// convert out bits to ASCII value\nint out_to_digit(int a, int b);\n\n// tests giving wrong inputs\nconstraint dut_loaded();\n\nwire testw(int test, model io_model);\n// the program consists of repeating the same blocks to test the outputs of the carry instructions and and and\n// testsigs. Logic modules construct themselves in such a way that each test shows the location of the failed input.\nint test();\n\nint main(int argc, char *argv[]) \n{\n    interface test_clock_overflow {{ 1'b0 }};\n\tinterface test_clock_reset {{ 1'b0 }};\n\n\t//"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  out <= (load == 1)? load_n(Dout) : (uint8)(out_r >> (amount[0]-1));\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "reg [7:0] out;\n\nalways( clk.posedge, reset.negedge, attr_clk.posedge) \nbegin\n    if (reset)  \n     wait(1,load,out); \n   out <= left_shift(out,amount);\nend\n`\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge load)\n        out = (data << amount) rshift in;\nend\n\"\"\"\n\n\ndef test_word():\n    t = TestWord()\n    assert t.bfigure() == \".ddXwdwdXwdwdXw\"\n\n\ndef test_int():\n    t = TestInt()\n    assert t.bfigure() == \".dXXDdXDdXwd\"\n\n\ndef test_left_rotation():\n    t = TestLeftRotate()\n    assert t.bfigure() == \".dXdXdXdXdXdXdXdXdXdXdXdXdXdXdXdXdXd\"\n\n\ndef test_load_data_in():\n    t = TestLoadDataIn()\n    assert t.bfigure() == (\"\"\"\n               .ddXwd"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(*)\n  begin\n    if (load) out <= data;\n    else\n      begin\n        if (amount > 0)\n          out <<= amount;\n        if (amount =< 7) out[7:amount-1] <= (data >> load) << (amount-1);\n        end\n      end\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge load) load_output(load_message,sign);\nalways @(posedge clk or negedge data) data_0_out(load_message,out);\n// logic for out going high\n  if (data == data_0_out) out > 0;\n// logic for out going low\n  if (data == load_message) out < out_load;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "initial begin\n\tclk_rising_edge(clk);\n\tout <= (load ? data : left_rotate(out << amount[1:0] & out, amount[1:0]));\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge reset) begin\n  if(load==1) begin\n    out <= data(7);\n  endelse begin\n    int i = amount;\n    while(i>0) begin\n      i--;\n      i-=8;\n      out <<= 1;\n      if (out(i)>0) out(7) |= 1;\n      else out(7) &= b11111111;\n    end\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  out <= (load ? load << amount : rotate_load(out.range(17,0), amount));\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "reg [7:0] out;\nreg lvl;\nalways @(posedge clk) {lvl <= do_shift(data, amount, lft_tmp);}\nalways @(posedge load) {\n\tif(lvl) out <= out.load | do_rot_load(data, rght_tmp, out);\n\telse out <= out.load | out.rot << amount;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  out <= load ? load(data) << (amount[0] + 1) :\n             out << (amount[1] + 1) << (out[0] & 0x7F);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (load) out <= data;\n  else if (false) out = (~out << amount.0) | (~out >> (only_carry(amount) ? amount.1 : amount.1 - 1));\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "//\nalways @ (posedge clk or negedge load) //clock signal\nif (load)\n\tout = data;\n\telse\n\tout <<= amount;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "reg [7:0] out;\nreg [8:0] bit_state;\nassign out = bit_state & value();\nalways @(posedge clk or negedge load)\n\tif (load) bit_state <= ~data & value();\n\telse\n\t\tbit_state <= bit_state << left_rotate(amount, data); // rotate the clock 7 times\nend\n`\n\n\tbit_str  = []byte{0x00, 0x01} // 0b100, size=2\n\tbit_str1 = []byte{0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77}\n\tbit_str2 = []byte{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  process(load)\n  begin\n\t  if (load) out[7] <= data[7];\n\t  else { out[7:] <<= amount[0] AND 7 + amount[1] << always; }\n  end\nend\n\nmodule build_from_load(clk,reset,load,out);\ninput clk,reset;\ninput load;\noutput reg [7:0] out;\n\nalways @(posedge clk or negedge reset)\n  begin\n\tif (load) out <= (LOAD_ADDRESS(load,SPEED_OP))[7:0];\nproduce\nend\n\nmul_div_load_reg\n\tmul(MUL)/div(MUL)/div_load_reg\n\n/* Internal functions */\n\n/* Parse a speed_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nif (load) out = data;\nelse out <<= amount;\n\n"
+    }
+  ],
+  "created": 1663520810,
+  "id": "cmpl-YabNkW5gBpgRn54kFs7dpQato3UWP",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1824,
+    "prompt_tokens": 94,
+    "total_tokens": 1918
+  }
+}

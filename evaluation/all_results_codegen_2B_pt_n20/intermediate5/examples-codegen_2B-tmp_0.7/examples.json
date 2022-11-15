@@ -1,0 +1,142 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n  if (load && out) begin\n    // load data to out\n    out = data;\n  end else if (load) begin\n    // load data to out\n    out = load;\n  end else begin\n    // rotate the out register followed by left shift the out register by amount bits\n    out = (data<<amount) | (data>>(32-amount));\n  end\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (load)\n        out = data;\n    else\n        out = (out << amount) | (data >> (8 - amount));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg out;\n\nvoid main()\n{\n  while(1)\n  {\n    if(load)\n    {\n      out = data;\n    }\n\n    // compute the amount of shift in steps\n    uint16_t shift_amount = (amount+1)%8;\n    uint16_t rotate_amount = (amount+7)%8;\n\n    // compute the amount of shift in steps\n    uint16_t shift_amount = (amount+1)%8;\n    uint16_t rotate_amount = (amount+7)%8;\n    // left shift and rotate operation\n    if(!load)\n    {\n      out = (data<<(8-rotate_amount))>>(8-rotate_amount);\n    }\n\n  }\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n  if (load)\n    out = data;\n  else if (amount == 0)\n    out = data;\n  else \n    out = (data << amount) | (data >> (32 - amount));\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "if (load == 1) begin\n    out = data;\nend else\nbegin\n    out = data;\n    // check if amount is 0\n    if (amount == 0)\n    begin\n        out = data;\n    end else\n    begin\n        // load data to out\n        out = data;\n        // if amount is 1, do a rotaing left shift\n        if (amount == 1)\n        begin\n            out = (data << 1) | (data >> (32-1));\n        end else\n        // if amount is 2, do a rotaing left shift\n        if (amount == 2)\n        begin\n            out = (data << 2) | (data >> (32-2));\n        end else\n        // if amount is 3, do a rotaing left shift\n        if (amount == 3)\n        begin\n            out = (data << 3)"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "assign out = (load == 1) ? (data << amount) | (data >> (32 - amount)) : (data << amount) | (data >> (32 - amount));\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "assign load = (data == 0b1) ? data : out;\nassign out = ((out << amount) | (load >> (32-amount))) & 0b11111111111111111111111111111111;\n\n\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by left shift the out register by amount bits\nassign load = (data == 0b1) ? data : out;\nassign out = ((load << (32-amount)) | (out >> amount)) & 0b11111111111111111111111111111111;\n\n\n// left shift and rotate operation\nmodule"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "assign out = (load == 1) ? (data << amount) : data;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @ (clk,reset)\nbegin\n    if (load == '1') begin\n        out <= data;\n    end else\n    begin\n        out <= rotate_left(out, amount);\n        out <= rotate_left(out, amount);\n    end\nend\nend\n\"\"\"\n\n# source: https://github.com/seeedstudio/curie_ethernet/blob/master/scripts/curie_ethernet/left_rotate.v\n# modified by chris_meiklejohnson\n# originally written by joseph on the seeedstudio forums\n\n# input data\nclk = Signal(bool(0))\nreset = ResetSignal(bool(0), True, True)\n# clock to the MCU\namount = Signal(intbv(0)[2:0]) # amount = 0, 1, 2, 3, 4"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (!load && (clk == reset)){\n        out = data & 0xFF;\n    } else {\n        out = data;\n    }\n    out = out << amount;\n    out = out >> (8 - amount);\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "wire [71:0] tmp;\nalways @(posedge clk)\n    if (reset) begin\n        out <= 0;\n    end\n    else\n        begin\n            if ((data[0:0] == 0) && (load == 1)) begin\n                out <= 0;\n            end\n            else\n                begin\n                    tmp <= data[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp[23:0];\n                    tmp <= tmp["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (load)\n        out = data;\n    else {\n        out <<= amount;\n        out <<= amount;\n    }\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (load == 1)\n    out = data;\n  else\n    out <<= amount;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (load == 1)\n    {\n        out = data;\n    }\n    else\n    {\n        out = (data << amount);\n        if (out == 0)\n        {\n            out = 0x80;\n            // if the left shift operation has overflowed,\n            // set the carry bit to 1 in the output register\n        }\n        else\n        {\n            out = out >> amount;\n        }\n    }\nend\n// left shift and rotate operation end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if(reset) begin\n        out = 0;\n    end else if(load) begin\n        out = data;\n    end else begin\n        out <<= amount;\n        out = out >> amount;\n    end\nend\n);\n*/\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "assign out = (load == 1) ? (out << amount) | (data >> (32 - amount)) :\n                (out << amount) | (data << (32 - amount));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (reset) reset.next;\n  out <= (load and (data << amount) or ((~load) >> (4 - amount)));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset) begin\n        out = 0;\n    end else if (load) begin\n        out = data;\n    end else if (amount == 0) begin\n        out = data;\n    end else begin\n        out = data << amount;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n    out <= (load and (not load) xor load) xor (\n            (not amount) \n            << (not amount)\n            << ((~amount) << amount)\n            << ((~amount) << amount)\n            << (not amount)\n        );\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @ (clk, reset, load, amount)\nbegin\n  if (load)\n    out <= data;\n  else\n    out <= data;\n  if ((clk == 1) and (reset == 0))\n    out <= (out << (amount+1)) & 0xFF;\n  if ((clk == 1) and (reset == 1))\n    out <= (out >> (amount+1)) & 0xFF;\nend\n"
+    }
+  ],
+  "created": 1663537921,
+  "id": "cmpl-liisqwndj0JJYiOIGFKNxjN48DJjq",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1947,
+    "prompt_tokens": 94,
+    "total_tokens": 2041
+  }
+}

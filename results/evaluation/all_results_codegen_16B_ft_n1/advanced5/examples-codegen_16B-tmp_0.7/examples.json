@@ -1,0 +1,39 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg z;\nalways@(posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE : begin\nz=0;\nif(a==1) begin\nnext_state = SA;\nend\nelse if(b==1) begin\nnext_state = SB;\nend\nelse begin\nnext_state = IDLE;\nend\nend\nSA : begin\nz=0;\nif(a==1) begin\nnext_state = SA;\nend\nelse if(b==1) begin\nnext_state = SAB;\nend\nelse begin\nnext_state = IDLE;\nend\nend\nSB : begin\nz=0;\nif(b==1) begin\nnext"
+    }
+  ],
+  "created": 1663543429,
+  "id": "cmpl-pI010IqGVHpHvdPfwIkID5mDkxbax",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 218,
+    "total_tokens": 418
+  }
+}

@@ -1,0 +1,17 @@
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+wire a_in;
+wire b_in;
+
+and_gate and_gate_0(a_in, b_in);
+and_gate and_gate_1(b_in, a);
+or_gate or_gate_0(out, a_in, b_in);
+
+endmodule

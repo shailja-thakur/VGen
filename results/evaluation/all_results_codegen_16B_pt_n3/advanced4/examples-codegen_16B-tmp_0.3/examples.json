@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// The shift register is loaded with data[63:0] on the rising edge of load.\n// The shift register is shifted on the falling edge of ena.\n// The shift register is shifted by amount[1:0]*8, where amount[1:0] is the value of ena.\n// The shift register is shifted by amount[1:0]*1 if amount[1:0] is 0.\n// The shift register is shifted by amount[1:0]*8 if amount[1:0] is 1.\n// The shift register is shifted by amount[1:0]*1 if amount[1:0] is 2.\n// The shift register is shifted by amount[1:0]*8 if amount[1:0] is 3.\n// The shift register is shifted by amount[1:0]*1 if amount[1:0] is 4.\n//"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// This is the register that is shifted.\nreg q;\n\n// This is the register that is loaded.\nreg load;\n\n// This is the enable signal.\nreg ena;\n\n// This is the shift amount.\nreg amount;\n\n// This is the shift register data.\nreg data;\n\n// This is the output of the register.\nreg q_out;\n\nalways @(posedge clk)\nbegin\n    if (ena) begin\n        // Shift left by 1 bit.\n        if (amount == 0) begin\n            q <= data[63:0];\n        end else begin\n            q <= data[63:0] << 1;\n        end\n        // Shift right by 1 bit.\n        if (amount == 1) begin\n            q <= data[63:0] >> 1;\n        end else begin\n            q <= data[63:0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign q = {63,62,61,60,59,58,57,56,55,54,53,52,51,50,49,48,47,46,45,44,43,42,41,40,39,38,37,36,35,34,33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};\n\nalways @(posedge clk)\n  if (ena)\n    q <= data;\n\nalways @(posedge clk)\n  if (ena)\n    if (amount[1])\n      q[63] <= data[63];\n    else\n      q[63]"
+    }
+  ],
+  "created": 1663534024,
+  "id": "cmpl-3GVAFnZXMwmzYp8hCzx6vhoNZaemP",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 184,
+    "total_tokens": 784
+  }
+}

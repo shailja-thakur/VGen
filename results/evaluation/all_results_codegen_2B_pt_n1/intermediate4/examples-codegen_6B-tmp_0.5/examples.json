@@ -1,0 +1,144 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (present_state == 0 && in == 1) next_state = 1;\n    else if (present_state == 1 && in == 0) next_state = 0;\n    else next_state = present_state;\n    present_state <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset)\n    present_state <= 0;\n  else if (in)\n    present_state <= 1;\n  else\n    present_state <= 0;\n  next_state <= present_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset) begin\n        next_state <= 0;\n    end\n    else begin\n        if (next_state) begin\n            next_state <= 0;\n        end\n        else begin\n            next_state <= 1;\n        end\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset)\n    next_state <= 0;\n  else if (next_state == 0)\n    present_state <= in;\n  else if (next_state == 1)\n    present_state <= in;\n  else\n    next_state <= 0;\n  out <= present_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif (reset)\n\t\tnext_state <= 0;\n\telse if (in)\n\t\tnext_state <= 1;\n\telse\n\t\tnext_state <= 0;\n\tpresent_state <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset) begin\n    next_state <= 0;\n  end\n  else if (in) begin\n    next_state <= 1;\n  end\n  else begin\n    next_state <= 0;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset)\n    next_state <= 0;\n  else if (next_state == 0)\n    next_state <= in;\n  else if (next_state == 1)\n    next_state <= ~in;\n  else\n    next_state <= 0;\n  present_state <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset) begin\n    next_state <= 0;\n    present_state <= 0;\n  end\n  else if (next_state) begin\n    present_state <= next_state;\n  end\n  else begin\n    present_state <= in;\n    next_state <= present_state;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always@(posedge clk or negedge reset)\nbegin\n  if (reset) next_state <= 0;\n  else if (in) next_state <= 0;\n  else next_state <= 1;\n  present_state <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset) begin\n    next_state <= 0;\n  end\n  else if (next_state) begin\n    present_state <= next_state;\n  end\n  else begin\n    present_state <= in;\n    next_state <= 1 - in;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n        next_state <= 0;\n    else if (next_state)\n        next_state <= 0;\n    else if (in)\n        next_state <= 1;\n    else\n        next_state <= 0;\n    present_state <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if (reset) next_state = 0;\n  else if (in) next_state = 0;\n  else next_state = 1;\n\nalways @(posedge clk)\n  out = next_state;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset) begin\n        present_state <= 0;\n        next_state <= 0;\n    end\n    else begin\n        present_state <= in;\n        next_state <= (present_state == 1 ? 1 : 0);\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset) begin\n        present_state <= 0;\n        next_state <= 0;\n    end\n    else begin\n        present_state <= in;\n        next_state <= in;\n        if (present_state == 0 && next_state == 1) begin\n            next_state <= 0;\n        end\n        else if (present_state == 1 && next_state == 0) begin\n            next_state <= 1;\n        end\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset)\n    next_state <= 0;\n  else if (next_state == 0)\n    out <= in;\n  else if (next_state == 1)\n    out <= not(in);\n  else\n    next_state <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n  if (reset) begin\n    present_state <= 0;\n    next_state <= 0;\n  end else begin\n    present_state <= in;\n    next_state <= present_state;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset) begin\n        next_state <= 0;\n        present_state <= 0;\n    end else begin\n        next_state <= in;\n        present_state <= next_state;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  present_state <= in;\nalways @(posedge clk)\n  next_state <= present_state && in;\nassign out = next_state;\nend\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset)\n    next_state <= 0;\n  else if (next_state == 0 && in)\n    next_state <= 1;\n  else if (next_state == 1 && !in)\n    next_state <= 0;\n  else if (next_state == 0 && in)\n    next_state <= 1;\n  else\n    next_state <= 0;\n  present_state <= next_state;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n    if(reset)\n      next_state = 0;\n    else\n      next_state = next_state + in;\n    present_state = next_state;\n    out = present_state;\n  end\nend\n\n// Design a state machine with a single state, 0, and a single input. Reset state is 0.\nmodule simple_fsm_single_input(clk, reset, in);\ninput clk;\ninput reset;\ninput in;\noutput out;\nreg present_state, next_state;\n// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 0\n// out=1 in state 0 and out=0 in state 0\nalways @(posedge clk)\n  begin\n    if(reset)\n      next_state ="
+    }
+  ],
+  "created": 1663520674,
+  "id": "cmpl-lKhbesODPulI5dBRGuzKP231IhweF",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1677,
+    "prompt_tokens": 148,
+    "total_tokens": 1825
+  }
+}

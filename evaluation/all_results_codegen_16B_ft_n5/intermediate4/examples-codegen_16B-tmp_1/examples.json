@@ -1,0 +1,54 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (present_state) begin\n\tcase (present_state)\n\t0 : begin if (in) next_state=0; else next_state=1; end\n\t1 : begin if (in) next_state=1; else next_state=0; end\n\tendcase\n\tend\n\t\n\talways @ (posedge clk or reset or next_state) begin\n\tif (reset) \n\tpresent_state <= 0;\n\telse\n\tpresent_state <= next_state;\n\tend\n\t\nassign out = (present_state == 1);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "count_inst0 inst (\n.clk(clk),\n.reset(reset),\n.count(out)\n);\ninitial\n\tbegin\n\tpresent_state=1'b0;\n\t//$display(\"clk,reset,in,out,present_state\");\n\t$monitor(\"clk,reset,in,out,present_state\");\n\tend\nalways @(posedge clk)\n\tbegin\n\tif (reset)\n\t next_state<=present_state;\n\tcase(present_state)\n\t0:\n\tbegin\n\tif (in)\n\t next_state<=present_state;\n\telse\n\t begin\n\tnext_state<=1'b1;\n\tpresent_state<=1'b1;\n\t end\n\tend\n\t1:\n\tbegin\n\tif (in)\n\t next_state<"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// Each time clock pulses, slot will be filled holding same number\nparameter slot = 32'd10;\n// For sequence 01010\nparameter zero = slot*2, one = slot*2 + 1;\nparameter fall_key = 2'b00, rise_key = 2'b01, error_key = 2'b11;\nparameter state_1 = 2'd0, state_0 = 2'd1, state_1_error = 2'd2, state_0_error = 2'd3;\n// The present state of state machine will tell whether to drive out/out or low/low\nwire [15:0] current_state;\n// function returns a string (name of the instance) of a state machine and the present generated sequence\n// It returns when the next state is calculated and posedge of the clock has arrived\n//\n// Moore machine to check repeated pattern at the same time\n//"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign out = present_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign out = ((present_state == 1) && (next_state == 0) && (in == 1)) \n\t|| ((present_state == 0) && (next_state == 1) && (in == 0)) \n\t? 1'b1 : 1'b0;\n// Register present state and decide output after clock\nalways @ (posedge clk or posedge reset)\n\tif (reset) \n\tbegin\n \tpresent_state <= 0;\n\tout <= 0;\n\tend\n\telse\n\tbegin\n \tpresent_state <= next_state;\n\tout <= t2;\n\tend\n// Register deciders for the next state\t\nalways @ (present_state or in or reset)\n\tif (reset) \n\tnext_state <= 0;\n\telse\n\tcase (present_state)\n\t0:\n\tif(in =="
+    }
+  ],
+  "created": 1663543683,
+  "id": "cmpl-lwcYijbJ2Dc9ikRMbU10lZCCC9qJO",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 747,
+    "prompt_tokens": 148,
+    "total_tokens": 895
+  }
+}

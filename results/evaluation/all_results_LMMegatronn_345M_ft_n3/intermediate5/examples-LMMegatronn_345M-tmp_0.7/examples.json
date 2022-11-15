@@ -1,0 +1,40 @@
+// this is a shift left and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// rotate the register out followed by shift left by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [7:0] shift_reg;\nalways@(posedge clk)\nbegin\n    if(reset)\n    begin\n        shift_reg<=0;\n        out <= 0;\n    end\n    else\n    begin\n        shift_reg<=data;\n        out <= shift_reg[7:0];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "reg [7:0] shift_reg;\n\nalways@(posedge clk or negedge reset)\nbegin\n    if (!reset)\n    begin\n                  // Initialize Inputs\n                   in = 0;\n                   shift_reg = 0;\n                   out = 0;\n    end\n    \n    else if (load)\n    begin\n            // Shift right arithmetic\n                         "
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg [7:0] shift_reg;\n// temporary shift register\nreg [7:0] tmp;\ninteger i;\nreg [7:0] temp;\n// temporary shift register\nalways@(*)\nbegin\n    shift_reg[0] = data[0]&data[1]&data[2]&data[3]&data[4]&data[5]&data[6]&data[7]&data[8]&data[9]&data[10]&data[11]&data[12]&data[13]&data[14]&data[15]&data[17]&data[18]&data[19]&data[20]&data[21]&data[22]&data[23])\n    begin \n        shift_reg[1] = data[0]&"
+    }
+  ],
+  "created": 1663299227,
+  "id": "cmpl-wW4BXH5lwBJ7r4c2qDaayRb5D5dYB",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 519,
+    "prompt_tokens": 93,
+    "total_tokens": 612
+  }
+}

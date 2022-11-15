@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n\tif (reset == 1) begin\n\t\tpresent_state <= IDLE;\n\t\tnext_state <= IDLE;\n\tend\n\telse begin\n\t\tpresent_state <= IDLE;\n\t\tnext_state <= IDLE;\n\tend\nend\n\nalways @(posedge clk)\nbegin\n\tif (present_state == IDLE) begin\n\t\tif (x == 1) begin\n\t\t\tnext_state <= S1;\n\t\tend\n\t\telse begin\n\t\t\tnext_state <= IDLE;\n\t\tend\n\tend\n\telse if (present_state == S1) begin\n\t\tif (x == 0) begin\n\t\t\tnext_state <= IDLE;\n\t\tend\n\t\telse begin\n\t\t\tnext_state <= S10;\n\t\tend\n\tend\n\telse if (present_state == S10) begin\n\t\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n\tif (reset) begin\n\t\tpresent_state <= IDLE;\n\tend\n\telse begin\n\t\tpresent_state <= IDLE;\n\t\tnext_state <= IDLE;\n\t\tif (present_state == IDLE) begin\n\t\t\tif (x) begin\n\t\t\t\tnext_state <= S1;\n\t\t\tend\n\t\tend\n\t\telse if (present_state == S1) begin\n\t\t\tif (x == 0) begin\n\t\t\t\tnext_state <= IDLE;\n\t\t\tend\n\t\tend\n\t\telse if (present_state == S10) begin\n\t\t\tif (x == 1) begin\n\t\t\t\tnext_state <= S101;\n\t\t\tend\n\t\tend\n\t\telse if (present_state == S101) begin\n\t\t\tif (x == 0) begin\n\t\t\t\tnext_state <= IDLE;\n\t\t\tend\n\t\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n  if (reset) begin\n    next_state <= IDLE;\n  end else if (present_state == IDLE) begin\n    if (x) begin\n      next_state <= S1;\n    end else begin\n      next_state <= IDLE;\n    end\n  end else if (present_state == S1) begin\n    if (x) begin\n      next_state <= S10;\n    end else begin\n      next_state <= IDLE;\n    end\n  end else if (present_state == S10) begin\n    if (x) begin\n      next_state <= S101;\n    end else begin\n      next_state <= IDLE;\n    end\n  end else if (present_state == S101) begin\n    next_state <= IDLE;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways begin\n        if (reset) begin\n                present_state <= IDLE;\n                next_state <= IDLE;\n        end\n        else begin\n                present_state <= IDLE;\n                next_state <= IDLE;\n        end\n        if (present_state == IDLE) begin\n                if (x) begin\n                        next_state <= S1;\n                end\n                else begin\n                        next_state <= IDLE;\n                end\n        end\n        if (present_state == S1) begin\n                if (x == 1) begin\n                        next_state <= S10;\n                end\n                else begin\n                        next_state <= IDLE;\n                end\n        end\n        if (present_state == S10) begin\n                if (x == 1) begin\n                        next_state <= S101;\n                end\n                else begin\n                        next_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways begin\n// reset present_state and next_state\npresent_state <= IDLE;\nnext_state <= IDLE;\n// end always\n\n// next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE\nif (present_state == IDLE) begin\nnext_state <= S1;\nend\n\n// next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE\nif (present_state == S1) begin\nnext_state <= S10;\nend\n\n// next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE\nif (present_state == S10) begin\nnext_state <= S101;\nend\n\n// next_state is assigned IDLE if present_state is S101\nif (present_state == S101) begin\nnext_state <= IDLE"
+    }
+  ],
+  "created": 1663534162,
+  "id": "cmpl-wOC5zMVZDFEIsvLylb7eoLHDI0FMb",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 998,
+    "prompt_tokens": 232,
+    "total_tokens": 1230
+  }
+}

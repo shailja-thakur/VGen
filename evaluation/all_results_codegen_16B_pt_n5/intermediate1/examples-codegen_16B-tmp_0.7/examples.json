@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nwire clk = clk;\nwire carry_in = carry_in;\n\nreg a_reg = a_reg;\nreg b_reg = b_reg;\nreg sum_reg = sum_reg;\n\n// output logic\nreg [7:0] sum = sum;\n\n// carry logic\nwire carry_out = carry_out;\n\nalways @(posedge clk) begin\n  if( a_reg == 1 )\n  {\n    sum_reg <= sum + b_reg;\n    carry_out <= sum_reg[6];\n    sum_reg[6:5] <= carry_out;\n  }\n  else\n  {\n    sum_reg <= sum + carry_in;\n    carry_out <= sum_reg[6];\n    sum_reg[6:5] <= carry_out;\n  }\nend\n\nass"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk) begin\n    if (!rst)\n        cout <= a;\n    else \n        cout <= a + b;\nend\n\nreg [2:0] sum;\nalways @(posedge clk) begin\n    sum <= a + b;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk)\n begin\n   sum <= {a, b, cout}\n end\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nwire cin, cout, sum;\nwire carry_in, carry_out;\n\n// compute sum = a + b + carry_in\nassign sum = a + b + carry_in;\n// compute carry_out = a + b + cin\nassign carry_out = a + b + cin;\n\n// compute cout = sum&carry_out\nassign cout = sum & carry_out;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\ninput a, b,\noutput cout, sum;\n\nalways @(posedge clk) begin\n  sum <= (a + b);\n  cout <= sum[2:0];\nend\n\n"
+    }
+  ],
+  "created": 1663534418,
+  "id": "cmpl-wTpFlWGmnbCT5rRbMK22RUCAl1iEU",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 452,
+    "prompt_tokens": 43,
+    "total_tokens": 495
+  }
+}

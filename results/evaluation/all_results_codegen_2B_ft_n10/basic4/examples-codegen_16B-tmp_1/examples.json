@@ -1,0 +1,319 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign out = sel?b:a;\n\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " \nreg [4:0] out;\nalways@*\nbegin\ncase (sel)\n 0: out <= a;\n 1: out <= b;\nendcase\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a; // when sel=0, out = a\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nassign out=(sel)? b:a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nassign out=(sel==1'b0)?a:b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\n\nassign out = sel ? b : a;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n// You may add logic here to control what is output\n// when sel is unknown. \nassign out=(sel==1)?b:a;\n// When sel is 1 then output b, else output a. \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": " \n// Write code for wire name: sel. \nwire [4:0] w1;\nassign w1 = sel ? b : a;\nassign out = w1;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nwire selBar; \nnot nt (selBar, sel);\nand a1 (out[0], selBar, a[0]);\nand a2 (out[1], selBar, a[1]);\nand a3 (out[2], selBar, a[2]);\nand a4 (out[3], selBar, a[3]);\nand a5 (out[4], selBar, a[4]);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": " \n// en\u00edn o el simple mux\nmux2x1 m1(m[0], a0, sel, muxOut[0]);\nmux2x1 m2(m[1], a1, sel, muxOut[1]);\nmux2x1 m3(m[2], a2, sel, muxOut[2]);\nmux2x1 m4(m[3], a3, sel, muxOut[3]);\nmux2x1 m5(a[4], b, sel, muxOut[4]);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": " \n// If cin is 1 and sel is 1, use INT_MAX. ex( 20'b11111.xxxxxxxxxxxxxxx000 ) sel=1 cin=1 result=0001.0000000010000000\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": " \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 20,
+      "logprobs": null,
+      "text": "\nspecify\n(a,b,sel => out) = 5.0;\nendspecify\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 21,
+      "logprobs": null,
+      "text": "\n// wb switches in between the two. \nassign #2 out = sel ? b : a; // delay 2ns, minimum suggested by UofT\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 22,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 23,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 24,
+      "logprobs": null,
+      "text": " \n\n\n\tassign out = sel ? b : a;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 25,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b:a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 26,
+      "logprobs": null,
+      "text": " \n// Default value of sel - when sel is not asserted - is also \n// a valid input\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 27,
+      "logprobs": null,
+      "text": " \nassign out = ( sel == 1'b0 ) ? a : b ;\n// Logic statement can be added between assign statements.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 28,
+      "logprobs": null,
+      "text": "\nassign out = sel? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 29,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 30,
+      "logprobs": null,
+      "text": "\nassign out[0] = sel ^ a[0];\nassign out[1] = sel ^ a[1];\nassign out[2] = sel ^ a[2];\nassign out[3] = sel ^ a[3];\nassign out[4] = sel ^ a[4];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 31,
+      "logprobs": null,
+      "text": " \n// Note that the above sentence says nothing about the value of the output when it is not selected, \n// nor whether the non-selecting inputs are 0 to enable the output, nor whether there is a failure mode when there is more than 1. \nassign out = sel ? b : a; // This will work right if and only if it the output is only a boolean. \n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 32,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 33,
+      "logprobs": null,
+      "text": " \nassign out=(sel)?b:a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 34,
+      "logprobs": null,
+      "text": "\n// In this instance, you get 4 bits for a and 5 for b.\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 35,
+      "logprobs": null,
+      "text": "\n\tassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 36,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 37,
+      "logprobs": null,
+      "text": "\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 38,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 39,
+      "logprobs": null,
+      "text": " \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 40,
+      "logprobs": null,
+      "text": " \n/* Write your code below\nmux my_mux \n(\n.a(a),\n.b(b),\n.sel(sel),\n.out(out)\n);\nmux.verilog */\nreg [4:0] out;\n//when sel = 0 take input a\nalways @( a, b, sel )\nbegin : MUX_LOGIC\nif ( sel == 1'b0 )\nout = a;\nelse\nout = b;\nend\n//when b = 5'b10101 take input b\nalways @( sel )\nbegin : TEST \nif( sel == 1 )\n$display(\"B\");\nelse\n$display(\"A\");\nend\n// when out = 5'b01011 then\nalways @(out)\nbegin : TEST_LOGIC\nif ( out == 5'b01011 )\n$"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 41,
+      "logprobs": null,
+      "text": " \n// sel=0 || sel=1\nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": "\nassign out=sel? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 43,
+      "logprobs": null,
+      "text": "\n// in Verilog, can only have one statement within a code block. \nalways @(sel)\nbegin\n\tif (sel == 0)\n \tbegin\n\tassign out = b;\n\n\tend\n\telse\n\tbegin\n\tassign out = a;\n\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 44,
+      "logprobs": null,
+      "text": "\nassign out=sel?b:a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 46,
+      "logprobs": null,
+      "text": " \nassign out = sel ? b : a;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "\nassign out = ( sel == 0 ) ? a : b; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 48,
+      "logprobs": null,
+      "text": "\nassign out = sel1 ? b : a;\n// Create a sel signal called sel1\nassign sel1 = sel;\t\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 49,
+      "logprobs": null,
+      "text": " \n// Write your code below.\nassign selbar = ~sel;\nassign out = selbar & a | sel & b;\n"
+    }
+  ],
+  "created": 1663550577,
+  "id": "cmpl-uPo5U5KJydYndeo0OroUAZW8VtV7F",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1588,
+    "prompt_tokens": 70,
+    "total_tokens": 1658
+  }
+}

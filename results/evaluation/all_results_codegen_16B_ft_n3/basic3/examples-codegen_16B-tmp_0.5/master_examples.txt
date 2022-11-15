@@ -1,0 +1,55 @@
+example-0: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @ (in or posedge pos)
+begin
+	case(in)
+	3'd0: pos=2'd0; 
+	3'd1: pos=2'd1; 
+	3'd2: pos=2'd2;
+	3'd3: pos=2'd3;
+	endcase
+end
+
+================================================================
+example-1: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @(*) begin
+case (in)
+3'b000: begin pos = 2'b00; end
+3'b001: begin pos = 2'b01; end
+3'b010: begin pos = 2'b10; end
+3'b011: begin pos = 2'b11; end
+3'b100: begin pos = 2'b00; end
+3'b101: begin pos = 2'b01; end
+3'b110: begin pos = 2'b10; end
+3'b111: begin pos = 2'b11; end
+endcase
+end
+
+================================================================
+example-2: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @ (in or sel)
+begin
+if (sel) begin
+if (in[2]) pos=2'd2;
+else if (in[1]) pos=2'd1;
+else if (in[0]) pos=2'd0;
+else pos=2'd0;
+end
+else pos=2'd0;
+end
+
+================================================================

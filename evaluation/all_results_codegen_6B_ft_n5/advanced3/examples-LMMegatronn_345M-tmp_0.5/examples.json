@@ -1,0 +1,59 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign z = ~(present_state == S1 ||present_state == S10) && ~x && ~present_state[1] && ~present_state[0];\nassign ones = ~(present_state == S2 ||present_state == S11) && ~x && ~present_state[1] && ~present_state[0];\n\n// x is made ok, ok, and ones are already ok\nalways@(present_state or x)\nbegin\n    case(present_state)\n        IDLE:\n            if (x)                                        next_state = S1;\n         "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(present_state)\n  case (present_state)\n    IDLE:\n      if (x) \n                   next_state = S1;\n      else \n                   next_state = IDLE;\n    S1:\n      if (x) \n                   next_state = S2;\n      else \n                   next_state = S1;\n    S10:\n      if (x) \n         "
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin\n  if (reset) begin\n   present_state <= S0;\n   present_state_r <= S0;\n  end else begin\n   present_state_r <=present_state;\n   present_state_r_r <=present_state_r;\n  end\nend\n\nalways @(present_state_r or x)\nbegin\n    case(present_state)\n      S0:\n      begin\n                   if(x==0 && y==1)\n                       next_state = S1 ;\n           "
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(present_state,present_state, x)\nbegin\n    case(present_state)\n        IDLE:\n        begin\n            if (x)\n            begin\n                //x is unknown, if x is 0, then next state is S1\n                //if (x==0)\n                  next_state <= S1;\n                 //else\n                  next_state <= S0;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @ (posedge clk)\nbegin\n  if (reset == 1) begin\n    state <= IDLE;\n  end else begin\n    state <= next_state;\n  end\nend\n\nalways @(*) begin\n  case (present_state)\n    IDLE:\n      if (x == 1 && x == 0) begin\n        next_state = S1;\n      end else begin\n        next_state = IDLE;\n      end\n    S1:\n      if (x == 0 && x == 1) begin\n        next_state = S2;\n      end else begin\n        next_state = S1;\n  "
+    }
+  ],
+  "created": 1663299260,
+  "id": "cmpl-CwVUGIqG6zvIDOMIsLEwYRtFlo2FS",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 232,
+    "total_tokens": 1232
+  }
+}

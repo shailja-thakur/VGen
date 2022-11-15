@@ -1,0 +1,108 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign pos = sel ? pos : b; \n\n// This is a 2-bit priority decoder. If none of the input bits are high, output is zero.\nmodule priority_decoder( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nassign pos = sel ? pos : b; \n\n// This is a 4-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [4:0] in,\noutput reg [3:0] pos ); \n// When sel=1, assign b to out\nassign pos = sel ? pos : b; \n\n// This is a 4-bit priority decoder. If none of the input bits are high, output is zero.\nmodule priority_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign pos = in[1] ? pos[1] : pos[0];\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nassign pos = in[1] ? pos[1] : pos[0];\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nassign pos = in[1] ? pos[1] : pos[0];\n\n// This is a 3-bit priority encoder"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge in)\nbegin\n  if ( (in[0] ^ in[1]) & pos[0] )\n  {\n    out = b;\n  }\n  else\n  {\n    out = ~b;\n  }\nend\n);\n\n// This is a 4-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [4:0] in,\noutput reg [3:0] pos ); \n// When sel=1, assign b to out\nalways @(posedge in)\nbegin\n  if ( (in[0] ^ in[1]) & pos[0] )\n  {\n    out = b;\n  }\n  else\n  {\n    out = ~b;\n  }\nend\n);\n\n// This is a 7-bit priority enc"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign pos = \n  ( ( in[1] << 1 ) & 0x1 ) |\n  ( ( in[0] << 0 ) & 0x2 );\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign pos=in[2]; \nreg [1:0] b; \nassign b=pos[2]; \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "assign pos[2:0] = in[2:0] ? 1'b1 : 1'b0;\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nassign pos[2:0] = in[2:0] ? 1'b1 : 1'b0;\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [2:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nassign pos[2:0] = in[2:0"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @( posedge in )\nbegin\npos = (in[0] << 0) | (in[1] << 1);\nend\n);\n\n// This is a 4-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [4:0] in,\noutput reg [3:0] pos ); \n// When sel=1, assign b to out\nalways @( posedge in )\nbegin\npos = (in[0] << 0) | (in[1] << 1) | (in[2] << 2) | (in[3] << 3);\nend\n);\n\n// This is a 5-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [5:0] in,\noutput reg [4:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "assign pos = ( in[1] ? 2 : in[0] ? 1 : 0 );\n\n// This is a 4-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [3:0] in,\noutput reg [3:0] pos ); \n// When sel=1, assign b to out\nassign pos = ( in[2] ? 4 : in[1] ? 3 : in[0] ? 2 : 0 );\n\n// This is a 5-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder( \ninput [4:0] in,\noutput reg [5:0] pos ); \n// When sel=1, assign b to out\nassign pos = ( in[3] ? 8 : in[2] ?"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "assign pos = in[0] ? b[0] : b[1]; \n\nreg [3:0] b[3:0] = pos;\n\nreg [3:0] b[0] = pos;\nreg [3:0] b[1] = pos;\n\nreg [3:0] b[2] = pos;\n\nreg [3:0] b[3] = pos;\n\nreg [3:0] b[4] = pos;\n\nreg [3:0] b[5] = pos;\n\nreg [3:0] b[6] = pos;\n\nreg [3:0] b[7] = pos;\n\nreg [3:0] b[8] = pos;\n\nreg [3:0] b[9] = pos;\n\nreg [3:0] b[10] = pos;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "assign pos = in[0] ? in[1] : in[0];\n// When sel=0, assign b to out\nassign pos = in[1] ? in[1] : in[0];\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder_sel( \ninput [2:0] in,\noutput reg [1:0] pos,\nparameter sel = 0 ); \n// When sel=1, assign b to out\nassign pos = in[0] ? in[1] : in[0];\n// When sel=0, assign b to out\nassign pos = in[1] ? in[1] : in[0];\n\n// This is a 3-bit priority encoder. If none of the input bits are high, output is zero"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "assign pos[1:0] = (in[0] << 4) | (in[1] >> 4);\n// When sel=0, assign b to out\nassign pos[1:0] = (in[1] << 4) | (in[0] >> 4);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "assign pos[1] = ( (in[1] >> 7) & 1 ) | \n                ( (in[0] >> 7) & 2 );\n// When sel=0, assign b to out\nassign pos[0] = ( (in[1] >> 6) & 1 ) | \n                ( (in[0] >> 6) & 2 );\n);\n\nalways @(posedge clk)\n    if (pos[1] == 1) out = 0;\n    else if (pos[0] == 1) out = 1;\n    else out = 0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\n\nwire [7:0] a, b;\n\nalways @(posedge clk) \nbegin\n    if (in[0] == 1)\n        a = a + 1;\n    if (in[1] == 1)\n        b = b + 1;\n    pos = pos + 1;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "assign pos = (in[1]?0b10:0b00) | (in[0]?0b11:0b01); \n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "assign pos = (in[2] << 2) | (in[1] << 1) | (in[0] << 0);\n\n// This is a 2-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder(\ninput [3:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nassign pos = (in[3] << 1) | (in[2] << 0);\n\n// This is a 1-bit priority encoder. If none of the input bits are high, output is zero.\nmodule priority_encoder(\ninput [4:0] in,\noutput reg [1:0] pos ); \n// When sel=1, assign b to out\nassign pos = (in[4] << 0);\n\n// This is"
+    }
+  ],
+  "created": 1663537605,
+  "id": "cmpl-vJf5Zz5iuLtBkdCiTTMN3UoW04jTo",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2203,
+    "prompt_tokens": 65,
+    "total_tokens": 2268
+  }
+}

@@ -1,0 +1,48 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n\tif( sel==1 )\n\t\tpos <= 0;\n\telse\n\t\tpos <= in[0];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @(posedge clk) begin\n  if (sel) pos <= in;\n  else pos <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\n// When sel=2, assign a&b to out\nalways @(posedge clk) begin\n    case(sel)\n        case(in)\n            pos <= in;\n        endcase\n    endcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "// When sel=0, assign a to out\nalways @( posedge in) begin\n  if( in[0] | in[1] ) pos <= 0;\n  else pos <= 1;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "reg [1:0] sel = 0;\n// When r=1, assign carry to pos\nreg [1:0] r = 0;\nalways @(posedge clk) \n    if(sel==1) \n        pos <= in;\n    else\n        pos <= r;\nend\n"
+    }
+  ],
+  "created": 1663534391,
+  "id": "cmpl-cfca2MMwzRlLur4KHVxfrNBIcvCcp",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 281,
+    "prompt_tokens": 65,
+    "total_tokens": 346
+  }
+}

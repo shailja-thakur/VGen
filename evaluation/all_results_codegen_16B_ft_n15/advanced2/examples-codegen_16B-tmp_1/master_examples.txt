@@ -1,0 +1,477 @@
+example-0: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+
+always@(posedge clk)
+begin
+	if (reset)
+	begin
+	q = 4'b0000;
+	end 
+	else 
+	begin
+	if (slowena)
+	if (q !== 9) 
+	begin 	q = q + 1'b1; 
+	end
+	end
+end 
+
+//always @(negedge clk)
+//begin : Qa
+//	if (reset)
+//	begin
+//	q = 9'h0;
+//	end
+//	else
+//	begin
+//	if (slowena)
+//	begin
+//	if (q !== 9)
+//	begin 	q = q + 1'b1; 
+//	else
+//	begin
+//	q = 9'h0;
+//	end
+//	end
+//	else
+================================================================
+example-1: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+
+always @(posedge clk)
+begin
+	if (reset)
+	 begin
+	 	q = 0;
+	 end
+	else 
+	 begin
+	 	if (slowena)
+	 	 begin
+	 	 	if (q < 9)
+	 	 	 begin
+	 	 	 	q = q + 1;
+	 	 	 end
+	 	 	else 
+	 	 	 begin
+	 	 	 	q = 0;
+	 	 	 end
+	 	 end 
+	 end
+end
+// Guaranteed Testbench Signals
+reg tb_slowena;
+reg tb_reset;
+initial
+	$monitor("Count = %b", tb_q);
+// Test apparatus
+// clock to Q test example
+always
+	#200 reset = !reset;
+
+================================================================
+example-2: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk or posedge reset)
+	begin
+	if (reset) q <= 4'd0;
+	else if (slowena && q != 4'd4) q <= q + 4'd1;
+	end
+
+================================================================
+example-3: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always@(posedge clk)
+	begin
+	if (reset == 1'b1)
+	//if (reset)
+	q <= 4'd0;
+	else
+	begin
+	if(q != 9 & slowena == 1'b1)
+	//if(q != 9 & slowena)
+	
+	q <= q + 4'd1;
+	end
+	end
+
+
+================================================================
+example-4: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+
+always @(posedge clk or posedge reset)
+begin
+if (reset)
+q <= 4'b00;
+else
+//if (slowena && (q != 9))
+begin
+if (q == 9)
+q <= 4'b00;
+else 
+q <= q + 4'b001;
+end
+end
+
+
+================================================================
+example-5: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @ (posedge clk) begin
+ if(reset) begin
+q <= ui0;
+ end
+ else begin
+ if(slowena && q != 9) q=q+1;
+ end
+end
+
+// On the positive edge of the clock if q is 9 then set it to 0.
+// (clock is slow being 10kHz and data is at 15kHz.)
+always @ (posedge clk) if(q==9) q<=0;
+
+================================================================
+example-6: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+
+always @(posedge clk)
+begin
+	if (reset) q <= 4'd0;
+	else begin
+	if (slowena)
+	q <= q + 4'd1;
+	end
+end
+
+
+================================================================
+example-7: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+// The output q should never be decremented.
+
+	always @(posedge clk) begin
+//assert reset or slowena and (~q[3] | q[2] | q[1] & ena) and q[0] == 1'b0;
+//assert reset or slowena and q[3] and q[2] and q[1] and q[0] == 1'b0;
+
+	if(reset)
+	begin
+	q <= 0;
+	end
+	
+	else begin
+	if(slowena && ~q[3] | q[2] | q[1] & ena)
+	q <= q + 4'd1;
+	end
+
+	end
+	 
+	// In VHDL the initial value of a wire should be known at compile time.
+	// (it should be a value directly assigned at the time the module is
+	
+================================================================
+example-8: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+
+always @(posedge clk) begin
+	if (reset)
+	// when posedge reaches 0 - this works for all clocking end values below
+	begin
+	begin
+	q <= 4'd0;
+	end
+	
+	// for not clocks, this will cover all cases
+	else if (!slowena || q >= 4'd9)
+	begin
+	q <= 4'd0;
+	end
+	// when posedge doesn't reach 0, but goes high low
+	else if (slowena || q == 0)
+	q <= q + 4'd1;
+	// so it increments every clock edge
+	else
+	q <= q;
+	
+
+	end
+	
+	
+	
+end
+
+
+
+================================================================
+example-9: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @( posedge clk or negedge reset ) begin
+	if ( reset == 1'b0 ) begin
+	//if reset is not active, do nothing
+	q <= 4'b0; 
+	end
+	else begin
+	//if reset is active, reset the register to 0 
+	q <= 4'b0;
+	if( slowena == 1'b1 && q != 9 ) begin
+	//if ena is active and not at max value
+	//increase count by 1
+	q <= q + 1'b1; 
+	end
+	end
+end
+
+
+================================================================
+example-10: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+// Not shown in the bellow table: an output of 9 that is low. That's because you
+// can only count to 9 if the clock doesn't start in the 9th bit. However, if
+// the clock is already in the 9th bit, then counting is obviously impossible.
+
+always @(posedge clk)
+begin: clk_block
+if (reset)
+q <= #2 4'b0;
+else
+//if (clk | (slowena && ~q[3]))
+//q <= #2 (slowena ? q[2:0] + 1'b1 : q[2:0]); // Wrong! Don't rd why.
+if (slowena && ena)
+	begin
+	q <= q + 1'b1;
+	q[3] <= reset; // Gives incorrect result
+	end
+else
+	q <= q; // Gives
+================================================================
+example-11: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk) begin
+	if (reset)
+	begin
+	
+	q <= 4'h0;
+	
+	end
+	
+	else if ( ~slowena || (q == 4'd9) )
+	begin
+	 
+	q <= 4'h0;
+	
+	end
+	
+	else 
+	begin
+	
+	q<=q+4'd1;
+	
+	end
+	
+
+//q<=q+4'd1;
+end
+
+================================================================
+example-12: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk) {
+	if (reset) begin
+	q <= #1 4'b0;
+	end
+	else begin
+	if (slowena) begin
+	if (q == 9) begin
+	q <= #1 4'b0;
+	end
+	else begin
+	q <= #1 q + 1'b1;
+	end
+	end
+	end
+
+================================================================
+example-13: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk or posedge reset)
+begin
+	if (reset)
+	begin
+	
+	// if ena is zero, do nothing
+	end
+	else
+	if (~slowena)
+	begin
+	
+	// if the preset output is in fact 1
+	// set q to the output of the count 8 module
+	// Cycles 0 through 7
+	// Output q + 1 incase the output q reaches 9
+	// Reset q reset to zero when reached 9
+	q <= q + 1'b1;
+	end
+end
+
+================================================================
+example-14: 
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+always @(posedge clk) begin
+ if (reset || !slowena)
+ q <= 4'd0; //q
+ else if (slowena && q <4'd9)
+ q <= q+3'd1;
+ end
+
+
+================================================================

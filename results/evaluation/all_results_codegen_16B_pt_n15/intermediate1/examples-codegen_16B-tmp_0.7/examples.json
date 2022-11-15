@@ -1,0 +1,106 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nalways @(posedge clk or posedge rst)\nbegin\n    if(rst)\n    begin\n\tcout <= '0';\n\tsum <= '0';\n    end\n    else\n    begin\n\tif(input_a)\n\t    a <= input_a;\n\tif(input_b)\n\t    b <= input_b;\n\tsum <= a + b;\n\tif((a=='1' and b=='1') or (a=='1' and b=='0'))\n\t    cout <= '1';\n\telse\n\t    cout <= '0';\n    end\nend\n\n\"\"\" % (self.input_a, self.input_b)\n\nclass D_HalfAdder_HalfAdder( ComponentBase ):\n    def __init__"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nwire a_i, b_i, cin, sum_i, carry_out;\n\nhalf_adder(a_i, b_i, cout, sum_i);\n\nassign a = a_i;\nassign b = b_i;\nassign sum = sum_i;\n\nassign carry_out = carry;\n\nalways @(posedge clk)\n  if (a_i and b_i and !cin) \n    sum_i <= (a_i + b_i + carry_out);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n  // each half adder has two inputs and two outputs\n  // inputs are connected to the internal nodes\n  // outputs are connected to cout\n  // the carry-out is connected to sum\n  // the type of the internal nodes is bool\n  // cout is initialized to false\n  // sum is initialized to false\n  // cout and sum are connected to cout and sum\n\n  // Internal nodes\n  bool A = false, B = false;\n  // cout and sum are connected to their respective internal nodes\n  // these internal nodes are connected in the following way:\n  // cout ---> A ---> cout\n  // sum ---> B ---> sum\n  // A and B are connected to each other in the following way:\n  // A ---> B ---> A\n  // B is connected to cout in the following way:\n  // B ---> A ---> cout\n  // B is connected to sum"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\n// Calculate the sum of two bits and carry-in\nfunction half_adder_sum(a, b)\n{\n    cout = a + b;\n    sum = cout[0] + (cout[1] << 2);\n}\n\nmodule half_adder_sum_is_cout_and_sum(a, b)\n{\n    half_adder_sum(a, b);\n    if ( cout != sum )\n    {\n        cout = \"ERROR\";\n    }\n}\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\ninput [7:0] a, b;\noutput [7:0] cout;\noutput [7:0] sum;\n\nassign cout = sum;\n\nalways @(posedge clk) begin\nif(rst)\ncout <= 0;\nelse if (a[2])\nsum <= a + b + 1;\nelse\nsum <= a + b;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nwire a_1, a_2, b_1, b_2, c;\n\nwire [1:0] a_cout, b_cout, cout__cout, cout_sum;\n\nalways @( posedge clk ) begin\n    if ( clk == 1 ) begin\n\n        a_cout <= a;\n        b_cout <= b;\n        cout_cout <= ( a_cout + b_cout );\n        cout_sum <= sum;\n    end\nend\n\nhalf_adder( a_1, b_1, cout_sum, a_2, b_2, c, a_cout, b_cout, cout_cout, cout_sum );\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\ninput a, b;\noutput sum;\n\nwire sum_out;\n\nreg carry_out = 1;\nreg carry_in = 1;\n\nwire sum_in;\n\nassign sum = sum_out;\n\nassign sum_out = carry_out | (carry_in & ((a & b) | (a ^ b)));\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds two numbers and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum );\n\n// This is a two-input adder. A two-input adder adds three bits and produces a sum and carry-out.\nmodule two_input_adder( \ninput a, b,\noutput cout, sum );\n\n// This function produces a sum and a carry-out.\nmodule add_half_adder( \ninput a, b,\noutput cout, sum );\n\n// This function produces a sum and a carry-out.\nmodule add_full_adder( \ninput a, b,\noutput cout, sum );\n\n// This function produces a sum and a carry-out.\nmodule add_two_input_adder( \ninput a, b,\noutput cout"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\ninput a, b, cout;\noutput sum;\n\nint sum;\n\nalways @(posedge clk)\nbegin\n    if(a==0 and b==0)\n    begin\n        sum = 0;\n    end\n    else if (a==0 and b==1)\n    begin\n        sum = 0;\n    end\n    else if (a==1 and b==0)\n    begin\n        sum = 1;\n    end\n    else if (a==1 and b==1)\n    begin\n        sum = 1;\n    end\n    else\n    begin\n        sum = 0;\n    end\n    // Output\n    cout = sum;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\nvoid half_adder( input a, b,\noutput cout, sum );\n\nbool adder( \ninput a, b,\noutput sum );\n\nvoid half_adder( input a, b,\noutput cout, sum );\n\nbool adder( \ninput a, b,\noutput sum );\n\nvoid half_adder( input a, b,\noutput cout, sum );\n\nbool adder( \ninput a, b,\noutput sum );\n\nvoid half_adder( input a, b,\noutput cout, sum );\n\nbool adder( \ninput a, b,\noutput sum );\n\nvoid half_adder( input a, b,\noutput cout, sum );\n\nbool adder( \ninput a, b,\noutput sum );\n\nvoid half_adder( input a, b,\noutput cout, sum );\n\nbool adder( "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nreg[0:1] sum;\nreg[0:1] cout;\nreg [0:1] a, b;\nalways @( posedge a or posedge b ) begin\n  if( a ) sum <= #SUM_SEL;\n  if( b ) sum <= #SUM_SEL;\n  // set the sum bit, and carry-out\n  if( a and b ) sum <= #SUM_SEL;\n  else if( a ) sum <= #SUM_SEL;\n  else if( b ) sum <= #SUM_SEL;\n  cout <= sum;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n\nwire a_in;\nwire b_in;\nwire sum_out;\nwire cin;\n\nwire carry_out;\nwire carry_in;\n\nassign a_in = a;\nassign b_in = b;\n\nassign cout = cin;\nassign sum_out = (a_in + b_in) + carry_in;\n\nassign carry_in = carry_out;\nassign carry_out = (a_in + b_in) > 15;\n\nassign cin = sum_out;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n\nalways #( 2 ) begin\n    cout <= {a[0], a[1], sum[0], sum[1]};\nend\n\n#( 2 ) logic [7:0] sum[0];\n#( 2 ) logic [15:8] sum[1];\n#( 2 ) logic [23:16] sum[0];\n#( 2 ) logic [31:24] sum[1];\n\n#( 2 ) logic [7:0] cout[0];\n#( 2 ) logic [15:8] cout[1];\n#( 2 ) logic [23:16] cout[2];\n#( 2 ) logic [31:24] cout[3];\n\n#( 2 ) logic [7:0] a[0];\n#( 2 ) logic [15:8] a[1];\n\n#( 2 ) logic [15:8] b["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\ninput a, b;\noutput cout, sum;\n\nvoid main() {\n\tsum = 0;\n\tcout = 0;\n\tif ( a > 0 ) {\n\t\tsum = b + 1;\n\t\tcout = 1;\n\t}\n\telse {\n\t\tsum = b + 1;\n\t\tcout = 1;\n\t}\n}\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\nreg [3:0] carry_in = 0, carry_out;\nreg [3:0] sum = 0, bit_in_a, bit_in_b, bit_out;\n\nalways @(posedge clk) begin\n\tif (rst) begin\n\t\tcarry_out = 0;\n\t\tsum = 0;\n\tend else begin\n\t\tbit_in_a = a;\n\t\tbit_in_b = b;\n\t\tbit_out = sum + carry_in + bit_in_a + bit_in_b;\n\t\tcarry_out = bit_out[2];\n\t\tsum = bit_out[3:0];\n\tend\nend\n\nalways @(posedge clk) begin\n\tcout = sum;\nend\n\n//half_adder half_adder_inst ( a, b );\n\nalways @(posedge cl"
+    }
+  ],
+  "created": 1663535403,
+  "id": "cmpl-DGlgDpqDpWLxaNBbhBPSwDj1ZwTk6",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2325,
+    "prompt_tokens": 43,
+    "total_tokens": 2368
+  }
+}

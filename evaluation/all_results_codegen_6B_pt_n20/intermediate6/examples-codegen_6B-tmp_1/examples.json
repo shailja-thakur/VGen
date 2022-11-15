@@ -1,0 +1,145 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// when we is low, transfer data at address addr to q\nalways @(posedge clk)\n    if (we)\n    {\n        ram[addr] = data;\n        q = rot(addr , LESS_THAN(DATA_WIDTH, x));\n    }\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": " */\nalways @(posedge clk) begin\n  if (we) begin\n  writedata:\n    //#foreach array i in 0 to ADDR_WIDTH-1 #{\n    ram[addr[ADDR_WIDTH-1-1:0]] = data[47:48];\n    //#}\n    #foreach array i in ADDR_WIDTH-2 to ADDR_WIDTH-1 #{\n    ram[addr[i:ARRAY(i-1)]] = data[47:48];\n    //#}\n    //#foreach array i in ADDR_WIDTH to 0 #{\n    ram[addr[0:ADDR_WIDTH-1-1-ARRAY(i)]] = data[47:48];\n    //#}\n  end else begin\n    //#foreach array i"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n  if(we) begin\n    for(int i=0; i<ADDR_WIDTH; i++) ram[addr[i]] = data[i];\n    end\n  end\nend\n\"\"\"\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @ (we && clk) begin\n    ram[addr] = data;\n    output_inst.q <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways(clk.clk)\nbegin\n    if (we) begin\n        ram[addr]<=data;\n        if (addr <= ADDR_WIDTH) begin\n            q<=ram[addr];\n        end else begin\n            q<=0x8000>>>(addr-ADDR_WIDTH);\n        end\n    end else begin\n        q<=0;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    ram#(ADDR_WIDTH, DATA_WIDTH-1, ADDR_WIDTH-1, DATA_WIDTH-1)\n        .ram(addr, q) <- (we?'0':data);\n`})\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge we) begin\n    if(we) {\n        ram[addr] := data;\n        q <= ram[addr];\n    }\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways(clk.negedge) begin\n    if (we) begin\n        ram[(addr[0]*2**ADDR_WIDTH-1):(addr[0]*2**ADDR_WIDTH-1)+2**ADDR_WIDTH-1] <= data[0:2**ADDR_WIDTH-1];\n        ram[(addr[0]*2**ADDR_WIDTH-1):(addr[0]*2**ADDR_WIDTH-1)+2**ADDR_WIDTH-1] <= data[2**ADDR_WIDTH-1:0];\n        ram[(addr[1]*2**ADDR_WIDTH-1):(addr[1]*2**ADDR_WIDTH-1)+2**ADDR_WIDTH-1] <= data["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    we ^= 1;\n    uint64_t data2ram_io = EXTRA_DATA_WIDTH ? glue(shl(data, NSFILTS_DATA_BITS - EXTRA_DATA_WIDTH), 0) : data;\n    ram[addr] = data2ram_io;\n    q <= ram[addr];\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  ram[addr] = data;\n  ram_load_data(addr, Q);\n// when clk becomes high, read from ram at address addr and assign to q\nalways @(negedge clk)\n  Q <= ram[addr];\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nreg write_ram_request;\nalways @ (we && clk) begin\n    if (add(int_to_bits(addr,ADDR_WIDTH), int_to_bits(data,DATA_WIDTH))) begin\n        // ram[addr] <= 1, q'dir adria has changed from before\n        ram[addr] <= 1'b1 & q;\n        if (ram[addr] && not write_ram_request) begin\n            // incr addr counter\n            data_write[7:0] := data; // fill operation register\n            data_write[ADDR_WIDTH:ADDR_WIDTH-1] := int_to_hl(addr); // compute address\n        end\n        // incr addr counter\n        data_write[7:0] := data; // fill operation register\n        data_write[ADDR_WID"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": ", then reset clk\nassign q = data;\nalways @(posedge clk) begin\n    if (we) ram[addr] = data;\n    else clk = 0;\nend\n\n// RAM buzzer DAC\nmodule ram_buzzer #(module X)\n    (parameter dac_fast=0,\n     parameter dac_slow=0,\n     parameter DAC_WIDTH=8,\n     parameter COCKTAIL=1\n    ) (\n     input MCLK,\n     input RST,\n     input RSTn,\n     input Y1,\n     input Y2,\n     output [DAC_WIDTH-1:0] data,\n     output [DAC_WIDTH-1:0] dac\n    );\n    `\n\nfunc main() {\n\tinstr := split(script_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nassign q = ram[addr];\nstart\n        // The data is transferred from memory to the register\n        if (we && addr [ADDR_WIDTH-1:0] == 0) ram [addr] = data [ADDR_WIDTH-1:0];\n        // The data is written to the register of memory\n        else if (we && addr [ADDR_WIDTH-1:0] != 0) {\n        \t// The register is read from memory at the address addr\n            if (clk && addr [ADDR_WIDTH-1:0] == 0) q = ram [addr];\n            // The register is written to memory at the address addr\n            else if (clk && addr [ADDR_WIDTH-1:0] != 0) ram [addr] = q;\n        }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nassign q = (we & !clk) != if (ram[addr] = data) we;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\nalways(we, clk)\nbegin\n    ram[addr] <= data;\n    if (addr == 0) {\n        q <= 0xFF;\n    } else if (addr == ADDR_WIDTH) {\n        q <= ram[2**ADDR_WIDTH-1];\n    } else {\n        q <= ram[2**ADDR_WIDTH-1:ADDR_WIDTH-1];\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) {\n    if (we) {\n        ram[addr] = data;\n    }\n    q = ram[addr];\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nassign q = if (we) addr & data[7:0] else ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\nassign q = ram [(addr ^ 6) mod ADDR_WIDTH-1 = is_01];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        ram[addr] = data;\n    end\n    else\n        q <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\nalways (we) begin\n    ram[addr[0]] <= data;\n    ram[addr[0]+1] <= data << 1;\n\\endverbatim\n\n)`\n"
+    }
+  ],
+  "created": 1663520916,
+  "id": "cmpl-Dwtex0rRvJ2lIacGYKvCxJNOQp7sx",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1855,
+    "prompt_tokens": 143,
+    "total_tokens": 1998
+  }
+}

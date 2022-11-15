@@ -1,0 +1,82 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "reg [7:0] prev,next,out1;\nalways @(posedge clk) \n{ next=not load and prev | load;\n  out1=left_shift(next,amount[1:0]);\n  out=out1 | out1 >>(8-amount[0]);\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if(load)\n    out = data;\n  else\n    out = (out << amount) | (out >> (bitwidth-amount));\n*/\nvoid\nSDS124_Avr::execute(Time & t)\n{\n  wait2cyc(clk, amount[0], bitwidth);\n  wait2cyc(reset, amount[1], bitwidth);\n  wait2cyc(load, bitwidth);\n  out = (out << amount[0]) | (out >> (bitwidth-amount[0]));\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\n  if(load)\n  {\n    out = data;\n  }\n  else\n  {\n    out = BITALSHR(out, amount);\n  }\n\n// code generated results\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge load)\n// when reset is low for at least 6 clock cycles load the data into out\n// load_load: false\nif(reset) out = 0;\n// while clock is high and not reset high then\n...\nelse out = left_rotate(clk,reset,amount[amount%2],data[6],out,out_load);\n// assignment load_load: true\nassign out = left_rotate(clk,reset,amount[1],data[5],out_load,out);\n// when clk is low for at least 6 clock cycles, out is not rotated if load_load is reversed\nalways @(negedge clk)\nreg [7:0] out_load = load;\n// when clk is low, out_load is left shifted by 2^(amount[0]+1)\n// when clk is high, out"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge load)\n{\n\tout <<= amount;\n\tif(load == 1)\n\t{\n\t\tout <- 0;\n\t}\n\telse\n\t{\n\t\tout <<= 1;\n\t\tout <<= data;\n\t}\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(always_comb)\nbegin\n    if(load)\n    {\n        out = data;\n    }\n    else\n    {\n        out = (out << amount) | (out >> (32 - amount));\n    }\nend\n\n// -------------------------------------\n\n\n// ###########################################\n// Core core instance\n// ###########################################\nbegin core\n    design (edge, 0 to 5) core_inst (clock, reset, write, data, load, out, #(58));\nendcore\ndesign ccore_inst (clock, reset, write, data, load, out, #(58));\n\n// -------------------------------------\n\n// ##########################################\n// Decimator instance\n// ##########################################\nbegin decimator\n    design 0 decimator_inst (clock, reset, write, data, load, out, #(58));\n    design 1 decimator"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk) // slave split setup\nbegin\n  if(load == 1){out = data;}\n  else{out = bitswap<9>(out)<<amount;}\nend\n\n// left_shift(3) slave port\n\n#pragma HLS interface ap_none register port=out\n\nmodule slave_mem_read(out_dmem_ready,out_dmem_addr,out_dmem_data,bus_id);\n\ninput out_dmem_ready;\ninput [36:0] out_dmem_addr;\ninput [64:0] out_dmem_data;\noutput wire [36:0] out_dmem_data_result;\n\nram mem_ram core(clock, default_reset, mem_clk_phase, debug_mode, debug_enable, reset);\n\nram_multi_port slave"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always clk@(posedge clk)\n{\n\tout = if (load) { load_out = data; }\n\telse out = out_shift(out,out_shift_reg,amount,out_shift_carry,load,out);\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "reg [7:0] out = 0;\nalways @ (posedge clk or negedge reset) begin\n\tif (load) out = data;\n\telse if (frac_part(amount))\n\t\tout = 16384 * bit(out, 7) + bit(out, 1);\n\telse {\n\t\tout = out << bit(amount) | bit(out, amount+1);\n\t\tout = load ? (16384 * bit(out, 7) + out) : out;\n\t}\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "reg [7:0] out;\nalways @(posedge clk or negedge reset) // this is ok. nothing is in update cycle and so then(load) and negedge reset will happen in the\nprocess(load)\n{\n  if (load)\n    out = data;\n  else\n  {\n    if(amount[1] == 0)\n    {\n      out = out << word(data[5:0]);\n    }\n    else\n    {\n      out = out << word(data[4:1]);\n    }\n    out = out << word(data[3:2]);\n    out = out << word(data[2:3]);\n    out = out << word(data[1:4]);\n    out = out << word(data[0:5]);\n  }\n  out = out << word(0x80);\n}\n"
+    }
+  ],
+  "created": 1663519950,
+  "id": "cmpl-ejjBO8ZM0K5uiFfn8crL5VfVIHmSA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1321,
+    "prompt_tokens": 94,
+    "total_tokens": 1415
+  }
+}

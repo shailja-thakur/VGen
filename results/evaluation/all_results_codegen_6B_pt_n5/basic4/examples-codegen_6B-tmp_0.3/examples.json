@@ -1,0 +1,49 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk)\n  out <= a[sel];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= sel ? a : b;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": " \nalways @(posedge clk or negedge rst) begin\n  if (rst) begin\n    out <= 0;\n  end\n  else begin\n    out <= sel ? a : b;\n  end\nend\n\n// The multiplexer is a 2-to-1 multiplexer.\n// The multiplexer is a 1-to-1 demultiplexer.\nmodule demux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \nalways @(posedge clk or negedge rst) begin\n  if (rst) begin\n    out <= 0;\n  end\n  else begin\n    out <= sel ? a : b;\n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= sel ? a : b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  out <= a[sel];\n"
+    }
+  ],
+  "created": 1663519602,
+  "id": "cmpl-k9enIsHrW9lgAWSmmBmIZIIIW9bOK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 287,
+    "prompt_tokens": 70,
+    "total_tokens": 357
+  }
+}

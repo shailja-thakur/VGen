@@ -1,0 +1,86 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// The function returns the signed overflow of a and b.\n\nfunction signed_adder_add(a, b)\n{\n    if ((a < 0) && (b < 0))\n    {\n        s = a - b;\n        if (s < 0)\n        {\n            overflow = 1;\n        }\n    }\n    else if ((a < 0) && (b >= 0))\n    {\n        s = a - b;\n        if (s < 0)\n        {\n            overflow = 1;\n        }\n    }\n    else if ((a >= 0) && (b < 0))\n    {\n        s = a + b;\n        if (s > 0)\n        {\n            overflow = 1;\n        }\n    }\n    else\n    {\n        s = a + b;\n        if (s < 0)\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst) begin\n    if (rst) begin\n        s <= 0;\n        overflow <= 0;\n    end else begin\n        s <= a + b;\n        if (s[7] == 1) begin\n            overflow <= 1;\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (a[7] == b[7])\n    begin\n        s <= a + b;\n        if (a[7] == 0)\n            overflow <= 1'b1;\n        else if (b[7] == 0)\n            overflow <= 1'b0;\n        else\n            overflow <= a[7] < b[7];\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n// The input a and b are unsigned. \n// The output s is signed. \n// The output overflow is unsigned. \n\n// The input a and b are unsigned. \n// The output s is signed. \n// The output overflow is unsigned. \n\nalways @ (posedge clk)\nbegin\n    s <= a + b;\n    if (s[7] == 0)\n        overflow <= 0;\n    else\n        overflow <= 1;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (clk)\n    begin\n        s <= a + b;\n        if (a[7] == b[7] && a[7] == 1'b1 && s[7] == 1'b0)\n        begin\n            overflow <= 1'b1;\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n// The inputs a and b are added to the output s. \n// assign the occurence of the unsigned overflow of a and b to the output overflow.\n// a unsigned overflow occurs if the most significant bit of a and b is high and the most significant bit of s is low\n// a unsigned overflow may also occur if the most significant bit of a and b is low and the most significant bit of s is high\n\nalways @(posedge clk)\nbegin\n    if (a[7] == b[7])\n    begin\n        s <= a + b;\n    end\n    else\n    begin\n        if (a[7] == 1'b1)\n        begin\n            s <= a + b;\n        end\n        else\n        begin\n            s <= b + a;\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n// The signed adder is implemented as a function. \n\nfunction signed_adder(a, b, s, overflow) {\n    if (a[7] < b[7]) {\n        s[7] = a[7] + b[7];\n    } else if (a[7] > b[7]) {\n        s[7] = a[7] - b[7];\n    } else {\n        s[7] = a[7];\n    }\n    if (a[6] < b[6]) {\n        s[6] = a[6] + b[6];\n    } else if (a[6] > b[6]) {\n        s[6] = a[6] - b[6];\n    } else {\n        s[6] = a[6];\n    }\n    if (a[5] <"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge rst) begin\n    if (rst) begin\n        s <= 0;\n        overflow <= 0;\n    end else begin\n        s <= a + b;\n        if (a > 127) begin\n            if (b > 127) begin\n                if (a > b) begin\n                    overflow <= 1;\n                end else begin\n                    overflow <= 0;\n                end\n            end else begin\n                if (b > 127) begin\n                    overflow <= 1;\n                end else begin\n                    overflow <= 0;\n                end\n            end\n        end\n    end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// The signed adder is implemented as a state machine. \n// The state machine transitions from the initial state to the final state when the input is added. \n// The input is added to the output when the state transitions to the final state. \n// The state machine transitions from the final state to the initial state when the input is subtracted. \n// The input is subtracted from the output when the state transitions to the initial state. \n\nalways @(posedge clk)\nbegin\n  if (state == 0)\n    state = 1;\n  else if (state == 1)\n    state = 2;\n  else if (state == 2)\n    state = 3;\n  else if (state == 3)\n    state = 0;\n  else\n    state = 0;\n  if (state == 3)\n    s <= a + b;\n  else if (state == 2"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    s <= a + b;\n    if (s[7] == 1'b1)\n        overflow <= 1'b1;\nend\n\n"
+    }
+  ],
+  "created": 1663519745,
+  "id": "cmpl-eB2MBn6FrThfRgXyQBU96M1Sit2vK",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1373,
+    "prompt_tokens": 164,
+    "total_tokens": 1537
+  }
+}

@@ -1,0 +1,36 @@
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk or negedge ctrl_slave)\n  priority_encoder__sig(input[1:0] #sel);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(*) c(in[0])  priority_encoder.c <= b'000';\nalways @(*) c(in[1])  priority_encoder.c <= b'001';\nalways @(*) c(in[2])  priority_encoder.c <= b'010';\nalways @(*) c(in[3])  priority_encoder.c <= b'011';\nalways @(*) c(in[4])  priority_encoder.c <= b'100';\nalways @(*) c(in[5])  priority_encoder.c <= b'101';\nalways @(*) c(in[6])  priority_encoder.c <= b'110';\nalways @(*) c(in[7])  priority_encoder.c <= b'111';\nalways @(*) #5 priority_encoder.c <= b'00"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// When sel=0, assign l to out\nreg [1:0] pos_reg, sel_reg;\nalways @(posedge clk)\n  sel_reg <= (in[1] && in[2] && !in[3] ? 0 : 1);\nreg [123] in_reg;\nalways selectde if (in_reg)\n{\n  in_reg [1] <= in[0];\n  in_reg [2] <= in[1];\n  in_reg [3] <= in[2];\n}\nassign out = (clk & sel && hspec) ? in_reg : 0;\n\n"
+    }
+  ],
+  "created": 1663519428,
+  "id": "cmpl-ymDn0pNmVf1pTgFPjnqWw5BVrgoun",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 389,
+    "prompt_tokens": 65,
+    "total_tokens": 454
+  }
+}

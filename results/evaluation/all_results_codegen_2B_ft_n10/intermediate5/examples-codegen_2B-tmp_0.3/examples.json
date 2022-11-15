@@ -1,0 +1,82 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tout <= 0;\n\tend\n\telse if (load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],out[7]};\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse\n\tbegin\n\tif (load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tcase (amount)\n\t3'b000: out <= {data[0],data[7:1]};\n\t3'b001: out <= {data[1],data[7:2]};\n\t3'b010: out <= {data[2],data[7:3]};\n\t3'b011: out <= {data[3],data[7:4]};\n\t3'b100: out <= {data[4],data[7:5]};\n\t3'b101: out <= {data[5],data[7:6]};\n\t3"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk, posedge reset)\nbegin\nif(reset)\nout<=8'b00000001;\nelse if(load)\nout<=data;\nelse\nbegin\nout[0]<=out[7];\nout[1]<=out[0];\nout[2]<=out[1];\nout[3]<=out[2];\nout[4]<=out[3];\nout[5]<=out[4];\nout[6]<=out[5];\nout[7]<=out[6];\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @ (posedge clk)\nbegin\nif (reset)\nout <= 8'b0;\nelse if (load)\nout <= data;\nelse\nout <= {out[6:0],out[7]};\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nout <= 8'b00000000;\nelse if (load)\nout <= data;\nelse\nout <= {out[6:0],out[7]};\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always@(posedge clk,posedge reset)\nbegin\nif(reset)\nout <= 8'b0;\nelse if(load)\nout <= data;\nelse\nout <= {out[6:0],out[7]};\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif(reset)\nout <= 8'b0;\nelse if(load)\nout <= data;\nelse\nout <= {out[6:0],out[7]};\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse if(load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],out[7]};\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tbegin\n\tout <= 8'b0;\n\tend\n\telse if(load)\n\tbegin\n\tout <= data;\n\tend\n\telse\n\tbegin\n\tout <= {out[6:0],out[7]};\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\nout <= 0;\nelse if (load)\nout <= data;\nelse\nout <= {out[6:0],out[7]};\nend\n"
+    }
+  ],
+  "created": 1663606912,
+  "id": "cmpl-UUsWKJCKqCYH1VmQAKES5wiTpvqUI",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 866,
+    "prompt_tokens": 94,
+    "total_tokens": 960
+  }
+}

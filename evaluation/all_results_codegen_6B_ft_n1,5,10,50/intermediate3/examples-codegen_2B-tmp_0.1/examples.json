@@ -1,0 +1,117 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    feedback_value = r_reg >> 2;\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    feedback_value = r_reg >> 2;\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2);\n    feedback_value = r_reg >> 3;\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    r_reg <= (r_reg << 1) | (r_reg >> 3) | (r_reg >> 2);\n    r_next <= r_reg;\n    feedback_value <= r_reg;\n    q <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1'b1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_next = r_reg;\n    feedback_value = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    q = r_next;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    feedback_value = r_reg >> 2;\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    feedback_value = r_reg >> 2;\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1'b1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 4);\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    r_reg <= (r_next = r_reg << 1) ^ (r_reg >> 3) ^ (r_reg >> 2);\n    feedback_value <= r_reg;\n    r_next <= r_reg;\n    q <= r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset)\n        r_reg = 1;\n    else\n        r_reg = r_next;\n    r_next = r_reg ^ (r_reg >> 2) ^ (r_reg >> 3) ^ (r_reg >> 4);\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    r_reg <= (r_next = r_reg << 1) ^ (r_reg >> 3) ^ (r_reg >> 5);\n    feedback_value <= r_reg;\n    r_next <= r_reg;\n    q <= r_reg;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n    if (reset) r_reg = 1;\n    else\n    {\n        r_reg = r_next;\n        r_next = r_reg >> 1;\n        r_reg = r_reg ^ (r_reg >> 2);\n        r_reg = r_reg ^ (r_reg >> 4);\n        r_reg = r_reg ^ (r_reg >> 8);\n        r_reg = r_reg ^ (r_reg >> 16);\n        r_reg = r_reg ^ (r_reg >> 32);\n        r_reg = r_reg ^ (r_reg >> 64);\n        r_reg = r_reg ^ (r_reg >> 128);\n        r_reg = r_reg ^ (r_reg >> 256);\n        r_reg = r_reg ^ (r_reg >> 512"
+    }
+  ],
+  "created": 1663537553,
+  "id": "cmpl-f4myyunXEgwypg1hm8Wz4MF0IOZN0",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1272,
+    "prompt_tokens": 155,
+    "total_tokens": 1427
+  }
+}

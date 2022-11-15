@@ -1,0 +1,144 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nbegin\n    if(reset)\n    begin\n        p0 <= 1;\n    end\n    else if(next_state)\n    begin\n        p1 <= uniform(0,1);\n    end\n    else\n    begin\n        next_state <= 1-(prod(in,clk==0) or prod(in,clk==1));\n        p2 <= 1-(prod(in,clk==0) or prod(in,clk==1));\n        p2 <= next_state or next_state <= present_state;\n        p0 <= out;\n        p1 <= out;\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk and not reset)\n    next_state <= present_state;\n// Synchronize with clock\nalways @(posedge clk)\n    out <= next_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nbegin\n  if (reset) begin\n    begin\n      present_state = 0;\n      next_state = 0;\n      out = 0;\n    end\n  end else begin\n    if (in) begin\n      present_state = next_state;\n      next_state = (present_state == 1) ? 1 : 0;\n      out = next_state;\n    end\n  end\nend\n\n// Or model it with one state, instead of two, and make out synchronous output\n// Hold an instantiation of this FSMs when the module is instantiated. This leads to\n// the maximum degree of freedom to the user when not strictly required.\n#include \"simple_fsm.v\"\n// Now define state assignments, leading to the 2 FSMs:\nFSM fsm1(clk, reset, in,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n  out <> present_state;\n  if (reset | present_state) begin\n    next_state <= 0;\n  end else begin\n    if (in == next_state) next_state <= 1 - next_state;\n    else next_state <= 0;\n  end\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nbegin default_logic:\n    case present_state, next_state <= 1'b0:\n\t      when reset=1\\'b1,next_state=1'b0,out=1'b0;\n\t      when clk='1\\'b1\\'b1\\'b0\\'b0 out=unchanged;\n\t      when clk='1\\'b1\\'b1\\'b0\\'b1 out=next_state;\n\t      when clk='1\\'b1\\'b1\\'b1\\'b0 out=next_state;\n\t      when clk='1\\'b0\\'b0\\'b1\\'b0 out=out;\n\t      when clk='1\\'b0\\'b0\\'b1\\'b1 out=out;\n\t      when clk='1\\'b0\\'b1\\'b1\\'b0 out=out;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @ (posedge clk) next_state <= present_state & if (in != 1) present_state < 1;\nalways @ (posedge clk or reset) in <= present_state & next_state != 0;\n// we need to wait for a rising edge on 'clk' so we can select 'out'\nalways @ (posedge clk or not reset) out <= next_state;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "// out=0 if in=0 in state 0 or in=1 in state 1\nalways @ (posedge clk or negedge reset)\n    begin\n        present_state = in ? 0 : 1;\n        next_state = OR(AND(in, present_state), OR(NOT(in), XOR(in, present_state)));\n        out < next_state;\n    end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n        present_state := 0;\n    else\n        present_state := in;\n    out <= present_state;\nend // end simple_fsm\n// ${simple_fsm}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk) if (reset) next_state <= 0;\nalways @(posedge clk) if (next_state) next_state <= 1;\nalways @(negedge clk) if (!next_state) present_state <= !in;\nalways @(negedge clk) if (next_state) present_state <= in;\nAssign out = present_state or default;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "begin\n\tif reset='1' then\n\t\tpresent_state=0;\n\t\tnext_state=1;\n\tend\n\tif in='1' then\n\t\tpresent_state=next_state;\n\tend\n\tif clk='1' then\n\t\tif present_state=1 then\n\t\t\tnext_state=0;\n\t\telse()\n\t\t\tnext_state=1;\n\t\tend\n\t\tout='1';\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n    present_state <= (~in & next_state & 1) ? 0 : 1;\n    next_state <= (~in & present_state) ? (in & 1) : next_state;\n  end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "always@(posedge clk) begin\n    if(reset) begin\n        next_state <= 0;\n    end else begin\n        next_state <= in;\n        if(next_state == 0 and in == 1) begin\n            next_state <= 0;\n        end else if(next_state == 1 and in == 1) begin\n            next_state <= 1;\n        end else if(next_state == 0 and in == 0) begin\n            next_state <= 1;\n        end else if(next_state == 1 and in == 0) begin\n            next_state <= 0;\n        end\n    end\nend\nend\n\n$display(simple_fsm, \"simple_fsm\");\n$display(simple_fsm, \"next_state\");\n$display(simple_fsm, \"present_state\");\n$display(simple_fsm, \"out"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n        next_state <= 0;\n    else\n        if (next_state == 0 and in)\n            next_state <= 1;\n        else\n            next_state <= 0;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk) if (reset == 0) next_state <= 1;\n    else next_state <= present_state && in;\n    lastout <= out && next_state != present_state;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "always(clk.posedge)\nbegin\n  if (reset) begin\n    next_state = 0;\n  end else begin\n    if (in) next_state = next_state;\n    else next_state = (next_state + 1) % 2;\n  end\nend\n// It emit out=1 in state 0, out=0 in state 1\nalways_comb begin\n  out <= next_state ? present_state : out;\nend\nend\n\n*/\n\n// This is established from the example long before any outputter has decided\n// whether this FSM can pass an input or not.\n\n// The grouping is meant to serve as a forcing element. If there's no match,\n// then the group cannot deal with that input.\n\n// The matcher and outputter are both explicit and hoisted, allowing basic\n// (freely recursed) testing.\n\nimport"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n//  if (reset && in)\n//  begin\n//    next_state = reset;\n//  end\nif (present_state != next_state)\nbegin\n\tif (in)\n\t\tnext_state = next_state ? 0 : 1;\nend\nend\n`\n\nfunc TestFSM(t *testing.T) {\n\tsrc, err := ioutil.ReadFile(fSM_string)\n\tif err != nil {\n\t\tt.Errorf(\"file read failed\")\n\t\treturn\n\t}\n\texp, err := ioutil.ReadFile(fSM_expected_output)\n\tif err != nil {\n\t\tt.Errorf(\"file read failed for expected output\")\n\t}\n\tast, err := kytheuri.Parse(map[string]string{\n\t\t\"tests\": fSM"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nout <= (present_state ? in : next_state);\nalways @(posedge clk)\nnext_state <= in;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "always first_clk_and_reset: process(clk, reset) {\n    if (reset) next_state <= 1; else next_state <= 0;\n}\nalways out_1_if_0: process(clk, in, out) {\n    out <= in;\n}\nalways out_0_if_1: process(clk, in, out) {\n    out <= 1'b0;\n}\nalways out_1_if_1: process(clk, in, out) {\n    out <= 1'b1;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  out = if(in==present_state) then 1 else 0;\nalways @(railclk)\n if(reset)\n   next_state = 0;\nelse if(in)\n   next_state = 1;\nelse next_state = 0;\n\nattribute stimulus start\n\tequivalent_stimulus\n\t\t[1] clk=1, reset=0, in=1, out=1;\n\tequivalent_stimulus\n\t\t[1] clk=1, reset=1, in=1, out=0;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (reset ^ 1)\n    next_state <= 0;\n  else\n    next_state <= in && present_state != next_state;\n\nreg record_record; // saves the current state\nalways @(posedge clk)\n  if ((in == 0 && next_state) !=\"exception\") next_state<=0;\n  if ((in == 1 && next_state) !=\"exception\") next_state<=1;\n  if ((next_state != record_record) || (next_state == \"exception\"))\n  {\n    record_record <= next_state;\n    out <= next_state;\n  }\n\n"
+    }
+  ],
+  "created": 1663520685,
+  "id": "cmpl-6MRbms3lGhJRFYcPzICXLCYb5sAxA",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2390,
+    "prompt_tokens": 148,
+    "total_tokens": 2538
+  }
+}

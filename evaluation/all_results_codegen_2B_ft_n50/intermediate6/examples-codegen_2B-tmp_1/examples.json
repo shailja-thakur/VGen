@@ -1,0 +1,325 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif (we == 1'bz)\n\tram[addr] <= data;\nassign q=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "[7:0]\nalways @(posedge clk)\n if(we)\n ram[addr]=data;\n assign q[7:0]=ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " \nalways@(posedge clk)\nif (we)\n ram[addr % (2**ADDR_WIDTH)] <= data;\n assign q = ram[addr % (2**ADDR_WIDTH)];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n #1 if(we) ram[addr]=data;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "[7:0]\n// when we is alway high, read q back to data\nalways @(posedge clk) begin\n//// always assert we if it is high, else deassert it\n// we is always connected to a register that \n// has the latest write address, that is the one we just read from q\n// when it is high, then you want to write 8000 addresses in a clock cycle\nalways @(posedge we) begin\n if (busy==1)\n // if the other memory stage is active, then gray out this channel of output\n $display(\"CAS\");\n // when both memory stages idle, make sure bus is quiet\n action_expired<=0;\n// deassert when it goes idle\n// touch the memory registers\nif (we==1) begin\n // hold current contents of output registers\ntempdata <=data;\nend\n // check first if it has anything significant in"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n if (we) ram[addr]=data;\n assign q=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nassign q=ram[addr];\n// combinational logic : when we input, we are writing, so flag 1\nassign q[ADDR_WIDTH]=0;\n// when we is high, flag 1 is selected\nalways @(posedge clk) \n// valid computing : \n// if ( we write at address > window bound ) \n// when ( addr + 1 ) == window bound \nif (addr<(2**ADDR_WIDTH-1))\n if((addr+1)==(2**ADDR_WIDTH-1)) begin: no_more_writes\n end\n// we, swithcing, store value in ram when reading\nalways @(posedge clk) if(we) begin\n ram[addr]<=data;\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nreg [DATA_WIDTH-1:0] q[2**ADDR_WIDTH-1:0];\ninitial\nbegin\n#0\nfor (int i = 0; i < 2 ** ADDR_WIDTH; i = i + 1)\nram[i] <= 255;\nram[0] <= 255;\nram[1] <= 255;\nend\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nelse\n\tq[addr]=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n// when we is high, fwe=1\n// when we is high, addr is matched with data field, normally there is a delay of one clock cycle before fwe is asserted\n// when we is high, and there is a delay of one clock cycle before data is given to fwe,\n// with matching address and data fields, there is a 2-cycle delay\nassign q = (we && !fwe) ? pin : 8'bzzzzzzzz;\nalways @(posedge clk) begin\nif(we) begin\nram[addr] <= data;\nend \nif (fwe) begin\nif((addr==data) && !we) begin\nq <= pin;\nend\nelse begin\nq <= q;\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// Assign output as boolean 0 or 1 to indicate presence or absence of data \n\nalways @(posedge clk)\nif (we) ram[addr]<=data;\nassign q=ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n if (we) ram[addr] <= data;\n assign q = ram[addr];\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif(we) begin\nram[addr] = data;\nend\nelse begin\nq = ram[addr];\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin \n if(we)\nram[addr] <=data;\nassign q= rom[addr];\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "\nalso need a macin_input last_input;// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n// when we is high, read the value of q update the memory at address addr \n// assign the ram value at address addr to q\n// ask for the queue of data at address addr, send it back to here for output if we is high.\n assign ram[addr] = we?data:q;\n//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n assign last_input = (ADDR_WIDTH==1)?data:{8{we}}; \n always @(posedge clk)begin\n if (we)\n if(ADDR_WIDTH==1)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n for (int i = 0; i < 8; i = i+1)begin\n ram[i] = last_input[i];\n end\n else//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n// write operation is mem[addr[ADDR_WIDTH-1:0]]<=data;\nalways @(posedge clk)\nbegin\n\tif(we)\n\tbegin\n\tram[addr]<=data;\n\tend\n\tq<=ram[addr];\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": " for output \nalways @(posedge clk)\nif (we)\nram[addr]=data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n if (we)\n ram[addr] <= data;\n assign q <= ram[addr];\n end\n endmodule `timescale 1ns / 1ps\n\n/**\n * Papilio Implements an RTL source based on the SaveNetmap Module Model\n * from PR5 revision 3\n * Game Center Code : 0011111http://electronisave.gameblitz.com\n *\n * Uni-directional 1-bit RAM\n *\n * Revision: 3\n */\n\nmodule clocker\n\t# (parameter CLOCK1 = 169)\n\t(\n\tinput clk_68k, reset, clk_5HZ, // 5HZ clock switch moving in opposite directions\n\toutput bln, clr, log, lamp // Lights per output\n\t);\n\treg [3:0] cnt;\n\twire clkn"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "\ninitial $readmemb(\"data.list\", ram);\nalways @(posedge clk) begin\n\tif (we) ram[addr]<=data;\n\telse \n\tq<=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 18,
+      "logprobs": null,
+      "text": " as the block ram output data\nreg state;\nalways@(posedge clk)\nif(we) begin\n\tram[addr]=data;\nend\n// always@(*) begin\n// \tif(we)\tq=ram[addr];\telse\tq=8'hxx;\n// end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "\n// when we is low, get value at address\n// if we is high, when we is low, q changes to 0\nassign q = (we === 1'b0) ? ram[addr] : 8'd0;\nalways @(posedge clk) \nif (we===1'b1) \nram[addr] <= data;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 20,
+      "logprobs": null,
+      "text": " whenrieving it\n// otherwise assign 0\nassign q[ADDR_WIDTH-1:0] = ( (we == 1'b1) && (addr == ADDR_WIDTH) ) ? data : 8'b0;\nalways @(posedge clk) begin\n if(we)\n ram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 21,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk)begin\n if(we)\n ram[addr]=data;\n end\n assign q=ram[addr];\n \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 22,
+      "logprobs": null,
+      "text": "\nassign q[7:0] = ram[addr[ADDR_WIDTH-1:0]];\nalways @(posedge clk)\nbegin\nif (we)\nram[addr[ADDR_WIDTH-1:0]] <= data;\nend \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 23,
+      "logprobs": null,
+      "text": "[7:0]\nassign q[ADDR_WIDTH-1:0] = (!we)?data:ram[addr];\nalways @( negedge clk )\nif ( we ) ram[addr] <= data;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 24,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nif(we)\nram[addr] <= data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 25,
+      "logprobs": null,
+      "text": "[7:0]\nalways @(posedge clk)\nbegin\nif(we)\nram[addr] <= data;\n// writedata *always* is 1, so what the code actually writes is the ram[addr][7:0], where r='0', S is the selected ram index, and x[7:0] is the data\nq <= ram[addr][7:0];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 26,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk) begin\nif(we)\nram[addr]=data;\nassign q=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 27,
+      "logprobs": null,
+      "text": " \nalways @ (posedge clk)\n if(we) ram[addr]<=data;\n assign q<=ram[addr];\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 28,
+      "logprobs": null,
+      "text": "\nassign bval = (0 <= addr && ADDR_WIDTH <= addr) ? 1 : 0;\nassign q = ram[addr];\nreg [7:0] preambleq_temp = 0;\n\n// when addr reaches overflow, the data becomes 4 new valid values\n// goes Q after preamble, before first data\nalways@( posedge clk )\nbegin\n\tif(bval) begin\n\tcase(preambleq_temp)\n\t2:\n\tram[0] <= 8'b10100000;\n\t3:\n\tram[1] <= 8'b10100000;\n\t4:\n\tram[2] <= 8'b10100000;\n\t5:\n\tram[3] <= 8'b10100000;\n\t6:\n\tram[4] <= 8'b10100000;\n\t7:\n\tram["
+    },
+    {
+      "finish_reason": "stop",
+      "index": 29,
+      "logprobs": null,
+      "text": "\n// when clk rises, perform read operation on the ram\n// when clk falls, return value of ram at addr (which is OUTPUT ONLY)\n// when reset is high, return 0\n initial begin\n we=1'b0;\n clk=1'b0;\n end\n always @(posedge memcheck(clk)) begin\n if(we)\n #1 ram[addr] <= data;\n end\n always @(posedge clk)begin\n if (reset)\n q <= 8'h0;\n else begin\n if (we)\n q <= ram[addr];\n end\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 30,
+      "logprobs": null,
+      "text": "[7:0]\nalways @(posedge clk)begin\n if(we) begin\n\tram[addr] <= data;\n end\nend\nassign q <= (we) ? ram[addr] : 8'd0;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 31,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) \nif(we) ram[addr] <= data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 32,
+      "logprobs": null,
+      "text": " when q is high\nalways @(posedge clk)\nbegin:RAM_INST\nif (we) \n ram[addr] = data; \n if (q)\n q<=ram[addr]; \nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 33,
+      "logprobs": null,
+      "text": " output\nalways@(posedge clk)\ncase({we, addr})\n\t{1'b0,{ADDR_WIDTH{1'bx}}}: q <= 0;\n\t{1'b0,addr}: q <= data;\n\t{1'b1,{ADDR_WIDTH{1'bx}}}: q <= 0;\n\t{1'b1,addr}: q <= ram[addr];\nendcase\n\n// this always block is probably incorrect---check out this question on the labs lab. What is the correct way to do this?\n//!!! add some built in clock handshaking functionality\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 34,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif(we && (addr[ADDR_WIDTH-1] == 1))\nram[addr] <= data;\nend\nassign q = chipsel?ram[addr]:1'bz;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 35,
+      "logprobs": null,
+      "text": "\n// in the rising edge of clock t, if address changes\nassign we, q[ADDR_WIDTH-1] = 0;\nalways @(posedge clk) \n if (we || !clk)\n \n \nalways @(negedge clk)\n if (addr<ADDR_WIDTH)\n \n //read data at addr and put it in q\n assign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 36,
+      "logprobs": null,
+      "text": "\ninitial\nbegin\n$display(\"&%h| & %h %h\", we, data, addr);\n// for loop to initialize ram contents\nfor (integer i=0;i<2**ADDR_WIDTH-1;i++)\nram[i]=8'b0;\nend\nalways @(posedge clk)\nram[addr] = data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 37,
+      "logprobs": null,
+      "text": "\nassign q [(DATA_WIDTH-1):0] = ram[addr];\nalways @(posedge clk) begin\nif (we)\nram[addr] <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 38,
+      "logprobs": null,
+      "text": "[7:0]\nalways @(posedge clk or posedge reset)\nif (reset)\n q <= 8'b0;\n else\n if (we) begin\n ram[addr] <= data;\n q <= data;\n end\n // for each reading of the output, check if it is high, if is yes, then output value\n // at address addr from ram[addr]\n always @(posedge clk)\n if (reset)\n q <= 8'b0;\n else\n if (q == 8'b1) begin\n $display(\"Get high on q when it is a high impedance! Your robot probably thinks global variable thingy has been grounded\");\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 39,
+      "logprobs": null,
+      "text": "[second][?? - 0] = we ? data : ram[addr];\nalways @(posedge clk)\nbegin\nif (we)\nram[addr] <= data;\nelse\nq <= ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 40,
+      "logprobs": null,
+      "text": "\nassign q[0]=(~we&clk)? data[0] : ram[addr[3:0]];\n// if we are writing, ram[addr] changes\n// only the LSB of the address will change\n// assign the ram value at address addr[3] to q[1]\nassign q[1]=(~we&clk)? data[1] : ram[addr[3:0]][7:1];\n// read\nalways@(posedge clk)\nif(~clk) begin // wait for clk\nram[addr[7:4]] <= data; // initial value written\nram[addr[1:0]] <= q[0];\nram[addr[7:4]] <= q[1];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 41,
+      "logprobs": null,
+      "text": "\n// if we is 0, then read from ram at address addr\nfpga_mio #(\nhesionparameter INPUT_WIDTH=1,\nheartedlyparameter OUTPUT_WIDTH=1\n)\n(\ninout [INPUT_WIDTH-1:0] in,\ninout [OUTPUT_WIDTH-1:0] out,\ninout memclk\n\n\n);\ninitial \nbegin\nend\nalways @(posedge clk) \nbegin\nif (we) \nbegin\n\tram[addr]=data;\n\tq=ram[addr];\nend\nelse \nbegin\n\tq=ram[addr];\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 42,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\nif(we) ram[addr]<=data; // write\n \telse q<=ram[addr];\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 43,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nif (we)\nram[addr] <= data;\nassign q = ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 44,
+      "logprobs": null,
+      "text": "\nassign q[DATA_WIDTH-1:0] = (ena) ? data : ram[addr];\nalways @( clk )\n if(we) ram[addr] = data;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": " \nassign q = ram[addr];\nalways @(posedge clk) begin\n if(we)\n ram[addr] <= data;\t\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 46,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif (we)\t\n{ram[addr], q[7:0]} <= data;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 47,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\n if (we)\n ram[addr]<=data;\n threholdoutput [1:0] q;\nnot n1 (q[1],q[0]);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 48,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk)\n begin\n if(we)\n ram[addr] <= data;\n else\n q <= ram[addr];\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 49,
+      "logprobs": null,
+      "text": "[0];\nassign q[0] = ram[addr[ADDR_WIDTH-1:0]];\nalways @(posedge clk)\nbegin\n if (we) ram[addr[ADDR_WIDTH-1:0]] <= data;\nend\n"
+    }
+  ],
+  "created": 1663607447,
+  "id": "cmpl-URurV0zKz9hNRgD2OnmYpcucYfHDt",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 4035,
+    "prompt_tokens": 143,
+    "total_tokens": 4178
+  }
+}

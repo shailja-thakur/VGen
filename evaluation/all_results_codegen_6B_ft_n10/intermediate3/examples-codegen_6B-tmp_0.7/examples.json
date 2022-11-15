@@ -1,0 +1,87 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\n if(reset)\n r_reg <= #1 5'b0_0100;\n else\n r_reg <= #1 r_next;\nend\n//assign q = r_reg;\nassign feedback = r_reg[4] ^ r_reg[2];\nassign r_next = {r_reg[3:0], feedback};\nassign q = r_reg;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// always @(posedge clk, posedge reset)\nbegin\n if (reset)\n begin\n\tr_reg <= 5'b00001;\n\tq <= 5'b00001;\n\tend\n else\n begin\n\tr_reg <= r_next;\n\tq <= {q[0],r_reg[4]^r_reg[2]^feedback_value};\n\tend\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// xor most significant 2 and 4 bits of r_next to get bit positions 2 and 4 of q\nassign q = {r_reg[4], r_next[4], r_reg[3], r_next[3], r_reg[2], r_next[2]};\n\nalways @(posedge clk or posedge reset)\n begin\n\tif (reset)\n\tbegin\n\tr_reg <= 1;\n\tend\n\telse\n\tbegin\n\tr_reg <= r_next;\n\tend\n end\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nif (reset)\nbegin \n\tr_reg <= 5'b0;\n\tq <= 5'b0;\nend \nelse \nbegin \n\tr_reg <= r_next;\n\tq <= {r_reg[3:0],feedback_value};\nend\nalways@(*)\nbegin \n\tr_next ={2'b0,r_reg[3:1]};\n\tif (r_reg[4:3] == 2'b00) \n\tbegin \n\tr_next[2:0] = q[3:0];\n\tr_next[3] = q[4];\n\tend\n\telse if (r_reg[4:3] == 2'b01) \n\tbegin \n\tr_next[2:0] = q"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin \n\tif (reset)\n\tbegin \n\tr_reg <= 5'b0001;\n\tend \n\telse \n\tbegin\n\tr_reg <= r_next;\n\tend \nend \n//\nassign feedback = r_reg[2] ^ r_reg[4]; \nassign r_next = r_reg << 1;\nassign q = r_reg; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n if( ~reset )\n r_reg <= 5'b00001;\n else\n r_reg <= r_next;\nend\nassign q = r_reg;\nassign r_next = {2'b0, feedback_value, r_reg[4:2]};\nassign feedback_value = r_reg[1] ^ r_reg[4];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\nif(reset)\nr_reg <= 1'b0;\nelse\nr_reg <= r_next;\nend\nassign q = r_reg;\nassign r_next = {feedback_value, r_reg[3:0]^r_reg[4]};\n// use 13-function to make a 13-bit LFSR to store the value\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @( posedge clk or posedge reset )\nbegin : DFF_chain\n\tif ( reset )\n\tbegin\n\tr_reg <= 1;\n\tend\n\telse\n\tbegin\n\tr_reg <= r_next;\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin\nif( reset == 1 )\n\tr_reg <= 5'b0_0001;\nelse\n\tbegin\n\tif (r_reg [2:0] < 5'b0001)\t//showaise if any one of the shifted bits is 1\n\tr_reg <= {r_reg[4:3],r_reg[2:0]^r_reg[4:3]};\n\telse\n\tr_reg <= r_reg;\n\tend\nend\n\nassign r_next = {r_reg[4:3],r_reg[2:0]^r_reg[4:3]};\nassign q = r_reg;\nassign feedback_value = r_reg[4:3]^r_reg[2:0];\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @( posedge clk, posedge reset ) \nbegin\n if (reset)\n r_reg <= 5'b0001;\nelse\n r_reg <= r_next; \nend \nassign q = r_reg; //outputs the value in register\nassign r_next = q[4:2] ^ q[0]; // sets the next value in the register to be the xor of the previous value and the third bit value\nassign feedback_value = r_reg[4] ^ r_reg[2]; //sets the feedback value to be the xor of the fourth bit previous value and the third bit value\n"
+    }
+  ],
+  "created": 1663600341,
+  "id": "cmpl-YT0wYPgr9At67prDDcz8xAz6JzzSP",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1246,
+    "prompt_tokens": 155,
+    "total_tokens": 1401
+  }
+}

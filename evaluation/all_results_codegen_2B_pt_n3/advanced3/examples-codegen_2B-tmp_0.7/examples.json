@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n    if ((reset == 0) and (x == 1) and (present_state != IDLE))\n        next_state = S1;\n    else if ((reset == 0) and (x == 0) and (present_state == IDLE))\n        next_state = S10;\n    else if (present_state != IDLE)\n        next_state = IDLE;\n    else if ((reset == 0) and (x == 1))\n        next_state = S101;\n    else if ((reset == 0) and (x == 0))\n        next_state = IDLE;\n    else\n    {\n        next_state = IDLE;\n        z = 1;\n    }\n\nreg [3:0] state_var;\nalways @(posedge clk)\n    if (reset == 1)\n        state_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(*) begin\n    // initialize next_state to IDLE\n    if (clk==0) next_state=IDLE; else next_state=IDLE;\n    // if reset is high, reset present_state to IDLE\n    if (reset==0) present_state=IDLE; else present_state=IDLE;\n    // if clk is low, update state of next_state \n    if (clk==0)\n    {\n        if (present_state==IDLE)\n        {\n            if (x==1) next_state=S1; else next_state=IDLE;\n        }\n        else if (present_state==S1)\n        {\n            if (x==0) next_state=S10; else next_state=IDLE;\n        }\n        else if (present_state==S10)\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) \n    if (reset) next_state = IDLE;  // if reset is high, next_state is assigned IDLE\n    else if (x == 1) \n      if (present_state == IDLE) next_state = S1; \n      else if (present_state == S1) next_state = S10; \n      else if (present_state == S10) next_state = S101; \n      else if (present_state == S101) next_state = IDLE; \n    else \n      if (present_state == IDLE) next_state = S1; \n      else if (present_state == S1) next_state = S10; \n      else if (present_state == S10) next_state = S101; \n      else if (present_state == S101"
+    }
+  ],
+  "created": 1663536908,
+  "id": "cmpl-uS0bPclImbMUVB3vhvbnGL3lbpdAe",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 232,
+    "total_tokens": 832
+  }
+}

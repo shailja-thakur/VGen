@@ -1,0 +1,42 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "// If next_state is 0, then this is a sequential state, and out=1 is implied\n// If next_state is 1, then this is a combinational state, and out=0 is implied\n\nalways @(posedge clk or posedge reset)\n\tif (reset)\n\tbegin\n\tpresent_state <= 0;\n\tnext_state <= 0;\n\tend\n\telse\n\tbegin\n\tpresent_state <= next_state;\n\tend\n\nalways @(present_state or in)\n\tcase(present_state)\n\t0: next_state <= 0;\n\t1: next_state <= 1;\n\tendcase\n\nassign out = (present_state == 1);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign out = present_state & in;\n\nalways @(posedge clk or posedge reset)\n\tif(reset)\n\tbegin\n\tpresent_state <= 0;\n\tnext_state <= 0;\n\tend\n\telse\n\tpresent_state <= next_state;\n\t\nalways @(present_state or in)\n\tcase(present_state)\n\t0: next_state = ~in;\n\t1: next_state = ~in;\n\tendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// When reset is asserted, go to state 0.\nassign next_state = reset ? 0 : (present_state == 0 ? (in ? 0 : 1) : (in ? 1 : 0));\nalways @(posedge clk)\nbegin\n\tif (reset)\n\tbegin\n\tnext_state = 0;\n\tpresent_state = 0;\n\tend\n\telse\n\tpresent_state = next_state;\nend\nassign out = present_state == 1 ? 0 : 1;\n"
+    }
+  ],
+  "created": 1663306593,
+  "id": "cmpl-fnY7YUIBeBh9hx6sEspDjtH4Ta6Un",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 395,
+    "prompt_tokens": 148,
+    "total_tokens": 543
+  }
+}

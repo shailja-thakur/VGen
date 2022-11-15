@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n if (reset)\n q <= 0;\n else if (slowena)\n if (q != 9)\n q <= q + 1;\n else\n q <= 0;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "// If the ena input is low, the output q is not incremented.\n\nalways @(posedge clk) begin\n\tif(reset)\n\tbegin\n\tq <= 0;\n\tend\n\telse begin\n\tif(slowena && q < 9)\n\tq <= q + 1;\n\telse\n\tq <= q;\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\nbegin\n\tif (reset)\n\tbegin\n\tq <= 0;\n\tend\n\telse\n\tbegin\n\tif (slowena)\n\tif (q < 9)\n\tq <= q + 1;\n\telse\n\tq <= 0;\n\tend\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n if (reset) q <= 0;\n else if (slowena) begin\n if (q != 4'b1001) q <= q + 1;\n end\n end\n endmodule\n\nmodule count_slow_tb;\nreg clk, slowena, reset;\nwire [3:0] q;\n\ncount_slow DUT(clk, slowena, reset, q);\n\nalways #5 clk = ~clk;\n\ninitial begin\nclk = 0;\nslowena = 0;\nreset = 1;\n#10;\nreset = 0;\nslowena = 1;\n#10;\nslowena = 0;\n#10;\nslowena = 1;\n#10;\nslowena = 0;\n#10;\nslowena = 1;\n#10;\nslowena = 0;\n#10;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// If q is 9, the output q is not changed.\n\nalways @(posedge clk)\n\tif (reset)\tq <= 0;\n\telse if (slowena && q < 9) q <= q + 1;\n"
+    }
+  ],
+  "created": 1663606725,
+  "id": "cmpl-sYF198X9FFQcdi8HMAyceNOrnABkQ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 473,
+    "prompt_tokens": 98,
+    "total_tokens": 571
+  }
+}

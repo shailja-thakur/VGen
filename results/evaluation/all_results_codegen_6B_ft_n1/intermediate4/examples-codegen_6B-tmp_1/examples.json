@@ -1,0 +1,30 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// When input changes, the two current states are updated.\n// Since the input of next_state is dependent on the current state, this\n// method will not be very good if your input can change at random,\n// but it will handle the most common cases of changing inputs.\n\nalways @ (posedge clk, posedge reset) begin\n\tif (reset)\n\tbegin\n\tpresent_state <== 0;\n\tnext_state <= 1;\n\tout <= 0;\n\tend\n\telse\n\tbegin\n\t//we proceed to next state if we are in state 0, and the input is 2 or more. Maybe make next state into a reg, and move the if statement into the always @ (posedge clk, posedge reset)\n\tif(present_state == 0 && next_state == 1 && in==2)\n\tbegin\n\tnext_state <= 0;\n\tout"
+    }
+  ],
+  "created": 1663599976,
+  "id": "cmpl-esfIzlBQYN1V0weuTSSbCkr16puxz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 148,
+    "total_tokens": 348
+  }
+}

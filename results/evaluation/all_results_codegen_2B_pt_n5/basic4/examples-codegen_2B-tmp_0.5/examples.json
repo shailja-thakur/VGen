@@ -1,0 +1,49 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// Design a 2-to-1 demultiplexer.\nmodule demux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n\n// Design a 2-to-1 multiplexer/demultiplexer.\nmodule mux_demux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n\n// Design a 2-to-1 multiplexer/demultiplexer.\nmodule mux_demux2( \ninput [4:0] a, b,\ninput sel"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nwire [4:0] a_mux, b_mux;\n\nalways @(posedge clk)\nbegin\n    a_mux = a;\n    b_mux = b;\n    if (sel == 0)\n        out = a_mux;\n    else\n        out = b_mux;\nend\n\nwire [4:0] a_in, b_in;\n\nalways @(posedge clk)\nbegin\n    a_in = a;\n    b_in = b;\n    if (sel == 0)\n        a_mux = a_in;\n    else\n        b_mux = b_in;\nend\n\nassign a_mux = a_in;\nassign b_mux = b_in;\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n// Design a 2-to-1 demultiplexer.\nmodule demux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n\n// Design a 2-to-1 multiplexer and demultiplexer.\nmodule muxdemux( \ninput [4:0] a, b,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\n\n// Design a 2-to-1 multiplexer and demultiplexer.\nmodule muxdemux2( \ninput [4:0] a, b,\ninput sel,\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": " \n\n// Design a 4-to-1 multiplexer.\nmodule mux4( \ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n// When sel=2, assign c to out. \n// When sel=3, assign d to out. \n\n// Design a 4-to-2 multiplexer.\nmodule mux4( \ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n// When sel=2, assign c to out. \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign a and b to out.\n\nalways @(*)\nbegin\n    if (sel == 0)\n        out[0] = a;\n    else if (sel == 1)\n        out[1] = b;\n    else if (sel == 2)\n        out[0] = a;\n    out[2] = b;\n    out[3] = a;\nend\n\n"
+    }
+  ],
+  "created": 1663540003,
+  "id": "cmpl-NSYYM9wNmDfaqw0kf1J4VzslhvmaG",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 887,
+    "prompt_tokens": 70,
+    "total_tokens": 957
+  }
+}

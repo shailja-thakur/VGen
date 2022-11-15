@@ -1,0 +1,82 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "initial begin // this yields output\n  if (in_load <=> 0) {\n    out = data;\n    ISZERO = 0;\n    // wait for load to complete\n  } else if (amount > 0) { // wait for load to complete d wait\n    if ((interrupt_balance>0) and (READ(interrupt_balance)) == 0) begin\n      writeto(data, ~0);\n      do // write 0x77 to out before rotate to recycle memory\n        WRITEO(_test_pattern);\n      until (interrupt_balance<=0);\n      do\n        writeto(data, (amount-1));\n      while (READ(_test_pattern));\n    end\n    out = to_rotate(0);\n    carry = 0;\n    r7 = 1;\n    rnc = 0;\n    for (dp=1; dp<"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nrepeat (0b000100)\nif (load == 1)\nbegin\n#if amount > 7\ntmp1 = data;\nout = tmp1;\n#else\ntmp1 = data[amount];\nout = tmp1;\n#endif\nend\n}\nelse // when load is low, shift out and out the data\nbegin\nif (load == 1)\nbegin\n#if amount > 7\nout = data;\n#else\nout = data[amount];\n#endif\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "initial out = data;\nassign load = out[2] & 1;\ninitial out = out'data;\n\n// allow data falling at input for right shift in the right direction\nassign out'load = out[1] & 1;\n// if the incoming data to this module is a 0x00, rotate the incoming data by amount number of times, then stick the final value into the out register\n// else, the incoming data to the right register is within 0x7F range, left shift the incoming data by amount times to the right register and then stick the final value into the out register\nassign out = out'data'data;\n\nbegin\n\n[load]\n    if (clk == reset)\n    begin\n        out {1'b0} <= load;\n    end\n    else\n    begin\n        out = ((out{:1} << (amount'f'+1))"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "begin\n    if (load) out = (data >> amount);\n    else out = data << amount;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "assign load_clk = ~load & clk;\nassign load_reset = ~load & reset;\n\nassign out = ~(data & amount) + data;\n\n#4 \"transparent.v\"\n#1 \"transparent.v\"\n#10 \"transparent.v\"\n#1 \"main.v\"\n#10 \"main.v\"\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "assign out=data, [$0]='l' if !load else [$0]='r', [$1]='l' if ! (load and ( ~ (amount toout)) ) else [$1]='r';\n    \n// shift up the data in out by amount positions\nassign boolean [6:0] invertoutput='0'+data toout,\ncond \n    if (reset [7:7]) then\n        invertoutput='1'+toout\n        out=[$0]\n    else\n    begin\n        if (load [6:6]) then\n            if (amount [3:0]) > ((inpout) length(toout))) then\n                out=$0\n            else if (amount toout)> 0 then\n                out=toout[(amount [3:0])-1]\n            end\n        else\n            if ("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk,posedge reset,posedge reset) begin\n    if (amount == 0)\n    {\n        out = data;\n        if (load == 0)\n            load = 1;\n    }\n    else if (amount == 1)\n        load = 0;\n\n    // don't rotate the registers if load is low\n    if ((load == 1) || ((load == 0) && (data < amount)))\n        out = data;\n\n    load = load >> 1;\n    data = clk;\nend\n);"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(ltick)\ncomb    \n  #5\n  pulse writeenable\n  do while (res);\n  dout  = data;\n  #6\n  pulse RE'\n  do while (res);\n  #7\n  dout <<= amount;\n  do\n    do while (res);\n    dout >>= 1;\n  until reset != ltick;  \n  dout |= (left << (amount % 8));\n  \nalways @(ltick)\ncomb \n  #8\n  pulse RE'\n  do while (res);\n  lo_dn = lo_pulse << (16 + *doutn);\n  do while (res);\n  hi_up = hi_pulse >> (16 - *doutn + 1);\n  dout  = (dout << (63 - hi_up)) | (("
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "reg [7:0] tmp;\nassign out = data;\nwb_barrier;\nassign tmp = load;\nwb_barrier;\nassign out = left_shift(out, amount, out);\nandout;\nwb_barrier;\nassign tmp = left_shift(out, amount, tmp);\nwb_barrier;\nassign load = left_shift(out, amount, tmp);\nassign wr_barrier;\n// when load is high, write out since load is followed by rotate\nassign out = data;\nreg [7:0] out1;\nassign out1 = left_shift(out, amount, clk);\ncmpout;\nwb_barrier;\nassign out = concat(out, out1);\nwb_barrier;\n// wr_barrier necessary to prevent AMU1 stalls after end of the operation\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "wire current_data;\nwire next_data;\nalways @* start of any_data <= load;\nalways @* [8:0] start of any_data <= pin_count(data);\nalways @* [9:0] start of any_data <= clk;\nalways @* [9:0] start of any_data <= out;\nalways @* [10:0] start of any_data <= [8:0] Rotate register;\nalways @* [11:0] start of any_data <= [7:0] Shift register;\nugly\n always @* [12:11] start of any_data <= amount;\nalways @* [11:10] start of any_data <= amount;\nalways @* [8:7] start of any_data <= data;\nalways @* [6:6] start of any_data <= carry;\n// we"
+    }
+  ],
+  "created": 1663540212,
+  "id": "cmpl-dzsQ6mBvF4bREwZncsq9tQul1SlPg",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1561,
+    "prompt_tokens": 94,
+    "total_tokens": 1655
+  }
+}

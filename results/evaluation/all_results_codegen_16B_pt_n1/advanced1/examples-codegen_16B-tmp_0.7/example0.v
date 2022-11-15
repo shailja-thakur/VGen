@@ -1,0 +1,24 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+
+//The following is a C program that tests this adder
+int main(){
+  int a = -3, b = -2, s = 0;
+  signed_adder(a, b, s, overflow);
+  int a_signed_overflow = ((a < 0) && (a < b)) || ((a > 0) && (a > b));
+  int b_signed_overflow = ((b < 0) && (b < a)) || ((b > 0) && (b > a));
+  int s_signed_overflow = ((s < 0) && (s < b)) || ((s > 0) && (s > b));
+  if(a_signed_overflow && !b_signed_overflow){
+    printf("%d + %d = %d\n", a, b, s);
+  } else if(b_signed_overflow &&endmodule

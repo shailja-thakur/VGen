@@ -1,0 +1,55 @@
+// This is a RAM module
+module ram #(
+    parameter ADDR_WIDTH=6,
+    parameter DATA_WIDTH=8
+) (
+    input [DATA_WIDTH-1:0] data,
+    input [ADDR_WIDTH-1:0] addr,
+    input we, clk,
+    output [7:0] q
+);
+reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+// when we is high, write data to ram at address addr
+// assign the ram value at address addr to q{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if (we)\n    begin\n        ram[addr] <= data;\n    end\n    else\n    begin\n        q <= ram[addr];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n  ram[addr] <= data;\nalways @(posedge clk)\n  q <= ram[addr];\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        ram[addr] <= data;\n        if (addr < 2**ADDR_WIDTH-1) begin\n            ram[addr + 1] <= data;\n            if (addr < 2**ADDR_WIDTH-2) begin\n                ram[addr + 2] <= data;\n                if (addr < 2**ADDR_WIDTH-3) begin\n                    ram[addr + 3] <= data;\n                end\n            end\n        end\n    end\nend\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we != 0) begin\n        ram[addr] <= data;\n        q <= ram[addr];\n    end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk) begin\n    if (we) begin\n        ram[addr] <= data;\n        q <= ram[addr];\n    end\nend\n`\n"
+    }
+  ],
+  "created": 1663519696,
+  "id": "cmpl-n87F9iBTpp2kqBzk2kbd7tAjFKnMa",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 310,
+    "prompt_tokens": 143,
+    "total_tokens": 453
+  }
+}

@@ -1,0 +1,54 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\n\tbegin\n\tif (reset)\n\tq <= 4'b0000;\n\telse if (slowena)\n\tbegin\n\tif (q == 9)\n\tq <= 4'b0000;\n\telse\n\tq <= q + 1;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n\tbegin \n\tif (reset) q <= 0;\n\telse if (slowena) begin \n\tif (q == 9) q <= 0;\n\telse q <= q + 1;\n\tend\n\tend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// Note in the output q is the active low decimal representation of the counter.\n// I did not include a reset function because it is not necessary for this application.\n\nalways @(posedge clk or negedge reset) begin\n\tif (reset == 1'b0) begin // if reset is high, set counter to 0.\n\t \tq <= 4'b0000;\n\tend else if (slowena == 1'b1 && q < 9'b111110100) begin // if counter is 9 and slowena is high, reset the counter. \n\t \tq <= 4'b0000;\n\tend else if (slowena == 1'b1 && q == 9'b111110100) begin // if counter is 9 and slowena is high, then set counter to 0.\n\t \tq <= 4'b0000;\n\tend else if (slowena == 1'b0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or posedge reset)\n\tbegin\n\t\n\tif (reset)\n\t \tq <= 4'b0000;\n\t\n\telse if (slowena)\n\t \tbegin\n\t \tif (q == 9)\n\t \t \tq <= 4'b0000;\n\t \telse\n\t \t \tq <= q + 1'b1;\n\t \tend\n\t\n\tend\n\t\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// This is a decade counter, so if you are counting q out to have it count to 10, \n// then you are going to have to wait 10 full cycles to see the counter go to 0.\n\nalways @(posedge clk or posedge reset)\n\tbegin\n\tif(reset)\n\tq <= 0;\n\telse if(slowena)\n\tbegin\n\tif(q == 9)\n\tq <= 0;\n\telse\n\tq <= q + 1;\n\tend\n\tend\n"
+    }
+  ],
+  "created": 1663306711,
+  "id": "cmpl-2N78i0xoCuzM4j2Bgs7jiZJJvfcNy",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 567,
+    "prompt_tokens": 98,
+    "total_tokens": 665
+  }
+}

@@ -1,0 +1,106 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nassign sum = a ^ b; // bitwise xor\nassign cout = a & b; // bitwise and\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nassign sum = a ^ b; // Bitwise xor\nassign cout = a & b; //Bitwise and\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n// internal signals\nreg sum, cout;\n\nalways @ (a, b, sum, cout)\nbegin\n\t// sum is the sum of two bits added, cout is the carry-out bit\n\t// when b = 0 then sum = a, and cout = 0\n\t// when b = 1 then sum = a+b, and cout = 0\n\tsum = a ^ b;\t\n\tcout = (a & b);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\tassign sum = a ^ b; //a XOR b\n\tassign cout = a & b; //a AND b\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nassign sum = a ^ b; //xor\nassign cout = a & b; //and\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b; //xor\nassign cout = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\nassign sum = a ^ b; //xor the two inputs\nassign cout = a & b; //and the two inputs\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n\n// This is a not gate. A not gate inverts the bit inputted.\n// I also used this as a control gate, which is a gate with no \n// inputs and one output. This is a pretty common structure. \n// It allows you to have a wire (cout) and a wire (sum) with sharing \n// in only one place.\nnot n1( w1, a );\nxor x1( sum, b, w1 );\nand a1( cout, a, b );\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n\n\t// internal signal declarations\n\treg sum, cout;\n\t\n\talways @ ( a or b ) begin\n\t\n\t// sum will be 1 if the inputs are both 1\n\t// zero (or not true) if the inputs are both zero\n\t// cout is zero if no carry takes place\n\t// otherwise, cout is 1\n\t\n\t// this is just a description of the state space diagram\n\t// sum is sum if b=1, otherwise is zero\n\t// cout is 1 is a and b are not equal\n\t\n\tsum = (~a & b) | (a & ~b);\n\tcout = (a & b);\n\tend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\n// This is the body of the half adder.\n\n// The following statement is a half adder.\nassign sum = a ^ b;\nassign cout = a & b;\n\n"
+    }
+  ],
+  "created": 1663334574,
+  "id": "cmpl-UG5RJvnVCPgTgpuEXjIBIHN8YgPZT",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 709,
+    "prompt_tokens": 43,
+    "total_tokens": 752
+  }
+}

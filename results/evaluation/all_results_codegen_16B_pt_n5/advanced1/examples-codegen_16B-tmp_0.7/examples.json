@@ -1,0 +1,56 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nsigned_adder(a[7:0], b[7:0], s[7:0], overflow);\n\n// Check if an overflow occurs\n\n// If an overflow occurs, the most significant bit of s is 1. Otherwise it is 0. \n// The signed overflow occurs if it is 1. \n\n// Implement a signed adder that adds two 16-bit 2's complement numbers, a[15:0] and b[15:0]. \n\nmodule signed_adder(input [15:0] a,\n    input [15:0] b,\n    output [15:0] s\n);\n\nsigned_adder(a[15:0], b[15:0], s);\n\n// Check if an overflow occurs\n\n// If an overflow occurs, the most significant bit of s is 1. Otherwise it is 0. \n\n// The signed overflow occurs if it is 1."
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nsigned_adder(a, b, s, overflow);\n  \n// Assume a and b are 2's-complement unsigned integers. \n// Provide an algorithm that takes as input two unsigned numbers a and b and outputs as an unsigned number the sum of a and b. \n// The input numbers may be of any size. \n// The output number has the same size as the input numbers. \n// The algorithm should not assume that a and b are normalized. \n// It should work with numbers that are represented in 1, 2, 4, or 8 bits. \n// You may assume bit arithmetic is available in your programming environment. \n// Here are some sample calls to signed_adder. \n// Example 1: \n// unsigned numbers a = 0, b = 0, result = 0, overflow = 0 \n// signed_adder(a, b, result, overflow); \n// 0 + 0"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "    assign s = a + b;\n    assign overflow = (a'[7]==b'[7] && a'[6]==b'[6]) || (a'[7]==b'[7] && a'[6]==s'[6]); \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nsigned_adder : signed_adder(a, b, s, overflow)\n{\n    if ((a == 0)||(b == 0))\n        overflow <= 1'b0;\n    else\n        s <= (a + b);\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "    signed_adder(a:a, b:b, s:s, overflow:overflow);\n\n"
+    }
+  ],
+  "created": 1663534130,
+  "id": "cmpl-wmsBstiN227tnTkzwGJ5dbIZvuZfj",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 553,
+    "prompt_tokens": 164,
+    "total_tokens": 717
+  }
+}

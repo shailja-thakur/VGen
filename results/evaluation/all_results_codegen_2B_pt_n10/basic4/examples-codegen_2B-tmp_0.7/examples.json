@@ -1,0 +1,79 @@
+// Design a 2-to-1 multiplexer.
+module mux( 
+input [4:0] a, b,
+input sel,
+output [4:0] out );
+// When sel=0, assign a to out. 
+// When sel=1, assign b to out.{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// Design a 4-to-4 multiplexer.\nmodule mux4( \ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n// When sel=2, assign c to out. \n// When sel=3, assign d to out.\n\n// Design a 4-to-4 demultiplexer.\nmodule demux4( \ninput [4:0] inp, sel,\noutput [4:0] out );\n// When sel=0, assign inp to out. \n// When sel=1, assign inp to out. \n// When sel=2, assign inp to out. \n// When sel"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign 0 to out. \n// When sel=3, assign 1 to out. \n// When sel=4, assign 2 to out. \n// When sel=5, assign 3 to out. \n// When sel=6, assign 4 to out. \n// When sel=7, assign 5 to out. \n// When sel=10, assign 6 to out. \n// When sel=11, assign 7 to out. \n// When sel=14, assign 8 to out. \n// When sel=15, assign 9 to out. \n// When sel=16, assign 10 to out. \n// When sel=17, assign 11 to out. \n// When sel=18, assign 12 to out. \n// When sel=19, assign 13 to out. \n// When"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " \n\nalways @ (a)\nbegin\nout <= a;\nend\n\nalways @ (b)\nbegin\nout <= b;\nend\n\nalways @ (sel)\nbegin\nout <= sel;\nend\n\n\n// Performs the same action for each a and b.\nwire [4:0] a_, b_;\noutput [4:0] out_;\n\nvoid mux_init()\n{\n  a_ = a;\n  b_ = b;\n  out_ = 0;\n}\n\nvoid mux_action()\n{\n  out_ = a_;\n  a_ = b_;\n  b_ = a_;\n}\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign x to out. \n// When sel=3, assign y to out. \n\nwire [4:0] x, y;\n\n// The following a to b logic is in the data path.\nwire [4:0] a_dpath;\nwire [4:0] b_dpath;\n\nalways @* begin\n    a_dpath = a;\n    b_dpath = b;\nend\n\nalways @* begin\n    // First set a to out.\n    if (sel == 1) \n        a_dpath = b;\n    else if (sel == 2) \n        a_dpath = x;\n    else if (sel == 3) \n        a_dpath = y;\n\n    // Then set b to out.\n    if (sel == 0)\n        b_dpath"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @ (mux_sel)\n{\n  always @ (a[sel])\n  {\n    out[sel] = a;\n  }\n  always @ (b[sel])\n  {\n    out[sel] = b;\n  }\n}\n\n// Fine-grained input/output port assignment.\nmodule mux2( \ninput [4:0] a, b,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out.\nalways @ (mux2_sel)\n{\n  always @ (a[sel])\n  {\n    out[sel] = a;\n  }\n  always @ (b[sel])\n  {\n    out[sel] = b;\n  }\n}\n\n// Fine-grained input/output"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign a and b to out.\n\nalways @(*)\n    sel = 0;\n    if (a[3] == 1) \n        sel = 1;\n    if (a[2] == 1)\n        sel = 2;\n    if (a[1] == 1)\n        sel = 3;\n    if (a[0] == 1)\n        sel = 4;\n    if (a[0] == 1 && a[1] == 1)\n        sel = 5;\n    if (a[0] == 1 && a[2] == 1)\n        sel = 6;\n    if (a[0] == 1 && a[3] == 1)\n        sel = 7;\n    if (a[1] == 1 && a[2] == 1)\n        sel = 8;\n    if (a[1"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\n// Register a multiplexer as a class, which can be instantiated via \n// the multiplexer's 'create' method.\nclass multiplexer \n{    \n    // Read a multiplexer's inputs.\n    void read() \n    {\n        a = read_bits(4);\n        b = read_bits(5);\n    }\n    \n    // Write multiplexer's output.\n    void write() \n    {\n        write_bits(0, 4);\n        write_bits(0, 5);\n    }\n}\n\ninput i;\noutput o;\n\nmultiplexer m1;\n\n// Instantiate the multiplexer using the 'create' method.\nmultiplexer m2 = mux(i, m1, sel);\n\n// The multiplexer can be used in two ways:\n// (1) a"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": " \n// When sel=2, assign nothing to out.\n\nalways @(*)\n  begin\n    out[0] = a[0];\n    out[1] = a[1];\n    out[2] = a[2];\n    out[3] = a[3];\n  end\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// When sel=2, assign (a&b) to out.\n// When sel=3, assign (a|b) to out.\n\n// Design a 4-to-1 multiplexer.\nmodule mux4( \ninput [4:0] a, b, c, d,\ninput sel,\noutput [4:0] out );\n// When sel=0, assign a to out. \n// When sel=1, assign b to out. \n// When sel=2, assign c to out. \n// When sel=3, assign d to out.\n\n// Design a 4-to-2 multiplexer.\nmodule mux4_2( \ninput [4:0] a, b, c, d,\ninput sel1, sel2,\noutput [4:0] out1, out2 );"
+    }
+  ],
+  "created": 1663540190,
+  "id": "cmpl-qCZVbF1xtO9jAUVVVmSWKpu9Nhola",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1637,
+    "prompt_tokens": 70,
+    "total_tokens": 1707
+  }
+}

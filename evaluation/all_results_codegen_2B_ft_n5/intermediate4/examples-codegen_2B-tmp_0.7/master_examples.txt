@@ -1,0 +1,148 @@
+example-0: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @ (posedge clk or posedge reset)
+begin
+if (reset)
+present_state <= 0;
+else
+present_state <= next_state;
+end
+always @ (present_state or in)
+begin
+case (present_state)
+0: next_state = (in)? 1:0;
+1: next_state = (in)? 0:1;
+endcase
+end
+
+================================================================
+example-1: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+parameter s0 = 0, s1 = 1;
+//present state block
+always @(posedge clk or posedge reset)
+begin
+if(reset==1)
+present_state <= s0;
+else 
+present_state <= next_state;
+end
+//next state block
+always @(present_state or in)
+begin
+case(present_state)
+s0: if(in == 1) next_state = s1; else next_state = s0;
+s1: if(in == 1) next_state = s1; else next_state = s0;
+default: next_state = s0;
+endcase
+end
+//output
+assign out = (present_state == s1);
+
+================================================================
+example-2: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+// next_state is determined by the current state and the input
+always@(posedge clk, posedge reset)
+begin
+if(reset)
+present_state <= 0;
+else
+present_state <= next_state;
+end
+always@(present_state, in)
+begin
+case(present_state)
+0: next_state <= in ? 0 : 1;
+1: next_state <= in ? 0 : 0;
+default: next_state <= present_state;
+endcase
+end
+assign out = (present_state == 1) && (next_state == 0);
+
+================================================================
+example-3: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+assign present_state = {reset, in};
+always @(present_state) begin
+case({reset, in})
+2'b00: next_state = 1'b0;
+2'b01: next_state = 1'b0;
+2'b10: next_state = 1'b1;
+2'b11: next_state = 1'b1;
+default: next_state = 1'bx;
+endcase
+end
+always @(posedge clk)
+if(reset)
+present_state = 1'b0;
+else
+present_state = next_state;
+
+================================================================
+example-4: 
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+always @(posedge clk) begin
+if (reset)
+present_state <= 0;
+else
+present_state <= next_state;
+end
+always @(present_state or in)
+case (present_state)
+0: next_state <= in ? 0 : 1;
+1: next_state <= in ? 0 : 0;
+endcase
+assign out = (present_state == 1);
+
+================================================================

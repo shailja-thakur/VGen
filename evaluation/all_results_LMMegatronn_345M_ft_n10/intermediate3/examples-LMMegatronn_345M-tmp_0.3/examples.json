@@ -1,0 +1,87 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback value concatenated with 4 MSBs of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "cccccrc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_c_crc_crc_crc_c_crc_c_crc_c_crc_crc_c_c_crc_c_crc_c_c_crc_c_crc_c_c_crc_c_c_c_crc_c_c_c_c_crc_c_c_c_c_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "cccccccccccrc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_c_crc_crc_c_crc_crc_c_crc_c_crc_c_crc_c_crc_c_crc_c_c_crc_c_crc_c_c_crc_c_c_c8_c_c_c_c_credits_credits_credits_c_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "ccrc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_c_crc_crc_c_crc_c_crc_crc_c_crc_c_crc_c_crc_c_crc_c_c_crc_c_c_crc_c_c_crc_c_c_crc_c_c_c_c_c_c_crc_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "ccrc_crc_crc_crc_crc_crc_crc_c_crc_crc_c_crc_c_crc_c_crc_c_crc_c_c_crc_c_c_crc_c_c_c_crc_c_c_csc_c_c_crc_c_c_c_csc_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "ccrc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_c_crc_crc_c_crc_crc_crc_c_c_crc_c_crc_c_crc_c_crc_c_c_c_c_crc_c_credits_crc_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_c"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "cccrc_crc_rc_crc_crc_crc_crc_crc_crc_crc_crc_crc_c_crc_crc_crc_c_crc_c_crc_crc_c_crc_c_c_crc_c_crc_c_crc_c_c_c_crc_c_c_crc_c_c_crc_c_c_crc_c_c_c_c_c_c_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_credits_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc+\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc+c+c\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "ccrc_crc_crc_crc_crc_crc_crc_crc_crc_crc_crc_c_crc_crc_c_crc_c_crc_crc_c_c_crc_c_crc_c_c_crc_c_c_crc_c_c_crc_c_c_c_c_crc_c_c_c_c_c_c_crc_c_c_c_c_c_c_c_c_credits_c_c_c_credits_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_c_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc;\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+    }
+  ],
+  "created": 1663299403,
+  "id": "cmpl-o0S49bagAIVvqPOTqkn33mcesenu8",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2000,
+    "prompt_tokens": 155,
+    "total_tokens": 2155
+  }
+}

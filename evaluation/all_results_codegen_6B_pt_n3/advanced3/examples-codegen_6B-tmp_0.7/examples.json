@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nbegin\n  if( reset && !(next_state = IDLE) ) next_state = IDLE;\n  if( next_state != IDLE )\n  begin\n    if( reset ) next_state = IDLE;\n    else\n    begin\n      if( x ) next_state = S1;\n      else next_state = IDLE;\n      end\n    end\n  end\n  if( clk )\n  begin\n    if( next_state != IDLE )\n    begin\n      next_state = present_state;\n    end\n  end\nend\n\n// end\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "  always clk = 1;\n  always rst = 1;\n  always x = x;\n  always z = 1;\n  always next_state = IDLE;\n  always present_state = IDLE;\n  always next_state = IDLE;\n  always present_state = IDLE;\n  always next_state = IDLE;\n  always present_state = IDLE;\n  always next_state = IDLE;\n  always present_state = IDLE;\n  always next_state = IDLE;\n  always present_state = IDLE;\n  always next_state = IDLE;\n  always present_state = IDLE;\n  always next_state = IDLE;\n  always present_state = IDLE;\n  always next_state = IDLE;\n  always present_state = IDLE;\nbegin\n  if (x == 1) next"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nbegin\n\trepeat 2000\n\t\tnext_state = IDLE;\n\t\tpresent_state = IDLE;\n\t\tif (x == high)\n\t\t\tnext_state = S101;\n\t\tif (x == low)\n\t\t\tnext_state = S1;\n\t\tpresent_state = next_state;\n\t\tz = present_state;\n\t\twait_ns(10);\n\tend\nend\n"
+    }
+  ],
+  "created": 1663519300,
+  "id": "cmpl-4ebIpvpuawOKQSXO2xGh2C0t20koQ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 429,
+    "prompt_tokens": 232,
+    "total_tokens": 661
+  }
+}

@@ -1,0 +1,114 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  if (present_state == \"0\") next_state <= \"1\"; else next_state <= \"0\";\nalways @(conversion to comb)\n  if (in) next_state = \"1\";\n  else next_state = \"0\";\n</pre>\nThe above code works on all platforms. To test, instantiate and\nsimulate it on its own:\n.\n\\vert\nThe Moore state machine controlled using the standard FSM design.\n.\nIf the conversion to comb is to be used for non-intuitive inputs, a\nconversion from comb is needed. Here is another state machine, which is\nexpanded using the comb assembly function. The FSM design is simplified\nto contain just the two outgoing transitions: in->1 or in->0 and\nout->1 or out->0, both at the same rate.\n.\n.\n\\begin"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n    present_state <= in;\n    next_state <= in;\n    if (present_state) begin\n      if (next_state) next_state <= 0; // state 0 -> state 1/clk\n      else next_state <= 1; // state 1 -> state 0/clk\n    end\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always begin\n  out <= NEXT_BIT(in, in == reset);\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    next_state <= present_state;\n    next_state <= (in < 1)? 0 : 1;\n    present_state <= next_state;\n    out <= present_state ? (1'b1) : (1'b0);\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    if (reset)\n    begin\n        next_state <= 0;\n    end\nelse\nbegin\n    if (next_state==1) next_state <= 0;\n    else next_state <= 1;\n\n    present_state <= next_state;\nend\nend\n\n// The Simple FSM must act as a 1-to-1 encoder\n// of the next_state bits in the data stream.\n// Given the present state, we want to convert it into a next\n// state, which must be sent to output.\nreg bits;\nrect(199);\nalways @(posedge clk)\nbegin\n    bits <= (present_state+1) & 0x0000077; //converts state (uint8) to bits hex value (uint2)\n    clk <= 1;\nend\nbegin\n    // signal next_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @ (posedge clk or in or out)\n    if (present_state == 0 and in)\n        next_state = 0;\n    else if (present_state == 1)\n        next_state = 1;\n    else\n    // fall through to default, default returns present_state\n        next_state = default;\nactive hold;\n\n\n\t//Utils;\n#ifndef DEBUCK_PARAMETERS\n#define DEBUCK_PARAMETERS {\"rail-volume=10\", \"regulator-converter-1=10 mV/V\"},\n#endif\n\talways @ (posedge clk or in or out)\n\t\tregueressdurabt.converter(handle, (in ? 1 : 0), debuck1);\n\tordered_buffer rega1_ldbuf(regueressdurabt);\n#if"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always_comb begin\n    case (next_state)\n        case (0)\n            out <= in;\n        next_state <= present_state;\n    end\nend\nend\n\nmodule testnetb_fsm(clk, reset, in, out, enable);\ninput clk;\ninput reset;\ninput [5:0] in;\noutput out;\nreg state;\nalways_comb begin\n    case state <= 3:\n        state <= (out ? 4 : 3);\n    end\nend\n\n// register testnetb_dff out_from_clk_0 = testnetb_fsm(clk, reset, in, out, enable);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk or in)\n{\n    next_state = 0;\n    next_state <= 1;\n    present_state <= next_state;\n}\n\n//component fsm_out_toggle\nclass fsm_out_toggle\n{\nis 0;\nis fsm_out_toggle(state);\nstate state;\n{\n    if (state)\n    {\n        fsm_out_ttoggle > 1;\n    }\n    if (!state)\n    {\n        fsm_out_ttoggle > 0;\n    }\n};\nproperty fsm_out_ttoggle;\n//fsm_out_toggle .state(state);\nupdate fsm_out_ttoggle[(state|)];\nend;\n};\n\n//Entity\n//state algorithm\n//speed to state transfer done at majority of outputs\n//speed to transition to next"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\n  begin\n    if (reset)\n      next_state = 0; // The state is just wired in initially: one bit and tied to the clock\n    else if (present_state == 1 and in == 1)\n      next_state = 1;\n    else \n      next_state = 0; \n    out <= next_state;\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always(clk.posedge)\nif (reset)\nnext_state = 0;\nelse if (in)\nnext_state = 0;\nelse\nnext_state = 1;\nalways @(posedge clk)\nif (next_state)\nout.write('no');\nelse\nout.write('yes');\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "always @() begin\n  // The following event synthesizes the statement: out <= in && (next_state==0)\n  if ( reset\n    or active edge(clk)\n    or (next_state==0)\n    or (next_state==1 and active edge(in)) ) begin\n    next_state <= in;\n  end else begin\n    next_state <= (in and (next_state==0)) or not(in);\n  end\nend\n`\n\n// all examples for C\nvar fsmExamplesForC = `\n# system_mal\nkey 0=state 1\nsystem_mal(clk, reset, in, out);\nin_queue(in).\nout_queue(out);\nram(data, 0x8).write(data_out, 0, 0, 32, 1, \"bigendian\");\nreg data_in, data_out"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    // start with state 0\n    if (reset == 1)\n        present_state = 0;\n    else\n        present_state = next_state;\n    next_state = present_state;\n    // pulse output when in state 0\n    if (present_state == 0)\n        out = in;\n    else\n        out = 1;\nend\nend\n*/\n#include <iostream>\n#include \"mcbd_bindings.h\"\n#include \"mcbd_test.h\"\n\nusing namespace std;\n\nint main()\n{\n    bool g = false;\n    multicore_bind(g, g);\n    simulation::Simulation sim;\n    MicroController mcu;\n    int state = 0, mead;\n    \n    mcu.reg(&state:0, state);"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 12,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  present_state = select(int(next_state) == 0, in, present_state);\n  int(next_state) <= combinatorial(present_state, in, out);\nend\n`\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    next_state <= ((in && present_state==0) ? 1 : 0) & reset;\n    present_state <= next_state;\nend\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset)\nstart\n      next_state <= present_state INTL(7) + (present_state & 1);\nend\n\n\nmodule simple_fsm_with_blocking(clk, reset, in, out);\ninput clk;\ninput reset;\ninput in;\noutput out;\nreg pres_state, mod_state;\n\nalways@(posedge clk or negedge reset)\nstart\n      set_next(pres_state, mod_state);\n      out <= (mod_state & 1) ? 1 : 0;\nend\n\nprocess ()\nbegin\n      if (mod_state == 0) then\n         if (in == 1 then\n            if (pres_state == 0) then\n               next_state <= next_state ^ 1 OUTTL(7);\n               next_state <= mod_state;\n            "
+    }
+  ],
+  "created": 1663520222,
+  "id": "cmpl-lXhiCQ6Ai4jgqwChZhF8fexFMRRRF",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2017,
+    "prompt_tokens": 148,
+    "total_tokens": 2165
+  }
+}

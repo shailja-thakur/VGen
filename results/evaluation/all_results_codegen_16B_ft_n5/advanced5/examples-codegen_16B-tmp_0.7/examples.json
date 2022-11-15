@@ -1,0 +1,63 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// z is assigned zero when cur_state is IDLE\nalways @(posedge clk)\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways @(cur_state or a or b)\ncase (cur_state)\nIDLE: if (a == 1 && b == 1)\nnext_state = SA;\nelse if (a == 1 && b == 0)\nnext_state = SB;\nelse if (a == 0 && b == 1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nSA: if (b == 1 && a == 1)\nnext_state = SAB;\nelse if (b == 0 && a == 1)\nnext_state = SAB;\nelse if (b == 1 && a == 0)\nnext_state = SAB;\nelse\nnext_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "assign z = (cur_state == SAB);\nalways @(posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(a or b or cur_state)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif (a)\nnext_state = SA;\nelse if (b)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif (b)\nnext_state = SAB;\nelse\nnext_state = SA;\nend\nSB:\nbegin\nif (a)\nnext_state = SAB;\nelse\nnext_state = SB;\nend\nSAB:\nbegin\nnext_state = IDLE;\nend\ndefault:\nnext_state = IDLE;\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "reg z;\n\nalways @(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <=next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE: begin\nz = 0;\nif(a) begin\nnext_state = SA;\nend\nelse if(b) begin\nnext_state = SB;\nend\nelse begin\nnext_state = IDLE;\nend\nend\nSA: begin\nz = 0;\nif(b) begin\nnext_state = SAB;\nend\nelse begin\nnext_state = SA;\nend\nend\nSB: begin\nz = 0;\nif(a) begin\nnext_state = SAB;\nend\nelse begin\nnext_state = SB;\nend\nend\nSAB:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "assign z = (cur_state == SAB);\n// Register for next state of FSM\nalways @(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\n\tcase(cur_state)\n\tIDLE : begin\n\tif(a == 1'b1 && b == 1'b1)\n\tnext_state = SAB;\n\telse if(a == 1'b1)\n \tnext_state = SA;\n\telse if(b == 1'b1)\n\tnext_state = SB;\n\telse\n\tnext_state = IDLE;\n\tend\n\tSA : begin\n\tif(a == 1'b1 && b == 1'b1)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "reg z;\nalways@(posedge clk,negedge reset)\nbegin\nif(!reset)\ncur_state <= IDLE;\nelse \ncur_state <= next_state;\nend\nalways@(a,b,cur_state)\nbegin\ncase(cur_state)\nIDLE : begin\nz = 1'b0;\nif(a==1 && b==1)\nnext_state = SA;\nelse if(a==1)\nnext_state = SB;\nelse if(b==1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA : begin\nz = 1'b0;\nif(a==1 && b==1)\nnext_state = SAB;\nelse if(a==1)\nnext_state = SA;\nelse if(b==1)\nnext_state ="
+    }
+  ],
+  "created": 1663543649,
+  "id": "cmpl-SRgGNHyqhBpqPxRCbNYRo0njWuoNQ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1000,
+    "prompt_tokens": 218,
+    "total_tokens": 1218
+  }
+}

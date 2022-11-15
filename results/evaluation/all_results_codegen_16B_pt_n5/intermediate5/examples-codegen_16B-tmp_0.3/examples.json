@@ -1,0 +1,52 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\nif(load) begin\nout <= data;\nend else begin\nout = (out << amount) | (out >> (32 - amount));\nend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n\tif (reset) begin\n\t\tout <= 0;\n\tend else begin\n\t\tif (load) begin\n\t\t\tout <= data;\n\t\tend else begin\n\t\t\tout <= (out << amount) | (out >> (32-amount));\n\t\tend\n\tend\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n  if (load) begin\n    out <= data;\n  end else begin\n    out <= (data << amount) | (out >> (8 - amount));\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n  if (load) begin\n    out <= data;\n  end else begin\n    out <= (data << amount) | (out >> (8 - amount));\n  end\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n\tif (load) begin\n\t\tout <= data;\n\tend else begin\n\t\tout <= (data << amount) | (out >> (8 - amount));\n\tend\nend\n"
+    }
+  ],
+  "created": 1663534342,
+  "id": "cmpl-spFtx52THGA9ta1ukUpKHxNItCRCu",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 302,
+    "prompt_tokens": 94,
+    "total_tokens": 396
+  }
+}

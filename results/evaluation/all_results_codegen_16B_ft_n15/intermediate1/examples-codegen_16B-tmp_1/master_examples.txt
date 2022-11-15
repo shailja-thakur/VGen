@@ -1,0 +1,198 @@
+example-0: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+not (a2b,a); // form a compliment of value of a
+xor (half,a,b); //Hi. 
+xor (result1,half,a); // Lo
+ or (cout,result1,half); // (a^b)^half
+
+================================================================
+example-1: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+not( ain, a );
+and(bin, ain, b);
+or(cout, bin, reg_a);
+and(join, reg_a, b);
+reg reg_a;
+always @ ( b or join )
+begin
+	if ( reg_a == 1'b0 )
+	begin
+	reg_a <= 1'b1;
+	end
+	else
+	begin
+	reg_a <= 1'b0;
+	end
+end
+
+================================================================
+example-2: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b; //XOR
+assign cout = a & b; //AND
+
+================================================================
+example-3: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// define output as output type and connect to register
+reg cout;
+reg sum_bit;
+
+reg a_already; // not needed if operation stored in a reg
+
+// sum
+always @ ( * )
+begin
+	// default case: don't originally implement adder functionality here.
+	//a_already = 1'b0;
+	sum_bit = 1'b0;
+	cout = 1'b0;
+	
+	// detect if a is a positive or negative number
+	if (a[15] == 1'b1)
+	begin 
+	//check for carry
+	sum_bit = ~a[15]; // add 1 (negative)
+	cout = 1'b1;
+	// if b is negative it should carry
+	}} 
+	// b is positive then it should not carry
+	
+	
+	
+	
+
+================================================================
+example-4: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+// For symmetrical 0-in, 1-out functions, just use "xor($a, $b) ; $cout = $a" 
+// Negative output values = (( $a & $b ) + ($a&~$b) + (~$a&~$b) ) >> 2
+// When thinking of why that formula works, it's based on some observation:
+// ( $a & $b ) = ( AB )( $a & $b ) + ( AB )( $a & ~$b ) + ( AN )( $a & ~$b )
+// Notice how $a & $b is the same as (AB>>1), which is (AB>>1) + (AB>>1) = (AB>>2)
+// and then $a & ~$b is just AB + AN = ~( AB ) + AN = ~BC + C0 = ~($bc) +
+================================================================
+example-5: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+
+================================================================
+example-6: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum ); 
+// assign code for each input, output and internal variable. 
+assign sum = a ^ b; // bitwise xor of two inputs. 
+assign cout = a & b; // bitwise and of two inputs. 
+
+================================================================
+example-7: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+	
+	// Caculate sum - contents of one adder is ANDed with the other adder's 
+	// carry-in. The carry-out is ORed with the other adder's sum
+	assign sum = a ^ b;
+
+	// OR is short-circuited. The two assignments form one full adder.
+	assign cout = a & b; //(a & b) is actually ((a xor b) xor 1).
+	
+
+================================================================
+example-8: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+//Implement the logic in full_adder, but with a parameter that characterizes the width of the adder
+assign {cout, sum} = a+b;
+
+================================================================
+example-9: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+xor(sum, a, b);
+and(cout, a, b);
+ 
+
+================================================================
+example-10: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-11: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+	// GDL is supposed to be additive!
+	xor( sum, a, b );
+	and( cout, a, b );
+
+
+================================================================
+example-12: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-13: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+assign sum = a ^ b;
+assign cout = a & b;
+
+================================================================
+example-14: 
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );
+
+assign sum = a ^ b; // (a xor b) - E.g. 5 xor 3 = 8, and 8 + 1 = 9
+assign cout = a & b; // (a and b) - E.g. 4 & 1 = 4
+
+
+================================================================

@@ -1,0 +1,153 @@
+// This is an FSM
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z );
+parameter IDLE = 0,
+SA = 1,
+SB = 2,
+SAB = 3;
+reg [1:0] cur_state,next_state;
+// The output z is high when 1 is received for signals a and b in any order.
+// If cur_state is IDLE and a and b are both high, state changes to SAB
+// If cur_state is IDLE, and a is high, state changes to SA
+// If cur_state is IDLE, and b is high, state changes to SB
+// If cur_state is SA, and b is high, state changes to SAB
+// If cur_state is SB, and a is high, state changes to SAB
+// If cur_state is SAB, state changes to IDLE
+// z is assigned one when cur_state is SAB
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "parameter model_inst = 1 (.0);\noutput state_fn(state_select);\n(*state_fn)();\n(*state_fn)(a_logic,b_logic,&cur_state,&next_state);\nalways @* state_select\n    switch (cur_state)\n    {\n        case IDLE: (a_fsm,b_fsm  \n                       process w = a_fsm' ( w_fsm' (a_fsm,b_fsm) w_fsm), \n                       y_fsm' ( y_fsm'' (a_fsm,b_fsm) y_fsm), \n                       z_fsm' ( z_fsm'' (a_fsm,b_fsm) z_fsm) );\n                 if (w.cntr) \n                   next_state = SAB"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always begins\n    next_state = (a&b)==0?SAB:\n            cur_state == 6?IDLE:\n            (a)||(b)==0?SB:\n            (a&~b)|(a&b)==0?SA:\n            cur_state;\n    return next_state;\nend always\n\n\nDUT* abro_m( DUT* p_dut){\n    return p_dut;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\nif ( reset == 0 )\n    cur_state = IDLE;\nelse\n    cur_state = IDLE;\nif ( a == 1 )\n    next_state = SA;\nelse\n    next_state = IDLE;\nif ( b == 1 )\n    next_state = SB;\nelse\n    next_state = IDLE;\n#end\n\nalways @(posedge clk)\nbegin\nif ( reset == 0 )\n    z = 0;\nelse if ( cur_state == SAB )\n    z = 1;\nend\nyield clk;\n\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// z is assigned zero if cur_state is IDLE, SA, SB\nalways @ (posedge clk or posedge a or posedge b)\n\nwire [31:0] result;\nreg [2:0] SAB_reg;\nreg [31:0] nonempty_reg;\n\nassign macro_SAB = SAB when ((!cur_state && (!a && b)) || (a && (!b && cur_state))) \\\n                      || (a && (!b && cur_state)) || (!a && b && (cur_state));\nassign macro_reverse = macro_SAB;\n\n#direction macro inv_accumulator SM\n\n#directions macro consumm[n]\ndirections E[n] = { macro_reverse };\n#enddirections\n\n#directions followed BY macro_SAB MA\ndirections DEF\ndirections MAKE\ndirect"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "initial begin\nif ( set dut buf fsm )\n{\nnext_state = IDLE;\n}\n\nif ( not requested_z )\n{\nnext_state = z;\n}\n\nnext_state = ( I0 == a and not I1 )\n|| (( I1 == a and not I0 ))\n|| ( I0 == b and not I1 )\n|| ( I1 == b and not I0 )\n|| ( I0 == z and not I1 )\n|| ( I1 == z and not I0 );\n\n\n// Calculate the inital cur_state  \nif ( input clk and reset )\n{\ncur_state = reset select refer\n( reset 20020000\nand clk 40ff )\n\t// z low on falling edge -> cur_state : IDLE\n\t// z high on rising edge -> cur_state : cur_state_1\ncur_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "reg [1:0] new_state;\n\nalways @(posedge clk) begin\n    next_state = (a ? 0 : 1);\n    cur_state = next_state;\n    // Read current state and next state from parameters\n    merge(cur_state,next_state);\n\n    if (reset == '1')\n    {\n        // when the reset signal is high, change states\n        new_state = (a ? (reset ? 1 : 2) : (b ? (reset ? 2 : 3) : 1));\n    }\n    else\n    {\n        // when reset is low, maintain current state so output reflects state changes\n        new_state = cur_state;\n    }\n\n    z <= new_state;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n    cur_state = FIELD(reset,1);\nend\n\nalways @(posedge clk)\nbegin\n    next_state = IDLE;\n  #pragma FSM(idle_fsm)\n  default: ASSERT_START();\n\nz_fsm(\n  input a,\n  input b,\n  output next_state,\n  reg z )\n{\n  reg cur_state = FIELD(cur_state,1);\n  // State transitions as defined in \"example\", but with gone directly to delay()\n  // This way, new timer declarations won't get cleared by the program until we fall\n  // out of this function.\n  register DFA::STATE s0 = {0,cur_state,next_state,0,0, {},{}};\n  static struct RegList\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\noutput z;\nbegin\n  // next_state = cur_state;\n  // next_state[7:0] = if a then SAB else\n  // (a[1:0] == 1) ? (case b[1:0] where b[7:2] == b[1:1]) ? SAB : IDLE:\n  //      (b[7:2] == 2) ? SAB : IDLE;\n  // let       cur_state_present =\n  // case (cur_state == SAB) then SAB else\n  // if (next_state == IDLE)\n  if ( next_state == IDLE )\n\n    assert(a[1:0] == 1);\n    if (b[1:0] == 1) next_state = SAB;\n    else if (b[7:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "assign z{1'b1} ;  \nalways @(posedge clk)\nevent\nif ((a == 0) && (b == 1) && cur_state:==IDLE)\ncur_state:=(SAB);\nelse if ((a == 1) && (b == 0) && cur_state:==IDLE)\ncur_state:=(SA);\nelse if ((a == 1) && (b == 1) && cur_state:==IDLE)\ncur_state:=(SB);\nelse if ((a == 0) && (b == 1) && cur_state:==SA)\ncur_state:=(SAB);\nelse if ((a == 0) && (b == 0) && cur_state:==SB)\ncur_state:=(SAB);\nelse if ((a == 1) && (b == 0) && cur_state:==SB)\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n// @author\n// Bjoern Micha\u00df (Peter-Martin responsible)\n// End Of Moboili/VPL version\n\n// FSM Package 1,0.1\n\n// FSM example application\n\n// The main logic consists of the follownig procedure:\n// \tinput \t    clk \t\t   reset\n// \tgeneral \t  a \t\t   b \t\n// \tvalue 0 \t  0 \t\t   0\n// \tvalue 1\t  1 \t\t   0\n// \tvalue 1\t  0 \t\t   1\n// \tvalue 1\t  1 \t\t   1\n//\t\t...\n// \tvalue 1\t  1 \t\t   1\n// \tvalue 0 \t  0 \t\t   1\n// \tend\t\t   update     next\n// \tintent 0\t  start \t  restart\n// "
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "reg [1:0] mode_state;\n// The output z is low (if its value is 0) when mode_assigned is 1 (SB)\nreg [63:0] curr_offset;\n// The current offset of the internal state track is cur_offsetration\nparameter n_of_states = 2 [1:0];\nclk_event clk_event =\n{ state_idle\n{\nout => GPIO[31:28],\nin => clk\n}\n};\npretype timer3_A = trigger_input (!cont_input input a and \ncont_input input b);\npretype delay_clk_1 = timer3_C;\nclk_signal reset_clk_event =\n{ state_idle\n{\nout => reset\n}\n};\nclk_event clk_events[n_of_states];\nm"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "assign z = (cur_state == SAB);\nalways @(posedge clk)\n// the FSM starts low\nif (cur_state == IDLE)\n{\n   if (a == 1 && b == 0)\n    next_state = SB;\n   if (b == 1 && a == 0)\n    next_state = SA;\n\n   cur_state = next_state;\n   next_state = IDLE;\n}\nelse assume(cur_state!=IDLE);\n\n\n   // assignment of next_state when cur_state is SA\nif (cur_state == SA)\n {\n\t   if (reset && z == 0)\n      next_state = SAB;\n\t   else\n      next_state = IDLE;\n\n   cur_state = next_state;\n }\n\n   // assignment of next_state when cur_state is SB\nif"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "*/\n//bff\n\t@Always(state == SAB)\n\tpublic static int z() int _z;\n\tpublic static int _z;\n\n/* inputs */\n//bit\n\tboolean clk_bits;\n\tpublic static boolean clk_bits;\n\tpublic static boolean z_bits;\n\tpublic static boolean in_bits;\n \tpublic static in_bits = in_bits;\n\n/* -------- wired up --------*/\n\n/* output events:\nactive high, clock rising edge */\n\nstatic int _2 = 2;\n\ntask clk_gen() \n{\nLOGI(\"in clk_gen\\n\");\n    _tsk = grafiteStacks[_2];\n    in_bits = (clk_bits != 0);\n    next_state = IDLE;\nLOGI(\"pre clk_gen_next\\n\");\n    cl"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "reg [1:0] state_var;\n\nalways @(posedge clk)\n{\n\tnext_state = IDLE;\n\tcur_state = SAB;\n\n\tif ((a == 1) && (b == 1))\n\t{\n\t\tnext_state = SA;\n\t}\n\telse if ((a == 1) && (b == 0))\n\t{\n\t\tnext_state = SB;\n\t}\n\telse if ((a == 0) && (b == 1))\n\t{\n\t\tnext_state = SAB;\n\t}\n\telse if ((a == 0) && (b == 0))\n\t{\n\t\tnext_state = Z;\n\t}\n\n\tif (reset == 1)\n\t{\n\t\tnext_state = IDLE;\n\t}\n\n\t//z = 0b01 * 0b01 == 1b\n\tif ((cur_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 14,
+      "logprobs": null,
+      "text": "initial begin\nnext_state = IDLE;\ncur_state = IDLE;\nend\n{\noutput collect( a, b );\nenaio( a, b );\nnext_state = Z;\n}\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 15,
+      "logprobs": null,
+      "text": "posedge clk;\nreg transport{a:0,b:0,z:0};\nreg [1:0] last_transport;\n\nalways @(posedge clk)\n{\n  cur_state = IDLE;\n  if (reset) {\n    cur_state = SA,transport.a = 1;\n    last_transport = SA;\n  } else if (a && !b){\n    cur_state = SB,transport.b = 1;\n    last_transport = SB;\n  } else if (b && !a){\n    cur_state = SAB,transport.a = 1,transport.b = 1;\n    last_transport = SAB;\n  }   else{\n    if( a && b ){\n      cur_state = SAB;\n    } else{\n      cur_state = ID"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "always @ (clk)\nbegin\n    case IDLE of\n        when reset => cur_state = SAB;\n        else\n        begin\n            if a = 1,then\n                cur_state = SAB;\n            else\n                if b = 1,then\n                    cur_state = SAB;\n                else\n                    cur_state = IDLE;\n            else\n                cur_state = IDLE;\n            if sim_time >= 5'000'000 =>\n                cur_state = SAB;\n        end;\n        else\n        begin\n            if a = 0,then\n                cur_state = SAB;\n            else\n                if b = 0,then\n                    cur_state = SAB;\n                else\n                    cur_state = IDLE;\n            else\n                cur_state = IDLE;\n            if sim_time >= 5'000'000 =>\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 17,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n\tcur_state = (a > b) ? SB : SA;\n\tnext_state = (cur_state == IDLE) ? SAB : cur_state;\n\tnext_state = (a > b) ? SAB : next_state;\n\tz = cur_state == next_state;\nend\n);\n\n\"\"\"),\n\n    )\n\n# Instantiate QSYS confilct\nvi.create_qsys_blank(1)\n\ndut.vcd_filename = 'qsys_fsm_impl.vcd'\n\ndut.upload_confdir = '../configs/'\n\ndut.set_memory_size(32)\n\n# Execute FSM \ndut.run(0, 20)\n\n# get SQR requirement\nsqr_p = dut[\"demux\""
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "\nliving clock;\n\nstart\nclk <= '1';\nreset <= '1';\n\ncur_state <= idling;\nnext_state <= idling;\n\nalways @ (clk, reset)\nbegin\nif (cur_state is IDLE) next_state <= SAB;\nif (a is '1') next_state <= SB;\nif (b is '1') next_state <= SAB;\nif (reset is '1') next_state <= SA;\nelse\nnext_state <= cur_state;\nend\n\n// Write state to a register so that the Z wave can hear it.\nif (cur_state is SCACK) write cur_state to 2'b00;\nelse if (cur_state is SCANL) write cur_state to 2'b01;\nelse if (cur_state is SCANH) write cur_state to 2'"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 19,
+      "logprobs": null,
+      "text": "wire cur_state,next_state;\nalways @(posedge clk)\n    if (RESET != reset) {\n    next_state = IDLE;\n    } else {\n    next_state = cur_state;\n    }\n    writemem_scalaro(cur_state);\n"
+    }
+  ],
+  "created": 1663537812,
+  "id": "cmpl-wmrJQ7UXkg7cL9BtmCoyKLS6frxgY",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 3549,
+    "prompt_tokens": 218,
+    "total_tokens": 3767
+  }
+}

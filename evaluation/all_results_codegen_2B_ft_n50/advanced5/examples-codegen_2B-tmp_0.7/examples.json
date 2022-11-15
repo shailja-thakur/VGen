@@ -1,0 +1,327 @@
+// This is an FSM 
+module abro(
+input clk,
+input reset,
+input a,
+input b,
+output z 
+);
+parameter IDLE = 0, SA = 1, SB = 2, SAB = 3;
+reg [1:0] cur_state,next_state;
+// Update state or reset on every clock edge.
+// Output z is asserted 1 when the current state is SAB.
+// Nest state generation logic:
+// if input a and b both are high, state changes to SAB. 
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// if input a is high only, state changes to SA.\n// if input b is high only, state changes to SB.\nalways@(posedge clk, negedge reset)\nbegin\nif(!reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(*)\nbegin\ncase(cur_state)\nIDLE: next_state = a?SA:b?SB:SAB;\nSA: next_state = a?SA:b?SB:SAB;\nSB: next_state = a?SA:b?SB:SAB;\nSAB: next_state = a?SA:b?SB:SA;\nendcase\nend\nalways@(*)\nbegin\ncase(cur_state)\nIDLE: z = 0;\nSA: z = 0;\nSB: z = 0;\nSA"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA.\n// if input a is low and input b is high, state changes to SB.\nalways @(posedge clk or posedge reset)\n\tif (reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nalways @(*)\n\tcase (cur_state)\n\tIDLE:\n\tif (a)\n\tnext_state <= SA;\n\telse if (b)\n\tnext_state <= SB;\n\telse\n\tnext_state <= IDLE;\n\tSA:\n\tif (a)\n\tnext_state <= SA;\n\telse\n\tnext_state <= SAB;\n\tSB:\n\tif (b)\n\tnext_state <= SB;\n\telse\n\tnext_state <= SAB;\n\tSAB:"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "// if input a and b either both are high or both are low, \n// state changes to SA.\n// if input a and b are both low, state changes to SB.\nalways@(posedge clk) \n\tif(reset | (cur_state == SA && a && b) | (cur_state == SB && b))\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nalways@(*)\n\tcase(cur_state)\n\tIDLE:\n\tbegin\n\tnext_state <= SA;\n\tz <= 0;\n\tend\n\tSA:\n\tbegin\n\tz <= 0;\n\tnext_state <= SA;\n\tend\n\tSB:\n\tbegin\n\tnext_state <= SB;\n\tz <= 0;\n\tend\n\tSAB:\n\tbegin\n\tnext_state <= SAB"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "// if input a is high and input b is high, state changes to SA. \n// if input a is high and input b is low, state changes to IDLE. \nalways@(posedge clk or posedge reset)\nbegin\n\tif(reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways@(*)\nbegin\n\tcase(cur_state)\n\tIDLE:\n\tbegin\n\tif(a==1'b1 && b==1'b1)\n\tnext_state = SA;\n\telse if(a==1'b1 && b==1'b0)\n\tnext_state = IDLE;\n\telse\n\tnext_state = IDLE;\n\tend\n\tSA:\n\tbegin\n\tif(a==1'b1 && b==1'b1)"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "// if only input b is high, state changes to SA. \nalways @(posedge clk)\nif(reset)\ncur_state <= IDLE;\nelse \ncur_state <= next_state;\nalways @(*)\ncase(cur_state)\nIDLE:\nbegin\nif(~a & ~b)\nnext_state <= SA;\nelse if(a & ~b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif(a & ~b)\nnext_state <= IDLE;\nelse\nnext_state <= SAB;\nend\nSB:\nbegin\nif(b)\nnext_state <= SAB;\nelse\nnext_state <= SA;\nend\nSAB:\nbegin\nnext_state <= IDLE;\nend\nendcase \n// Output logic:\nassign"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "// If input a is high, state changes to SA and output z is asserted.\n// If input b is high, state changes to SB and output z is \n// asserted.\nalways @(posedge clk)\nbegin\n\tif (reset == 1'b1)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @(*)\nbegin\n\tcase(cur_state)\n\tIDLE:\n\tbegin\n\tif (a == 1'b1 && b == 1'b0)\n\tbegin\n\tnext_state <= SA;\n\tz <= 1;\n\tend\n\telse if (a == 1'b0 && b == 1'b0)\n\tbegin\n\tnext_state <= IDLE;\n\tz <= 0;\n\tend\n\telse\n\tbegin\n\tnext_state <= IDLE;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "// if input a is high and b is low, state changes to SA.\n// if input a and b are both low, state changes to SB.\n// if input a is low and b is high, state changes to SAB.\nalways @(posedge clk)\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways @(*)\nbegin\ncase(next_state)\nIDLE: next_state <= a?SA:IDLE;\nSA: next_state <= b?IDLE:SB;\nSB: next_state <= b?SAB:IDLE;\nSAB: next_state <= a?IDLE:SB;\ndefault: next_state <= IDLE;\nendcase\nend\n// Output logic:\nalways @(cur_state)\ncase(cur_state)\nIDLE: z <= 1'b"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "// if input a is high and b is low, state changes to SA. \n// if input a and b are both low, state changes to IDLE.\nalways @(posedge clk or posedge reset)\n\tif (reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nalways @(*)\ncase(cur_state)\nIDLE: next_state <= a?SA:IDLE;\nSA: next_state <= b?IDLE:SA;\nSB: next_state <= a?IDLE:SA;\nSAB: next_state <= b?IDLE:SA;\ndefault: next_state <= IDLE;\nendcase\n// Output logic:\nassign z = (cur_state == SAB)?1:0;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to IDLE. \n// if input a is high and input b is low, state changes to SA.\nalways @(posedge clk or posedge reset)\nbegin\nif (reset) cur_state <= IDLE;\nelse cur_state <= next_state;\nend\n// FSM next state assignment:\nalways @(cur_state or a or b)\ncase (cur_state)\nIDLE: begin\nif (a) next_state = SA;\nelse if (b) next_state = SB;\nelse next_state = IDLE;\nend\nSA: begin\nif (b) next_state = SAB;\nelse next_state = IDLE;\nend\nSB: begin\nif (a) next_state = SAB;\nelse next_state = IDLE;\nend\nSAB: begin\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nif (reset)\n\tcur_state <= IDLE;\nelse\n\tcur_state <= next_state;\nalways @(*)\nbegin\n\tcase(cur_state)\n\tIDLE:\n\tbegin\n\tif(a==1 && b==1)\n\tnext_state <= SA;\n\telse\n\tnext_state <= IDLE;\n\tend\n\tSA:\n\tbegin\n\tif(a==1 && b==1)\n\tnext_state <= SA;\n\telse\n\tnext_state <= IDLE;\n\tend\n\tSB:\n\tbegin\n\tif(a==1 && b==1)\n\tnext_state <= SAB;\n\telse\n\tnext_state <= IDLE;\n\tend\n\tSAB:\n\tbegin\n\tif(a==1 && b==1"
+    },
+    {
+      "finish_reason": "length",
+      "index": 10,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA. \n// if input a is low and input b is high, state changes to SB. \nalways@(posedge clk) \n\tif(reset) \n\tcur_state <= IDLE; \n\telse \n\tcur_state <= next_state;\n// state transition logic:\nalways@(*)\n\tcase(cur_state)\n\tIDLE:\n\tbegin\n\tif(a)\n\tnext_state = SA;\n\telse if(b)\n\tnext_state = SB;\n\telse\n\tnext_state = IDLE;\n\tend\n\tSA:\n\tbegin\n\tif(a)\n\tnext_state = SA;\n\telse\n\tnext_state = SAB;\n\tend\n\tSB:\n\tbegin\n\tif(b)\n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "// if only input a is high, state changes to SA.\n// if only input b is high, state changes to SB.\nalways @(posedge clk) begin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(*) begin\ncase(cur_state)\nIDLE:\nbegin\nif(a & b)\nnext_state <= SA;\nelse if(a)\nnext_state <= SB;\nelse if(b)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif(a & b)\nnext_state <= SAB;\nelse if(a)\nnext_state <= SA;\nelse if(b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSB:\nbegin\nif"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to IDLE. \n// if only input a is high, state changes to SA. \n// if only input a is low, state changes to SB. \nalways @(posedge clk)\nif(reset)\n\tcur_state <= IDLE;\nelse\n\tcur_state <= next_state;\nalways @(*)\n\tif(cur_state == SAB)\n\tz <= 1;\n\telse\n\tz <= 0;\nalways @(*)\n\tcase(cur_state)\n\tIDLE:\n\tif(a)\n\tnext_state <= SA;\n\telse if(b)\n\tnext_state <= SB;\n\telse\n\tnext_state <= IDLE;\n\tSA:\n\tif(a)\n\tnext_state <= SB;\n\telse\n\tnext_state <= S"
+    },
+    {
+      "finish_reason": "length",
+      "index": 13,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA.\n// if input a is low and input b is high, state changes to SB.\nalways @(posedge clk, posedge reset)\nif (reset) cur_state <= IDLE;\nelse cur_state <= next_state;\nalways @(cur_state or a or b)\ncase (cur_state)\nIDLE: begin\nnext_state = IDLE;\nif (a) next_state = SA;\nelse if (b) next_state = SB;\nend\nSA: begin\nnext_state = SA;\nif (a) next_state = SA;\nelse if (b) next_state = SAB;\nend\nSB: begin\nnext_state = SB;\nif (a) next_state = SA;\nelse if (b) next_state = SAB;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to SA.\nalways @(posedge clk, posedge reset) begin\n\tif(reset) cur_state <= IDLE;\n\telse cur_state <= next_state;\nend\n// Output logic:\nalways @(*) begin\n\tcase(cur_state)\n\tIDLE: z <= 1'b0;\n\tSA: z <= 1'b0;\n\tSB: z <= 1'b0;\n\tSAB: z <= 1'b1;\n\tendcase\nend\n// State transition logic:\nalways @(*) begin\n\tcase(cur_state)\n\tIDLE: next_state <= a ? SA : IDLE;\n\tSA: next_state <= a ? SA : b ? SB : IDLE;\n\tSB: next_state <= b ? SAB : IDLE;\n\tSA"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 15,
+      "logprobs": null,
+      "text": "// if only a is high, state changes to SA.\n// if only b is high, state changes to IDLE.\nalways @(posedge clk or posedge reset)\nif (reset) cur_state <= IDLE;\nelse cur_state <= next_state;\nalways @(*)\ncase (cur_state)\nIDLE: next_state <= ((a)&&(b)) ? SA : IDLE;\nSA: next_state <= ((a)&&(b)) ? SA : (((b)&&(a)) ? SAB : IDLE);\nSB: next_state <= IDLE;\nSAB: next_state <= ((a)&&(b)) ? SAB : IDLE;\ndefault: next_state <= IDLE;\nendcase\nassign z = (cur_state == SAB);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 16,
+      "logprobs": null,
+      "text": "// otherwise, state changes to SA.\nalways @(posedge clk)\nbegin\n\tif(reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\n\t//combinational logic for present state and next state\n\tcase (cur_state) \n\tIDLE : \n\tbegin\n\tif(a&b)\n\tnext_state = SAB;\n\telse\n\tnext_state = SA;\n\tend\n\tSA : \n\tbegin\n\tif(a&b)\n\tnext_state = SAB;\n\telse\n\tnext_state = SA;\n\tend\n\tSB : \n\tbegin\n\tif(a&b)\n\tnext_state = SAB;\n\telse\n\tnext_state = SB;"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 17,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to IDLE state.\n// if only input a is high, state changes to SA.\n// if only input b is high, state changes to SB.\nalways@(posedge clk,posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(*)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nnext_state <= (a&b) ? SA:IDLE;\nend\nSA:\nbegin\nnext_state <= (a&b) ? SA:SB;\nz = 1'b0;\nend\nSB:\nbegin\nnext_state <= (a&b) ? SA:IDLE;\nz = 1'b0;\nend\nendcase\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 18,
+      "logprobs": null,
+      "text": "// If input a and b are both low, state changes to IDLE.\n// If input a and b are both high, state changes to SA.\nalways @ (posedge clk or negedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @ (cur_state or a or b)\nbegin\nnext_state = IDLE;\ncase (cur_state)\nIDLE:\nif(a && b)\nnext_state = SA;\nelse if (a)\nnext_state = SB;\nend\nSA:\nif(a && b)\nnext_state = SAB;\nelse if (a)\nnext_state = SA;\nend\nSB:\nif(a && b)\nnext_state = SAB;\nelse if (a)\nnext_state = SB;"
+    },
+    {
+      "finish_reason": "length",
+      "index": 19,
+      "logprobs": null,
+      "text": "// if input a or b are both low, state changes to SA.\n// if only one of them is high, the state remains unchanged.\nalways @(posedge clk or negedge reset) begin\nif(!reset)\ncur_state <= IDLE;\nelse begin\ncur_state <= next_state;\nend\nend\n// Edge triggered sequential logic:\nalways @(*) begin\nif(a == 1'b1 && b == 1'b0)\nnext_state <= SA;\nelse if(a == 1'b0 && b == 1'b0)\nnext_state <= IDLE;\nelse\nnext_state <= SAB;\nend\n// Output z:\nalways @(posedge clk or negedge reset) begin\nif(!reset)\nz <= 1'b0;\nelse begin\ncase(cur_state)\nIDLE: z <="
+    },
+    {
+      "finish_reason": "length",
+      "index": 20,
+      "logprobs": null,
+      "text": "// if input a is high only, state changes to SA.\n// if input b is high only, state changes to SB.\nalways @(posedge clk, posedge reset)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(*)\nbegin\ncase (cur_state)\nIDLE: \nbegin\nif (a & b)\nnext_state = SA;\nelse if (a)\nnext_state = SB;\nelse if (b)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nend\nSA: \nbegin\nif (a & b)\nnext_state = SAB;\nelse\nnext_state = IDLE;\nend\nSB:\nbegin\nif (a)\nnext_state = SA;\nelse\nnext_state = ID"
+    },
+    {
+      "finish_reason": "length",
+      "index": 21,
+      "logprobs": null,
+      "text": "// if only one of them is high, next state is determined by the following table:\n// INIT\n// SA\n// SB\n// SAB\n// if SA and B are both high, SAB is selected.\nalways@ (posedge clk or posedge reset)\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\n// next state combinational logic:\nalways@ (cur_state or a or b)\ncase(cur_state)\nIDLE: begin\n\tif(a)\n\tnext_state <= SA;\n\telse if(b)\n\tnext_state <= SB;\n\telse\n\tnext_state <= IDLE;\n\tend\nSA: begin\n\tif(a)\n\tnext_state <= IDLE;\n\telse\n\tnext_state <= SAB;\n\tend\nSB: begin\n\t"
+    },
+    {
+      "finish_reason": "length",
+      "index": 22,
+      "logprobs": null,
+      "text": "// if only input a is high, state changes to SA. \n// if only input b is high, state changes to SB. \nalways@(posedge clk)\nif(reset) \ncur_state <= IDLE;\nelse \ncur_state <= next_state;\nalways@(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE: begin\nif(a==1'b1 && b==1'b1) next_state = SA;\nelse if(a==1'b1 && b==1'b0) next_state = SB;\nelse if(a==1'b0 && b==1'b1) next_state = SAB;\nelse next_state = IDLE;\nend\nSA: begin\nif(a==1'b1 && b==1'b1) next_state = SAB"
+    },
+    {
+      "finish_reason": "length",
+      "index": 23,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA. \n// if input a and input b are both low, state changes to IDLE. \n// if none of the inputs are high, state stays in the same state. \nalways @(posedge clk or negedge reset)\nbegin\nif (reset == 1'b0)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\n// nextstate combinational logic\nalways @(*)\nbegin\ncase (cur_state)\nIDLE : begin\nif (a == 1'b1 && b == 1'b0)\nnext_state = SA;\nelse if (a == 1'b0 && b == 1'b1)\nnext_state = SB; \nelse if (a == 1'b0 && b == 1'b0)\nnext_state"
+    },
+    {
+      "finish_reason": "length",
+      "index": 24,
+      "logprobs": null,
+      "text": "// if input a is high, state changes to SA.\n// if input b is high, state changes to SB.\n\nalways @(posedge clk,posedge reset)\nbegin\nif (reset == 1)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\n\nalways @(*)\nbegin\ncase (cur_state)\nIDLE:\nbegin\nif(a)\nnext_state <= SA;\nelse if(b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\n\nSA:\nbegin\nif(a)\nnext_state <= IDLE;\nelse\nnext_state <= SAB;\nend\n\nSB:\nbegin\nif(b)\nnext_state <= IDLE;\nelse\nnext_state <= SAB;\nend\n\nSAB:\nbegin\nif(a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 25,
+      "logprobs": null,
+      "text": "// if only a is high, the next state is SA.\n// if only b is high, the next state is SB.\nalways @(posedge clk)\nbegin\nif(reset == 1)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1)\nnext_state = SA;\nelse if(b == 1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif(a == 1)\nnext_state = IDLE;\nelse\nnext_state = SAB;\nend\nSB:\nbegin\nif(b == 1)\nnext_state = IDLE;\nelse\nnext_state = SAB;\nend\nSA"
+    },
+    {
+      "finish_reason": "length",
+      "index": 26,
+      "logprobs": null,
+      "text": "// if only a is high, state changes to SA\n// if only b is high, state changes to SB\nalways @(posedge clk, posedge reset)\nbegin\n\tif(reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @(cur_state)\nbegin\n\tcase(cur_state)\n\tIDLE:\n\tbegin\n\tnext_state <= SA;\n\tz <= 1'b0;\n\tend\n\tSA:\n\tbegin\n\tnext_state <= SA;\n\tz <= 1'b0;\n\tend\n\tSB:\n\tbegin\n\tnext_state <= SB;\n\tz <= 1'b0;\n\tend\n\tSAB:\n\tbegin\n\tnext_state <= SAB;\n\tz <= 1'b1;\n\tend\n\tdefault"
+    },
+    {
+      "finish_reason": "length",
+      "index": 27,
+      "logprobs": null,
+      "text": "// if input a or b are both low, state changes to IDLE. \n// if input b is high only, state changes to SA.\n// if input b is low only, state changes to SB.\nalways @(posedge clk or posedge reset)\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways @(*)\nbegin : combinational_logic\ncase (cur_state)\nIDLE : begin\nif (a == 1'b1 && b == 1'b1) begin\nnext_state <= SA;\nz <= 1'b0;\nend\nelse if (a == 1'b1 && b == 1'b0) begin\nnext_state <= IDLE;\nz <= 1'b0;\nend\nelse if (a == 1'b0 && b == 1'b0) begin\nnext"
+    },
+    {
+      "finish_reason": "length",
+      "index": 28,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\n// FSM next state logic:\n// Assert SAB when inputs are both high.\nalways @(*) begin\ncase(cur_state)\nIDLE:\nif(a && b)\nnext_state <= SA;\nelse\nnext_state <= IDLE;\n// SAB is asserted for one clock cycle.\nSA: \nif(a && b)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\n// SAB is asserted for one clock cycle.\nSB:\nif(a && b)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nendcase\nend\n// Output z\nassign z = (cur_state == SAB"
+    },
+    {
+      "finish_reason": "length",
+      "index": 29,
+      "logprobs": null,
+      "text": "// if input a is high or b is high, state changes to SA.\n// if input a or b is low, state changes to SB.\nalways @(posedge clk) begin\nif(reset) \ncur_state <= IDLE;\nelse \ncur_state <= next_state;\nend\nalways@(cur_state,a,b) begin\ncase(cur_state)\nIDLE: begin\nif(a==0 && b==0)\nnext_state <= SA;\nif(a==0 && b==1)\nnext_state <= SB;\nif(a==1 && b==0)\nnext_state <= SAB;\nend\nSA: begin\nif(a==0 && b==0)\nnext_state <= SA;\nif(a==0 && b==1)\nnext_state <= SAB;\nif(a==1 && b"
+    },
+    {
+      "finish_reason": "length",
+      "index": 30,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to IDLE\n// if input a is high and b is low, state changes to SA\n// if input a is low and b is high, state changes to SB\nalways @(posedge clk) begin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(*) begin\ncase (cur_state)\nIDLE: \nnext_state <= a&b ? SA : IDLE;\n// SA: state is SAB, next_state is SA\nSA: \nnext_state <= a&b ? SA : SB;\n// SB: state is SAB, next_state is SB\nSB:\nnext_state <= b ? IDLE : SAB;\ndefault:\nnext_state <= IDLE;\nendcase\nend\nalways @(*) begin\ncase"
+    },
+    {
+      "finish_reason": "length",
+      "index": 31,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA.\n// if input a is low and input b is high, state changes to SB.\nalways @(posedge clk or posedge reset)\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\n// FSM next state logic: \nalways @(cur_state or a or b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a == 1'b1 && b == 1'b1)\nnext_state <= SA;\nelse if(a == 1'b1 && b == 1'b0)\nnext_state <= SB;\nelse if(a == 1'b0 && b == 1'b1)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 32,
+      "logprobs": null,
+      "text": "// if input b is high, then if input a is high, state changes to SA, \n// else state changes to SB.\n// if input a is high, then if input b is high, state changes to SAB, \n// else state changes to SA.\nalways@(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state,a,b)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a)\nnext_state <= SA;\nelse if(b)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif(a)\nnext_state <= SA;\nelse if(b)\nnext_state <= SAB;\nelse\nnext_state <= IDLE"
+    },
+    {
+      "finish_reason": "length",
+      "index": 33,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, a becomes low.\n// if input a and b are both low, state changes to SA.\nalways@(cur_state or a or b)\n\tbegin\n\tcase(cur_state)\n\tIDLE:\n\tif(a)\n\tnext_state = SA;\n\telse if(b)\n\tnext_state = SB;\n\telse\n\tnext_state = IDLE;\n\tSA:\n\tif(a)\n\tnext_state = SA;\n\telse if(b)\n\tnext_state = SAB;\n\telse\n\tnext_state = IDLE;\n\tSB:\n\tif(a)\n\tnext_state = IDLE;\n\telse if(b)\n\tnext_state = SB;\n\telse\n\tnext_state = SAB;\n\tSAB:\n\t"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 34,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\nif (reset)\ncur_state<=IDLE;\nelse \ncur_state<=next_state;\nend\n// next state logic:\nalways @(*)\nbegin\ncase(cur_state)\nIDLE: next_state= (a & b) ? SA : IDLE;\nSA: next_state= (a & b) ? SA : SAB;\nSAB: next_state= (a & b) ? SAB : IDLE;\ndefault: next_state=IDLE;\nendcase\nend\n// Output z:\nassign z=(cur_state==SAB);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 35,
+      "logprobs": null,
+      "text": "// if only a is high, state changes to SA.\n// if only b is high, state changes to SB.\nalways@(posedge clk, posedge reset)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(cur_state, a, b)\nbegin\ncase(cur_state)\nIDLE: next_state <= (a & b) ? SA : IDLE;\nSA: next_state <= (a & b) ? SA : SB;\nSB: next_state <= (a & b) ? SA : IDLE;\ndefault: next_state <= IDLE;\nendcase\nend\nalways@(cur_state)\nbegin\ncase(cur_state)\nIDLE: z = 1;\nSA: z = 0;\nSB: z = 0;\ndefault: z ="
+    },
+    {
+      "finish_reason": "length",
+      "index": 36,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA.\n// if input a is low and input b is high, state changes to SB.\nalways@(posedge clk)\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\n// next_state logic:\nalways@(*)\nbegin\ncase(cur_state)\nIDLE:\nif(a)\nbegin\nnext_state <= SA;\nz <= 1;\nend\nelse if(b)\nbegin\nnext_state <= SB;\nz <= 1;\nend\nelse\nbegin\nnext_state <= IDLE;\nz <= 0;\nend\nSA:\nbegin\nnext_state <= SAB;\nz <= 1;\nend\nSB:\nbegin\nnext_state <= SAB;\nz <= 0;\nend\nSAB:\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 37,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to IDLE.\n// if input a and b are both high, state changes to SA.\nalways @(posedge clk)\nbegin\nif(reset==1)\ncur_state<=IDLE;\nelse\ncur_state<=next_state;\nend\nalways @(*)\nbegin\ncase(cur_state)\nIDLE:begin\nif(a==0 && b==0)\nnext_state <= IDLE;\nelse if(a==0 && b==1)\nnext_state <= SA;\nelse if(a==1 && b==0)\nnext_state <= SB;\nelse\nnext_state <= SAB;\nend\nSA:begin\nif(a==1 && b==0)\nnext_state <= IDLE;\nelse\nnext_state <= SA;\nend\nSB:begin\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 38,
+      "logprobs": null,
+      "text": "// if only one of them is high, the other state is chosen, and the result becomes SA.\n// if neither a nor b is high, the current state remains the same and the result is SAB.\nalways @(posedge clk or posedge reset) begin\nif (reset) cur_state <= IDLE;\nelse cur_state <= next_state;\nend\nalways @(*) begin\n// Set SAB as default\nnext_state <= IDLE;\ncase (cur_state)\nIDLE: begin\nif (a == 1 && b == 1) next_state <= SA;\nelse if (a == 0 && b == 0) next_state <= SAB;\nelse next_state <= IDLE;\nend\nSA: begin\nif (a == 0 && b == 0) next_state <= SAB;\nelse next_state <= IDLE;\nend\nSB: begin\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 39,
+      "logprobs": null,
+      "text": "// if input a is high and input b is low, state changes to SA. \n// if input a is low and input b is high, state changes to IDLE.\nalways @(posedge clk or posedge reset)\nif (reset) cur_state <= IDLE;\nelse cur_state <= next_state;\n// next state logic:\nalways @(cur_state or a or b)\ncase (cur_state)\nIDLE: begin\nnext_state <= SA;\nz <= 1'b0;\nend\nSA: begin\nnext_state <= SB;\nz <= 1'b0;\nend\nSB: begin\nnext_state <= SAB;\nz <= 1'b0;\nend\nSAB: begin\nnext_state <= IDLE;\nz <= 1'b1;\nend\nendcase\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 40,
+      "logprobs": null,
+      "text": "// if only b is high, then state changes to SA.\n// if only a is high, then state changes to SB.\nalways @(posedge clk) begin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\n// Output logic:\nalways @(cur_state) begin\ncase(cur_state)\n\tIDLE :\n\tbegin\n\tz <= 0;\n\tend\n\tSA :\n\tbegin\t\n\tz <= 1;\n\tend\n\tSB :\n\tbegin\n\tz <= 1;\n\tend\n\tSAB :\n\tbegin\t\n\tz <= 0;\n\tend\nendcase\nend\n// State change logic:\nalways @(a or b or cur_state) begin\ncase(cur_state)\n\tIDLE :\n\tbegin\n\tif(a) next_state"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 41,
+      "logprobs": null,
+      "text": "// if input a is high, state changes to SA. \n// if input b is high, state changes to IDLE. \nalways @(posedge clk, posedge reset)\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\n// next state combinational logic:\nalways @(cur_state,a,b)\ncase(cur_state)\nIDLE: next_state <= (a) ? SA : IDLE;\nSA: next_state <= (b) ? SB : SA;\nSB: next_state <= (b) ? IDLE : SAB;\nSAB: next_state <= (a) ? SA : IDLE;\ndefault: next_state <= IDLE;\nendcase\n// output logic:\nassign z = (cur_state == SAB);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 42,
+      "logprobs": null,
+      "text": "// if input a and b both are low, state changes to IDLE.\n// if only input a is high, state changes to SA. \n// if only input b is high, state changes to SB. \nalways @(posedge clk, posedge reset)begin\n\tif(reset)\n\tcur_state <= IDLE;\n\telse \n\tcur_state <= next_state;\nend\nalways @(cur_state,a,b)\ncase(cur_state)\nIDLE: begin\n\tif(a==1'b1 && b==1'b1)\n\tnext_state <= SA;\n\telse if(a==1'b1 && b==1'b0)\n\tnext_state <= SB;\n\telse if(a==1'b0 && b==1'b1)\n\tnext_state <= SAB;\n\telse\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 43,
+      "logprobs": null,
+      "text": "// if only input a is high, state changes to SA. \n// if only input b is high, state changes to IDLE. \nalways @(posedge clk or posedge reset)\nbegin\nif (reset) \ncur_state <= IDLE;\nelse \ncur_state <= next_state;\nend\n// combinational logic:\n// z is made high on SAB and low on IDLE\n// and SA when both a and b are high.\n// Note that state flip-flops do not\n// need to be synchronous or continuous.\nalways @*\nbegin\n// default values for next_state\nnext_state <= cur_state;\ncase (cur_state):\nIDLE : begin\nif (a & b)\nnext_state <= SA;\nelse\nnext_state <= IDLE;\nend\nSA : begin\nif (a & b)\nnext"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 44,
+      "logprobs": null,
+      "text": "// if only a is high, state changes to SA.\n// if only b is high, state changes to SB.\n// if any input is low, state changes to IDLE.\nalways @(posedge clk, posedge reset) begin\n\tif (reset)\n\tcur_state <= IDLE;\n\telse\n\tcur_state <= next_state;\nend\nalways @(*) begin\n\tcase (cur_state)\n\tIDLE: next_state = a & b;\n\tSA: next_state = b;\n\tSB:\n\tnext_state = IDLE;\n\tdefault: next_state = IDLE;\n\tendcase\nend\nassign z = (cur_state == SAB); \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 45,
+      "logprobs": null,
+      "text": "// if input a is high, state changes to SA. \n// if input b is high, state changes to SB. \nalways @(posedge clk or posedge reset)\nbegin\n\tif (reset) \n\tcur_state <= IDLE;\n\telse \n\tcur_state <= next_state;\nend\nalways @(cur_state) \ncase(cur_state)\n\tIDLE: next_state <= a ? SA : IDLE;\n\tSA: next_state <= b ? SB : SA;\n\tSB: next_state <= b ? IDLE : SAB;\n\tSAB: next_state <= a ? IDLE : SA;\nendcase\n// Output logic:\nassign z = (cur_state == SAB) ? 1 : 0;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 46,
+      "logprobs": null,
+      "text": "// if input a and b are both low, state changes to SA. \nalways @(posedge clk)\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways @(cur_state or a or b)\ncase(cur_state) \nIDLE: if(a) next_state <= SA; \nelse if(b) next_state <= SB; \nelse next_state <= IDLE;\nSA: if(a) next_state <= SAB; \nelse if(b) next_state <= IDLE; \nelse next_state <= SA; \nSB: if(a) next_state <= IDLE; \nelse if(b) next_state <= SB; \nelse next_state <= SAB; \nSAB: if(a) next_state <= IDLE; \nelse"
+    },
+    {
+      "finish_reason": "length",
+      "index": 47,
+      "logprobs": null,
+      "text": "// if only input a is high, state changes to SA. \n// if only input b is high, state changes to SB.\nalways@(posedge clk, posedge reset)\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nalways@(*)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a)\nnext_state = SA;\nelse if(b)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif(a)\nnext_state = IDLE;\nelse\nnext_state = SAB;\nend\nSB:\nbegin\nif(b)\nnext_state = IDLE;\nelse\nnext_state = SAB;\nend\nSAB:\nbegin\nif(a)\nnext_state = IDLE"
+    },
+    {
+      "finish_reason": "length",
+      "index": 48,
+      "logprobs": null,
+      "text": "// if only a is high, state changes to SA. \n// if only b is high, state changes to SB. \nalways @(posedge clk)\nbegin\nif (reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways @(*)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif (a)\nnext_state <= SA;\nelse\nnext_state <= IDLE;\nend\nSA:\nbegin\nif (b)\nnext_state <= SB;\nelse\nnext_state <= IDLE;\nend\nSB:\nbegin\nif (a)\nnext_state <= SAB;\nelse\nnext_state <= IDLE;\nend\ndefault:\nbegin\nnext_state <= IDLE;\nend\nendcase\nend\n// Outputz logic:\nalways @(*)\nbegin"
+    },
+    {
+      "finish_reason": "length",
+      "index": 49,
+      "logprobs": null,
+      "text": "// if input a is high only, state changes to SA.\n// if input b is high only, state changes to SB.\nalways@(posedge clk)\nbegin\nif(reset)\ncur_state <= IDLE;\nelse\ncur_state <= next_state;\nend\nalways@(*)\nbegin\ncase(cur_state)\nIDLE:\nbegin\nif(a&&b==0)\nnext_state = SA;\nelse if(a&&b==1)\nnext_state = SB;\nelse\nnext_state = IDLE;\nend\nSA:\nbegin\nif(a)\nnext_state = IDLE;\nelse\nnext_state = SAB;\nend\nSB:\nbegin\nif(b)\nnext_state = IDLE;\nelse\nnext_state = SAB;\nend\nSAB:\nbegin\nif(a=="
+    }
+  ],
+  "created": 1663607144,
+  "id": "cmpl-HqdxZYloe3V8OiWavPHvQm6SDdWPZ",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 9845,
+    "prompt_tokens": 123,
+    "total_tokens": 9968
+  }
+}

@@ -1,0 +1,54 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// Set next state to 0 in state 1.\nalways@(posedge clk)\nbegin\n  if(reset)\n    present_state <= 0;\n  else\n    present_state <= next_state;\nend\n// A Moore state transition.\nalways@(*)\nbegin\n  case(present_state)\n    0 : begin\n      if(in)\n        next_state = 1;\n      else\n        next_state = 0;\n    end\n    1 : begin\n      if(in)\n        next_state = 2;\n      else\n        next_state = 0;\n    end\n    2 : begin\n  "
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "// Set next state to 0 in state 1.\nalways @(posedge clk)\nbegin\n  if (reset)\n    state <= 0;\n  else\n    state <= next_state;\nend\n// Set next state to 0 in state 0 or 1 to state 1.\nalways @(state or in)\nbegin\n  next_state = 0;\n  case (present_state)\n    0:\n      begin\n        if (in)\n          begin\n            if (present_state == 1)\n              begin\n                next_state = 1;\n              end"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nbegin\n  if (reset == 1'b1)\n  begin\n    state <= 1'b0;\n    next_state <= 1'b0;\n  end else\n  begin\n    state <= next_state;\n    if (in == 1'b1)\n      begin\n        next_state <= 1'b1;\n      end\n    else\n      begin\n        next_state <= 1'b0;\n      end\n  end\nend\n// In state 1, if in=1, go to state 0.\nassign out = present_state == 1'b1 ? 1'b1 : 1'b0;\n// In state 1, if in=1"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n  if (reset == 1'b1)\n  begin\n    next_state <= 0;\n  end\n  else\n  begin\n    case (present_state)\n      0:\n      begin\n        if (in == 0)\n        begin\n          next_state <= 1;\n        end\n        else if (in == 1)\n        begin\n          next_state <= 2;\n        end\n        else if (in == 0)\n        begin\n         "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "// Set to 2 in state 0 and turn on the state to state 1.\nalways@(state or in)\nbegin\nnext_state=1'b0;\ncase(present_state)\n1'b0:\nbegin\nif(in==0)\nbegin\nnext_state=1'b1;\nend\n1'b1:\nbegin\nnext_state=1'b0;\nend\nendcase\nend\nend\n"
+    }
+  ],
+  "created": 1663299271,
+  "id": "cmpl-ckU3gAbue7JBEReQatYS886BSzsS7",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 902,
+    "prompt_tokens": 148,
+    "total_tokens": 1050
+  }
+}

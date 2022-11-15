@@ -1,0 +1,59 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nmodule out(clk, ena, q);\n\n\nnet        in0   = clk.inz.net;\nnet        in1   = ena.net;\nnet        data_i = advshift(clk.pg, in1, data, amount == '00b', q);\nnet        qdata  = regs.advshift(q, data_i);\nout        enable = qdata > 0;\nnet        data   = qdata;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n\nenable stall    ->clk;\nstall         = \"clock_enable\";\nstall         = \"c_ct0\";\nstall         <= clk;\nstall         => data,q := 0;\nstall         <= data, q;\nstall         <=> stall |= load |= ena;\nstall''(load,ena) & 100'h15 ? stall: stall;\n\ndont_build\n\n\n#words data_load ->stall,stall;\ndata_load       => !size8|stall;\ndata_load       => !size16|stall;\ndata_load       => !size64|stall;\nsize8           => d(8,15),c(1,14);\nsize16          => d(16,31),c(1,15);\nsize64          => d(64,63),c(1,31);\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\n// New function declarations for parallel objects.\n//\n// =================================================================================================\n// =================================================================================================\n\n// =================================================================================================\n\n// conversion of Excel sheet to a list is a sequential process.\n\n// The sheet has rows (in reverse order) that become the input stream\nconst int READ_INPUT_INIT_ADDR = 4;\n\n// a connection of one an arithmetical shift register to another\nconst int READ_SHIFTS_CONN_ADDR = 4;\n\n// a connection of one an treatment phase/ata bit to a parser (intended to be the ASCII entry input).\nconst int READ_INPUT_PARSE_HEAD_ADDR = 4;\n\n// a connection of one an output phase/ata bit to a parser (intended to be the ASCII entry input).\nconst int READ_OUTPUT_PARSE_TAIL_ADDR = 4;\n\n// a"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "  always @ (posedge clk or !clk) // set up shift register\n  begin\n    if(load)\n    begin\n      if(en) q <= data;\n    end\n  end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nmodule assert  (true,..., false);\n// http://www.verip.com/documents/80nmrb/pc-language-reference-and-data-model.pdf \n //Blocks blacklist edges anywhere during asserts\ninterface scrub(input w_c, input w_o, input w_e, connection box<1:0> i_en);\n//Now we are in the block of asserts to perform the configuration or the perterals.\n//All input signals MUST connect to the block, since the input modules\n//have all those signals now. Begin with those signals that encompass the scope.\n\n"
+    }
+  ],
+  "created": 1663519654,
+  "id": "cmpl-dK4YPO6hz1W3KwSXf5CEBeAU4RsUt",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 689,
+    "prompt_tokens": 184,
+    "total_tokens": 873
+  }
+}

@@ -1,0 +1,106 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// This is a half subtractor. It subtracts two bits and produces a sum.\nmodule half_sub( \ninput a, b,\noutput bout, sum );\n\nboolean greater;\n\n\nmodule g1( \ninput a1, a2, b1, b2,\noutput chk1, chk2, sum );\n\ninteger s0;\n\nvoid checker( \ninput solo1, solo2, ment1, ment0);\n\n\nvoid checker_outputs( \ninput a, b, c, d, \noutput ch_1, ch_2, sum );\n\n// ==============================================\n\ninput a;\ninput b;\ninput cout;\ninteger sum;\n\noutput run_solo()\n{\n  a = (input) inputLUT[0];\n  b = (input) inputLUT[1];\n  "
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\nassign sum{ 0.5 * a + 0.5 * b }, sum_c;\nassign cout{ a + b }\n\nnegate{ sum }( cout_ )\n\ninc{ sum_c } on sum a', b' {\n  sum_c{ = apply { sum_ }( a, ~b ) }\n}\n\tendif \n\n//--- SIG_COMM_END ---\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "   \n\n`, outputs)\n\nassert.deepEqual( outputs, {\n  output: [\n    { type: 'op', value: 'output' },\n    { type: 'meta', name: 'output' },\n    { type: 'meta', name: 'libname' }\n  ],\n  module: [\n    { type: 'load', value: 'output' },\n    { type: 'name', value: 'cout' }\n  ],\n  ovs: [\n    { type: 'load', value: 'input' },\n    { type: 'name', value: 'sum' }\n  ],\n  modules: [\n    { type: 'load', value: 'module' },\n    { type: 'name', value: 'half_adder' }\n  ]\n})\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nreg dst;\nalways @(posedge i)\n{\n   sum = a;\n   dst = sum + b;\n   cout = dst;\n}\n\nint sc_main(int, char**)\n{\n  half_adder.dst(0).dout(o); \n  half_adder.a(0).b(1);  \n  half_adder.run ();\n\n  return 0;\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\ninput req_a[4];\ninput req_b[4];\ninput in_sum[4];\ninput in_c;\noutput request;\n{\n\n}\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\n  sum = ( ( a << 1 ) ^ a ) << 1;\n  cout(a); cout(sum); auto sum_and_carry = sum & c; cout(sum_and_carry); cout(!sum_and_carry); \n  cout(!(sum & c));\n}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n\n// ${MOD} will be defined later\n// '' will be defined later\n\nvoid konami_urt( );\n\nint\nmain()\n{\n  char thecode;\n  double nodecode;\n  int count;\n  double answer;\n  double sum;\n  \n  // load the parameters\n  std::cout << \"Input your addition parameters:\" << std::endl;\n  std::cin >> thecode >> nodecode;\n  getchar();\n  getchar();\n  \n  // implement a Pins implementation\n  ${MYSHA}_load_half_add_konami_roundrobin();\n  \n  // turn on tmr0 and tmr1\n  CPG_ENABLE ( CPG_TMR0 );\n  CPG_ENABLE ( CPG_TMR1 );\n\n\n  ${KONAMI_URL}\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "\n\ninput carry_a;\ninput carry_b;\ninput final_sum;\n\nsubscription output_c;\ninput input_c;\n  \n\nvoid dead_man( ) {\n  \n}\n\nvoid operator()() \n{ \n     copy_in_bin( carry_a, half_adder.carry_a, 1 );\n     copy_in_bin( carry_b, half_adder.carry_b, 1 );\n     \n     /* each symbol A and B can be read in terms of the four parameter inputs\n     * here we just want to avoid using the integer pixel type for small numbers\n     * and the bin image for large numbers. The pixel type is just for consitency\n     * with the RTC, pixels are actually floats. This also means that the final sum\n     * is no longer exact.\n     */\n     copy_in_bin( a,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\n\ninput clk, wsg_clk, wd_en, wd_clk, reset;\ninput [9:0] bit_x, bit_y;\noutput [7:0] C_out;\n\nalways @( posedge wd_clk )\n  if (wrd_en > 0)   // if |wd_en|\n    if (wd_clk)     // if wd_clk\n      sum += (cout << 1);\n\nalways @( posedge clk )\n  if (wr_en == 1)\n    sum += bit_y;\n\nalways @( posedge wd_clk )\n  if (wrd_en > 0)   // if |wd_en|\n    sum += bit_x;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\n/*\n [1] [1] [0] [1]\n\n[1] is a wire +\n[0] is a wire +\n*/\n\n// Inputs\nin [input fuse]\n\n// Stages\ntemp = a + b  \ntemp\nsum\n\n// Registers\nin [wire fp] and buffer\ninp [wire] and buffer\n\n// Symbolic Functions\nuid [wire a_exec] and wire fp ( f_out ) and output fuse ( f_r )\n\n// Init Block is optional. \ninit [z_out = f_r; a_out = f_r; b_out = f_r ]\n\n*/\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 10,
+      "logprobs": null,
+      "text": "\n\nwire shared_value;\n\nalways @(posedge clk_p)\n{\n\t// A half adder adds two bits and produces a sum and carry-out.\n\tsum[0] = a[0] + b[0];\n\t// sum[0]   = (a[0] + b[0]);\n\tsum[1] = a[1] + b[0] + (pin >> 1);\n\tshared_value = sum[1];\n\t// shared_value = (a[1] + b[0] + (pin >> 0));\n\twire [clk_p-1] = (pin & 1);\n\t//wire [clk_p-1] = (pin & 1);\n}\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 11,
+      "logprobs": null,
+      "text": "\n\nset input_q [1:0] to a;\nset output_q [1:0] to 1;\n\nmodule set_old_bit( \ninput in_bits, output out_bits );\n\nset_old_bit.bits [1:0] to input_func;\nset_old_bit.in [1:0] to 1;\n\nset_old_bit.bits [1:0] to output_func;\nset_old_bit.out to 0;\n\nmodule set_new_bit( \ninput in_bits, output out_bits );\n\nset_new_bit.bits [1:0] to input_func;\nset_new_bit.in [1:0] to 2;\n\nset_new_bit.bits [1:0] to output_func;\nset_new_bit.out to 1;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 12,
+      "logprobs": null,
+      "text": "\n\n// Encapsulate a half-adder unless the entity participates in a production that directly calls it\nmodule half_adder_fixed(\ninput a, b,\noutput cout, sum, count );\n\ninput clk;\n\nmodule modifications;\n// The previous module wholly encapsulates half-adder calculation it should be removed at the end\nmodule wing{\n  input clk;\n  reg \\e a;\n  reg \\e b;\n  reg \\e sum;\n  reg \\e count;\n  reg \\e cout;\n  reg \\e sum;\n  wire \\e sum_o;\n\n  always_ff()\n  begin\n    sum_o < sum;\n\n    // Counts the number as how many times the register is set\n    if ( clk < \\e1 )\n    begin\n      sum\\tmin_w = 0;\n      sum\\tmax_w ="
+    },
+    {
+      "finish_reason": "stop",
+      "index": 13,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk) begin\n    sum += a + b;\n    out_nlow = sum & 1;\n    out_nhigh = sum >> 1;\nend\n);\n*/\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 14,
+      "logprobs": null,
+      "text": "\n\n// This is a full overflown operator. It takes two inputs and the output is either true or false.\nmodule full_overflown( \ninput a ,b,\noutput cout);\n\n//The following expression represents the data of the molecule that we have generated previously.\nmodule final_value( \nfinal_molecule input );\n\n//Given a fp input number and a rounding mode, determine the nearest integer approximation of the input number.\nmodule negate_remainder( \ninput n,\ninput fp, \noutput i, \noutput p );\n\n//Short description:\n// This is the modulus operator.\nmodule mod( \ninput a ,\ninput b );\n\n//The following remnant output is not yet implemented in this simulation of 1-PLR. I did not know how the output parameter worked.\nmodule rtn_plus_one( \ninput a ,"
+    }
+  ],
+  "created": 1663537627,
+  "id": "cmpl-cvC9h9NdOWpQcqi3V268Re48IfKE1",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 2250,
+    "prompt_tokens": 43,
+    "total_tokens": 2293
+  }
+}

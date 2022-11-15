@@ -1,0 +1,45 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @ (posedge clk && reset)\n    r_reg <= r_reg << 1 | r_reg >> 5;\n     r_reg == r_next xor r_next << 2 byte & r_next >> 2 \n       ||<= r_next>>3,<= r_next>>4;   // bit shifts are inverted\n    r_next <= r_reg y if r_reg == 0 init(transfer(~reset));\n    logic [4:0] x_0 = r_reg, x_1 = r_reg, x_2 = r_reg, x_3 = r_reg;\n    endcase\nignorable wait controlwire, clk clockwire;\nendcase\n// design LFSR that produces 9 bits of synchronous feedback, so 4 bit feedback plus 16 MSB bits are superposed int x_0 or x_1\nalways @ (posed"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk)\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n   r_reg <= ( reset ? (1'b0) : (r_next));\n   r_next[5:0] = r_reg[5:0] ^ (r_reg[2] ? 0b0011 : 0b00001);\n   r_next[6:0] = feedback_value += r_next[4] ^ r_next[3];\n   if ( bit in [0, 1, 4, 5])\n      r_reg[7] = 0;\n   else\n      r_reg[7] = 1;\n   q <= r_reg;\nend\n"
+    }
+  ],
+  "created": 1663536960,
+  "id": "cmpl-hs5j56kC7WUqMeUwV9geInVlO1lPT",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 362,
+    "prompt_tokens": 155,
+    "total_tokens": 517
+  }
+}

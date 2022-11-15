@@ -1,0 +1,28 @@
+// left shift and rotate operation
+module left_rotate(clk,reset,amount,data,load,out);
+input clk,reset;
+input [2:0] amount;
+input [7:0] data;
+input load;
+output reg [7:0] out;
+// when load is high, load data to out
+// otherwise rotate the out register followed by left shift the out register by amount bits
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "always\nbegin\n  if (load) begin\n    out = data;\n  end\n  else begin\n    out = (data << amount) | (out >> (8-amount));\n  end\nend\n\n// right shift and rotate operation\nmodule right_rotate(clk,reset,amount,data,load,out);\ninput clk,reset;\ninput [2:0] amount;\ninput [7:0] data;\ninput load;\noutput reg [7:0] out;\n// when load is high, load data to out\n// otherwise rotate the out register followed by right shift the out register by amount bits\nalways\nbegin\n  if (load) begin\n    out = data;\n  end\n  else begin\n    out = (out >> amount) | (data << (8-amount));\n  end\nend\n\n// add with carry operation\nmodule add_with"
+    }
+  ],
+  "created": 1663533701,
+  "id": "cmpl-ScuOz1Euvv7oMjqtZqCLfio0PChtz",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 200,
+    "prompt_tokens": 94,
+    "total_tokens": 294
+  }
+}

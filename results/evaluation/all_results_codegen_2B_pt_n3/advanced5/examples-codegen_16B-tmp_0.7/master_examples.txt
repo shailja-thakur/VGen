@@ -1,0 +1,650 @@
+example-0: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//The FSM fills the buffer when both signals are low and then outputs the buffer when both signals are high
+always @(*) begin
+    if (a == 1 && b == 1) begin
+        next_state = IDLE;
+        next_state = IDLE;
+    end
+    else if (cur_state == IDLE) begin
+        next_state = S1;
+    end
+    else if (cur_state == S1) begin
+        next_state = S3;
+    end
+    else if (cur_state == S2) begin
+        next_state = S3;
+    end
+    else if (cur_state == S3) begin
+        next_state = S2;
+    end
+    else begin assert(false); end
+end
+
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  
+================================================================
+example-1: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+module fsm(
+input clk, reset,
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+// FSM with interleaving of transitions
+//A state transition occurs when the current state is 0 and a signal is asserted
+//The next state is the transited state.
+//The current state is 0, the input signals a and b, the next state is 1, the input signals b and a.
+//The current state is 1, the input signals b and a, the next state is 2, the input signals a and b.
+//The current state is 2, the input signals a and b, the next state is 3, the input signals b and a.
+//The current state is 3, the input signals b and a,
+================================================================
+example-2: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//If a or b are high, the output state transitions from S1 to S2 or S3,
+//If either of them are low, the output state transitions to IDLE
+always @(posedge clk)
+begin
+	cur_state <= next_state;
+	next_state <= ( (a == HIGH) ? S1 : IDLE );
+	next_state <= ( (b == HIGH) ? S2 : IDLE );
+end
+
+================================================================
+example-3: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+module abro_out(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is a Four Input FSM with the output z high when the first, second or third input signal
+//is high. In this FSM, the second or third input signal is high when the first input signal
+//is low and the fourth input signal is low.
+module abro_out2(
+input clk, reset,  
+input a,  b,  c,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+// This is a
+================================================================
+example-4: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//Inputs a and b are instantaneously transmitted to the output z.
+//The Tx and Rx FSM are NOT synchronised, and the outputs may be delayed by 1 clock cycle.
+module t1(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//Inputs a and b are instantaneously transmitted to the output z.
+//The Tx and Rx FSM are NOT synchronised, and the outputs may be delayed by 1 clock cycle.
+module t2(
+input clk, reset,  
+input a,  b,
+output
+================================================================
+example-5: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+module fsm(
+input clk, reset,
+input a, b,
+output z);
+parameter IDLE = 0, S1 = 1, S2 = 2, S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order
+module fsm2(
+input clk, reset,
+input a, b,
+output z);
+parameter IDLE = 0, S1 = 1, S2 = 2, S3 = 3;
+reg [1:0] cur_state, next_state;
+module fsm3(
+input clk, reset,
+input a, b,
+output z);
+parameter IDLE = 0, S1 = 1, S2 = 2, S3 = 3;
+reg [
+================================================================
+example-6: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+reg [2:0] int_state;
+reg [2:0] int_state_old;
+reg [2:0] int_state_next;
+reg [2:0] int_state_next_old;
+reg [2:0] int_state_next_new;
+reg [5:0] a_data, b_data, c_data;
+reg [5:0] c_data_old;
+reg [5:0] c_data_new;
+reg [5:0] c_data_new_old;
+reg [5:0] c_data_next;
+reg [5:0] c_data_next_new;
+reg [5:0] c_data_next_new_old;
+reg [5:0] c_data_next_old;
+reg [5:0] c_data_next_old
+================================================================
+example-7: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+submodule state_transitions
+{
+  default state = IDLE;
+  state next[3] = { IDLE, IDLE, IDLE };
+  initial begin
+    next_state = IDLE;
+    // If the incoming edge is high, the FSM will change to the next state.
+    if (a) next_state = S1;
+    if (b) next_state = S2;
+    // If the incoming edge is low, the FSM will change to the next state.
+    if (not a) next_state = S3;
+    if (not b) next_state = S1;
+  end
+}
+
+================================================================
+example-8: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//The FSM transitions from S1 to S2 when reset is high, but then it stays at S1 when reset is low.
+//It transitions from S2 to S3 when a is high, but then it stays at S2 when a is low.
+//It transitions from S3 to S1 when b is high, but then it stays at S3 when b is low.
+always @(posedge clk)
+begin
+    cur_state[0] <= S1;
+    cur_state[1] <= S2;
+    cur_state[2] <= S3;
+    cur_state[0] <= IDLE;
+    cur_state[1] <= IDLE;
+    cur_state[2] <= IDLE;
+    if (next_state == IDLE)
+    begin
+        next_state <= IDLE;
+    end
+    else if (next_state ==
+================================================================
+example-9: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//The 0 is for the high state and 1 for low state in the FSM.
+//The FSM starts in the IDLE state.
+always @(*) begin
+  if (a) begin:next_state = S1;
+  else if (b) begin:next_state = S2;
+  else begin:next_state = IDLE;
+  if (cur_state != next_state) begin
+  begin:cur_state = next_state;
+  end
+end
+
+//Always-exits FSM based on the register cur_state.
+always @(*) begin
+  if (cur_state == IDLE) begin:next_state = S1;
+  else if (cur_state == S1) begin:next_state = S2;
+  else if (cur_state == S2) begin:next_state = S3;
+  else begin:next
+================================================================
+example-10: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//This is implemented as a FSM with state S1, which is the active state, and states S2 and S3, which are the idle states.
+//The FSM transitions from S1 to S2 when a is high and from S3 to S2 when b is high and from S3 to S1 when b is low.
+//The FSM transitions from S2 to S3 when b is high and from S1 to S3 when a is low.
+//The FSM transitions from S2 to S1 when a is high.
+//The FSM transitions from S1 to S2 when a is low and b is high.
+//The FSM transitions from S3 to S1 when b is low and a is high.
+always @(posedge clk)
+begin
+  if(next_state == IDLE)
+  begin
+    cur_state = IDLE;
+    next_state = ID
+================================================================
+example-11: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//The output is high only when both inputs are high.
+always @(posedge clk or negedge reset)
+  if(next_state == IDLE)
+    next_state = cur_state;
+  else
+    next_state = next_state != IDLE ?  cur_state : next_state;
+  switch (next_state)
+  {
+    case S1:
+      z = 0;
+      break;
+    case S2:
+      z = 1;
+      break;
+    case S3:
+      z = 0;
+      break;
+    default:
+      next_state = IDLE;
+  }
+end
+
+================================================================
+example-12: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+
+always @(posedge clk) {
+  if (next_state == IDLE) {
+    if (a) {
+      next_state = S1;
+    }
+    else if (b) {
+      next_state = S2;
+    }
+  }
+  else if (next_state == S1) {
+    if (a) {
+      next_state = S2;
+    }
+    else if (!b) {
+      next_state = S3;
+    }
+  }
+  else if (next_state == S2) {
+    if (b) {
+      next_state = S3;
+    }
+    else if (!a) {
+      next_state = IDLE;
+    }
+  }
+  else if (next_state == S3) {
+    next_state = IDLE;
+  }
+
+================================================================
+example-13: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+module abro_with_output(
+input clk, reset, 
+input a, input b, output z,
+output a_out, output b_out );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM.
+module abro_with_input(
+input clk, reset, 
+input a, input b,
+output z,
+output a_out, output b_out );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM.
+module abro_with_output_and_input(
+input clk, reset, 
+input a, input
+================================================================
+example-14: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//When the input signals are in the same order, the FSM outputs z high when both signals are high.
+module abro_b(
+input pr,  
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//When the inputs are in different order, the FSM outputs z high when both inputs are high.
+module abro_a(
+input pr,  
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+================================================================
+example-15: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//The output is high when both inputs are high and low when one is high and the other is low.
+//The FSM has no stable state.
+begin
+	always @(posedge clk or negedge reset) begin
+		cur_state <= S1;
+	end
+	always @(posedge clk or negedge reset) begin
+		next_state <= cur_state;
+		next_state == S1 ->  a == 1 -> next_state <= S2;
+		next_state = S2 -> b == 1 -> next_state <= S3;
+		next_state = S3 -> cur_state <= IDLE;
+	end
+end
+
+================================================================
+example-16: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+reg [3:0] p;
+always @(posedge clk) begin
+    if (next_state == IDLE) begin
+        cur_state = 0;
+        next_state = IDLE;
+    end else if (next_state == S1) begin
+        cur_state = 1;
+        next_state = IDLE;
+    end else if (next_state == S2) begin
+        cur_state = 2;
+        next_state = IDLE;
+    end else if (next_state == S3) begin
+        cur_state = 3;
+        next_state = IDLE;
+    end else begin //IDLE
+        p = 3;
+    end else if (cur_state == 1 || cur_state == 2) begin
+        p = 3;
+    end else if (cur_state == 3 && a) begin
+        p = 4;
+================================================================
+example-17: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+
+begin
+  cur_state <= IDLE;
+  next_state <= IDLE;
+  if (a) begin next_state <= S1; end;
+  if (b) begin next_state <= S3; end;
+  if (cur_state <= IDLE) begin next_state <= IDLE; end;
+  if (cur_state == S1) begin next_state <= S2; end;
+  if (cur_state == S2) begin next_state <= S1; end;
+  if (cur_state == S3) begin next_state <= S3; end;
+end
+
+//This is an FSM with the output z high when both of the inpus are high.
+begin
+  cur_state <= IDLE;
+  next_state <= IDLE;
+  if (a and b) begin next_state <= S1; end;
+
+================================================================
+example-18: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+//This will not function correctly if the clock is high when the inputs are high.
+always @(posedge clk or negedge reset)
+if (!reset)
+begin
+	next_state = IDLE;
+	if (a==1)
+	{
+		next_state = S1;
+	}
+	if (b==1)
+	{
+		next_state = S2;
+	}
+	cur_state <= next_state;
+	if (cur_state == S1)
+	{
+		z <= 1;
+	}
+	if (cur_state == S2)
+	{
+		z <= 1;
+	}
+	if (cur_state == S3)
+	{
+		z <= 1;
+	}
+end
+
+================================================================
+example-19: 
+// This is an FSM.
+module abro(
+input clk, reset,  
+input a,  b,
+output z );
+parameter IDLE = 0,
+S1 = 1,
+S2 = 2,
+S3 = 3;
+reg [1:0] cur_state,next_state;
+//This is an FSM with the output z high when either of the input signals a or b are high irrsepective of their order.
+assign z = a ^ b;
+always @(posedge clk or negedge reset)
+begin
+  case cur_state is
+    IDLE:
+      next_state <= IDLE;
+    S1:
+      next_state <= S1;
+    S2:
+      next_state <= S2;
+    S3:
+      next_state <= S3;
+  end
+end
+//outputs the transition table
+module tb_z
+  is
+    signed int a,b;
+    reg [3:0] next_state;
+    assign next_state = 0;
+    always @(posedge clk or negedge reset)
+    begin
+      case next_state is
+        0:
+          next_state <= a;
+          a <= b;
+        1:
+          next_state <= b;
+          b <= a;
+
+================================================================

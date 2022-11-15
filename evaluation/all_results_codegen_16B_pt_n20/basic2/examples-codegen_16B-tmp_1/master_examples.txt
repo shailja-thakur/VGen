@@ -1,0 +1,444 @@
+example-0: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign and_gate.A = a; 
+    assign and_gate.B = b; 
+    assign and_gate.out = and_gate.A & and_gate.B;
+
+
+================================================================
+example-1: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+and_gate
+and_gate( 
+    caseaa a, 
+    caseaa b, 
+    out_port out
+) begin
+
+    while (true) begin
+    
+        // a is true. So b must be true.
+        // get b 
+
+        while (true) begin
+            /* write logic's AND expr */
+
+            /* get a */
+            caseaa a
+        end
+
+    end
+
+    // a is false. So b must be false.
+    // get b 
+
+    while (true) begin
+        /* write logic's AND expr */
+
+        /* get a */
+        caseaa a
+    end
+
+end
+
+
+
+
+================================================================
+example-2: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    //       
+    assign a_and_b_out = AND( a, b);
+
+    // Design a module that buffer a signal 
+    // and output it when clock becomes one
+
+module buffer_and_gate(
+    input clock,               // Nonzero to start outputting to out 
+    input a_in,                // Input for module
+    output out_buffer,         // Buffer output
+    input buffer_enabled      // 1 to start outputting
+    );
+    // Ignore clock, {a_in}, and out_buffer 
+
+    
+    assign out_buffer = (buffer_enabled == 1) ? a_in : 0;
+) // the last line assumes the default value of buffer_enabled == 0
+
+   // Now connect these modules in the correct order where buffer_and_gate
+   // gets clocked before buffer_model before and_gate
+
+module top (
+
+================================================================
+example-3: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+    // implement the functions for gate:
+    // function gate:
+    //    @a = a value
+    //    @b = b value
+    //    @out = out value
+    void (*gate)(input, input, output)=( 
+        input a, 
+        input b, 
+        output out);
+
+    // evaluate the gate:
+    void (*eval)(input); 
+                    // where @a and @b are evaluated
+                    // @out is set to whatever is the too value
+    // constructors
+    and_gate(void(*, *)(input, input, output)) = 
+        gate(this, gate);
+
+    and_gate( 
+        void(*, *)(input, input, output),
+        eval
+    );
+
+/**** TESTING ***/
+
+    and_gate( 
+        int a, 
+        int b, 
+        int
+================================================================
+example-4: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign out( 0 ) = ( a | b );
+    // Assign the negation of a or b to out
+    assign out( 1 ) = ( !a | !b );
+
+================================================================
+example-5: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign( out, and( a, b) );
+================================================================
+example-6: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign  out = and_gate.a && and_gate.b;
+
+
+================================================================
+example-7: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out 
+    assign and_output( out, (a && b) );
+ 
+
+================================================================
+example-8: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+
+assign and_gate_bz(in, and_gate_out){
+  and_gate(a, b, and_gate_out);
+}
+    
+// module implementation of the logic gate
+
+logic gate_AND( 
+    input a, 
+    input b, 
+    output in) 
+{
+    switch ((a, b)) { 
+        case (1, 1):         *in = 1  
+            break;         
+        case (1, 0):         *in = a  
+            break;         
+        case (0, 1):         *in = b  
+            break;         
+        case (0, 0): 
+        default:            *in = 0  
+            break; 
+    }  
+}
+
+================================================================
+example-9: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign_to out 
+        = a && b;
+
+
+================================================================
+example-10: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assignment make_assign( inout and, in out_and )
+        for ( var i in and )
+            and_gate( i, assign( out_and, and( row( and, i ), row( and, i ) ), i ) );
+
+
+================================================================
+example-11: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    out = a & b;
+
+
+================================================================
+example-12: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    and_gate.assign( [=] (int a, int b) {out = a && b;} );
+
+    // Implement the AND gate by decorating the inputs 
+    // a and b.
+
+    // a is a constant module (always has the given input value: 5)
+
+    // b is a module that reads numbers from stdin
+
+    // stdout shows the AND of a and b
+
+
+GATE_KERNEL
+;
+
+================================================================
+example-13: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign  out( and_(a, b) );
+    
+
+module top( 
+    input [2:0] i, 
+    output o
+    );
+
+    // Generate the AND logic
+    and_gate and_node  (a, b, o );  // Connect the and_gate's outputs to top.o
+
+    // Define what to do when the user requests an input to top
+    input [3] a, b;
+    input  enable;
+    always @(posedge enable ) {    
+        if ( enable ) {
+            a = !i[0];
+            b = !i[1];
+        } else {
+            a = 0;
+            b = 0;
+        }
+    }
+
+    // Assipp requires the design file 
+    // define clock & reset interfaces and instantiate them
+    // reset and clock are fed to the
+================================================================
+example-14: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign out( a and b );
+
+
+================================================================
+example-15: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign and_gate: ( $c, $d ) {
+        let $a := a;
+        let $b := b;
+    
+        if ( $a and $b ) {
+            $c := 1;
+        } else {
+            $c := 0;
+        }
+        $d := $a;
+        $out := $c.to_int();
+    }
+
+    // Overlaid design
+    vhdl $dut is
+        $clk : clock;
+        $a : std_logic_vector( n-1 downto 2 );
+        $b : std_logic_vector( n-1 downto 2 );
+        $c : std_logic;
+        $d : std_logic;
+    
+        and_gate( $a, $b, $c, $d );
+    
+    end vhdl
+================================================================
+example-16: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+        assign( out, and( a, b ) );
+
+    
+================================================================
+example-17: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign( out, a & b );
+
+
+================================================================
+example-18: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign 
+        out 
+        = ( a, b );
+
+    enddef;
+
+component   
+    and_gate 
+    ( 
+        .a  {in}, 
+        .b  {in}, 
+        .out  {out} 
+    );
+
+
+================================================================
+example-19: 
+// Design a module that implements an AND gate
+
+module and_gate( 
+    input a, 
+    input b, 
+    output out );
+
+    // assing the AND of a and b to out
+    assign( out, and_( a, b ) );
+    
+module top();
+    and_gate(a, b, out);        // Connect the AND gate to the output
+    and_gate(a, not(b), not_a);  // Connect the NOT gate to another output
+    and_gate(not_a, not(b), not_b);
+    and_gate(not_b, not(a), not_a);
+    always_ff(not_a, not_b, a);           // Connect a new, unconnected, output to a node
+    separate(not_a);     // Separate the output net going to a from everything else its connected to
+
+
+================================================================

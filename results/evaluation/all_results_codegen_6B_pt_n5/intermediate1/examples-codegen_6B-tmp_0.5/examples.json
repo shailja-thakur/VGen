@@ -1,0 +1,46 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\n// The full adder takes two inputs and produces two outputs.\nmodule full_adder( \ninput a, b,\noutput cout, sum, carry );\n\n// The carry is a register. It is used to hold the carry-out of the half adder.\n// It is initialized to zero.\nreg carry;\n\n// The half adder adds two bits and produces a sum and carry-out.\nfunction half_adder_r( \ninput a, b,\noutput cout, sum);\n\n// The full adder adds two inputs and produces two outputs.\nfunction full_adder_r( \ninput a, b,\noutput cout, sum, carry );\n\n// The carry is a register. It is used to hold the carry-out of the half adder.\n// It is initialized to zero.\nreg half_adder_carry;\n\n// The half adder adds two bits"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds two more bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b,\noutput cout, sum, carry_out );\n\n// This is a half subtractor. A half subtractor subtracts two bits and produces a sum and carry-out.\nmodule half_subtractor( \ninput a, b,\noutput cout, sum );\n\n// This is a full subtractor. A full subtractor subtracts two more bits and produces a sum and carry-out.\nmodule full_subtractor( \ninput a, b,\noutput cout, sum, carry_out );\n\n// This is a half multiplier. A half multiplier multiplies two bits and produces a sum and carry-out.\nmodule half_multiplier( \ninput a, b,\noutput cout, sum );\n\n// This"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk or negedge rst) begin\n    if (rst) cout <= 0;\n    else if (a == 0) cout <= b;\n    else cout <= a + b + carry_out;\nend\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\n// This is a full adder. A full adder adds three bits and produces a sum and carry-out.\nmodule full_adder( \ninput a, b, c,\noutput cout, sum );\n\n// This is a half subtracter. A half subtracter subtracts two bits and produces a sum and carry-out.\nmodule half_subtracter( \ninput a, b,\noutput cout, sum );\n\n// This is a full subtracter. A full subtracter subtracts three bits and produces a sum and carry-out.\nmodule full_subtracter( \ninput a, b, c,\noutput cout, sum );\n\n// This is a half xor. A half xor xors two bits and produces a sum and carry-out.\nmodule half_xor( \ninput a, b,\noutput cout, sum );\n\n// This is a"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\npublic half_adder( \ninput a, b,\noutput cout, sum )\n{\n\tthis.a = a;\n\tthis.b = b;\n\tthis.cout = cout;\n\tthis.sum = sum;\n}\n\n// The output is the sum.\npublic output\noutput()\n{\n\treturn this.sum;\n}\n\n// The output is the carry-out.\npublic output\ncarry_out()\n{\n\treturn this.cout;\n}\n\n// The output is the sum and the carry-out.\npublic output\noutput_sum()\n{\n\treturn this.sum, this.cout;\n}\n\n// The output is the sum and the carry-out and the carry-in.\npublic output\noutput_sum_carry()\n{\n\treturn this.sum, this.cout, this.a;\n"
+    }
+  ],
+  "created": 1663519678,
+  "id": "cmpl-bEVIEv0sOxYi54De7tUukVOvrO8Zl",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 859,
+    "prompt_tokens": 43,
+    "total_tokens": 902
+  }
+}

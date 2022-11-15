@@ -1,0 +1,76 @@
+// This is a half adder. A half adder adds two bits and produces a sum and carry-out.
+module half_adder( 
+input a, b,
+output cout, sum );{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nwire c0, cout0, sum0;\nxor (cout0,b,a);\ncompab (sum0,a,b);\nor (cout,cout0,sum0);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": " // \n// Create instances of modules for each input and output\n// Make connections between modules \nfadder uut_half_1(.a(a), .b(b), .y(sum), .cout(cout));\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": " \n\nwire s;\n\n\txor(tempb, a, b);\n\txor( sum, tempb, s); \n\tand(s, a, b);\n\tor(cout, s, tempb);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nassign {cout, sum} = a+b;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n\nassign sum = a ^ b;\nassign cout = a & b;\n/*\nalways @*\nbegin\nif (a && b)\n\tcout = 1'b1;\nelse\n\tcout = 1'b0;\n\ncase ({a,b})\n2'b00:\n$display(\"sum$\\t|carry_out$\",$time,\"\\t%d\\t| %b %b\",sum,cout);\n2'b01:\n$display(\"sum$\\t|carry_out$\",$time,\"\\t%d\\t| %b %b\",sum,cout);\n2'b10:\n$display(\"sum$\\t|carry_out$\",$time,\"\\t%d\\t| %b %b\",sum,cout);\n2'b11:\n$display(\"sum$\\t|carry"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nreg r;\nassign sum = a ^ b;\nassign cout =a & b;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": " \n\nassign\tsum = a ^ b;\nassign\tcout = a & b;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nwire c11, c22;\nhalf_adder HA1( .a(a), .b(b), .sum(sum), .cout(c11) );\nhalf_adder HA2( .a(c11), .b(0), .sum(sum), .cout(c22) );\n\nassign cout = sllb ? c22 : c11;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nassign {cout, sum} = a + b;\t\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\n\tassign sum=a^b;\n\tassign cout=a&b;\n"
+    }
+  ],
+  "created": 1663606946,
+  "id": "cmpl-qQhtyuon2u6LzAXuE28MpyTonwiDg",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 561,
+    "prompt_tokens": 43,
+    "total_tokens": 604
+  }
+}

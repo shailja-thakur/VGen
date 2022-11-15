@@ -1,0 +1,102 @@
+example-0: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @(posedge clk or negedge rst) 
+begin
+  if (!rst) priority_encoder_mem <= '0' || joseph(pos); 
+  in_queue <= in && bus_sel;
+  out_queue <= in_queue && pos'val == '0;
+end
+
+// Priority encoder buffer - 4 bit
+buffered reg [4:0] priority_encoder_mem;
+
+// Generate output bits from priority encoder
+module priority_encoder_chain_out( 
+input [4:0] in_bit,
+output reg [3:0] out_bit ); 
+Y => priority_encoder_chain_out_out;
+// Priority encoder input signals
+always @* begin
+  priority_encoder_mem <= in_bit;
+end
+
+// Priority encoder - enable generation of output bits
+
+================================================================
+example-1: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @ (posedge clk) begin
+  pos = in ? 2 : 1;
+end
+
+================================================================
+example-2: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @(posedge clk or negedge rst)
+if(x)
+begin
+switch(sel)
+case 0:
+dout = 0;
+when(sel == 1) begin // Positive part
+pos = pos % 3;
+           // Negative part
+dout = in%3;
+pos = pos << 1;
+           // Clear higher bits at pos
+mod = ((dout >= 8) and (dout <=15) ? dout : 7);
+dout = dout - mod;
+           // Negate
+dout = (8-dout);
+if (mod != 0) dout = ~dout;
+        else dout = 0;
+           // Gain bits at pos
+regs(int) c1 = 0 + 0x20;
+c1 = c1 & reg;
+c1 = 1 << reg.b11;
+dout = dout + c
+================================================================
+example-3: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+always @(posedge clk) mask0
+  priority_encoder__output(sel) <= 
+    (b = r << (~sel & in));
+
+================================================================
+example-4: 
+// This is a 3-bit priority encoder. If none of the input bits are high, output is zero.
+module priority_encoder( 
+input [2:0] in,
+output reg [1:0] pos ); 
+// When sel=1, assign b to out
+if (sel[0]) 
+  {
+    if (out) 
+      {
+        pos = out[1:0]<==1'b0;
+  	}
+  }
+else 
+  {
+    pos = 0;
+  }
+always@(posedge clk)
+  out = pos & in;
+
+================================================================

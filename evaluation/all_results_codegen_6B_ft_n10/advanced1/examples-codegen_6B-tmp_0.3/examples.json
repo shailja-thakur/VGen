@@ -1,0 +1,86 @@
+// Design a signed adder that adds two 8-bit 2's complement numbers, a[7:0] and b[7:0]. 
+
+module signed_adder(input [7:0] a,
+    input [7:0] b,
+    output [7:0] s,
+    output overflow
+); 
+
+// The numbers a and b are added to the output s. 
+// assign the occurence of the signed overflow of a and b to the output overflow.
+// a signed overflow occurs if the most significant bits of a and b are low and the most significant bit of s is high
+// a signed overflow may also occur if the most significant bits of a and b are high and the most significant bit of s is low
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nwire signed [7:0] b_signed = {b[6:0],b[7]};\n\nassign s = a + b_signed + {8'h00,a[7]}; // since a and b are both signed, we add the two numbers as 8 bit numbers, and then we add the carry in the most significant bit\n\nassign overflow = (a[7]&b_signed[7]) | (b_signed[7]&a[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nwire signed [7:0] b_signed = {b[6:0], b[7]};\n\nassign s = a + b_signed;\n\nassign overflow = (a[7] & b_signed[7]) | (b[7] & a[6]) | (a[7] & b[6] & a[5] & b[5] & a[4] & b[4] & a[3] & b[3] & a[2] & b[2] & a[1] & b[1] & a[0] & b[0];\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nwire signed [7:0] b2;\n\nassign b2 = ~b; // b2 is the 2's complement of b\n\nwire [7:0] s_mux;\n\nmux2to1 mux3(b, b2, s[0], s_mux[0]);\nmux2to1 mux4(a, s_mux, s[1], s_mux[1]);\nmux2to1 mux5(s_mux, b, s[2], s_mux[2]);\nmux2to1 mux6(s_mux, a, s[3], s_mux[3]);\nmux2to1 mux7(b, a, s[4], s_mux[4]);\nmux2to1 mux8(a, b, s[5], s_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\n\nassign s = a + b;\nassign overflow = ((a[7] & b[7]) & ~s[7]) | ((~(a[7] | b[7])) & s[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nwire signed [7:0] b_signed = {b[6:0],b[7]}; \n\t\nadd add_a(a,b_signed,s,overflow);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\n\nassign s = a + b;\nassign overflow = ((a[7] & b[7]) & ~s[7]) | ((~(a[7] | b[7])) & s[7]);\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "\n\n// if a and b are both negative, s is negative\n// if a or b is zero, s is positive\n\n// if a is less than b, s is negative\n// if a is greater than b, s is positive\n\n// if a is less than zero, s is negative\n// if a is greater than zero, s is positive\n\n// if b is less than zero, s is negative\n// if b is greater than zero, s is positive\n\n// if a or b is NaN, s is NaN\n// if a or b is infinite, s is NaN\n\n// if a or b is zero, s is NaN\n\n// if a or b is infinite, s is NaN\n\n// if a or b is NaN, s is NaN\n\n// if a or b is infinite, s is NaN\n\n// if a or b is zero, s is NaN"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "\nwire signed [7:0] b_signed = ~b[7] + 1; // b is treated as a signed number\n\nassign s = a + b_signed;\n\nassign overflow = (a[7] & b_signed[7]) | (b[7] & a[7]);\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "\nwire [7:0] b_signed = {b[6:0],b[7]};\n\nassign s = a + b_signed + {8{overflow}}; // adds the unsigned numbers a and b, and the signed numbers a and b, and the overflow from the previous adder, and produces the signed sum s\n\nassign overflow = (a[7] & b_signed[7]) | (b[7] & a[7]); // adds the most significant bit of a and b, and the least significant bit of a and b, and produces the overflow\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "\nassign s = a + b;\nassign overflow = ((a[7] & b[7]) & ~s[7]) | ((~(a[7] | b[7])) & s[7]);\n\n"
+    }
+  ],
+  "created": 1663600213,
+  "id": "cmpl-hWpGOuUCXdhsvs3Kc161KfpX74KJV",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1066,
+    "prompt_tokens": 164,
+    "total_tokens": 1230
+  }
+}

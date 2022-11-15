@@ -1,0 +1,59 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\n  if (ena)\n  begin\n    if (load)\n    begin\n      q <= data;\n    end\n    else\n    begin\n      q <= q << amount;\n    end\n  end\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// The following is a testbench for the shift register.\n// The shift register is connected to the clock and the load signal.\n// The load signal is connected to the shift register.\n// The shift register is connected to the clock and the output signal.\n// The output signal is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n// The clock is connected to the shift register.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\nbegin\n  if (load)\n    q <= data;\n  else if (ena)\n    q <= shift_reg(q, amount);\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nmodule advshift_load(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when load is high, assign data[63:0] to shift register q.\n// if ena is high, shift q.\n// amount: Chooses which direction and how much to shift.\n// 2'b00: shift left by 1 bit.\n// 2'b01: shift left by 8 bits.\n// 2'b10: shift right by 1 bit.\n// 2'b11: shift right by 8 bits.\n\n\nmodule advshift_load_load(input clk,\ninput load,\ninput ena,\ninput [1:0] amount,\ninput [63:0] data,\noutput reg [63:0] q); \n// when"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\n// The shift register is implemented as a register of 64 bits.\n// The register is initialized to 0.\nreg [63:0] q = 0;\n\nalways @(posedge clk)\n  if (ena)\n  begin\n    if (load)\n    begin\n      q <= data;\n    end\n    else\n    begin\n      q <= q << amount;\n    end\n  end\nend\n\n"
+    }
+  ],
+  "created": 1663519640,
+  "id": "cmpl-By2wjCPGtOXz8R0YDgTi1cpHdPrS5",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 677,
+    "prompt_tokens": 184,
+    "total_tokens": 861
+  }
+}

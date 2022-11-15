@@ -1,0 +1,84 @@
+// Design a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.
+module simple_fsm(clk, reset, in, out);
+input clk;
+input reset;
+input in;
+output out;
+wire out;
+reg present_state, next_state;
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "// assign out=present_state&(~next_state)&(in)\n\nalways_ff @ (posedge clk)\n if(reset==1'b1)\n present_state <= 1'b0; else\n present_state <= in;\n\nalways_comb \n // if(reset==1'b1)\n // next_state <= 1'b0; \n // else if (in ==1) \n // next_state <= 1'b0; \n // else next_state <= 1'b1;\n always_comb \n // if(reset==1'b1)\n // out <= 1'b0; \n // else \n // out <= (~present_state)&(next_state);\n\nalways_comb\n // if(reset==1'b1)\n // assign next_state = 1'b0; \n // else if("
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "parameter state0=0, state1=1;\n\nalways @ (posedge reset or posedge clk)\nif (reset)\npresent_state<=0;\nelse\npresent_state<=next_state;\n\nalways@( present_state or in )\ncase( present_state )\n0 : begin\nif(in) next_state=state1;\nelse next_state=state0;\nend\n1 : begin\nif(in) next_state=state0;\nelse next_state=state1;\nend\nendcase\n\nalways @ (present_state or in )\ncase ( present_state )\nstate0 : out=1;\nstate1 : out=0;\nendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset)\nbegin\nif (reset == 0) \npresent_state = 2'b00;\nelse\npresent_state = next_state;\nend\n//next state\nalways @(present_state or in)\nbegin\ncase (present_state)\n2'b00: next_state = (in) ? 2'b01 : (present_state);\n2'b01: next_state = (in) ? 2'b01 : (present_state);\ndefault:next_state = 2'b00;\nendcase\nend\n//output\nalways @(posedge clk or posedge reset)\nbegin\nif (reset) out <= 0;\nelse\nout <= (present_state == 2'b01) && (present_state != next_state);\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nalways@(posedge clk, posedge reset)\nbegin\nif(reset)\npresent_state <= 0;\nelse\npresent_state <= next_state;\nend\n\n//change next state according to in signals\nalways@(posedge in)\ncase(present_state)\n0: begin\nnext_state <= in ? 0 : 1;\nout <= 0;end\n1: begin\nnext_state <= in ? 0 : 1;\nout <= 0;end\n\nendcase \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n if (reset) begin\n present_state <= 0;\n next_state <= 0;\n end\n else begin\n present_state <= next_state;\n end\n if (reset)\n out <= 1'b0;\n else if (next_state == 0) begin\n out <= 1'b1;\n end\nend\nalways @(present_state, in) begin\n case (present_state)\n 0: begin\n if (in)\n next_state <= 0;\n else\n next_state <= 1;\n end\n 1: begin\n if (in)\n next_state <= 1;\n else\n next_state <= 0;\n end\n endcase\n end\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk, reset)\n if(reset == 1)\n present_state <= 0;\n else\n present_state <= next_state;\n\n always @(*)\n begin\n case(present_state)\n 0: begin\n next_state=1;\n out=0;\n end\n 1: begin\n next_state=0;\n out=1;\n end\n endcase\n end\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always@(posedge clk)\nbegin\nif(reset)\npresent_state <= 0;\nelse\npresent_state <= next_state; \nend\nalways@(present_state) \ncase(present_state)\n0: if(in)\nnext_state <= 1;\nelse\nnext_state <= 0;//present state 0 is obtuse\n1: if(in)\nnext_state <= 1;\nelse\nnext_state <= 0;//state 1 is obtuse\ndefault: next_state <= 0;\nendcase\nalways@(present_state or in)\ncase(present_state)\n0: out <= 0;\n1: out <= 1; \nendcase\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always@(posedge clk or negedge reset) begin\n\tif(!reset) begin\n\tpresent_state <= 0;\n\tnext_state <= 0;\n\tend\n\telse begin\n\tcase(present_state)\n\t0: if(in) \n\tnext_state <= 1;\n\telse \n\tnext_state <= 0;\n\t1: if(in) \n\tnext_state <= 0;\n\telse \n\tnext_state <= 1;\t\n\tendcase\n\tend\nusb_tl __USB_TL__\nreg [7:0] __USB_TL__\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 8,
+      "logprobs": null,
+      "text": "assign present_state = 0; // Current state in first parameter\nassign next_state = ({in, present_state}+1) % 4; // {in, present_state} + 1\n\t// Counter for the {in, present_state}\n\t// XORing them gives the next state\nreg [1:0]current_state;\n\t// Current state\nassign out = (present_state==1);\n\t// Output\nalways @(posedge clk or change of reset)\n\tbegin\n//\tAlways block for current_state\n\tif(reset==1) begin\n\tpresent_state <= 0;\n\tcurrent_state <= 0;\n\tend\n\telse begin\n\tcurrent_state <= next_state;\n\tpresent_state = next_state;\n\tend //end $display in current_state\n\tend // end always\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or reset or in) begin\n\tif (reset == 1) begin\n\t// Reset the present state.\n\tpresent_state <= 1'b0;\n\tend else begin\n\t// Update the present state when a time-varying input value arrives.\n\tpresent_state <= next_state;\n\tend\nend\n// Moore FSM next_state by in\nalways @(present_state or in) begin\n\tcase (present_state)\n\tcase (1'b1)\n\t//00\n\tbegin\n\t// in supposed to reset state 0\n\tnext_state <= in;\n\tend\n\t//01\n\tbegin\n\t// in supposed to go back to state 0\n\tnext_state <= in;\n\tend\n\tendcase\nend\n"
+    }
+  ],
+  "created": 1663606875,
+  "id": "cmpl-vfmsLRD5bvWeEuupRF2unpzKaKu5S",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1612,
+    "prompt_tokens": 148,
+    "total_tokens": 1760
+  }
+}

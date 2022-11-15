@@ -1,0 +1,87 @@
+// Design a 5-bit maximal-length Galois LFSR with taps at bit positions 5 and 3
+module lfsr( 
+    input clk,
+    input reset,
+    output [4:0] q
+); 
+reg [4:0] r_reg;
+wire [4:0] r_next;
+wire feedback_value;
+// on reset set the value of r_reg to 1
+// otherwise assign r_next to r_reg
+// assign the xor of bit positions 2 and 4 of r_reg to feedback_value
+// assign feedback concatenated with 4 most significant bits of r_reg to r_next
+// assign r_reg to the output q
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "assign r_next = {\n    (~r_reg[3] & r_reg[2]),\n    r_reg[3]{bits[clk], bits[reset]}, \n    r_reg[3]{bits[clk], bits[reset]} >> 4 \n};\nreg [4:0] table [4:0];\nreg table_counter;\nalways @(posedge clk) table_counter = (table_counter + (reset > 1)) % len_stream;\nassign q = table[table_counter];\nreg [15:0] id_on, id_hi, id_lo[7:0];\nassign id_low[1:0] = id_lo[4:0];\nassign id_low[2:0] = id_lo[2:0];\nassign id_hi[0] = id_"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "index\nfirst;\nbackground inv;\n(\n    assert(reset==1'b0);\n    r_reg = 1'b0;\n    r_next = 0;\n    feedback_value = 0;\n);\n(\n    assert(clk==1'b1);\n    r_reg = r_next;\n    r_next =\n        r_reg[3:2] ^ r_reg[2:1] ^ r_reg[1:0] ^ feedback_value;\n    feedback_value = r_reg[4:3] ^ r_reg[3:2]; \n    r_next[4:0] = q;            \n    q = r_next;\n);\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always begin\n    r_next(3) \n    r_next(2) <= r_reg(3) & not(feedback_value);\n    feedback_value <= r_reg(6) ^ r_reg(6);\n    r_next(0) <= r_next(1) & ~not(not(feedback_value) & (r_next(4))) & (r_reg(4) == 1);\n    r_next(1) <= r_next(0);\n    r_reg <= r_next;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always #5 clk = clk + 1;\n\nlfsr:\n    let feedback_value = r_reg[1];\n    r_next = r_reg[3];\n    r_reg[0] = r_reg[0] & 1'b0; \n    r_reg[1] = bitand({3}, r_reg[2]);\n    r_reg[2] = bitand({2,3}, r_reg[3]);\n    r_reg[3] = ~2'b0 & feedback_value;\n    q = r_reg;\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) \n    begin\n        if (reset)\n            r_reg <= 1;\n        else\n            r_reg <= r_reg || (r_reg[2] && !(r_reg[3] && (r_reg[4])));\n        r_next <= feedback_value || r_reg[4:0];\n        q <= r_next;\n    end\n// feedback computing function\nreg [2:0] temp; //loop to compute the feedback value\nreg highbit;  //to keep track where the cycle is\nvoid loop()\n{\n    if (clk) \n    {\n        middleloop_lfsr:\n            temp <- temp >> 1;\n            if ((temp[1] & 0x20) == 0x20) \n            {\n                temp[1] <<= 1;\n                "
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "assign q = r_reg;\n(* l-11 *) begin\n    (* min -8 *) begin # the inside of the while loop, see above\n        if (r_ulog <= 0) # is reset?\n            r_reg = 1;\n        else {\n            r_ulog = r_ulog - 1;\n            // identify the two bits, i.e. 2, 4, 6, ... in r_reg\n            assign r_bit[5] = r_reg[0:4];\n            assign r_bit[3] = r_reg[4];\n            //  feedback logic to determine if\n            //  a new bit is necessary..\n            assign feedback_value = r_bit[3] ^ r_bit[5];\n            assign r_bit[2] = 1 & r_reg[3] ^ r_reg[4];"
+    },
+    {
+      "finish_reason": "length",
+      "index": 6,
+      "logprobs": null,
+      "text": "assign q {\n    //frame 0\n    //a sel b sel c sel d 010*\n    01100100,\n    //a sel b sel c sel d 010*\n    00110000,\n    //a sel b sel c sel d 010*\n    00100000,\n    //a sel b sel c sel d 010*\n    00111000,\n    //a sel b sel c sel d 010*\n    01101000,\n    //a sel b sel c sel d 010*\n    11110100,\n    //a sel b sel c sel d 010*\n    11110101,\n    //a sel b sel c sel d 010*\n    11110102,\n    //a sel b sel c sel d 010*"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @* begin\n    case(rtl)\n      reg [6:5] r_reg_CAL[5:2] = {{4'b0}};\n      case(r_reg_CAL)\n        case(0b00)\n          r_next = 4'b10;\n        case(0b001)\n          r_next = 4'b01; \n        case(0b011)\n          r_next = 4'b11;\n        case(0b010)\n          r_next = 4'b10; \n        default\n          r_next = 4'b00;\n      endcase\n      r_next(-4) = r_reg_CAL((r_reg_CAL)-2);  // feedback_value(-4)\n      r_reg = 1'b1 & r_next;\n    endcase)\nend"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "reg r_sel_mul = 0;\nml(\n    if (reset = '0') r_reg = 1;\n    else {\n        //Write ACC into feedback_value\n        feedback_value = accboot;\n        //Write feedback_value into r_next\n        r_next = r_reg;\n        //Write r_next into r_sel_mul\n        r_sel_mul = 3;\n    }\n    == {1:0, 0:1} + {1:0, 0:0} + {1:0, 0:1} + {1:0, 0:0} \n    == {0:0, 0:1, 1:0, 1:0, 1:0} \n);\nlfsr(\n    clk == clk'0 || r_sel_mul != po2(r_sel"
+    },
+    {
+      "finish_reason": "length",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk | posedge reset) begin\n    if (reset) begin\n        r_reg := $b00;\n    end else begin\n        r_reg := r_reg@3;\n    end\n    r_next[2:0] := feedback_value; // bit position 2\n    r_next[3:1] := r_next[2:0]; // bit position 3\n    r_next[5:4] := r_next[2:0]; // bit position 5\n    r_next[5:4] := r_next[2:0] ^ $b10; // bit position 2\n    r_next[5:3] := r_next[5:4]; // bit position 3\n    r_next[5:2] := r_next[5:3]; // bit position 2\n    r_next[5:2] :="
+    }
+  ],
+  "created": 1663534762,
+  "id": "cmpl-CHdHSfglrddJnI60U5ZsGOrfeN6On",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1830,
+    "prompt_tokens": 155,
+    "total_tokens": 1985
+  }
+}

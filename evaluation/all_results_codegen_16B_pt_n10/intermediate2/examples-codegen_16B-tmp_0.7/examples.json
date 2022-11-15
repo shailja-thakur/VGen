@@ -1,0 +1,83 @@
+// This is a counter that counts from 1 to 12
+module counter( 
+    input clk,
+    input reset,
+    output reg [3:0] q
+); 
+// update q on the positive edge of the clock according to the following cases:
+// on reset, assign q to 1
+// else if q is 12, assign q to 1
+// else, increment q by 1 
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n    if (reset == 0) q <= 1;\n    else if (q == 12) q <= 1;\n    else q <= q + 1;\nend\n// If q is 12, reset q to 0\n// else, assign q to q\nalways @(posedge clk or posedge reset) begin\n    if (q == 12) q <= 0;\n    else q <= q;\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n    if (reset == 0) q <= 0;\n    else if (q == 12) q <= 1;\n    else q <= q + 1;\nend\n// we want to test q\nreg [3:0] testq;\nassign testq = q;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "// note that incrementing q with a register can be done with:\n// q = q + 1 \n// The code in this example uses an inline function to do this.\ninline void update_q( void )\n{ \n    q = ( reset == 0 ) ? 1 : ( q == 12 ) ? 1 : q + 1; \n}\n// update q whenever clk changes from low to high\nalways @(posedge clk) begin\n    update_q();\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin \n    if (reset) q <= 0;\n    else if (q == 12) q <= 1;\n    else q <= q + 1;\nend\n// synthesize the output\nassign q = q'[3:0]; \n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin \n    if (reset == 1) q <= 1;\n    else if (q == 12) q <= 1;\n    else q <= q + 1; \nend\n// display q on the positive edge of the clock\n// this follows the above algorithm\nalways @(posedge clk) begin \n    if (reset == 0)\n        q <= 1;\n    else if (q == 12) \n        q <= 1;\n    else \n        q <= q + 1;\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 5,
+      "logprobs": null,
+      "text": "always @(posedge clk or negedge reset) begin\n    if (reset == 0) {\n        q <= 1;\n    } else if (q == 12) {\n        q <= 1;\n    } else {\n        q <= q + 1;\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "always @(posedge clk) begin\n    if (reset == 1) q <= 1;\n    else if (q == 12) q <= 1;\n    else q <= q + 1;\n    q <= q + 1;\nend\n// output q is assigned to the register\nassign q = q;\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 7,
+      "logprobs": null,
+      "text": "always @(posedge clk) \n    if (reset)\n        q <= 1;\n    else if (q == 12)\n        q <= 1;\n    else q <= q + 1;\n// assignment operator overloads the <= operator\n// for assignment, q stores the value of q\n// for read, q returns the value of q\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "// This only works for q < 13\n// Note that if q = 13, clk is not asserted on the positive edge of the clock\nalways @(posedge clk or posedge reset) begin\n    if (reset == 0) q <= 1;\n    else if (q == 12) q <= 1;\n    else q <= q + 1;\nend\n// The output logic is the same as the case above\n// This only works for q < 13\nalways @(posedge clk or posedge reset) begin\n    if (reset == 0) q <= 1;\n    else if (q == 12) q <= 1;\n    else q <= q + 1;\nend\n\n// This is a counter that counts from 1 to 12\nmodule counter_2( \n    input clk,\n    input reset,\n    output reg [2:0] q\n); \n// update q on the"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "always @(posedge clk or posedge reset) begin\n    if (reset == 0) q <= 1;\n    else if (q == 12) q <= 1;\n    else q <= q + 1;\nend\n"
+    }
+  ],
+  "created": 1663534704,
+  "id": "cmpl-OXe3FwpNpg9WeFNMlrt8zRsvmdTXi",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 962,
+    "prompt_tokens": 88,
+    "total_tokens": 1050
+  }
+}

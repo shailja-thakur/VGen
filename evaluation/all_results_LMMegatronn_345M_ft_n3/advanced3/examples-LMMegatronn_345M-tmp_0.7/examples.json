@@ -1,0 +1,47 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\n\nalways @ (posedge clk or posedge reset) begin\n  if (reset) begin\n    state <=  IDLE;\n    produce_state <=  0;\n    previous_state <=  IDLE;\n  end else begin\n    case (present_state)\n      IDLE: \n        if (x) \n        begin\n\t         // change state\n           if (y == 0)\n\t\t        next_state <= S1;\n\t\t      // change the change\n\t\t      else if (x)\n\t\t        next_state <= S0;\n\t\t      //"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nalways @ (present_state, x, y, z)\nbegin : FSM_COMB \n    casez(present_state) \n        IDLE:\n        begin\n            if (x)\n            begin\n                next_state = S1;\n            end\n            else if (y)\n            begin\n                next_state = S1;\n            end\n            else\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n\nalways @(posedge clk)\nbegin\nif (reset) begin\n    state <= IDLE;\n    output_z <= 1'b1;\n    output_x <= 1'b0;\nend\nelse begin\n    state <= next_state;\n    output_z <= next_output_z;\n    output_x <= next_output_x;\nend\nend\n\n"
+    }
+  ],
+  "created": 1663299199,
+  "id": "cmpl-IeIxYTxkPYhSxLkEvDdsgqz7ux2Ox",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 504,
+    "prompt_tokens": 232,
+    "total_tokens": 736
+  }
+}

@@ -1,0 +1,42 @@
+// Design a decade counter that counts from 0 through 9, inclusive.
+
+module count_slow(
+    input clk,
+    input slowena,
+    input reset,
+    output reg [3:0] q);
+
+// On the positive edge of the clock:
+// if reset is high, reset the output q to 0. 
+// Otherwise, only increment the output q if the ena input is high and q is not 9.
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "text": "when(reset=1) begin n = 0;\n     end else begin\n     end.\n\nwhen(slowena=1) begin\n  if (n <= 9) begin\n    q[n] = q[n+1];\n    n = n+1;\n  end;\nend;\n\nreg [0:2] m;\n\nwhen (clk = 1) begin\n    m <- reg;\n    if (slowena = 1) begin\n    fout round m, 99'999 decimal modes.\n    end\n    round m, slowena;\n    reg <= m;\nend.\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 1,
+      "logprobs": null,
+      "text": "always(clk) begin\n            vreg q <= 0;\n\nalways(fastena) begin\n            if (slowena = 1) begin\n                q <=q+1;\n            end\nend\n\n// On the negative edge of the clock,\n// if reset is high, push the output state into the counter state s.\n// Otherwise, only slide the counter state if we are at 0 and the ena input is high.\nalways(clk) begin\n            vreg[1:0] s = q;\n            vreg q <=0;\n\nalways(slowena) begin\n            if (reset = 1) begin\n                s <=9;\n            end\n            else if (slowena = 1 && q = 0) begin\n                s <=0;\n            end\n        end\nend\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "always @(posedge clk)\n  begin\n    if (reset) begin\n        q <= 0;\n    end else if (!slowena && !q)begin\n        q <= 1;\n    end else if (!slowena && q) begin\n        q <= 9;\n    end else begin\n        q <= q + 1;\n    end\n  end\n\n  \n"
+    }
+  ],
+  "created": 1663519313,
+  "id": "cmpl-0ESjk9Dxg3QKMLvUhGKAu7RGUCWc3",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 405,
+    "prompt_tokens": 98,
+    "total_tokens": 503
+  }
+}

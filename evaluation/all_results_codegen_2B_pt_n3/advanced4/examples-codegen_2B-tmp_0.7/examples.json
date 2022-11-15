@@ -1,0 +1,47 @@
+// Design a 64-bit arithmetic shift register, with synchronous load. 
+// The shifter can shift both left and right, and by 1 or 8 bit positions, selected by amount.
+module advshift(input clk,
+input load,
+input ena,
+input [1:0] amount,
+input [63:0] data,
+output reg [63:0] q); 
+// when load is high, assign data[63:0] to shift register q.
+// if ena is high, shift q.
+// amount: Chooses which direction and how much to shift.
+// 2'b00: shift left by 1 bit.
+// 2'b01: shift left by 8 bits.
+// 2'b10: shift right by 1 bit.
+// 2'b11: shift right by 8 bits.
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\n{\n\t// This is just a free-running timer, not a clock.\n\t// The Y1 is used to keep track of how many cycles since last rising edge of clk.\n\t// The X4 is used to keep track of the number of times the shift register has been shifted.\n\tX4 = X4 + 1;\n\tif (ena && (X4 > 64))\n\t{\n\t\t// ASSERT( 1 == load || 0 == load );\n\t\t// ASSERT( 0 == ena || 1 == ena );\n\t\t// ASSERT( 1 == load || 0 == load );\n\t\t// ASSERT( 1 == ena || 0 == ena );\n\t\t// ASSERT( 1 == load || 0 == load );\n\t\t// ASSERT( 1 == ena || 0 == ena );\n\n\t\t// When load is high, assign data[63"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\n// Constructor:\nadvshift::advshift(\n   input clk,\n   input load,\n   input ena,\n   input [1:0] amount,\n   input [63:0] data,\n   output reg [63:0] q)\n{\n  // Shift Register is a two bit register, so the amount of shift is a single bit.\n  // Assign the amount to the shift register. \n  // If ena is high, shift register.\n  if (ena == 1) {\n    // Shift Register is a two bit register, so the amount of shift is a single bit.\n    // Assign the amount to the shift register. \n    // If ena is high, shift register.\n    int shift = amount;\n    // Shift register is a two bit register, so the amount of shift is a single bit.\n    // Assign the amount to the"
+    },
+    {
+      "finish_reason": "length",
+      "index": 2,
+      "logprobs": null,
+      "text": "\nalways @(*)\nwire clk;\nwire load;\nwire ena;\nwire [1:0] amount;\nwire [63:0] data;\nwire q[63:0]; \nalways @(*)\n  #5 1\n  #5 3\n  #5 5\n  #5 7\n  #5 9\n  #5 11\n  #5 13\n  #5 15\n  #5 17\n  #5 19\n  #5 21\n  #5 23\n  #5 25\n  #5 27\n  #5 29\n  #5 31\n  #5 33\n  #5 35\n  #5 37\n  #5 39\n  #5 41\n  #5 43\n  #5 45\n  #5 47\n  #5 49\n  #5 51\n  #5 53\n  #5 55\n  #5 57\n  #5"
+    }
+  ],
+  "created": 1663536971,
+  "id": "cmpl-fOSU77NcRzFLiZzecKBLKGbEH34By",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 600,
+    "prompt_tokens": 184,
+    "total_tokens": 784
+  }
+}

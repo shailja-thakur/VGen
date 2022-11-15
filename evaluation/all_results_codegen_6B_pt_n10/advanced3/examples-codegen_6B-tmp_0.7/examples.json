@@ -1,0 +1,89 @@
+// This is a finite state machine that recognizes the sequence 101 on the input signal x. 
+module adv_fsm(
+input clk,
+input reset,
+input x,
+output z ); 
+reg [1:0] present_state, next_state;
+parameter IDLE=0, S1=1, S10=2, S101=3;
+// output signal z is asserted to 1 when present_state is S101 
+// present_state is reset to IDLE when rset is high
+// otherwise it is assigned next state
+// if present_state is IDLE, next_state is assigned S1 if x is 1, otherwise next_state stays at IDLE
+// if present_state is S1, next_state is assigned S10 if x is 0, otherwise next_state stays at IDLE 
+// if present_state is S10, next_state is assigned S101 if x is 1, otherwise next_state stays at IDLE 
+// if present_state is S101, next_state is assigned IDLE
+
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "logprobs": null,
+      "text": "\talways @(posedge clk) // clock edge\n\t\tnext_state <= S1; \t\t// if x is 1, next_state is S1, otherwise it stays at IDLE\n\tif (reset) next_state <= IDLE; // if input is high, next_state is IDLE\n\talways @(negedge clk) // clock edge\n\t\tnext_state <= S101; \t// if x is 0, next_state is S10, otherwise it stays at IDLE\n\tif (reset) next_state <= IDLE; // if input is high, next_state is IDLE\n\talways @(posedge clk) // clock edge\n\t\tnext_state <= S10; \t// if x is 0, next_state is S1, otherwise it stays at IDLE\n\tif (reset) next_state <= IDLE; // if input is high, next_"
+    },
+    {
+      "finish_reason": "length",
+      "index": 1,
+      "logprobs": null,
+      "text": "\nreg [2:0] next_state_in;\nreg [3:0] next_state_out;\nreg [4:0] next_state_out_adv;\n\nalways @ (posedge clk or negedge reset) begin\n    if (next_state_in == S1) begin\n        if (x == 1) next_state_out = S10;\n        else next_state_out = IDLE;\n    end\n    if (next_state_in == S10) begin\n        if (x == 0) next_state_out_adv = S101;\n        else next_state_out_adv = IDLE;\n    end\n    if (next_state_in == S101) begin\n        next_state_out_adv = IDLE;\n    end\n    if (next_state_in == IDLE) begin\n        if"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 2,
+      "logprobs": null,
+      "text": "\n// This module is the advanced finite state machine\n// The input signal x is the input to the adv_fsm\n// The output signal z is the output of the adv_fsm\nadv_fsm <= clk, reset, next_state, x;\n\n// The output z is the output of the adv_fsm\nassign z = next_state;\n\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 3,
+      "logprobs": null,
+      "text": "\nbegin\n    z <= (x[0]==1?1:0);\n    next_state <= IDLE;\n    present_state <= IDLE;\n    if( x[0] ) next_state <= S101;\n    if( x[0] ) next_state <= S10;\n    if( x[0] ) next_state <= S1;\n    if( reset )\n    {\n        present_state <= IDLE;\n\tnext_state <= IDLE;\n    }\nend\n"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 4,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk)\nbegin\n    if(next_state==IDLE)\n    begin\n        present_state <= next_state;\n        next_state <= S1;\n    end\n    else\n    begin\n        present_state <= next_state;\n        next_state <= IDLE;\n    end\nend\n\n// The advanced FSM is called by the DecoderFSM for each input bit and then determines if the bit is valid or not.\nassign z = (present_state==S101)?1:0;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 5,
+      "logprobs": null,
+      "text": "  always @(posedge clk or negedge reset)\n  begin\n    if (reset) next_state = IDLE;\n    else if (next_state != IDLE) next_state = next_state; \n    else if (x == 1) next_state = S1;\n    else if (x == 0) next_state = S10;\n    else next_state = IDLE;\n  end\nend\n\n// This is the behavioral model. It was created by Philip G. Bennett with help from\n// Dr. Chris L. Bennett.\n\nmodule behavior(\ninput clk,\ninput reset,\ninput x,\noutput z ); \nreg [1:0] present_state;\nparameter IDLE=0, S1=1, S10=2, S101=3;\n// output signal z is asserted to 1 when present_state is S101"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 6,
+      "logprobs": null,
+      "text": "\nalways @(posedge clk or negedge reset)\nbegin\n  if(reset) next_state=IDLE;\n  else next_state=present_state;\n  else if(next_state==IDLE)\n  if(.U(x)) next_state=S1;\n  else next_state=IDLE;\n  else if(next_state==S1)\n  if(.U(x)) next_state=S10;\n  else next_state=IDLE;\n  else if(next_state==S10)\n  if(.U(x)) next_state=S101;\n  else next_state=IDLE;\n  else if(next_state==S101)\n  next_state=IDLE;\n  else next_state=IDLE;\nend\n\n"
+    },
+    {
+      "finish_reason": "length",
+      "index": 7,
+      "logprobs": null,
+      "text": "   always @(posedge clk or negedge reset) begin\n        if (!reset) begin\n            next_state <= IDLE;\n        end\n        else if (next_state <= S1) begin\n            next_state <= S1;\n            next_state <= S10;\n        end\n        else if (next_state <= S10) begin\n            next_state <= S10;\n            next_state <= S101;\n        end\n        else if (next_state <= S101) begin\n            next_state <= S101;\n            next_state <= IDLE;\n        end\n   end\nend\n\n//  This is the output code\n//  Every time x is asserted, the output goes to 1\n//  Every time x is reset, the output goes to 0\n//  Every time the clock is asserted, the output goes to 0\n//  Every time the clock"
+    },
+    {
+      "finish_reason": "length",
+      "index": 8,
+      "logprobs": null,
+      "text": "  always @(posedge clk or negedge reset)\n  begin\n    if (reset) next_state <= IDLE;\n    else if (x) next_state <= S1;\n    else next_state <= IDLE;\n  end\nend\n\n// This is the output of the module. When the output is 1, the module outputs an x on the output pin.\n// When the output is 0, the module outputs a 1.\n// If the output is 1, the module outputs a 0.\n//\n// The output signals are initialized to 0.\nmodule output(\ninput clk,\ninput reset,\ninput x,\noutput z);\n  always @(posedge clk or negedge reset)\n  begin\n    z <= x;\n  end\nend\n\n\n// This is the input module to the module.\n//\n// The module's input signals are x,"
+    },
+    {
+      "finish_reason": "stop",
+      "index": 9,
+      "logprobs": null,
+      "text": "        begin\n        end\n\n        "
+    }
+  ],
+  "created": 1663519790,
+  "id": "cmpl-YUtj3uOBo9fnQgywT1vD5IMuldJrN",
+  "model": "codegen",
+  "object": "text_completion",
+  "usage": {
+    "completion_tokens": 1530,
+    "prompt_tokens": 232,
+    "total_tokens": 1762
+  }
+}
