@@ -43,7 +43,7 @@ print(tokenizer.decode(sample[0], truncate_before_pattern=[r"endmodule"]) + "end
 
 ## Sampling using fauxpilot
 
-[Fauxpilot](https://github.com/moyix/fauxpilot) is an open-source tool for quering LLMs via [OpenAI API](https://beta.openai.com/docs/api-reference/). The method is preferred over the above model inferencing method for it allows memory and compute optimization resulting in low latency inferencing capability. A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs.
+[Fauxpilot](https://github.com/moyix/fauxpilot) is an open-source tool for quering LLMs via [OpenAI API](https://beta.openai.com/docs/api-reference/). The method is preferred over the above model inferencing method for it achieves memory and compute optimization resulting in low latency inferencing capability. A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs.
 
 ```sh
 git clone https://github.com/shailja-thakur/fauxpilot_changes.git
