@@ -44,10 +44,6 @@ Fauxpilot allows for sampling from the models with less compute and memory as op
 ```sh
 # download the model parameters
 # codegen-verilog-2B,6B,16B
-# wget -P checkpoints https://storage.googleapis.com/sfr-codegen-research/checkpoints/codegen-350M-nl.tar.gz && tar -xvf checkpoints/codegen-350M-nl.tar.gz -C checkpoints/
-# wget -P checkpoints https://storage.googleapis.com/sfr-codegen-research/checkpoints/codegen-350M-multi.tar.gz && tar -xvf checkpoints/codegen-350M-multi.tar.gz -C checkpoints/
-wget -P checkpoints https://storage.googleapis.com/sfr-codegen-research/checkpoints/codegen-350M-mono.tar.gz && tar -xvf checkpoints/codegen-350M-mono.tar.gz -C checkpoints/
-# codegen-2B-nl,multi,mono
 
 git clone https://github.com/shailja-thakur/fauxpilot_changes.git
 # Follow the instructions in the readme, and run the inference as follows:
