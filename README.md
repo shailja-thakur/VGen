@@ -18,7 +18,7 @@ https://github.com/shailja-thakur/benchmarking-LLM-Verilog/scripts
 
 ## Sampling with HuggingFace
 
-The models are available on the [HuggingFace](https://huggingface.co/models?search=verilog) with a Jupyter notebook and a Colab demo [here](https://colab.research.google.com/drive/XYZ?usp=sharing).
+The models are available on the [HuggingFace](https://huggingface.co/models?search=verilog) with a Jupyter notebook [here](https://github.com/shailja-thakur/benchmarking-LLM-Verilog/blob/main/VGen_Demo_notebook.ipynb) and a Colab demo [here](https://colab.research.google.com/drive/XYZ?usp=sharing).
 
 Please note that the model inference is tested in Jupyter notebook and is expected to run successfuly with atleast one GPU (RTX4000)
 
