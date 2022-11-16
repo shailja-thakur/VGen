@@ -37,9 +37,9 @@ sample = model.generate(input_ids, max_length=128, temperature=0.5, top_p=0.9)
 print(tokenizer.decode(sample[0], truncate_before_pattern=[r"endmodule"]) + "endmodule")
 ```
 
-## Sampling using [Fauxpilot](https://github.com/moyix/fauxpilot)
+## Sampling using fauxpilot
 
-Fauxpilot is an open-source tool for quering LLMs via APIs. A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs with less compute and memory as opposed to the notebook version.
+[Fauxpilot](https://github.com/moyix/fauxpilot) is an open-source tool for quering LLMs via APIs. A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs with less compute and memory as opposed to the notebook version.
 
 ```sh
 git clone https://github.com/shailja-thakur/fauxpilot_changes.git
