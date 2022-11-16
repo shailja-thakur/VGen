@@ -43,7 +43,7 @@ print(tokenizer.decode(sample[0], truncate_before_pattern=[r"endmodule"]) + "end
 
 ## Sampling using fauxpilot
 
-[Fauxpilot](https://github.com/moyix/fauxpilot) is an open-source tool for quering LLMs via APIs. A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs with less compute and memory as opposed to the notebook version.
+[Fauxpilot](https://github.com/moyix/fauxpilot) is an open-source tool for quering LLMs via [OpenAI API](https://beta.openai.com/docs/api-reference/). A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs with less compute and memory as opposed to the notebook version.
 
 ```sh
 git clone https://github.com/shailja-thakur/fauxpilot_changes.git
