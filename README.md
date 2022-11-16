@@ -42,9 +42,6 @@ print(tokenizer.decode(sample[0], truncate_before_pattern=[r"endmodule"]) + "end
 A customised version of fauxpilot allows for sampling from the fine-tuned models with less compute and memory as opposed to the notebook version.
 
 ```sh
-# download the model parameters
-# codegen-verilog-2B,6B,16B
-
 git clone https://github.com/shailja-thakur/fauxpilot_changes.git
 # Follow the instructions in the readme, and run the inference as follows:
 
