@@ -39,7 +39,7 @@ print(tokenizer.decode(sample[0], truncate_before_pattern=[r"endmodule"]) + "end
 
 ## Sampling using [Fauxpilot](https://github.com/moyix/fauxpilot)
 
-Fauxpilot is an open-source tool for quering LLMs usin OPENAI specific APIs. A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs with less compute and memory as opposed to the notebook version.
+Fauxpilot is an open-source tool for quering LLMs via APIs. A customised version of fauxpilot [here](https://github.com/shailja-thakur/fauxpilot_changes) allows to sample from the fine-tuned LLMs with less compute and memory as opposed to the notebook version.
 
 ```sh
 git clone https://github.com/shailja-thakur/fauxpilot_changes.git
