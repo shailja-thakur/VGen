@@ -37,9 +37,9 @@ sample = model.generate(input_ids, max_length=128, temperature=0.5, top_p=0.9)
 print(tokenizer.decode(sample[0], truncate_before_pattern=[r"endmodule"]) + "endmodule")
 ```
 
-## Sampling with [Fauxpilot](https://github.com/shailja-thakur/fauxpilot_changes)
+## Sampling using [Fauxpilot](https://github.com/moyix/fauxpilot)
 
-Fauxpilot allows for sampling from the models with less compute and memory as opposed to the notebook version.
+A customised version of fauxpilot allows for sampling from the fine-tuned models with less compute and memory as opposed to the notebook version.
 
 ```sh
 # download the model parameters
@@ -95,19 +95,3 @@ Out[5]:
   }
 }
 ```
-
-
-
-This is our work on benchmarking Large Language Models (LLM) for automatically generating Verilog.
-The repository comprises of the following:
-1. Pre-processing scripts
-2. Fine-tuning scripts
-3. Sctipts used in the evaluation pipeline (Design tasks, preparing test-benches, compilation and test scripts, results accumulation, comprehensive report)
-4. Inference (Jupyter Notebook/Fauxpilot with fine-tuned model)
-5. Scripts for result visualization
-
-The checkpoints for the fine-tuned LLMs for Verilog are available on [ Huggingface ](https://huggingface.co/shailja)
-
-More details coming soo ...
-
-
