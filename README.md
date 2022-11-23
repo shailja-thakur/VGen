@@ -14,9 +14,9 @@
 
 COMING SOON ..
 
-
+<!--
 https://github.com/shailja-thakur/benchmarking-LLM-Verilog/scripts
-
+-->
 ## Sampling with HuggingFace
 
 The models are available on the [HuggingFace Hub](https://huggingface.co/models?search=verilog) with a Jupyter notebook [here](https://github.com/shailja-thakur/benchmarking-LLM-Verilog/blob/main/VGen_Demo_notebook.ipynb) and a Colab demo [here](https://colab.research.google.com/drive/XYZ?usp=sharing).
