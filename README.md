@@ -31,8 +31,8 @@ prompt = "//module half adder "
 
 # Load model and tokenizer
 model_name = "shailja/CodeGen_2B_Verilog"
-tokenizer = AutoTokenizer.from_pretrained("shailja/CodeGen_2B_Verilog")
-model = AutoModelForCausalLM.from_pretrained("shailja/CodeGen_2B_Verilog").to(device)
+tokenizer = AutoTokenizer.from_pretrained("shailja/fine-tuned-codegen-2B-Verilog")
+model = AutoModelForCausalLM.from_pretrained("shailja/fine-tuned-codegen-2B-Verilog").to(device)
 
 # Sample
 input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
