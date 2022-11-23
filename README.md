@@ -12,7 +12,8 @@
 
 ## Training and Fine-tuning
 
-The scripts for data pre-processing and fine-tuning the models can be found here:
+COMING SOON ..
+
 
 https://github.com/shailja-thakur/benchmarking-LLM-Verilog/scripts
 
