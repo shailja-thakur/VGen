@@ -105,3 +105,19 @@ Out[5]:
   }
 }
 ```
+
+## Citation
+
+If you find our work helpful, please cite as
+```
+@article{
+  title={Benchmarking Large Language Models for Automated Verilog RTL Code Generation},
+  author={Shailja Thakur and Baleegh Ahmad and Zhenxing Fan and Hammond Pearce and Benjamin Tan and Ramesh Karri and Brendan Dolan-Gavitt and Siddharth Garg},
+  year={2022}
+}
+```
+
+## Contributors
+<a href="https://github.com/shailja-thakur"></a> 
+<a href="https://github.com/baleegh"></a>
+<!-- <a href="https://github.com/Baigker">  <img src="https://avatars.githubusercontent.com/u/81303490?v=4"  width="50" /></a> -->
