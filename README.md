@@ -12,7 +12,7 @@
 
 ## Training and Fine-tuning
 
-COMING SOON ..
+Foolow the link for training: https://github.com/shailja-thakur/CodeGen-Fine-Tuning
 
 <!--
 https://github.com/shailja-thakur/benchmarking-LLM-Verilog/scripts
