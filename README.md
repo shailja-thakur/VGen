@@ -69,7 +69,7 @@ In [2]: openai.api_key = 'dummy'
 
 In [3]: openai.api_base = 'http://127.0.0.1:5000/v1'
 
-In [4]: result = openai.Completion.create(engine='codegen', prompt='\\module half adder', max_tokens=100, temperature=0.1, n=3,top_p=1.0, stop=["endmodule"])
+In [4]: result = openai.Completion.create(engine='codegen', prompt='//module half adder', max_tokens=100, temperature=0.1, n=3,top_p=1.0, stop=["endmodule"])
 
 In [5]: result
 Out[5]: 
