@@ -20,8 +20,9 @@ Further, when analyzing functional correctness, a fine-tuned open-source CodeGen
 
 ## Training and Fine-tuning
 
-Training and evaluation scripts will be updated here: https://github.com/shailja-thakur/CodeGen-Fine-Tuning
+Training details can be accessed here: https://github.com/shailja-thakur/CodeGen-Fine-Tuning
 
+Evaluation scripts will be updated in sometime.
 <!--
 https://github.com/shailja-thakur/benchmarking-LLM-Verilog/scripts
 -->
