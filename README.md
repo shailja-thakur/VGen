@@ -110,11 +110,16 @@ Out[5]:
 
 If you find our work helpful, please cite as
 ```
-@article{
-  title={Benchmarking Large Language Models for Automated Verilog RTL Code Generation},
-  author={Shailja Thakur and Baleegh Ahmad and Zhenxing Fan and Hammond Pearce and Benjamin Tan and Ramesh Karri and Brendan Dolan-Gavitt and Siddharth Garg},
-  year={2022}
+@misc{https://doi.org/10.48550/arxiv.2212.11140,
+  doi = {10.48550/ARXIV.2212.11140},
+  url = {https://arxiv.org/abs/2212.11140},
+  author = {Thakur, Shailja and Ahmad, Baleegh and Fan, Zhenxing and Pearce, Hammond and Tan, Benjamin and Karri, Ramesh and Dolan-Gavitt, Brendan and Garg, Siddharth},
+  title = {Benchmarking Large Language Models for Automated Verilog RTL Code Generation},
+  publisher = {arXiv},
+  year = {2022},
+  copyright = {arXiv.org perpetual, non-exclusive license}
 }
+
 ```
 
 ## Contributors
