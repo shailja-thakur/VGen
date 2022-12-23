@@ -123,6 +123,6 @@ If you find our work helpful, please cite as
 ```
 
 ## Contributors
-<a href="https://github.com/shailja-thakur"></a> 
-<a href="https://github.com/baleegh"></a>
+<a href="https://github.com/shailja-thakur"> <img src="https://avatars.githubusercontent.com/u/3057541?v=4" width="50" /></a> 
+<a href="https://github.com/baleegh"> <img src="https://avatars.githubusercontent.com/u/36158742?v=4"> width="50" /</a>
 <!-- <a href="https://github.com/Baigker">  <img src="https://avatars.githubusercontent.com/u/81303490?v=4"  width="50" /></a> -->
