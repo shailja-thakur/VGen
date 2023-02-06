@@ -1,6 +1,6 @@
 # LLMs for Verilog 
 
-*Title*: [__Benchmarking Large Language Models for Automated Verilog RTL Code Generation__](URL coming soon..)
+*Title*: [__Benchmarking Large Language Models for Automated Verilog RTL Code Generation__](https://arxiv.org/abs/2212.11140)
 
 *Authors*: [Shailja Thakur](https://shailja-thakur.github.io/), [Baleegh Ahmad](), [Zhenxing Fan](), [Hammond Pearce](), [Benjamin Tan](), [Ramesh Karri](), [Brendan Dolan-Gavitt](), and [Siddharth Garg]() 
 
