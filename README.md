@@ -123,6 +123,10 @@ If you find our work helpful, please cite as
 
 ```
 
+## LICENCE
+
+Please note that this repo is under MIT licence
+
 ## Contributors
 <a href="https://github.com/shailja-thakur"> <img src="https://avatars.githubusercontent.com/u/3057541?v=4" width="50" /></a> 
 <a href="https://github.com/baleegh"> <img src="https://avatars.githubusercontent.com/u/36158742?v=4" width="50" /></a>
