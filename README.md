@@ -125,7 +125,7 @@ If you find our work helpful, please cite as
 
 ## LICENCE
 
-Please note that this repo is under [GPL License](LICENSE)
+Please note that this repo is under [Apache License](LICENSE)
 
 ## Contributors
 <a href="https://github.com/shailja-thakur"> <img src="https://avatars.githubusercontent.com/u/3057541?v=4" width="50" /></a> 
