@@ -1,0 +1,141 @@
+#! /usr/local/Cellar/icarus-verilog/11.0/bin/vvp
+:ivl_version "11.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 11;
+:vpi_module "/usr/local/Cellar/icarus-verilog/11.0/lib/ivl/system.vpi";
+:vpi_module "/usr/local/Cellar/icarus-verilog/11.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/local/Cellar/icarus-verilog/11.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/local/Cellar/icarus-verilog/11.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/usr/local/Cellar/icarus-verilog/11.0/lib/ivl/va_math.vpi";
+S_0x7fa5d04048b0 .scope module, "tb_signed_adder" "tb_signed_adder" 2 4;
+ .timescale -9 -11;
+P_0x7fa5d0404f60 .param/l "period" 1 2 13, +C4<00000000000000000000000000000010>;
+v0x7fa5d0503040_0 .var "a", 7 0;
+v0x7fa5d0503110_0 .var "b", 7 0;
+v0x7fa5d05031a0_0 .var/i "increment_a", 31 0;
+v0x7fa5d0503230_0 .net "overflow", 0 0, L_0x7fa5d05040a0;  1 drivers
+v0x7fa5d05032c0_0 .net "s", 7 0, L_0x7fa5d0503390;  1 drivers
+S_0x7fa5d0404a20 .scope module, "UUT" "signed_adder" 2 15, 3 4 0, S_0x7fa5d04048b0;
+ .timescale -9 -11;
+    .port_info 0 /INPUT 8 "a";
+    .port_info 1 /INPUT 8 "b";
+    .port_info 2 /OUTPUT 8 "s";
+    .port_info 3 /OUTPUT 1 "overflow";
+L_0x7fa5d0503650 .functor AND 1, L_0x7fa5d0503510, L_0x7fa5d05035b0, C4<1>, C4<1>;
+L_0x7fa5d05037e0 .functor NOT 1, L_0x7fa5d0503740, C4<0>, C4<0>, C4<0>;
+L_0x7fa5d0503890 .functor AND 1, L_0x7fa5d0503650, L_0x7fa5d05037e0, C4<1>, C4<1>;
+L_0x7fa5d0503af0 .functor NOT 1, L_0x7fa5d05039a0, C4<0>, C4<0>, C4<0>;
+L_0x7fa5d0503c80 .functor NOT 1, L_0x7fa5d0503b60, C4<0>, C4<0>, C4<0>;
+L_0x7fa5d0503d40 .functor AND 1, L_0x7fa5d0503af0, L_0x7fa5d0503c80, C4<1>, C4<1>;
+L_0x7fa5d0503f50 .functor AND 1, L_0x7fa5d0503d40, L_0x7fa5d0503e30, C4<1>, C4<1>;
+L_0x7fa5d05040a0 .functor OR 1, L_0x7fa5d0503890, L_0x7fa5d0503f50, C4<0>, C4<0>;
+v0x7fa5d040ed50_0 .net *"_ivl_10", 0 0, L_0x7fa5d05037e0;  1 drivers
+v0x7fa5d05023b0_0 .net *"_ivl_13", 0 0, L_0x7fa5d0503890;  1 drivers
+v0x7fa5d0502460_0 .net *"_ivl_15", 0 0, L_0x7fa5d05039a0;  1 drivers
+v0x7fa5d0502520_0 .net *"_ivl_16", 0 0, L_0x7fa5d0503af0;  1 drivers
+v0x7fa5d05025d0_0 .net *"_ivl_19", 0 0, L_0x7fa5d0503b60;  1 drivers
+v0x7fa5d05026c0_0 .net *"_ivl_20", 0 0, L_0x7fa5d0503c80;  1 drivers
+v0x7fa5d0502770_0 .net *"_ivl_23", 0 0, L_0x7fa5d0503d40;  1 drivers
+v0x7fa5d0502810_0 .net *"_ivl_25", 0 0, L_0x7fa5d0503e30;  1 drivers
+v0x7fa5d05028c0_0 .net *"_ivl_27", 0 0, L_0x7fa5d0503f50;  1 drivers
+v0x7fa5d05029d0_0 .net *"_ivl_3", 0 0, L_0x7fa5d0503510;  1 drivers
+v0x7fa5d0502a70_0 .net *"_ivl_5", 0 0, L_0x7fa5d05035b0;  1 drivers
+v0x7fa5d0502b20_0 .net *"_ivl_7", 0 0, L_0x7fa5d0503650;  1 drivers
+v0x7fa5d0502bc0_0 .net *"_ivl_9", 0 0, L_0x7fa5d0503740;  1 drivers
+v0x7fa5d0502c70_0 .net "a", 7 0, v0x7fa5d0503040_0;  1 drivers
+v0x7fa5d0502d20_0 .net "b", 7 0, v0x7fa5d0503110_0;  1 drivers
+v0x7fa5d0502dd0_0 .net "overflow", 0 0, L_0x7fa5d05040a0;  alias, 1 drivers
+v0x7fa5d0502e70_0 .net "s", 7 0, L_0x7fa5d0503390;  alias, 1 drivers
+L_0x7fa5d0503390 .arith/sum 8, v0x7fa5d0503040_0, v0x7fa5d0503110_0;
+L_0x7fa5d0503510 .part v0x7fa5d0503040_0, 7, 1;
+L_0x7fa5d05035b0 .part v0x7fa5d0503110_0, 7, 1;
+L_0x7fa5d0503740 .part L_0x7fa5d0503390, 7, 1;
+L_0x7fa5d05039a0 .part v0x7fa5d0503040_0, 7, 1;
+L_0x7fa5d0503b60 .part v0x7fa5d0503110_0, 7, 1;
+L_0x7fa5d0503e30 .part L_0x7fa5d0503390, 7, 1;
+    .scope S_0x7fa5d04048b0;
+T_0 ;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x7fa5d05031a0_0, 0, 32;
+    %end;
+    .thread T_0;
+    .scope S_0x7fa5d04048b0;
+T_1 ;
+    %pushi/vec4 0, 0, 8;
+    %store/vec4 v0x7fa5d0503040_0, 0, 8;
+    %pushi/vec4 0, 0, 8;
+    %store/vec4 v0x7fa5d0503110_0, 0, 8;
+T_1.0 ;
+    %load/vec4 v0x7fa5d0503110_0;
+    %cmpi/u 255, 0, 8;
+    %jmp/0xz T_1.1, 5;
+    %delay 200, 0;
+    %load/vec4 v0x7fa5d05032c0_0;
+    %load/vec4 v0x7fa5d0503040_0;
+    %load/vec4 v0x7fa5d0503110_0;
+    %add;
+    %cmp/ne;
+    %flag_mov 8, 6;
+    %load/vec4 v0x7fa5d0503230_0;
+    %load/vec4 v0x7fa5d0503040_0;
+    %parti/s 1, 7, 4;
+    %load/vec4 v0x7fa5d0503110_0;
+    %parti/s 1, 7, 4;
+    %and;
+    %load/vec4 v0x7fa5d05032c0_0;
+    %parti/s 1, 7, 4;
+    %inv;
+    %and;
+    %load/vec4 v0x7fa5d0503040_0;
+    %parti/s 1, 7, 4;
+    %inv;
+    %load/vec4 v0x7fa5d0503110_0;
+    %parti/s 1, 7, 4;
+    %inv;
+    %and;
+    %load/vec4 v0x7fa5d05032c0_0;
+    %parti/s 1, 7, 4;
+    %and;
+    %or;
+    %cmp/ne;
+    %flag_or 6, 8;
+    %jmp/0xz  T_1.2, 6;
+    %vpi_call 2 26 "$display", "test failed" {0 0 0};
+    %vpi_call 2 27 "$display", "  a = %b , b = %b, sum=%b, overflow = %b", v0x7fa5d0503040_0, v0x7fa5d0503110_0, v0x7fa5d05032c0_0, v0x7fa5d0503230_0 {0 0 0};
+    %vpi_call 2 28 "$finish" {0 0 0};
+T_1.2 ;
+    %vpi_call 2 30 "$display", "  a = %b , b = %b, sum=%b, overflow = %b", v0x7fa5d0503040_0, v0x7fa5d0503110_0, v0x7fa5d05032c0_0, v0x7fa5d0503230_0 {0 0 0};
+    %load/vec4 v0x7fa5d05031a0_0;
+    %cmpi/ne 0, 0, 32;
+    %jmp/0xz  T_1.4, 4;
+    %load/vec4 v0x7fa5d0503040_0;
+    %addi 1, 0, 8;
+    %store/vec4 v0x7fa5d0503040_0, 0, 8;
+    %jmp T_1.5;
+T_1.4 ;
+    %load/vec4 v0x7fa5d0503110_0;
+    %addi 1, 0, 8;
+    %store/vec4 v0x7fa5d0503110_0, 0, 8;
+T_1.5 ;
+    %load/vec4 v0x7fa5d05031a0_0;
+    %cmpi/ne 0, 0, 32;
+    %jmp/0xz  T_1.6, 4;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x7fa5d05031a0_0, 0, 32;
+    %jmp T_1.7;
+T_1.6 ;
+    %pushi/vec4 1, 0, 32;
+    %store/vec4 v0x7fa5d05031a0_0, 0, 32;
+T_1.7 ;
+    %jmp T_1.0;
+T_1.1 ;
+    %vpi_call 2 39 "$display", "all tests passed" {0 0 0};
+    %vpi_call 2 40 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb_signed-addition-overflow.v";
+    "answer_signed-addition-overflow.v";

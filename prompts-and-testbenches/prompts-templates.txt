@@ -1,0 +1,51 @@
+General template:
+
+No tabs, no '\n\n'
+
+// This is a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.    [Comment - Overview of module]
+module simple_fsm(clk, reset, in, out);                                                                         [Module header]
+input clk;                                                                                                      [Inputs and Outputs detailed]
+input reset;
+input in;
+output wire out;
+reg present_state, next_state;                                                                                  [Internal signals]
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1                                     [Comments - Details of module]
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
+
+
+Template 1 (least detailed, no comments after internal signals): 
+
+// This is a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.    [Comment - Overview of module]
+module simple_fsm(clk, reset, in, out);                                                                         [Module header]
+input clk;                                                                                                      [Inputs and Outputs detailed]
+input reset;
+input in;
+output wire out;
+reg present_state, next_state;                                                                                  [Internal signals]
+
+Template 2 (Some detailed comments):
+
+// This is a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.    [Comment - Overview of module]
+module simple_fsm(clk, reset, in, out);                                                                         [Module header]
+input clk;                                                                                                      [Inputs and Outputs detailed]
+input reset;
+input in;
+output wire out;
+reg present_state, next_state;                                                                                  [Internal signals]
+// Transition from state 0 to state 1 if in==0                                                                  [Comments - Details of module]
+// Transition from state 1 to state 0 if in==0   
+// out is high in state 0
+
+Template 3 (Full detailed comments):
+
+// This is a Moore state machine with two states 0 and 1, one input in, and one output out. Reset state is 0.    [Comment - Overview of module]
+module simple_fsm(clk, reset, in, out);                                                                         [Module header]
+input clk;                                                                                                      [Inputs and Outputs detailed]
+input reset;
+input in;
+output wire out;
+reg present_state, next_state;                                                                                  [Internal signals]
+// In state 0, if in=1, stay in state 0. In state 0, if in=0, go to state 1                                     [Comments - Details of module]
+// In state 1, if in=1, stay in state 1. In state 1, if in=0, go to state 0
+// out=1 in state 0 and out=0 in state 1
