@@ -57,7 +57,7 @@ print(tokenizer.decode(sample[0], truncate_before_pattern=[r"endmodule"]) + "end
 
 ```sh
 git clone https://github.com/shailja-thakur/fauxpilot_changes.git
-# Follow the instructions in the readme, and run the inference as follows:
+# Follow the instructions in the readme from the "fauxpilot_changes" repository, and run the inference as follows:
 
 $ ipython
 Python 3.8.10 (default, Mar 15 2022, 12:22:08) 
