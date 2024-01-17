@@ -12,11 +12,11 @@ We construct an evaluation framework comprising test-benches for functional anal
 Our findings show that across our problem scenarios, the fine-tuning results in LLMs more capable of producing syntactically correct code (25.9\% overall).
 Further, when analyzing functional correctness, a fine-tuned open-source CodeGen LLM can outperform the state-of-the-art commercial Codex LLM (6.5\% overall).
 
-<!---
+
 <p align="center">
-  <img src="assets/two.gif" width="60%">
+  <img src="fig/system_overview.png" width="60%">
 </p>
--->
+
 
 ## Training and Fine-tuning
 
