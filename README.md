@@ -123,6 +123,10 @@ If you find our work helpful, please cite as
 
 ```
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=shailja-thakur/VGen&type=Date)](https://star-history.com/#shailja-thakur/VGen&Date)
+
 ## LICENCE
 
 Please note that this repo is under [Apache License](LICENSE)
